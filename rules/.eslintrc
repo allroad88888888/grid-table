@@ -1,0 +1,130 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 13,
+    "sourceType": "module",
+    "project": [
+      "./tsconfig.json",
+      "./packages/*/tsconfig.json"
+    ]
+  },
+  "settings": {
+    "import/ignore": ".(scss|less|css)$",
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx",
+          ".d.ts"
+        ],
+      },
+      "typescript": {
+        "alwaysTryTypes": true,
+      }
+    },
+    "import/extensions": [
+      ".js",
+      ".mjs",
+      ".jsx",
+      ".ts",
+      ".tsx",
+      ".d.ts"
+    ],
+    "import/external-module-folders": [
+      "node_modules",
+      "node_modules/@types"
+    ],
+    "react":{
+      "version":"18.3.1"
+    }
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "react-hooks",
+    "import",
+    "@stylistic"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "jest": true,
+  },
+  "extends":[
+    "plugin:@stylistic/recommended-extends",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
+  ],
+  "rules": {
+    "strict": [
+      "error",
+      "never"
+    ],
+    "@stylistic/quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ],
+    "no-new-func": "off",
+    "@stylistic/max-len": [
+      "error",
+      {
+        "code": 100,
+        "ignoreUrls": true,
+        "ignoreComments": true,
+        "ignoreRegExpLiterals": true,
+        "ignoreTrailingComments": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+      }
+    ],
+    // support any
+    "@typescript-eslint/no-explicit-any": "off",
+    // support ts-ignore
+    "@typescript-eslint/ban-ts-comment": "off",
+    // 
+    "@typescript-eslint/no-this-alias": "off",
+    // type Function
+    "@typescript-eslint/ban-types": "off",
+   
+    "max-len": [
+      "error",
+      {
+        "code": 100
+      }
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "max-lines-per-function": [
+      2,
+      {
+        "max": 320,
+        "skipComments": true,
+        "skipBlankLines": true
+      }
+    ],
+    "no-console": 2,
+    "prefer-const": 2,
+    // "import/prefer-default-export": 0,
+    // "import/no-cycle": 0,
+    // "import/no-extraneous-dependencies": 1,
+    // "import/no-named-as-default": 0,
+    "arrow-body-style": 0,
+    "no-underscore-dangle": 0,
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports"
+      }
+    ],
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "off" 
+  }
+}

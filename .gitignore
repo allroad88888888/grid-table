@@ -1,0 +1,9 @@
+.DS_Store
+*.local
+.temp
+.swc
+node_modules
+dist
+es
+@types
+.npmrc

@@ -1,0 +1,35 @@
+{
+    "name": "@grid-table/core",
+    "version": "0.0.1",
+    "description": "grid-table core",
+    "main": "es/index.js",
+    "module": "es/index.js",
+    "typings": "@types/index.d.ts",
+    "license": "MIT",
+    "files": [
+        "es",
+        "@types"
+    ],
+    "scripts": {
+        "build": "tsc -build"
+    },
+    "keywords": [
+        "react",
+        "atom"
+    ],
+    "peerDependencies": {
+        "react": "^16 || ^17 || ^18"
+    },
+    "peerDependenciesMeta": {
+        "react": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.30",
+        "@types/react": "^18.3.3"
+    },
+    "dependencies": {
+       
+    }
+}

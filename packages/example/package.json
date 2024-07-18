@@ -1,0 +1,25 @@
+{
+    "name": "@grid-table/example",
+    "version": "0.0.1",
+    "private": true,
+    "description": "grid-table example",
+    "license": "MIT",
+    "scripts": {
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.30",
+        "@types/react": "^18.3.3",
+        "@types/react-dom": "^18.3.0",
+        "@vitejs/plugin-react-swc": "^3.7.0",
+        "vite": "^5.3.3"
+    },
+    "dependencies": {
+        "@grid-table/core": "workspace:^0.0.1",
+        "@grid/table": "workspace:^0.0.1",
+        "einfach-state": "^0.2.0",
+        "einfach-utils": "^0.0.8",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
+    }
+}
