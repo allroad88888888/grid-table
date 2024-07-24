@@ -1,6 +1,6 @@
 {
     "name": "@grid/table",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "grid-table table",
     "main": "es/index.js",
     "module": "es/index.js",
@@ -18,7 +18,9 @@
         "atom"
     ],
     "peerDependencies": {
-        "react": "^16 || ^17 || ^18"
+        "react": "^16 || ^17 || ^18",
+        "einfach-state":"^0.4.4",
+        "einfach-utils":"^0.4.4"
     },
     "peerDependenciesMeta": {
         "react": {
@@ -31,8 +33,6 @@
     },
     "dependencies": {
         "clsx": "^2.1.1",
-        "einfach-state": "^0.2.0",
-        "einfach-utils": "^0.0.8",
         "@grid-table/core": "workspace:^0.0.1"
     }
 }

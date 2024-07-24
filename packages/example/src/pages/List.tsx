@@ -2,7 +2,7 @@ import type { ListItemProps } from '@grid-table/core/src'
 import { VGridList } from '@grid-table/core/src'
 import { useMethods } from 'einfach-utils'
 import { rowIds } from '../mock/rowIds'
-import { atom, useAtomValue, useSetAtom } from 'einfach-state'
+import { atom, loadable, useAtomValue, useSetAtom } from 'einfach-state'
 
 function Item({ index, style }: ListItemProps) {
   return <div style={style}>{index}</div>
@@ -31,7 +31,7 @@ function DemoList() {
     },
   })
   const setAtom1 = useSetAtom(atom1)
-  const val = useAtomValue(atom2)
+  const { data } = useAtomValue(loadable(atom2))
 
   return (
     <div onClick={() => {
@@ -39,7 +39,7 @@ function DemoList() {
     }}
     >
       ------ :
-      {val}
+      {data}
 
       <VGridList
         baseSize={12}

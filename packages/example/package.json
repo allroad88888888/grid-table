@@ -15,10 +15,10 @@
         "vite": "^5.3.3"
     },
     "dependencies": {
-        "@grid-table/core": "workspace:^0.0.1",
-        "@grid/table": "workspace:^0.0.1",
-        "einfach-state": "^0.2.0",
-        "einfach-utils": "^0.0.8",
+        "@grid-table/core": "workspace:*",
+        "@grid/table": "workspace:*",
+        "einfach-state": "^0.4.4",
+        "einfach-utils": "^0.4.4",
         "react": "^18.3.1",
         "react-dom": "^18.3.1"
     }

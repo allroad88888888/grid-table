@@ -86,17 +86,17 @@ importers:
   packages/example:
     dependencies:
       '@grid-table/core':
-        specifier: workspace:^0.0.1
+        specifier: workspace:*
         version: link:../core
       '@grid/table':
-        specifier: workspace:^0.0.1
+        specifier: workspace:*
         version: link:../table
       einfach-state:
-        specifier: ^0.2.0
-        version: 0.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.4.4
+        version: 0.4.4(react@18.3.1)
       einfach-utils:
-        specifier: ^0.0.8
-        version: 0.0.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.4.4
+        version: 0.4.4(einfach-state@0.4.4(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -129,11 +129,11 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       einfach-state:
-        specifier: ^0.2.0
-        version: 0.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.4.4
+        version: 0.4.4(react@18.3.1)
       einfach-utils:
-        specifier: ^0.0.8
-        version: 0.0.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.4.4
+        version: 0.4.4(einfach-state@0.4.4(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^16 || ^17 || ^18
         version: 18.3.1
@@ -1455,17 +1455,18 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  einfach-state@0.2.0:
-    resolution: {integrity: sha512-uNFMtFmxh/fFQ7ss/W/lMop1ZLbE2qIySIQffqCwCuZa2RGZNl/626lHDiybzIuNc5tY52uer5uqG8RcTbf06g==}
+  einfach-state@0.4.4:
+    resolution: {integrity: sha512-VrIIVQtjoVcr+YjHGxhDZbEZUYm/4inhfeD4ZXKGXxaHJG1nN/bAW1aI8K9SLGo1fws+TOnI9HXoPi7734o3VA==}
     peerDependencies:
-      react: ^16 || ^17 || ^18
+      react: ^16 || ^17 || ^18 ||^19
     peerDependenciesMeta:
       react:
         optional: true
 
-  einfach-utils@0.0.8:
-    resolution: {integrity: sha512-yuRW2Oi3wdD/y4mG1D/NpTsRIqx8vkSO5PQKGrU3SA6yAl28YMJU3D1P4OmOGHhbH4ePjjI2C5GG0QNBgsSVWA==}
+  einfach-utils@0.4.4:
+    resolution: {integrity: sha512-Q8TqZdOY/v585yiU/+bU7sBdON74F3zMTZYiFnzYOMr8VMuEFgnWzpygS5jcTKbV2HxNVkIg/bfpmJg01soqBw==}
     peerDependencies:
+      einfach-state: ^0.4.4*
       react: ^16 || ^17 || ^18
       react-dom: ^16 || ^17 || ^18
     peerDependenciesMeta:
@@ -4630,15 +4631,13 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  einfach-state@0.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      einfach-utils: 0.0.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+  einfach-state@0.4.4(react@18.3.1):
     optionalDependencies:
       react: 18.3.1
-    transitivePeerDependencies:
-      - react-dom
 
-  einfach-utils@0.0.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  einfach-utils@0.4.4(einfach-state@0.4.4(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      einfach-state: 0.4.4(react@18.3.1)
     optionalDependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
