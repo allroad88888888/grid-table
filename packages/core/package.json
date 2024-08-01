@@ -1,6 +1,6 @@
 {
     "name": "@grid-table/core",
-    "version": "0.0.1",
+    "version": "0.0.6",
     "description": "grid-table core",
     "main": "es/index.js",
     "module": "es/index.js",

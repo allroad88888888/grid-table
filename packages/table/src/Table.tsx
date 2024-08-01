@@ -8,14 +8,8 @@ import { CellBasic } from './components/Cell'
 import { Row } from './components/Row'
 import { THeadCellBasic } from './components/TheadCell'
 import { DragLine } from './components/Drag'
-
-const rowIds = Array(30)
-  .fill(null)
-  .map((temp, index) => {
-    return index
-  })
-
-const ColumnCount = 4
+import { atom, useAtomValue, getDefaultStore } from 'einfach-state'
+import { useEffect } from 'react'
 
 const stickyList = {
   // topIndexList: [2, 4, 6],
@@ -24,7 +18,25 @@ const stickyList = {
   bottomIndexList: [],
 }
 
+const rowCountAtom = atom(0)
+const columnCountAtom = atom(8)
+// const headerRowCountAtom = atom(0)
+const { setter } = getDefaultStore()
+
 function Table() {
+  const rowCount = useAtomValue(rowCountAtom)
+  const columnCount = useAtomValue(columnCountAtom)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setter(columnCountAtom, 10)
+    }, 1000)
+
+    setTimeout(() => {
+      setter(rowCountAtom, 10)
+    }, 2000)
+  }, [])
+
   const { calcRowHeight, calcColumnWidth } = useMethods({
     calcRowHeight(index: number) {
       return index % 2 ? 24 : 36
@@ -34,11 +46,12 @@ function Table() {
     },
   })
 
-  const { columnCalcSize, rowCalcSize } = useBasicInit({
+  const { columnCalcSize, rowCalcSize, theadCalcSize,
+    rowCount: realRowCount, columnCount: realColumnCount } = useBasicInit({
     columnCalcSize: calcColumnWidth,
-    columnCount: ColumnCount,
+    columnCount,
     rowCalcSize: calcRowHeight,
-    rowCount: rowIds.length,
+    rowCount,
   })
   const { stayIndexList } = useSticky(stickyList)
 
@@ -59,15 +72,15 @@ function Table() {
         height: 600,
       }}
       theadCellComponent={THeadCellBasic}
-      theadRowCalcSize={rowCalcSize}
+      theadRowCalcSize={theadCalcSize}
       theadBaseSize={12}
 
-      rowCount={rowIds.length}
+      rowCount={realRowCount}
       rowCalcSize={rowCalcSize}
       rowBaseSize={12}
       tbodyTrComponent={Row}
 
-      columnCount={ColumnCount}
+      columnCount={realColumnCount}
       columnCalcSize={columnCalcSize}
       // columnBaseSize={50}
       columnBaseSize={10}

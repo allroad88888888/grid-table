@@ -6,7 +6,7 @@
     "declarationDir": "@types",
     "declarationMap": true,
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*","rollup.config.mjs"],
   "references": [{
     "path": "./../core/tsconfig.json"
   }]

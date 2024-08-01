@@ -1,17 +1,18 @@
 {
     "name": "@grid/table",
-    "version": "0.0.2",
+    "version": "0.0.12",
     "description": "grid-table table",
     "main": "es/index.js",
-    "module": "es/index.js",
+    "module": "dist/index.js",
     "typings": "@types/index.d.ts",
     "license": "MIT",
     "files": [
         "es",
-        "@types"
+        "@types",
+        "dist"
     ],
     "scripts": {
-        "build": "tsc -build"
+        "build": "tsc -build&&rollup --config rollup.config.mjs"
     },
     "keywords": [
         "react",
@@ -19,8 +20,8 @@
     ],
     "peerDependencies": {
         "react": "^16 || ^17 || ^18",
-        "einfach-state":"^0.4.4",
-        "einfach-utils":"^0.4.4"
+        "einfach-state":"^0.4.6",
+        "einfach-utils":"^0.4.6"
     },
     "peerDependenciesMeta": {
         "react": {
@@ -28,11 +29,18 @@
         }
     },
     "devDependencies": {
+        "@rollup/plugin-commonjs": "^26.0.1",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-swc": "^0.3.1",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@swc/core": "^1.4.11",
         "@types/node": "^20.11.30",
-        "@types/react": "^18.3.3"
+        "@types/react": "^18.3.3",
+        "rollup": "^4.19.0",
+        "rollup-plugin-postcss": "^4.0.2"
     },
     "dependencies": {
-        "clsx": "^2.1.1",
-        "@grid-table/core": "workspace:^0.0.1"
+        "@grid-table/core": "workspace:^0.0.1",
+        "clsx": "^2.1.1"
     }
 }

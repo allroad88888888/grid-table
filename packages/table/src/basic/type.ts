@@ -39,5 +39,12 @@ export interface UseBasicInitProps extends TableOption {
   columnCalcSize: (index: number) => number
   rowCount: number
   rowCalcSize: (index: number) => number
+  theadRowCount?: number
+  /**
+   * 没有就取 rowCalcSize
+   * @param index
+   * @returns
+   */
+  theadCalcSize?: (index: number) => number
 
 }

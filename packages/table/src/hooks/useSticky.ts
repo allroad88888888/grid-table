@@ -64,11 +64,12 @@ export function useSticky(props: useStickyProps = { }) {
     if (fixed === false) {
       return
     }
-    const setIdsList = new Set(idsList)
+    const newIdsList = getter(listAtom)
+    const setIdsList = new Set(newIdsList)
     const setList = new Set([...topIndexList, ...bottomIndexList].filter((index) => {
       return setIdsList.has(index)
     }))
-    const newList = [...topIndexList, ...idsList.filter((index) => {
+    const newList = [...topIndexList, ...newIdsList.filter((index) => {
       return !setList.has(index)
     }), ...bottomIndexList]
     setter(listAtom, newList)
