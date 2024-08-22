@@ -1,7 +1,8 @@
-import { atom, useAtomValue } from 'einfach-state'
+import { useAtomValue } from 'einfach-state'
 import { useBasic } from '../basic'
+import { incrementAtom } from '../utils/incrementAtom'
 
-export const tableClassNameAtom = atom<Set<string>>(new Set())
+export const tableClassNameAtom = incrementAtom(new Set<string>())
 
 export function useTableClassNameValue(className?: string | undefined) {
   const { store } = useBasic()

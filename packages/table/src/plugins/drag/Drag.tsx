@@ -1,6 +1,6 @@
 import './Drag.css'
-import type { UseDragProps } from '../hooks'
-import { useDrag, useDrayItem } from '../hooks'
+import type { UseDragProps } from './useDrag'
+import { useDrag, useDrayItem } from './useDrag'
 
 export function DragLine(props: UseDragProps) {
   const { selectIndex, left } = useDrag(props)

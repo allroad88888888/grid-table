@@ -3,39 +3,51 @@ import { useInit, useMethods } from 'einfach-utils'
 import './Table.css'
 import { BasicContext } from './basic/basicContext'
 import { buildBasic, useBasicInit } from './basic'
-import { useSticky, useTableClassNameValue } from './hooks'
-import { CellBasic } from './components/Cell'
+import { useTableClassNameValue } from './hooks'
+import { Cell } from './components/Cell'
 import { Row } from './components/Row'
 import { THeadCellBasic } from './components/TheadCell'
-import { DragLine } from './components/Drag'
-import { atom, useAtomValue, getDefaultStore } from 'einfach-state'
-import { useEffect } from 'react'
+import { atom, useAtomValue, getDefaultStore, Provider as StoreProvider } from 'einfach-state'
+import { useEffect, useRef } from 'react'
+import { DragLine } from './plugins/drag'
+import { useSticky } from './plugins/sticky'
+import { useAreaSelected } from './plugins/areaSelected'
+import { useTableEvents } from './hooks/useTableEvents'
+import { useCopy } from './plugins/copy/useCopy'
 
-const stickyList = {
+const stickyListAtom = atom({
   // topIndexList: [2, 4, 6],
   // bottomIndexList: [16, 18, 19],
   topIndexList: [],
   bottomIndexList: [],
-}
+})
 
-const rowCountAtom = atom(0)
-const columnCountAtom = atom(8)
+const rowCountAtom = atom(30)
+const columnCountAtom = atom(40)
 // const headerRowCountAtom = atom(0)
 const { setter } = getDefaultStore()
 
 function Table() {
   const rowCount = useAtomValue(rowCountAtom)
   const columnCount = useAtomValue(columnCountAtom)
+  const stickyList = useAtomValue(stickyListAtom)
 
   useEffect(() => {
-    setTimeout(() => {
-      setter(columnCountAtom, 10)
-    }, 1000)
-
-    setTimeout(() => {
-      setter(rowCountAtom, 10)
-    }, 2000)
+    // setTimeout(() => {
+    //   setter(stickyListAtom, {
+    //     topIndexList: [3],
+    //     bottomIndexList: [16],
+    //   })
+    // }, 3000)
+    // setTimeout(() => {
+    //   setter(columnCountAtom, 10)
+    // }, 300)
+    // setTimeout(() => {
+    //   setter(rowCountAtom, 100)
+    // }, 500)
   }, [])
+
+  const tableEvents = useTableEvents()
 
   const { calcRowHeight, calcColumnWidth } = useMethods({
     calcRowHeight(index: number) {
@@ -46,8 +58,14 @@ function Table() {
     },
   })
 
-  const { columnCalcSize, rowCalcSize, theadCalcSize,
-    rowCount: realRowCount, columnCount: realColumnCount } = useBasicInit({
+  const {
+    columnCalcSize,
+    rowCalcSize,
+    theadCalcSize,
+    onResize,
+    rowCount: realRowCount,
+    columnCount: realColumnCount,
+  } = useBasicInit({
     columnCalcSize: calcColumnWidth,
     columnCount,
     rowCalcSize: calcRowHeight,
@@ -55,46 +73,62 @@ function Table() {
   })
   const { stayIndexList } = useSticky(stickyList)
 
-  const { stayIndexList: rowStayIndexList } = useSticky({
-    ...stickyList,
-    direction: 'row',
-    topSpace: 36,
-    // fixed: false,
-  })
+  // const { stayIndexList: rowStayIndexList } = useSticky({
+  //   ...stickyList,
+  //   direction: 'row',
+  //   topSpace: 36,
+  //   // fixed: false,
+  // })
 
   const tableClassName = useTableClassNameValue()
+
+  useAreaSelected()
+
+  // console.log('columnStayIndexList', stayIndexList)
+
+  const tableRef = useRef<HTMLDivElement>(null)
+
+  const copy = useCopy()
+
+  /**
+   * 这里加个div
+   * 作用1 给拖拽 加个定位容器，不然要算高度
+   * 作用2 给未来其他业务使用
+   */
   return (
-    <VGridTable
-      className={`grid-table grid-table-border ${tableClassName}`}
+    <div
       style={{
-        // width: 1000,
-        width: 'fit-content',
-        height: 600,
+        width: '100%',
+        height: '100%',
+        position: 'relative',
       }}
-      theadCellComponent={THeadCellBasic}
-      theadRowCalcSize={theadCalcSize}
-      theadBaseSize={12}
-
-      rowCount={realRowCount}
-      rowCalcSize={rowCalcSize}
-      rowBaseSize={12}
-      tbodyTrComponent={Row}
-
-      columnCount={realColumnCount}
-      columnCalcSize={columnCalcSize}
-      // columnBaseSize={50}
-      columnBaseSize={10}
-
-      columnStayIndexList={stayIndexList}
-      rowStayIndexList={rowStayIndexList}
-
-      cellComponent={CellBasic}
-      // columnCalcStyle={columnCalcStyle}
-      // columnStayIndexList={columnStayIndexList}
-
+      ref={tableRef}
+      {...tableEvents}
     >
+      {copy}
       <DragLine columnBaseSize={10} />
-    </VGridTable>
+      <VGridTable
+        className={`grid-table grid-table-border ${tableClassName}`}
+        style={{
+          height: '100%',
+          width: '100%',
+        }}
+        theadCellComponent={THeadCellBasic}
+        theadRowCalcSize={theadCalcSize}
+        theadBaseSize={12}
+        rowCount={realRowCount}
+        rowCalcSize={rowCalcSize}
+        rowBaseSize={12}
+        tbodyTrComponent={Row}
+        columnCount={realColumnCount}
+        columnCalcSize={columnCalcSize}
+        columnBaseSize={10}
+        columnStayIndexList={stayIndexList}
+        // rowStayIndexList={rowStayIndexList}
+        cellComponent={Cell}
+        onResize={onResize}
+      />
+    </div>
   )
 }
 
@@ -102,5 +136,11 @@ export default () => {
   const basicValue = useInit(() => {
     return buildBasic()
   })
-  return <BasicContext.Provider value={basicValue}><Table /></BasicContext.Provider>
+  return (
+    <StoreProvider store={basicValue.store}>
+      <BasicContext.Provider value={basicValue}>
+        <Table />
+      </BasicContext.Provider>
+    </StoreProvider>
+  )
 }

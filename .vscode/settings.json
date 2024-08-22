@@ -3,6 +3,7 @@
     "eslint.options": {
         "overrideConfigFile": "rules/.eslintrc"
     },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit"
     },
@@ -18,8 +19,7 @@
         "api-extractor.json": "jsonc",
         "tsconfig.json": "jsonc"
     },
-    "editor.tabSize": 2,
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": true,
     "cSpell.words": [
         "antd",
         "clsx",
@@ -35,5 +35,9 @@
         "deferred": true,
         "testFileOnly": true,
         "type": "on-save"
-    }
+    },
+    "prettier.configPath": ".prettierrc.mjs",
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
 }

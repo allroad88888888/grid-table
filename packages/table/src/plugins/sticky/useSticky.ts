@@ -1,16 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import type { CSSProperties } from 'react'
-import { useLayoutEffect, useMemo } from 'react'
+import { useEffect, useLayoutEffect, useMemo } from 'react'
 import type { AtomEntity } from 'einfach-state'
 import { atom, useAtomValue } from 'einfach-state'
-import { useMethods } from 'einfach-utils'
-import { useBasic } from '../basic'
+import { useMethods, useInit } from 'einfach-utils'
+import { useBasic } from '../../basic'
 
 export interface useStickyProps {
   topIndexList?: number[]
   bottomIndexList?: number[]
   direction?: 'row' | 'column'
   topSpace?: number
+  /**
+   *
+   * @default
+   * true
+   */
   fixed?: boolean
 }
 
@@ -49,10 +54,10 @@ export function useSticky(props: useStickyProps = { }) {
   const { bottomIndexList = EmptyArray, topIndexList = EmptyArray, direction = 'column',
     topSpace = 0, fixed = true } = props
 
-  const { store, getCellStateAtomByIndex: getColumnStateAtomByIndex,
+  const { store, getColumnStateAtomByIndex,
     getRowStateAtomByIndex, columnListAtom, rowListAtom,
     rowSizeMapAtom, columnSizeMapAtom } = useBasic()
-  const { getter, setter } = store
+  const { setter, getter } = store
 
   const isRow = direction === 'row'
 
@@ -60,97 +65,109 @@ export function useSticky(props: useStickyProps = { }) {
 
   const idsList = useAtomValue(listAtom, { store })
 
+  const [bottomAtom, topAtom] = useInit(() => {
+    return [
+      atom(bottomIndexList), atom(topIndexList),
+    ]
+  }, [])
+
+  useEffect(() => {
+    setter(bottomAtom, bottomIndexList)
+    setter(topAtom, topIndexList)
+  }, [bottomIndexList, topIndexList])
+
   useLayoutEffect(() => {
     if (fixed === false) {
       return
     }
-    const newIdsList = getter(listAtom)
-    const setIdsList = new Set(newIdsList)
-    const setList = new Set([...topIndexList, ...bottomIndexList].filter((index) => {
-      return setIdsList.has(index)
-    }))
-    const newList = [...topIndexList, ...newIdsList.filter((index) => {
-      return !setList.has(index)
-    }), ...bottomIndexList]
-    setter(listAtom, newList)
+    return setter(listAtom, (_getter, prev) => {
+      // const tempTopIndexList = _getter(topAtom)
+      // const tempIndexList = _getter(bottomAtom)
+      const newIdsList = _getter(listAtom)
+      const setIdsList = new Set(prev)
+      const setList = new Set([...topIndexList, ...bottomIndexList].filter((index) => {
+        return setIdsList.has(index)
+      }))
+      const newList = [...topIndexList, ...newIdsList.filter((index) => {
+        return !setList.has(index)
+      }), ...bottomIndexList]
+
+      return newList
+    })
   }, [bottomIndexList, topIndexList])
 
+  // useLayoutEffect(() => {
+  //   return setter((getter,prev)=>{
+
+  //   })
+  // }, [bottomIndexList, topIndexList])
+
   const { todo } = useMethods({
+
     todo(type: StickyType, nextState: number[] = []) {
-      const { position, atomEntity } = Config[type]
-      const prevState = getter(atomEntity)
+      const { position } = Config[type]
       const getStateAtomByIndex = isRow ? getRowStateAtomByIndex : getColumnStateAtomByIndex
       const sizeAtom = isRow ? rowSizeMapAtom : columnSizeMapAtom
       const isTop = type.indexOf('Bottom') > 0 ? false : true
-      // clear prevState
-      prevState.forEach((tIndex, index) => {
-        const atomEntity = getStateAtomByIndex(tIndex)
-        const state = getter(atomEntity)
-        const newStyle = {
-          ...state.style,
-        }
-        if (newStyle['position'] === 'sticky') {
-          delete newStyle['position']
-          delete newStyle[position]
-        }
 
-        if (index === prevState.length - 1 && isTop) {
-          delete newStyle.borderRightWidth
-          delete newStyle.borderRightStyle
-        }
-        if (isRow) {
-          delete newStyle.zIndex
-        }
-
-        setter(atomEntity, {
-          ...state,
-          style: newStyle,
-        })
-      })
       let startPosition: number = isTop ? topSpace : 0
       let tempState = nextState
 
       if (isTop === false) {
         tempState = nextState.reverse()
       }
+      const cancelList: (() => void)[] = []
+      const positionList: number[] = [startPosition]
       tempState.forEach((tIndex, index) => {
         const atomEntity = getStateAtomByIndex(tIndex)
         const sizeList = getter(sizeAtom)
         if (!sizeList.has(tIndex)) {
           throw `can't find index ${tIndex}`
         }
+        cancelList.push(
+          setter(atomEntity, (getter, prevState) => {
+            const newStyle: CSSProperties = {
+              ...prevState.style,
+              position: 'sticky',
+              [position]: positionList[index],
+            }
+            if (isRow) {
+              newStyle.zIndex = 1
+            }
+            if (index === tempState.length - 1 && isTop) {
+              newStyle.borderRightWidth = '1px '
+              newStyle.borderRightStyle = 'solid'
+            }
+            return {
+              ...prevState,
+              style: newStyle,
+            }
+          })!,
+        )
 
-        setter(atomEntity, (prevState) => {
-          const newStyle: CSSProperties = {
-            ...prevState.style,
-            position: 'sticky',
-            [position]: startPosition,
-          }
-          if (isRow) {
-            newStyle.zIndex = 1
-          }
-          if (index === tempState.length - 1 && isTop) {
-            newStyle.borderRightWidth = '1px '
-            newStyle.borderRightStyle = 'solid'
-          }
-          return {
-            ...prevState,
-            style: newStyle,
-          }
-        })
         startPosition += sizeList.get(tIndex)!
+        positionList.push(startPosition)
       })
+      return () => {
+        cancelList.forEach((cancel) => {
+          return cancel()
+        })
+      }
     },
+
   })
 
   useLayoutEffect(() => {
-    todo(`${direction}Top`, topIndexList)
+    return todo(`${direction}Top`, topIndexList)
   }, [topIndexList])
   useLayoutEffect(() => {
-    todo(`${direction}Bottom`, bottomIndexList)
+    return todo(`${direction}Bottom`, bottomIndexList)
   }, [bottomIndexList])
 
   const stayIndexList = useMemo(() => {
+    if (idsList.length === 0) {
+      return []
+    }
     if (fixed === false) {
       return [...topIndexList, ...bottomIndexList]
     }

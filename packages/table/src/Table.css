@@ -1,20 +1,22 @@
-
-
-
-.grid-table{
+.grid-table {
   /* --grid-border-color:#f0f0f0;
   --grid-bg-color:#fff */
   overflow: auto;
+  box-sizing: border-box;
   /**
   * for useDrag
   */
-  position: relative;
+  /* position: relative; */
 }
 
-.grid-table [role=thead]{
+.grid-table * {
+  box-sizing: border-box;
+}
+
+.grid-table [role='thead'] {
   position: sticky;
   top: 0;
-  background-color: var(--grid-bg-color,#fff);
+  background-color: var(--grid-bg-color, #fff);
   width: max-content;
   /**
   * 下面的 sticky 会遮挡
@@ -22,28 +24,30 @@
   z-index: 1;
 }
 
-.grid-table-border{
-  border: 1px solid var(--grid-border-color,#f0f0f0);
+.grid-table-border {
+  border: 1px solid var(--grid-border-color, #f0f0f0);
 }
-.grid-table-border [role=row] > *{
-  background-color: var(--grid-bg-color,#fff);
-  border-left:  1px solid  var(--grid-border-color,#f0f0f0);
-  border-bottom: 1px solid  var(--grid-border-color,#f0f0f0);
-  border-color:  var(--grid-border-color,#f0f0f0);
+.grid-table-border [role='row'] > * {
+  background-color: var(--grid-bg-color, #fff);
+  border-left: 1px solid var(--grid-border-color, #f0f0f0);
+  border-bottom: 1px solid var(--grid-border-color, #f0f0f0);
+  border-color: var(--grid-border-color, #f0f0f0);
 }
 
-
-.grid-table-border [role=row] :first-child{
+.grid-table-border [role='row'] :first-child {
   border-left-width: 0;
 }
 
-.grid-table-border [role=tbody] :last-child >* {
+.grid-table-border [role='tbody'] :last-child > * {
   border-bottom-width: 0;
 }
 
-.grid-table .thead-cell{
+.grid-table .thead-cell {
   display: flex;
   justify-content: space-between;
+}
+.grid-table-cell {
+  padding: 2px 4px;
 }
 
 /* .grid-table .thead-cell{

@@ -1,8 +1,8 @@
 import { atom, useAtomValue } from 'einfach-state'
 import { useInit } from 'einfach-utils'
-import { useBasic } from '../basic'
 import { useLayoutEffect } from 'react'
-import { tableClassNameAtom } from './useTableClassName'
+import { useBasic } from '../../basic'
+import { tableClassNameAtom } from '../../hooks'
 
 const selectColumnIndexAtom = atom<number | undefined>(undefined)
 const firstEventAtom = atom<[number, number] | undefined>(undefined)
@@ -20,9 +20,11 @@ export interface UseDragProps {
 }
 
 export function useDrag({ columnBaseSize, fixedWidth = false }: UseDragProps) {
-  const { store, columnSizeMapAtom, columnListAtom } = useBasic()
+  const { store, columnSizeMapAtom, columnListAtom, resizeAtom } = useBasic()
   const selectIndex = useAtomValue(selectColumnIndexAtom, { store })
   const left = useAtomValue(leftAtom, { store })
+
+  const { height } = useAtomValue(resizeAtom, { store })
 
   const sizeMapAtom = useInit(() => {
     return atom((getter) => {
@@ -103,6 +105,7 @@ export function useDrag({ columnBaseSize, fixedWidth = false }: UseDragProps) {
   return {
     selectIndex,
     left,
+    height,
   }
 }
 

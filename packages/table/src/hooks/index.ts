@@ -1,5 +1,4 @@
 export * from './useCell'
-export * from './useDrag'
+export * from './useCellEvent'
 export * from './useRow'
-export * from './useSticky'
 export * from './useTableClassName'

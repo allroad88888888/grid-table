@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import React, { Fragment, useCallback, useMemo, useRef } from 'react'
+import React, { Fragment, useCallback, useLayoutEffect, useMemo, useRef } from 'react'
 import { useAutoSizer } from '../AutoSizer'
 import type { VGridTableProps } from './type'
 import { useVScroll } from '../Basic/useVScroll'
@@ -17,6 +17,8 @@ export function VGridTable(props: VGridTableProps) {
     theadBaseSize = 1,
     theadClass,
   } = props
+
+  const { onResize } = props
 
   const ref = useRef<HTMLDivElement>(null)
   const { width, height } = useAutoSizer(ref)
@@ -52,6 +54,12 @@ export function VGridTable(props: VGridTableProps) {
     stayIndexList: columnStayIndexList,
   })
 
+  useLayoutEffect(() => {
+    if (onResize) {
+      onResize({ width, height })
+    }
+  }, [width, height, onResize])
+
   const onScroll = useCallback(
     (event: React.UIEvent<HTMLElement, UIEvent>) => {
       onXScroll(event)
@@ -82,6 +90,9 @@ export function VGridTable(props: VGridTableProps) {
 
   for (let rowIndex = 0; rowIndex < headerRowCount; rowIndex += 1) {
     const columnList = columnIndexList.map((columnIndex) => {
+      // if (isNaN(columnSizeList[columnIndex] / columnBaseSize + 1)) {
+      //   debugger
+      // }
       return (
         <CellThead
           key={`${rowIndex}-${columnIndex}`}

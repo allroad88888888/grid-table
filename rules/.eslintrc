@@ -39,8 +39,8 @@
       "node_modules",
       "node_modules/@types"
     ],
-    "react":{
-      "version":"18.3.1"
+    "react": {
+      "version": "18.3.1"
     }
   },
   "plugins": [
@@ -48,7 +48,6 @@
     "@typescript-eslint",
     "react-hooks",
     "import",
-    "@stylistic"
   ],
   "env": {
     "browser": true,
@@ -56,8 +55,7 @@
     "es6": true,
     "jest": true,
   },
-  "extends":[
-    "plugin:@stylistic/recommended-extends",
+  "extends": [
     "plugin:import/recommended",
     "plugin:import/typescript"
   ],
@@ -66,26 +64,7 @@
       "error",
       "never"
     ],
-    "@stylistic/quotes": [
-      "error",
-      "single",
-      {
-        "avoidEscape": true
-      }
-    ],
     "no-new-func": "off",
-    "@stylistic/max-len": [
-      "error",
-      {
-        "code": 100,
-        "ignoreUrls": true,
-        "ignoreComments": true,
-        "ignoreRegExpLiterals": true,
-        "ignoreTrailingComments": true,
-        "ignoreStrings": true,
-        "ignoreTemplateLiterals": true,
-      }
-    ],
     // support any
     "@typescript-eslint/no-explicit-any": "off",
     // support ts-ignore
@@ -94,7 +73,6 @@
     "@typescript-eslint/no-this-alias": "off",
     // type Function
     "@typescript-eslint/ban-types": "off",
-   
     "max-len": [
       "error",
       {
@@ -113,10 +91,6 @@
     ],
     "no-console": 2,
     "prefer-const": 2,
-    // "import/prefer-default-export": 0,
-    // "import/no-cycle": 0,
-    // "import/no-extraneous-dependencies": 1,
-    // "import/no-named-as-default": 0,
     "arrow-body-style": 0,
     "no-underscore-dangle": 0,
     "@typescript-eslint/consistent-type-imports": [
@@ -125,6 +99,6 @@
         "prefer": "type-imports"
       }
     ],
-    "@typescript-eslint/no-non-null-asserted-optional-chain": "off" 
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
   }
 }

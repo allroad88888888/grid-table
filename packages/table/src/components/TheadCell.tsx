@@ -1,6 +1,6 @@
 import type { CellProps } from '@grid-table/core'
 import { useTHeadCell } from '../hooks/useCell'
-import { ColumnDragItem } from './Drag'
+import { ColumnDragItem } from '../plugins/drag'
 
 export function THeadCellBasic(props: CellProps) {
   const { rowIndex, columnIndex, style } = useTHeadCell(props)

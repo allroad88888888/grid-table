@@ -17,8 +17,9 @@
     "dependencies": {
         "@grid-table/core": "workspace:*",
         "@grid/table": "workspace:*",
-        "einfach-state": "^0.4.7",
-        "einfach-utils": "^0.4.7",
+        "antd": "^5.20.2",
+        "einfach-state": "^0.4.13",
+        "einfach-utils": "^0.5.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1"
     }

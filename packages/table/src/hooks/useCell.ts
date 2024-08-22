@@ -1,36 +1,85 @@
-import { useAtomValue } from 'einfach-state'
+import { useAtomValue, atom } from 'einfach-state'
 import type { CellProps } from '@grid-table/core'
-import type { CSSProperties } from 'react'
+import { useMemo, type CSSProperties } from 'react'
 import { useBasic } from '../basic'
+import { getCellId } from '../utils/getCellId'
 
 export function useCell({ rowIndex, columnIndex, style }: CellProps) {
-  const { store, columnListAtom, rowListAtom,
-    getCellStateAtomByIndex } = useBasic()
-  const columnList = useAtomValue(columnListAtom, { store })
-  const rowList = useAtomValue(rowListAtom, { store })
-  const gridRowIndex = rowList[rowIndex]
-  const gridColumnIndex = columnList[columnIndex]
-  const { style: columnStyle = {}, className } = useAtomValue(
-    getCellStateAtomByIndex(gridColumnIndex), { store })
+  const {
+    store,
+    columnListAtom,
+    rowListAtom,
+    getColumnStateAtomByIndex,
+    getCellStateAtomById,
+  } = useBasic()
+
+  const cellInfoAtom = useMemo(() => {
+    return atom((getter) => {
+      const columnList = getter(columnListAtom)
+      const rowList = getter(rowListAtom)
+      const gridRowIndex
+        = rowList[rowIndex] === undefined ? rowIndex : rowList[rowIndex]
+      const gridColumnIndex
+        = columnList[columnIndex] === undefined
+          ? columnIndex
+          : columnList[columnIndex]
+      const cellId = getCellId({
+        rowIndex: gridRowIndex,
+        columnIndex: gridColumnIndex,
+      })
+      const { style: columnStyle = {}, className: columnCls = [] } = getter(
+        getColumnStateAtomByIndex(gridColumnIndex),
+      )
+
+      const { style: selfStyle = {}, className: selfCls = [] } = getter(
+        getCellStateAtomById(cellId),
+      )
+
+      return {
+        rowIndex: gridRowIndex,
+        columnIndex: gridColumnIndex,
+        style: {
+          ...columnStyle,
+          ...selfStyle,
+        } as CSSProperties,
+        className: [...Array.from(columnCls), ...Array.from(selfCls)].join(' '),
+      }
+    })
+  }, [
+    columnIndex,
+    columnListAtom,
+    getCellStateAtomById,
+    getColumnStateAtomByIndex,
+    rowIndex,
+    rowListAtom,
+  ])
+
+  const { style: stateStyle, ...state } = useAtomValue(cellInfoAtom, { store })
 
   return {
-    rowIndex: gridRowIndex,
-    columnIndex: gridColumnIndex,
     style: {
+      ...stateStyle,
       ...style,
-      ...columnStyle,
     } as CSSProperties,
-    className: className ? Array.from(className).join(' ') : '',
+    ...state,
   }
 }
 
 export function useTHeadCell({ rowIndex, columnIndex, style }: CellProps) {
-  const { store, columnListAtom,
-    getCellStateAtomByIndex: getColumnStateAtomByIndex } = useBasic()
+  const {
+    store,
+    columnListAtom,
+    getColumnStateAtomByIndex: getColumnStateAtomByIndex,
+  } = useBasic()
   const columnList = useAtomValue(columnListAtom, { store })
-  const gridColumnIndex = columnList[columnIndex]
+  const gridColumnIndex
+    = columnList[columnIndex] === undefined
+      ? columnIndex
+      : columnList[columnIndex]
   const { style: columnStyle = {}, className } = useAtomValue(
-    getColumnStateAtomByIndex(gridColumnIndex), { store })
+    getColumnStateAtomByIndex(gridColumnIndex),
+    { store },
+  )
 
   return {
     rowIndex,

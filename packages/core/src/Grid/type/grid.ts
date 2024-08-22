@@ -1,6 +1,11 @@
 import type { ComponentType, ReactNode } from 'react'
 import type { ItemsRenderedProps } from '../../Basic/type'
 
+export interface Position {
+  rowIndex: number
+  columnIndex: number
+}
+
 interface BaseProps {
   rowIndex: number
   style: React.CSSProperties
@@ -18,6 +23,7 @@ export interface RowProps extends BaseProps {
  */
 export interface CellProps extends BaseProps {
   columnIndex: number
+  children?: ComponentType<Position>
 }
 
 /**
@@ -39,47 +45,47 @@ interface THeaderProps {
 interface TBodyRowProps {
   rowCount: number
   /**
-     * @default 10
-     */
+   * @default 10
+   */
   overRowCount?: number
   /**
-     * @default 1
-     * grid布局 row base length
-     */
+   * @default 1
+   * grid布局 row base length
+   */
   rowBaseSize?: number
   rowClassName?: string
   rowCalcSize: (index: number) => number
   rowCalcStyle?: (rowIndex: number) => React.CSSProperties | undefined
   rowStayIndexList?: number[]
   /**
-     * trRender
-     * @param param
-     * @returns
-     */
+   * trRender
+   * @param param
+   * @returns
+   */
   tbodyTrComponent?: ComponentType<RowProps>
   onTbodyRowsRendered?: (param: ItemsRenderedProps) => any
 }
 
 interface ColumnProps {
   /**
-     * 列总数
-     */
+   * 列总数
+   */
   columnCount: number
   /**
-     * 计算列宽
-     * @param index
-     * @returns
-     */
+   * 计算列宽
+   * @param index
+   * @returns
+   */
   columnCalcSize: (index: number) => number
 
   /**
-     * @default 20
-     */
+   * @default 20
+   */
   overColumnCount?: number
   /**
-     * @default 1
-     * grid布局 column base length
-     */
+   * @default 1
+   * grid布局 column base length
+   */
   columnBaseSize?: number
 
   columnCalcStyle?: (columnIndex: number) => React.CSSProperties | undefined
@@ -87,25 +93,37 @@ interface ColumnProps {
   columnStayIndexList?: number[]
 }
 
-export interface VGridTableProps
-  extends THeaderProps, TBodyRowProps, ColumnProps {
+export interface VGridTableProps extends THeaderProps, TBodyRowProps, ColumnProps {
   /**
-     * 请注意 对于整体宽度 小于外层容器宽度，必须传递width
-     */
+   * 请注意 对于整体宽度 小于外层容器宽度，必须传递width
+   */
   style?: React.CSSProperties
   className?: string
   /**
-     * cell render
-     * @param param
-     * @returns
-     */
+   * cell render
+   * @param param
+   * @returns
+   */
   cellComponent: ComponentType<CellProps>
   /**
-     * 数据为空 渲染
-     * @returns
-     */
+   * 数据为空 渲染
+   * @returns
+   */
   emptyComponent?: ComponentType
+
+  /**
+   *
+   */
+  loadingComponent?: ComponentType
+
+  loading?: boolean
 
   children?: ReactNode
 
+  onResize?: (param: ResizeParam) => void
+}
+
+export interface ResizeParam {
+  height: number
+  width: number
 }

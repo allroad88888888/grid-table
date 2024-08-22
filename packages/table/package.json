@@ -20,8 +20,8 @@
     ],
     "peerDependencies": {
         "react": "^16 || ^17 || ^18",
-        "einfach-state":"^0.4.6",
-        "einfach-utils":"^0.4.6"
+        "einfach-state":"^0.4.13",
+        "einfach-utils":"^0.5.1"
     },
     "peerDependenciesMeta": {
         "react": {
@@ -40,7 +40,7 @@
         "rollup-plugin-postcss": "^4.0.2"
     },
     "dependencies": {
-        "@grid-table/core": "workspace:^0.0.1",
+        "@grid-table/core": "workspace:^*",
         "clsx": "^2.1.1"
     }
 }
