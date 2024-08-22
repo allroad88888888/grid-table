@@ -16,10 +16,12 @@ export interface UseDragProps {
    * 是否固定宽度
    */
   fixedWidth?: boolean
+
+  width: number
   // hiddenDragIndex?: number
 }
 
-export function useDrag({ columnBaseSize, fixedWidth = false }: UseDragProps) {
+export function useDrag({ columnBaseSize, fixedWidth = false, width }: UseDragProps) {
   const { store, columnSizeMapAtom, columnListAtom, resizeAtom } = useBasic()
   const selectIndex = useAtomValue(selectColumnIndexAtom, { store })
   const left = useAtomValue(leftAtom, { store })
@@ -60,12 +62,14 @@ export function useDrag({ columnBaseSize, fixedWidth = false }: UseDragProps) {
           const index = store.getter(selectColumnIndexAtom)!
           const tLeft = store.getter(leftAtom)!
           /**
-            * 计算宽度
-            */
+           * 计算宽度
+           */
           const current = tempColumnSize.get(index)!
           const tWidth = tLeft - sizeMap.get(index)! + currentSize
           const realWidth = Math.floor(tWidth / columnBaseSize) * columnBaseSize
           prevState.set(index, realWidth)
+
+          console.log(`index:${index}`, realWidth)
 
           if (fixedWidth && index < sizeMap.size - 1) {
             const nextWidth = current - realWidth + tempColumnSize.get(index + 1)!
@@ -81,10 +85,9 @@ export function useDrag({ columnBaseSize, fixedWidth = false }: UseDragProps) {
       /**
        * 移除选中效果
        */
-      store.setter(tableClassNameAtom, (prev) => {
-        prev.delete(DragIngClassName)
-        return new Set(prev)
-      })
+      const next = new Set(store.getter(tableClassNameAtom))
+      next.delete(DragIngClassName)
+      store.setter(tableClassNameAtom, next)
     }
 
     function mouseMove(event: MouseEvent) {
@@ -114,10 +117,10 @@ export function useDrayItem(columnIndex: number) {
   function mousedown(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     store.setter(selectColumnIndexAtom, columnIndex)
     store.setter(firstEventAtom, [e.clientX, e.clientY])
-    store.setter(tableClassNameAtom, (prev) => {
-      prev.add(DragIngClassName)
-      return new Set(prev)
-    })
+
+    const next = new Set(store.getter(tableClassNameAtom))
+    next.add(DragIngClassName)
+    store.setter(tableClassNameAtom, next)
   }
   return { mousedown }
 }

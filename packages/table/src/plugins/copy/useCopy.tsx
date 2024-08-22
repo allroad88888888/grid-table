@@ -137,6 +137,10 @@ export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
     }
   }, [area, store, getCellStateAtomById])
 
+  if (down.columnIndex === -1 || up.columnIndex === -1) {
+    return null
+  }
+
   return (
     <textarea
       style={{

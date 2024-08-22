@@ -8,7 +8,7 @@ import { useBasic } from '../../basic'
 export function useDataInit(props: UseDataProps) {
   const { dataSource, columns } = props
 
-  const { store } = useBasic()
+  const { store, getColumnStateAtomByIndex } = useBasic()
 
   const dataCore = useData()
   const { clear, loadingAtom } = dataCore
@@ -28,6 +28,30 @@ export function useDataInit(props: UseDataProps) {
     store.setter(loadingAtom, false)
     return clear
   }, [clear, columns, dataCore, dataSource, loadingAtom, store])
+
+  useLayoutEffect(() => {
+    const clearList: (() => void)[] = []
+    columns.forEach((column, colIndex) => {
+      clearList.push(
+        store.setter(getColumnStateAtomByIndex(colIndex), (_getter, prev) => {
+          const next = {
+            ...prev,
+          }
+          if (!('className' in next)) {
+            next.className = new Set()
+          }
+
+          next.className?.add(`text-${column.align || 'left'}`)
+          return next
+        })!,
+      )
+    })
+    return () => {
+      clearList.forEach((tClear) => {
+        tClear()
+      })
+    }
+  }, [columns, getColumnStateAtomByIndex, store])
 
   return {
     loading,

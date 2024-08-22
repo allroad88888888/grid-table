@@ -4,9 +4,10 @@ import { useData } from './useData'
 import { useAtomValue } from 'einfach-state'
 import { getCellId } from '../../utils/getCellId'
 import { useMemo } from 'react'
+import clsx from 'clsx'
 
 export function DataCell(props: CellProps) {
-  const { rowIndex, columnIndex, style } = useCell(props)
+  const { rowIndex, columnIndex, style, className } = useCell(props)
   const events = useCellEvents({
     rowIndex,
     columnIndex,
@@ -35,7 +36,7 @@ export function DataCell(props: CellProps) {
   }, [cellVal, render, rowInfo])
 
   return (
-    <div style={style} className="grid-table-cell" {...events}>
+    <div style={style} className={clsx('grid-table-cell', className)} {...events}>
       {children}
     </div>
   )

@@ -5,24 +5,16 @@ import { useBasic } from '../basic'
 import { getCellId } from '../utils/getCellId'
 
 export function useCell({ rowIndex, columnIndex, style }: CellProps) {
-  const {
-    store,
-    columnListAtom,
-    rowListAtom,
-    getColumnStateAtomByIndex,
-    getCellStateAtomById,
-  } = useBasic()
+  const { store, columnListAtom, rowListAtom, getColumnStateAtomByIndex, getCellStateAtomById } =
+    useBasic()
 
   const cellInfoAtom = useMemo(() => {
     return atom((getter) => {
       const columnList = getter(columnListAtom)
       const rowList = getter(rowListAtom)
-      const gridRowIndex
-        = rowList[rowIndex] === undefined ? rowIndex : rowList[rowIndex]
-      const gridColumnIndex
-        = columnList[columnIndex] === undefined
-          ? columnIndex
-          : columnList[columnIndex]
+      const gridRowIndex = rowList[rowIndex] === undefined ? rowIndex : rowList[rowIndex]
+      const gridColumnIndex =
+        columnList[columnIndex] === undefined ? columnIndex : columnList[columnIndex]
       const cellId = getCellId({
         rowIndex: gridRowIndex,
         columnIndex: gridColumnIndex,
@@ -66,16 +58,10 @@ export function useCell({ rowIndex, columnIndex, style }: CellProps) {
 }
 
 export function useTHeadCell({ rowIndex, columnIndex, style }: CellProps) {
-  const {
-    store,
-    columnListAtom,
-    getColumnStateAtomByIndex: getColumnStateAtomByIndex,
-  } = useBasic()
+  const { store, columnListAtom, getColumnStateAtomByIndex: getColumnStateAtomByIndex } = useBasic()
   const columnList = useAtomValue(columnListAtom, { store })
-  const gridColumnIndex
-    = columnList[columnIndex] === undefined
-      ? columnIndex
-      : columnList[columnIndex]
+  const gridColumnIndex =
+    columnList[columnIndex] === undefined ? columnIndex : columnList[columnIndex]
   const { style: columnStyle = {}, className } = useAtomValue(
     getColumnStateAtomByIndex(gridColumnIndex),
     { store },

@@ -38,53 +38,45 @@ export function useBasicInit(props: UseBasicInitProps) {
     const columnCountAtom = selectAtom(optionsAtom, (option) => {
       return option.columnCount || 0
     })
-    const clearList: (() => void)[] = []
-    clearList.push(
-      setter(columnListAtom, (getter, prev) => {
-        const count = getter(columnCountAtom)
-        const columnList = []
-        for (let i = 0; i < count; i += 1) {
-          columnList.push(i)
-        }
-        return columnList
-      })!,
-    )
-    clearList.push(
-      setter(columnSizeMapAtom, (getter, prev) => {
-        const count = getter(columnCountAtom)
-        const sizeMap = new Map()
-        for (let i = 0; i < count; i += 1) {
-          sizeMap.set(i, columnCalcSize(i))
-        }
-        return sizeMap
-      })!,
-    )
-    clearList.push(
-      setter(rowListAtom, (getter, prev) => {
-        const count = getter(rowCountAtom)
-        const rowList = []
-        for (let i = 0; i < count; i += 1) {
-          rowList.push(i)
-        }
-        return rowList
-      })!,
-    )
-    clearList.push(
-      setter(rowSizeMapAtom, (getter, prev) => {
-        const count = getter(rowCountAtom)
-        const sizeMap = new Map()
-        for (let i = 0; i < count; i += 1) {
-          sizeMap.set(i, rowCalcSize(i))
-        }
-        return sizeMap
-      })!,
-    )
-    return () => {
-      clearList.forEach((clear) => {
-        clear()
-      })
+
+    function setColumnList() {
+      const count = store.getter(columnCountAtom)
+      const columnList = []
+      for (let i = 0; i < count; i += 1) {
+        columnList.push(i)
+      }
+      setter(columnListAtom, columnList)
     }
-  }, [columnCalcSize, rowCalcSize])
+    setColumnList()
+
+    setter(columnSizeMapAtom, (prev) => {
+      const count = store.getter(columnCountAtom)
+      const sizeMap = new Map()
+      for (let i = 0; i < count; i += 1) {
+        sizeMap.set(i, columnCalcSize(i))
+      }
+      return sizeMap
+    })
+
+    function setRowList() {
+      const count = store.getter(rowCountAtom)
+      const rowList = []
+      for (let i = 0; i < count; i += 1) {
+        rowList.push(i)
+      }
+      setter(rowListAtom, rowList)
+    }
+    setRowList()
+
+    setter(rowSizeMapAtom, (prev) => {
+      const count = store.getter(rowCountAtom)
+      const sizeMap = new Map()
+      for (let i = 0; i < count; i += 1) {
+        sizeMap.set(i, rowCalcSize(i))
+      }
+      return sizeMap
+    })
+  }, [columnCalcSize, rowCalcSize, store])
 
   useEffect(() => {
     return clear

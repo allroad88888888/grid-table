@@ -38,8 +38,8 @@ export function buildBasic() {
 
   const cellEventsAtom = incrementAtom({} as EventsCellSet)
 
-  const columnSizeMapAtom = incrementAtom<Map<number, number>>(new Map())
-  const rowSizeMapAtom = incrementAtom<Map<number, number>>(new Map())
+  const columnSizeMapAtom = atom<Map<number, number>>(new Map())
+  const rowSizeMapAtom = atom<Map<number, number>>(new Map())
 
   const hasInitAtom = atom<boolean>(false)
 

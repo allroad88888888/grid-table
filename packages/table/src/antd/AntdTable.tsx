@@ -90,12 +90,11 @@ export function AntdTable(props: AntdTableProps) {
     columns,
   })
 
-  console.log(`loading:${loading}`)
-
   return (
     <div
       style={{
-        width: '100%',
+        maxWidth: '100%',
+        width: loading ? '100%' : 'fit-content',
         height: 'auto',
         maxHeight: '100%',
         position: 'relative',
@@ -108,7 +107,7 @@ export function AntdTable(props: AntdTableProps) {
       ) : (
         <>
           {copy}
-          <DragLine columnBaseSize={10} />
+          <DragLine columnBaseSize={1} width={width} />
           <VGridTable
             className={`grid-table grid-table-border ${tableClassName}`}
             style={{

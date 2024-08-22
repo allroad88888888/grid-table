@@ -27,10 +27,13 @@ const columnBottomAtom = atom<number[]>([])
 type StickyType = 'rowTop' | 'rowBottom' | 'columnTop' | 'columnBottom'
 type PositionType = 'left' | 'right' | 'top' | 'bottom'
 
-const Config: Record<StickyType, {
-  position: PositionType
-  atomEntity: AtomEntity<number[]>
-}> = {
+const Config: Record<
+  StickyType,
+  {
+    position: PositionType
+    atomEntity: AtomEntity<number[]>
+  }
+> = {
   rowTop: {
     position: 'top',
     atomEntity: rowTopAtom,
@@ -50,13 +53,24 @@ const Config: Record<StickyType, {
 }
 
 const EmptyArray: number[] = []
-export function useSticky(props: useStickyProps = { }) {
-  const { bottomIndexList = EmptyArray, topIndexList = EmptyArray, direction = 'column',
-    topSpace = 0, fixed = true } = props
+export function useSticky(props: useStickyProps = {}) {
+  const {
+    bottomIndexList = EmptyArray,
+    topIndexList = EmptyArray,
+    direction = 'column',
+    topSpace = 0,
+    fixed = true,
+  } = props
 
-  const { store, getColumnStateAtomByIndex,
-    getRowStateAtomByIndex, columnListAtom, rowListAtom,
-    rowSizeMapAtom, columnSizeMapAtom } = useBasic()
+  const {
+    store,
+    getColumnStateAtomByIndex,
+    getRowStateAtomByIndex,
+    columnListAtom,
+    rowListAtom,
+    rowSizeMapAtom,
+    columnSizeMapAtom,
+  } = useBasic()
   const { setter, getter } = store
 
   const isRow = direction === 'row'
@@ -66,9 +80,7 @@ export function useSticky(props: useStickyProps = { }) {
   const idsList = useAtomValue(listAtom, { store })
 
   const [bottomAtom, topAtom] = useInit(() => {
-    return [
-      atom(bottomIndexList), atom(topIndexList),
-    ]
+    return [atom(bottomIndexList), atom(topIndexList)]
   }, [])
 
   useEffect(() => {
@@ -85,12 +97,18 @@ export function useSticky(props: useStickyProps = { }) {
       // const tempIndexList = _getter(bottomAtom)
       const newIdsList = _getter(listAtom)
       const setIdsList = new Set(prev)
-      const setList = new Set([...topIndexList, ...bottomIndexList].filter((index) => {
-        return setIdsList.has(index)
-      }))
-      const newList = [...topIndexList, ...newIdsList.filter((index) => {
-        return !setList.has(index)
-      }), ...bottomIndexList]
+      const setList = new Set(
+        [...topIndexList, ...bottomIndexList].filter((index) => {
+          return setIdsList.has(index)
+        }),
+      )
+      const newList = [
+        ...topIndexList,
+        ...newIdsList.filter((index) => {
+          return !setList.has(index)
+        }),
+        ...bottomIndexList,
+      ]
 
       return newList
     })
@@ -103,7 +121,6 @@ export function useSticky(props: useStickyProps = { }) {
   // }, [bottomIndexList, topIndexList])
 
   const { todo } = useMethods({
-
     todo(type: StickyType, nextState: number[] = []) {
       const { position } = Config[type]
       const getStateAtomByIndex = isRow ? getRowStateAtomByIndex : getColumnStateAtomByIndex
@@ -154,7 +171,6 @@ export function useSticky(props: useStickyProps = { }) {
         })
       }
     },
-
   })
 
   useLayoutEffect(() => {

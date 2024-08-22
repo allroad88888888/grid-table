@@ -7,11 +7,12 @@ function App() {
   const routerInfo = RouterMapping[currentUrl]
   const { component: Component = Empty } = routerInfo || {}
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateRows: '1fr',
-      gridTemplateColumns: '180px auto',
-    }}
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateRows: '1fr',
+        gridTemplateColumns: '180px 1260px',
+      }}
     >
       <div>
         <div>
@@ -24,7 +25,6 @@ function App() {
               style={{
                 border: '1px solid red',
                 cursor: 'pointer',
-
               }}
               key={key}
               onClick={() => {
