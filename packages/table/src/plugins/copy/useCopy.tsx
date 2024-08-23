@@ -152,6 +152,8 @@ export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
         bottom: -1,
         resize: 'none',
         border: 'none',
+        padding: 0,
+        margin: 0,
       }}
       ref={ref}
       readOnly
