@@ -6,10 +6,21 @@ import { useVScroll } from '../Basic/useVScroll'
 
 export function VGridTable(props: VGridTableProps) {
   const { style, className, children } = props
-  const { rowCalcSize, rowCount, rowBaseSize = 1, overRowCount,
-    rowStayIndexList, tbodyTrComponent } = props
-  const { columnCalcSize, columnBaseSize = 1, columnCount, overColumnCount,
-    columnStayIndexList } = props
+  const {
+    rowCalcSize,
+    rowCount,
+    rowBaseSize = 1,
+    overRowCount,
+    rowStayIndexList,
+    tbodyTrComponent,
+  } = props
+  const {
+    columnCalcSize,
+    columnBaseSize = 1,
+    columnCount,
+    overColumnCount,
+    columnStayIndexList,
+  } = props
   const {
     theadRowCount: headerRowCount = 1,
     theadCellComponent,
@@ -36,7 +47,6 @@ export function VGridTable(props: VGridTableProps) {
     overscanCount: overRowCount,
     direction: 'row',
     stayIndexList: rowStayIndexList,
-
   })
 
   const {
@@ -90,9 +100,6 @@ export function VGridTable(props: VGridTableProps) {
 
   for (let rowIndex = 0; rowIndex < headerRowCount; rowIndex += 1) {
     const columnList = columnIndexList.map((columnIndex) => {
-      // if (isNaN(columnSizeList[columnIndex] / columnBaseSize + 1)) {
-      //   debugger
-      // }
       return (
         <CellThead
           key={`${rowIndex}-${columnIndex}`}
@@ -104,7 +111,6 @@ export function VGridTable(props: VGridTableProps) {
           }}
           rowIndex={rowIndex}
           columnIndex={columnIndex}
-
         />
       )
     })
@@ -115,22 +121,13 @@ export function VGridTable(props: VGridTableProps) {
     }
     if (TheadTr) {
       $headRows.push(
-        <TheadTr
-          key={rowIndex}
-          rowIndex={rowIndex}
-          style={theadRowStyle}
-        >
+        <TheadTr key={rowIndex} rowIndex={rowIndex} style={theadRowStyle}>
           {columnList}
         </TheadTr>,
       )
-    }
-    else {
+    } else {
       $headRows.push(
-        <div
-          key={rowIndex}
-          role="row"
-          style={theadRowStyle}
-        >
+        <div key={rowIndex} role="row" style={theadRowStyle}>
           {columnList}
         </div>,
       )
@@ -143,68 +140,60 @@ export function VGridTable(props: VGridTableProps) {
       <div role="thead" className={theadClass}>
         {$headRows}
       </div>
-      {rowIndexList.length === 0
-        ? <Empty />
-        : (
-            <div
-              role="tbody"
-              style={{
-                display: 'grid',
-                gridTemplateRows: `repeat(auto-fill, ${rowBaseSize}px)`,
-                height: totalHeight,
-                width: totalWidth,
-              }}
-            >
-              {rowIndexList.map((rowIndex) => {
-                const trStyle = {
-                  gridColumnStart: 1,
-                  gridColumnEnd: 1,
-                  gridRowStart: rowSizeList[rowIndex] / rowBaseSize + 1,
-                  gridRowEnd: rowSizeList[rowIndex + 1] / rowBaseSize + 1,
-                  display: 'grid',
-                  gridTemplateColumns: `repeat(auto-fill, ${columnBaseSize}px)`,
-                  gridTemplateRows: `repeat(auto-fill, ${rowSizeList[rowIndex + 1]
-                  - rowSizeList[rowIndex]}px)`,
-                }
-                const trChildren = columnIndexList.map((columnIndex) => {
-                  return (
-                    <CellTbody
-                      key={`${rowIndex}-${columnIndex}`}
-                      style={{
-                        gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
-                        gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
-                        gridRowStart: 1,
-                        gridRowEnd: 1,
-                      }}
-                      rowIndex={rowIndex}
-                      columnIndex={columnIndex}
-                    />
-                  )
-                })
-                if (TBodyTr) {
-                  return (
-                    <TBodyTr
-                      rowIndex={rowIndex}
-                      style={trStyle}
-                      key={rowIndex}
-                    >
-                      {trChildren}
-                    </TBodyTr>
-                  )
-                }
-                return (
-                  <div
-                    role="row"
-                    key={rowIndex}
-                    style={trStyle}
-                  >
-                    {trChildren}
-                  </div>
-                )
-              })}
-            </div>
-          )}
-
+      {rowIndexList.length === 0 ? (
+        <Empty />
+      ) : (
+        <div
+          role="tbody"
+          style={{
+            display: 'grid',
+            gridTemplateRows: `repeat(auto-fill, ${rowBaseSize}px)`,
+            height: totalHeight,
+            width: totalWidth,
+          }}
+        >
+          {rowIndexList.map((rowIndex) => {
+            const trStyle = {
+              gridColumnStart: 1,
+              gridColumnEnd: 1,
+              gridRowStart: rowSizeList[rowIndex] / rowBaseSize + 1,
+              gridRowEnd: rowSizeList[rowIndex + 1] / rowBaseSize + 1,
+              display: 'grid',
+              gridTemplateColumns: `repeat(auto-fill, ${columnBaseSize}px)`,
+              gridTemplateRows: `repeat(auto-fill, ${
+                rowSizeList[rowIndex + 1] - rowSizeList[rowIndex]
+              }px)`,
+            }
+            const trChildren = columnIndexList.map((columnIndex) => {
+              return (
+                <CellTbody
+                  key={`${rowIndex}-${columnIndex}`}
+                  style={{
+                    gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
+                    gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
+                    gridRowStart: 1,
+                    gridRowEnd: 1,
+                  }}
+                  rowIndex={rowIndex}
+                  columnIndex={columnIndex}
+                />
+              )
+            })
+            if (TBodyTr) {
+              return (
+                <TBodyTr rowIndex={rowIndex} style={trStyle} key={rowIndex}>
+                  {trChildren}
+                </TBodyTr>
+              )
+            }
+            return (
+              <div role="row" key={rowIndex} style={trStyle}>
+                {trChildren}
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

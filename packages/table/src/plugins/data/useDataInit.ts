@@ -1,33 +1,55 @@
 import { useLayoutEffect } from 'react'
 import { useAtomValue } from 'einfach-state'
-import type { UseDataProps } from './type/common'
+import type { DataItem, UseDataProps } from './type/common'
 import { useData } from './useData'
 import { format } from './format'
 import { useBasic } from '../../basic'
+import { useExpand } from './useExpand'
 
-export function useDataInit(props: UseDataProps) {
+export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemInfo>) {
   const { dataSource, columns } = props
 
   const { store, getColumnStateAtomByIndex } = useBasic()
 
   const dataCore = useData()
-  const { clear, loadingAtom } = dataCore
+  const { clear, loadingAtom, showPathListAtom, relationAtom, root, nodeLevelAtom } = dataCore
   const loading = useAtomValue(loadingAtom)
 
-  const {} = useBasic()
+  console.log('Render')
 
   useLayoutEffect(() => {
     store.setter(loadingAtom, true)
-    format(
+    const { showPathList, relation, levelMap } = format(
       {
         dataSource,
         columns,
+        idProp: props.idProp,
+        parentProp: props.parentProp,
+        root,
       },
       dataCore,
     )
+    store.setter(relationAtom, relation)
+    store.setter(showPathListAtom, showPathList)
+    store.setter(nodeLevelAtom, levelMap)
     store.setter(loadingAtom, false)
+
     return clear
-  }, [clear, columns, dataCore, dataSource, loadingAtom, store])
+  }, [
+    clear,
+    columns,
+    dataCore,
+    dataSource,
+    loadingAtom,
+    nodeLevelAtom,
+    props.idProp,
+    props.parentProp,
+    props.root,
+    relationAtom,
+    root,
+    showPathListAtom,
+    store,
+  ])
 
   useLayoutEffect(() => {
     const clearList: (() => void)[] = []
@@ -52,6 +74,8 @@ export function useDataInit(props: UseDataProps) {
       })
     }
   }, [columns, getColumnStateAtomByIndex, store])
+
+  useExpand()
 
   return {
     loading,

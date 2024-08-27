@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect } from 'react'
-import { useAtomValue, selectAtom } from 'einfach-state'
+import { useAtomValue } from 'einfach-state'
 import type { TableOption, UseBasicInitProps } from './type'
 import { useBasic } from './useBasic'
 import type { ResizeParam } from '@grid-table/core'
@@ -17,28 +17,26 @@ export function useBasicInit(props: UseBasicInitProps) {
     rowListAtom,
     clear,
     optionsAtom,
+    rowCountAtom,
+    columnCountAtom,
   } = useBasic()
 
   const { setter } = store
+
+  useLayoutEffect(() => {
+    setter(rowCountAtom, rowCount)
+    setter(columnCountAtom, columnCount)
+  }, [columnCount, columnCountAtom, rowCount, rowCountAtom, setter])
 
   useLayoutEffect(() => {
     setter(optionsAtom, {
       rowBaseSize,
       columnBaseSize,
       theadBaseSize,
-      rowCount,
-      columnCount,
     })
-  }, [setter, rowCount, columnCount, optionsAtom, rowBaseSize, columnBaseSize, theadBaseSize])
+  }, [setter, optionsAtom, rowBaseSize, columnBaseSize, theadBaseSize])
 
   useLayoutEffect(() => {
-    const rowCountAtom = selectAtom(optionsAtom, (option) => {
-      return option.rowCount || 0
-    })
-    const columnCountAtom = selectAtom(optionsAtom, (option) => {
-      return option.columnCount || 0
-    })
-
     function setColumnList() {
       const count = store.getter(columnCountAtom)
       const columnList = []
@@ -118,8 +116,8 @@ export function useBasicInit(props: UseBasicInitProps) {
   )
 
   return {
-    rowCount: rowList.length,
-    columnCount: columnList.length,
+    rowCount: useAtomValue(rowCountAtom, { store }),
+    columnCount: useAtomValue(columnCountAtom, { store }),
     rowCalcSize: newRowCalcSize,
     columnCalcSize: newColumnCalcSize,
     theadCalcSize: newTheadCalcSize,

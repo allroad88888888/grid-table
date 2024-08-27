@@ -1,4 +1,4 @@
-import type { ComponentType, CSSProperties, ReactNode } from 'react'
+import type { CSSProperties } from 'react'
 import type { buildBasic } from './buildBasic'
 import type { Position } from '@grid-table/core'
 
@@ -17,8 +17,8 @@ export interface TableOption {
   rowBaseSize?: number
   columnBaseSize?: number
   theadBaseSize?: number
-  rowCount?: number
-  columnCount?: number
+  // rowCount?: number
+  // columnCount?: number
 }
 
 export type BasicStore = ReturnType<typeof buildBasic>

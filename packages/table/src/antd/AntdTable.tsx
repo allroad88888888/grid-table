@@ -10,12 +10,13 @@ import { useTableClassNameValue } from '../hooks'
 import { useAreaSelected } from '../plugins/areaSelected'
 import { useCopy } from '../plugins/copy/useCopy'
 import { DragLine } from '../plugins/drag'
-import { Row, THeadCellBasic } from '../components'
+import { Row } from '../components'
 import { useAutoWidth } from '../plugins/autoWidth'
 import './../Table.css'
 import { DataCell } from '../plugins/data/Cell'
 import { DataProvider } from '../plugins/data/provider'
 import { useDataInit } from '../plugins/data/useDataInit'
+import { DataCellThead } from '../plugins/data'
 
 export function AntdTable(props: AntdTableProps) {
   const { columns, dataSource } = props
@@ -37,6 +38,14 @@ export function AntdTable(props: AntdTableProps) {
     width,
     defaultItemWidth: cellDefaultWidth,
     columns,
+  })
+
+  const { loading } = useDataInit({
+    dataSource,
+    columns,
+    parentProp: props.parentProp,
+    idProp: props.idProp,
+    root: props.root,
   })
 
   const { columnCount, stickyList } = useMemo(() => {
@@ -85,11 +94,6 @@ export function AntdTable(props: AntdTableProps) {
 
   const copy = useCopy()
 
-  const { loading } = useDataInit({
-    dataSource,
-    columns,
-  })
-
   return (
     <div
       style={{
@@ -114,7 +118,7 @@ export function AntdTable(props: AntdTableProps) {
               height: '100%',
               width: '100%',
             }}
-            theadCellComponent={THeadCellBasic}
+            theadCellComponent={DataCellThead}
             theadRowCalcSize={theadCalcSize}
             theadBaseSize={12}
             rowCount={realRowCount}
@@ -141,7 +145,7 @@ export default (props: AntdTableProps) => {
   return (
     <StoreProvider store={basicValue.store}>
       <BasicContext.Provider value={basicValue}>
-        <DataProvider store={basicValue.store}>
+        <DataProvider store={basicValue.store} root={props?.root}>
           <AntdTable {...props} />
         </DataProvider>
       </BasicContext.Provider>

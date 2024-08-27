@@ -45,12 +45,16 @@ export function buildBasic() {
 
   const optionsAtom = atom<TableOption>({})
 
+  const rowCountAtom = incrementAtom(0)
+  const columnCountAtom = incrementAtom(0)
+
   /**
    * 宽高
    */
   const resizeAtom = atom<ResizeParam>({ height: -1, width: -1 })
 
   return {
+    createAtomFamily,
     store,
     cellEventsAtom,
     columnListAtom,
@@ -63,6 +67,8 @@ export function buildBasic() {
     hasInitAtom,
     optionsAtom,
     resizeAtom,
+    rowCountAtom,
+    columnCountAtom,
     clear,
   }
 }

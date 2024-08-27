@@ -86,10 +86,6 @@ export function useAreaSelected() {
               borderBottom: 'none',
               borderLeft: 'none',
               borderRight: 'none',
-              // borderTopWidth: 0,
-              // borderLeftWidth: 0,
-              // borderBottomWidth: 0,
-              // borderRightWidth: 0,
               backgroundColor: 'rgba(0,0,0,0.3)',
             }
             const borderStyle = '1px solid blue'

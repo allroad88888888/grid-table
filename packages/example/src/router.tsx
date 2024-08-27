@@ -6,6 +6,7 @@ import Table from './pages/Table'
 import Atom from './pages/Atom'
 import Copy from './pages/Copy'
 import AntdTable from './pages/AntdTable'
+import TreeTable from './pages/TreeTable'
 
 export const currentRouterAtom = atom('index')
 
@@ -43,5 +44,9 @@ export const RouterMapping: Record<
   '/antd': {
     component: AntdTable,
     label: 'antd-table',
+  },
+  '/tree': {
+    component: TreeTable,
+    label: 'tree-table',
   },
 }

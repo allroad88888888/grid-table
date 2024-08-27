@@ -1,0 +1,42 @@
+.grid-table-collapse {
+  position: relative;
+}
+.grid-table-collapse::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 100%;
+  height: 2px;
+  background-color: black;
+  transform: translateY(-50%);
+}
+.grid-table-collapse::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  width: 2px;
+  padding-block-start: 100%;
+  background-color: black;
+  transform: translateX(50%) translateY(-50%);
+}
+
+.grid-table-expand {
+  position: relative;
+}
+
+.grid-table-expand::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 100%;
+  height: 2px;
+  background-color: black;
+  transform: translateY(-50%);
+}
+
+.grid-table-expand-item {
+  cursor: pointer;
+}

@@ -1,6 +1,6 @@
-import type { ColumnType } from '../plugins/data/type'
+import type { UseDataProps } from '../plugins/data/type/common'
 
-export interface AntdTableProps {
+export type AntdTableProps = {
   /**
    * @default true
    */
@@ -15,14 +15,14 @@ export interface AntdTableProps {
    * @default 80
    */
   cellDefaultWidth?: number
-  columns: ColumnType[]
-  /**
-   * 数据
-   */
-  dataSource: object[]
+  // columns: ColumnType[]
+  // /**
+  //  * 数据
+  //  */
+  // dataSource: object[]
   /**
    * @default false
    */
   loading?: boolean
   //   sticky?: boolean
-}
+} & UseDataProps

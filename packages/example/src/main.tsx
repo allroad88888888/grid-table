@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import { useAtom } from 'einfach-state'
 import { currentRouterAtom, Empty, RouterMapping } from './router'
+import './index.css'
 
 function App() {
   const [currentUrl, setUrl] = useAtom(currentRouterAtom)

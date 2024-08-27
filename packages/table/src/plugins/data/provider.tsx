@@ -6,9 +6,17 @@ import { useInit } from 'einfach-utils'
 
 export const DataContext = createContext<DataContextType>({} as DataContextType)
 
-export function DataProvider({ store, children }: { store: Store; children: ReactNode }) {
+export function DataProvider({
+  store,
+  children,
+  root,
+}: {
+  store: Store
+  children: ReactNode
+  root?: string
+}) {
   const dataContent = useInit(() => {
-    return createDataContent(store)
+    return createDataContent(store, { root })
   })
   return <DataContext.Provider value={dataContent}>{children}</DataContext.Provider>
 }
