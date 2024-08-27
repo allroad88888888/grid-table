@@ -15,8 +15,6 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
   const { clear, loadingAtom, showPathListAtom, relationAtom, root, nodeLevelAtom } = dataCore
   const loading = useAtomValue(loadingAtom)
 
-  console.log('Render')
-
   useLayoutEffect(() => {
     store.setter(loadingAtom, true)
     const { showPathList, relation, levelMap } = format(
