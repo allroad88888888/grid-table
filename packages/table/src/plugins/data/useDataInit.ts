@@ -61,7 +61,7 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
             next.className = new Set()
           }
 
-          next.className?.add(`text-${column.align || 'left'}`)
+          next.className?.add(`gird-table-text-${column.align || 'left'}`)
           return next
         })!,
       )

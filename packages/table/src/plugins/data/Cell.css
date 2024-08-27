@@ -1,0 +1,5 @@
+.grid-table-cell-data-item {
+  display: flex;
+  align-items: center;
+  padding-inline: 4px 4px;
+}

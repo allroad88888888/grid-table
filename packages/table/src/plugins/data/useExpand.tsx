@@ -94,6 +94,7 @@ export function useExpandItem({
               style={{
                 paddingInlineStart: '10px',
                 marginInlineEnd: '4px',
+                paddingBlockStart: '100%',
               }}
             ></i>
           ) : null}

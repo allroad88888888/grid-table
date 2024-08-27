@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import clsx from 'clsx'
 import { easyGet } from 'einfach-utils'
 import { useExpandItem } from './useExpand'
+import './Cell.css'
 
 export function DataCell(props: CellProps) {
   const { rowIndex, columnIndex, style, className } = useCell(props)
@@ -60,7 +61,11 @@ export function DataCell(props: CellProps) {
   }, [cellVal, render, rowInfo])
 
   return (
-    <div style={style} className={clsx('grid-table-cell', className)} {...events}>
+    <div
+      style={style}
+      className={clsx('grid-table-cell', className, 'grid-table-cell-data-item')}
+      {...events}
+    >
       {expendDom}
       {children}
     </div>
