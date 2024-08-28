@@ -6,18 +6,14 @@ export function format<ItemInfo extends DataItem>(
   props: Pick<UseDataProps<ItemInfo>, 'dataSource' | 'columns' | 'idProp' | 'parentProp' | 'root'>,
   context: DataContextType,
 ) {
-  const { dataSource, columns } = props
+  const { dataSource } = props
   const { idProp, parentProp, root = ROOT } = props
-  const { getRowInfoAtomByPath: getRowInfoByPath, getColumnOptionAtomByColId } = context
+  const { getRowInfoAtomByPath: getRowInfoByPath } = context
 
   const relation = new Map<string, string[]>()
   relation.set(root, [])
 
   const infoMap = new Map<string, Record<string, any>>()
-
-  columns.forEach((column, columnIndex) => {
-    getColumnOptionAtomByColId(columnIndex, column)
-  })
 
   dataSource.forEach((rowInfo, rowIndex) => {
     const path = idProp ? rowInfo[idProp] : `${rowIndex}`

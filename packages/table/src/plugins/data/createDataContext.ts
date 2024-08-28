@@ -7,9 +7,7 @@ import { ROOT } from './const'
 export function createDataContent(store: Store, { root = ROOT }: { root?: string }) {
   const { createAtomFamily, clear } = createAtomFamilyEntity()
 
-  const getColumnOptionAtomByColId = createAtomFamily<ColumnType, number>({
-    debuggerKey: 'getColumnOptionAtomByColId',
-  })
+  const columnOptionsAtom = incrementAtom<ColumnType[]>([])
 
   const showPathListAtom = incrementAtom<Path[]>([])
 
@@ -37,7 +35,7 @@ export function createDataContent(store: Store, { root = ROOT }: { root?: string
     parentNodeSetAtom,
     relationAtom,
     getRowInfoAtomByPath,
-    getColumnOptionAtomByColId,
+    columnOptionsAtom,
     loadingAtom,
     showPathListAtom,
     nodeLevelAtom,

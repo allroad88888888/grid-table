@@ -12,7 +12,15 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
   const { store, getColumnStateAtomByIndex } = useBasic()
 
   const dataCore = useData()
-  const { clear, loadingAtom, showPathListAtom, relationAtom, root, nodeLevelAtom } = dataCore
+  const {
+    clear,
+    loadingAtom,
+    showPathListAtom,
+    relationAtom,
+    root,
+    nodeLevelAtom,
+    columnOptionsAtom,
+  } = dataCore
   const loading = useAtomValue(loadingAtom)
 
   useLayoutEffect(() => {
@@ -27,6 +35,7 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
       },
       dataCore,
     )
+    store.setter(columnOptionsAtom, columns)
     store.setter(relationAtom, relation)
     store.setter(showPathListAtom, showPathList)
     store.setter(nodeLevelAtom, levelMap)
@@ -35,6 +44,7 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
     return clear
   }, [
     clear,
+    columnOptionsAtom,
     columns,
     dataCore,
     dataSource,

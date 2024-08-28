@@ -9,9 +9,9 @@ import clsx from 'clsx'
 export function DataCellThead(props: CellProps) {
   const { columnIndex, style, className } = useTHeadCell(props)
 
-  const { getColumnOptionAtomByColId } = useData()
+  const { columnOptionsAtom } = useData()
 
-  const columnOption = useAtomValue(getColumnOptionAtomByColId(columnIndex))
+  const columnOption = useAtomValue(columnOptionsAtom)[columnIndex]
 
   return (
     <div style={style} className={clsx('thead-cell', className)}>

@@ -15,7 +15,7 @@ export function DataCell(props: CellProps) {
     columnIndex,
   })
 
-  const { showPathListAtom, getColumnOptionAtomByColId, getRowInfoAtomByPath } = useData()
+  const { showPathListAtom, columnOptionsAtom, getRowInfoAtomByPath } = useData()
 
   const { rowInfoAtom, pathAtom } = useMemo(() => {
     const _pathAtom = atom((_getter) => {
@@ -37,7 +37,7 @@ export function DataCell(props: CellProps) {
 
   const path = useAtomValue(pathAtom)
   const rowInfo = useAtomValue(rowInfoAtom)
-  const columnOption = useAtomValue(getColumnOptionAtomByColId(columnIndex))
+  const columnOption = useAtomValue(columnOptionsAtom)[columnIndex]
 
   const { expendDom } = useExpandItem({
     rowIndex,
