@@ -7,28 +7,35 @@ interface Pagination {
   total: number
 }
 
-const paginationAtom = atom({
-  pageSize: 20,
-  currentPage: 1,
-  total: 0,
-}, (getter, setter, nextPagination: Pagination) => {
-  getter(paginationAtom)
-  const { total, pageSize, currentPage } = nextPagination
-  const maxPage = Math.ceil(total / pageSize) || 1
-  const fixPage = currentPage < 1 ? 1 : currentPage > maxPage ? maxPage : currentPage
-  setter(paginationAtom, {
-    ...nextPagination,
-    currentPage: fixPage,
-  })
-})
-const queryAtom = selectAtom(paginationAtom, (current) => {
-  return {
-    pageSize: current.pageSize,
-    currentPage: current.currentPage,
-  }
-}, (prev, next) => {
-  return prev.pageSize === next.pageSize && prev.currentPage === next.currentPage
-})
+const paginationAtom = atom(
+  {
+    pageSize: 20,
+    currentPage: 1,
+    total: 0,
+  },
+  (getter, setter, nextPagination: Pagination) => {
+    getter(paginationAtom)
+    const { total, pageSize, currentPage } = nextPagination
+    const maxPage = Math.ceil(total / pageSize) || 1
+    const fixPage = currentPage < 1 ? 1 : currentPage > maxPage ? maxPage : currentPage
+    setter(paginationAtom, {
+      ...nextPagination,
+      currentPage: fixPage,
+    })
+  },
+)
+const queryAtom = selectAtom(
+  paginationAtom,
+  (current) => {
+    return {
+      pageSize: current.pageSize,
+      currentPage: current.currentPage,
+    }
+  },
+  (prev, next) => {
+    return prev.pageSize === next.pageSize && prev.currentPage === next.currentPage
+  },
+)
 
 const promiseATom = atom(async (getter, { setter }) => {
   getter(queryAtom)

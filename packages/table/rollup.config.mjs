@@ -10,13 +10,7 @@ const config = defineConfig({
   input: './src/index.ts',
   plugins: [
     resolve({
-      extensions: [
-        '.ts',
-        '.tsx',
-        '.mjs',
-        '.js',
-        '.json',
-      ],
+      extensions: ['.ts', '.tsx', '.mjs', '.js', '.json'],
     }),
     commonjs(),
     postcss({
@@ -49,15 +43,18 @@ const config = defineConfig({
     'react/jsx-runtime',
     'react/jsx-dev-runtime',
   ],
-  output: [{
-    format: 'esm',
-    sourcemap: true,
-    file: './dist/index.js',
-  }, {
-    plugins: [terser()],
-    format: 'esm',
-    file: './dist/index.mini.js',
-  }],
+  output: [
+    {
+      format: 'esm',
+      sourcemap: true,
+      file: './dist/index.js',
+    },
+    {
+      plugins: [terser()],
+      format: 'esm',
+      file: './dist/index.mini.js',
+    },
+  ],
 })
 
 export default config

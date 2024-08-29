@@ -1,44 +1,44 @@
 {
-    // "eslint.experimental.useFlatConfig": true,
-    "eslint.options": {
-        "overrideConfigFile": "rules/.eslintrc"
-    },
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
-    },
-    "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
-        "**/.DS_Store": true,
-        "**/Thumbs.db": true
-    },
-    "files.associations": {
-        "api-extractor.json": "jsonc",
-        "tsconfig.json": "jsonc"
-    },
-    "editor.formatOnSave": true,
-    "cSpell.words": [
-        "antd",
-        "clsx",
-        "einfach",
-        "overscan",
-        "swcrc",
-        "tailwindcss",
-        "testid",
-        "tsbuildinfo"
-    ],
-    "testing.automaticallyOpenPeekView": "never",
-    "jest.runMode": {
-        "coverage": true,
-        "deferred": true,
-        "testFileOnly": true,
-        "type": "on-save"
-    },
-    "prettier.configPath": ".prettierrc.mjs",
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
+  // "eslint.experimental.useFlatConfig": true,
+  "eslint.options": {
+    "overrideConfigFile": "rules/.eslintrc"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  },
+  "files.associations": {
+    "api-extractor.json": "jsonc",
+    "tsconfig.json": "jsonc"
+  },
+  "editor.formatOnSave": true,
+  "cSpell.words": [
+    "antd",
+    "clsx",
+    "einfach",
+    "overscan",
+    "swcrc",
+    "tailwindcss",
+    "testid",
+    "tsbuildinfo"
+  ],
+  "testing.automaticallyOpenPeekView": "never",
+  "jest.runMode": {
+    "coverage": true,
+    "deferred": true,
+    "testFileOnly": true,
+    "type": "on-save"
+  },
+  "prettier.configPath": ".prettierrc.mjs",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

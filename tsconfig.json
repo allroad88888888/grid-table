@@ -24,14 +24,9 @@
     "noEmitHelpers": true,
     "preserveWatchOutput": true,
     "jsx": "react-jsx",
-    "inlineSourceMap": true,
-  },  
-  "include": [
-    "./**/*.test.ts",
-    "./**/*.test.tsx",
-    "./**/test",
-    "./rules/setup-jest.ts"
-  ],
+    "inlineSourceMap": true
+  },
+  "include": ["./**/*.test.ts", "./**/*.test.tsx", "./**/test", "./rules/setup-jest.ts"],
   "exclude": ["node_modules", "**/node_modules", "**/@types/"],
   "references": [
     { "path": "./packages/core/tsconfig.json" },

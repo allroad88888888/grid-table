@@ -107,8 +107,20 @@ const data = [
   },
 ]
 
+const rowSelection = {
+  width: 20,
+}
+
 export function TreeTableDemo() {
-  return <AntdTable columns={columns} dataSource={data} parentProp="parentId" idProp="id" />
+  return (
+    <AntdTable
+      rowSelection={rowSelection}
+      columns={columns}
+      dataSource={data}
+      parentProp="parentId"
+      idProp="id"
+    />
+  )
 }
 
 export default TreeTableDemo

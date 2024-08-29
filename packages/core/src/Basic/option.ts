@@ -1,7 +1,7 @@
 export const EmptyArray: number[] = []
 
 export const Options: Record<
-    'row' | 'column',
+  'row' | 'column',
   {
     lengthProp: 'height' | 'width'
     positionProp: 'scrollTop' | 'scrollLeft'
@@ -17,6 +17,5 @@ export const Options: Record<
     lengthProp: 'width',
     positionProp: 'scrollLeft',
     stateProp: 'stateScrollLeft',
-
   },
 }

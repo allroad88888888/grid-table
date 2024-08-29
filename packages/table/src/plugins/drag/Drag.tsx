@@ -13,9 +13,7 @@ export function DragLine(props: UseDragProps) {
       style={{
         left,
       }}
-    >
-
-    </div>
+    ></div>
   )
 }
 
@@ -25,10 +23,5 @@ interface ColumnDragItemProps {
 
 export function ColumnDragItem({ columnIndex }: ColumnDragItemProps) {
   const { mousedown } = useDrayItem(columnIndex)
-  return (
-    <div
-      className="grid-table-drag-item"
-      onMouseDown={mousedown}
-    />
-  )
+  return <div className="grid-table-drag-item" onMouseDown={mousedown} />
 }

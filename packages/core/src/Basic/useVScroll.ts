@@ -3,16 +3,8 @@ import { Options } from './option'
 import { useDoRender } from '../utils/useDoRender'
 import type { UseVScrollProps } from './type'
 
-export function useVScroll<T extends HTMLElement>(
-  props: UseVScrollProps,
-) {
-  const {
-    itemCount,
-    overscanCount = 10,
-    calcItemSize,
-    onItemsRendered,
-    direction = 'row',
-  } = props
+export function useVScroll<T extends HTMLElement>(props: UseVScrollProps) {
+  const { itemCount, overscanCount = 10, calcItemSize, onItemsRendered, direction = 'row' } = props
 
   const length = direction === 'row' ? props.height : props.width
 
@@ -54,13 +46,13 @@ export function useVScroll<T extends HTMLElement>(
     })
 
     let visibleEndIndex: number
-    if ((stateCurrent[stateProp] + length) >= totalLength) {
+    if (stateCurrent[stateProp] + length >= totalLength) {
       visibleEndIndex = sizeList.length
-    }
-    else {
-      visibleEndIndex = sizeList.slice(visibleStartIndex).findIndex((index) => {
-        return index >= stateCurrent[stateProp] + length
-      }) + visibleStartIndex
+    } else {
+      visibleEndIndex =
+        sizeList.slice(visibleStartIndex).findIndex((index) => {
+          return index >= stateCurrent[stateProp] + length
+        }) + visibleStartIndex
     }
     const res = {
       startIndex: Math.max(0, visibleStartIndex - overCount),

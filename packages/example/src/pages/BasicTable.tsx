@@ -24,19 +24,14 @@ function DemoBasicTable() {
       }}
       theadCellComponent={THeadCellBasic}
       theadRowCalcSize={calcRowHeight}
-
       rowCount={rowIds.length}
       rowCalcSize={calcRowHeight}
       rowBaseSize={12}
-
       columnCount={20}
       columnCalcSize={calcColumnWidth}
       columnBaseSize={50}
-
       cellComponent={CellBasic}
-
-    >
-    </VGridTable>
+    ></VGridTable>
   )
 }
 

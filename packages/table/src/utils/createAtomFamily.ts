@@ -17,10 +17,7 @@ function createIdObj(id: string): IdObj {
 
 export interface CreateAtomFamilyOptions<Key, State> {
   debuggerKey: string
-  createAtom?: <T extends AtomEntity<unknown>>(
-    key: Key,
-    initState?: AtomState<T>
-  ) => T
+  createAtom?: <T extends AtomEntity<unknown>>(key: Key, initState?: AtomState<T>) => T
   defaultValue?: State
 }
 
@@ -28,14 +25,8 @@ export interface AtomFamilyAtom<State> extends AtomEntity<State> {
   delete: () => void
 }
 export interface GetAtomById<Key, State> {
-  <CurState extends State = State>(
-    key: Key,
-    initState?: State
-  ): AtomEntity<CurState>
-  <AtomType extends Atom<unknown>>(
-    key: Key,
-    initState?: AtomState<AtomType>
-  ): AtomType
+  <CurState extends State = State>(key: Key, initState?: State): AtomEntity<CurState>
+  <AtomType extends Atom<unknown>>(key: Key, initState?: AtomState<AtomType>): AtomType
   remove: (key: Key) => void
   clear: () => void
   get: GetAtomById<Key, State>
@@ -65,19 +56,11 @@ export function createAtomFamilyEntity() {
     return key
   }
 
-  function createAtomFamily<AtomType extends Atom<unknown>, Key = string>(
-    param: {
-      debuggerKey: string
-      createAtom: (
-        key: Key,
-        initState?: AtomState<AtomType>
-      ) => AtomType
-    }
-  ): {
-    (
-      key: Key,
-      initState?: AtomState<AtomType>
-    ): AtomType
+  function createAtomFamily<AtomType extends Atom<unknown>, Key = string>(param: {
+    debuggerKey: string
+    createAtom: (key: Key, initState?: AtomState<AtomType>) => AtomType
+  }): {
+    (key: Key, initState?: AtomState<AtomType>): AtomType
     remove: (key: Key) => void
     clear: () => void
     get: GetAtomById<Key, AtomState<AtomType>>
@@ -85,7 +68,7 @@ export function createAtomFamilyEntity() {
   }
 
   function createAtomFamily<State, Key = string>(
-    param: CreateAtomFamilyOptions<Key, State>
+    param: CreateAtomFamilyOptions<Key, State>,
   ): GetAtomById<Key, State>
   function createAtomFamily<State, Key = string>({
     debuggerKey,
@@ -94,10 +77,7 @@ export function createAtomFamilyEntity() {
   }: CreateAtomFamilyOptions<Key, State>) {
     let cacheAtomWeakMap = new WeakMap<WeakKey, AtomEntity<State>>()
 
-    function getAtomById<CurState extends State = State>(
-      key: Key,
-      initState?: CurState,
-    ) {
+    function getAtomById<CurState extends State = State>(key: Key, initState?: CurState) {
       const cacheKey = getWeakKey(key as string)
 
       if (!cacheAtomWeakMap.has(cacheKey as WeakKey)) {
@@ -105,19 +85,15 @@ export function createAtomFamilyEntity() {
         if (createAtom) {
           if (arguments.length === 1) {
             newAtom = createAtom(key)
-          }
-          else {
+          } else {
             newAtom = createAtom(key, initState)
           }
-        }
-        else {
+        } else {
           newAtom = atom(initState || defaultValue) as AtomEntity<State>
         }
         cacheAtomWeakMap.set(cacheKey as WeakKey, newAtom as AtomEntity<State>)
         if (process.env.NODE_ENV !== 'production') {
-          newAtom.debugLabel = `${debuggerKey}||${cacheKey.id?.toString()}||${
-            newAtom.debugLabel
-          }`
+          newAtom.debugLabel = `${debuggerKey}||${cacheKey.id?.toString()}||${newAtom.debugLabel}`
         }
       }
       return cacheAtomWeakMap.get(cacheKey as WeakKey)! as AtomEntity<CurState>

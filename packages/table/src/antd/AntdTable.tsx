@@ -17,6 +17,7 @@ import { DataCell } from '../plugins/data/Cell'
 import { DataProvider } from '../plugins/data/provider'
 import { useDataInit } from '../plugins/data/useDataInit'
 import { DataCellThead } from '../plugins/data'
+import { useRowSelection } from '../plugins/select'
 
 export function AntdTable(props: AntdTableProps) {
   const { columns, dataSource } = props
@@ -87,6 +88,8 @@ export function AntdTable(props: AntdTableProps) {
     rowCalcSize: calcRowHeight,
     rowCount,
   })
+
+  useRowSelection(props.rowSelection)
   const { stayIndexList } = useSticky(stickyList)
 
   const tableClassName = useTableClassNameValue()

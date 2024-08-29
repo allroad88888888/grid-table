@@ -3,6 +3,7 @@ interface Option {
    * 收起节点
    */
   collapseNodeSet?: Set<string>
+  iteratorFn?: (node: string) => void
 }
 
 /**
@@ -14,7 +15,7 @@ interface Option {
 export function getChildrenNodeList(
   node: string,
   relation: Map<string, string[]>,
-  { collapseNodeSet }: Option = {},
+  { collapseNodeSet, iteratorFn }: Option = {},
 ) {
   const children: string[] = []
   function iterNode(parentNode: string) {
@@ -25,6 +26,7 @@ export function getChildrenNodeList(
     if (childrenNodeList) {
       childrenNodeList.forEach((cNode) => {
         children.push(cNode)
+        iteratorFn?.(cNode)
         iterNode(cNode)
       })
     }

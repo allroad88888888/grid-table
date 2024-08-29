@@ -13,7 +13,7 @@ export interface ColumnType {
    * for copy pasted
    */
   dataIndex?: string | string[]
-  render?: (text: string | undefined, rowInfo: Record<string, any>) => ReactNode
+  render?: (text: string | undefined, rowInfo: Record<string, any>, rowPath: string) => ReactNode
 
   fixed?: 'left' | 'right'
 

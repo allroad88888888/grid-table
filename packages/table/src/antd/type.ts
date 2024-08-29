@@ -1,4 +1,5 @@
 import type { UseDataProps } from '../plugins/data/type/common'
+import type { UseRowSelectionProps } from '../plugins/select/useRowSelection'
 
 export type AntdTableProps = {
   /**
@@ -15,14 +16,12 @@ export type AntdTableProps = {
    * @default 80
    */
   cellDefaultWidth?: number
-  // columns: ColumnType[]
-  // /**
-  //  * 数据
-  //  */
-  // dataSource: object[]
   /**
    * @default false
    */
   loading?: boolean
-  //   sticky?: boolean
+  /**
+   * 开启勾选框
+   */
+  rowSelection?: UseRowSelectionProps
 } & UseDataProps

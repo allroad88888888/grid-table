@@ -67,8 +67,7 @@ export function useAutoSizer<T extends HTMLElement>(
           ticking = true
         }
       })
-    }
-    else {
+    } else {
       resizeObserver = new ResizeObserver((t) => {
         debChange(t[0].target as HTMLElement)
       })

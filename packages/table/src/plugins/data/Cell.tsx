@@ -55,10 +55,10 @@ export function DataCell(props: CellProps) {
   const { render } = columnOption
   const children = useMemo(() => {
     if (render) {
-      return render(cellVal, rowInfo as unknown as Record<string, any>)
+      return render(cellVal, rowInfo as unknown as Record<string, any>, path)
     }
     return cellVal
-  }, [cellVal, render, rowInfo])
+  }, [cellVal, path, render, rowInfo])
 
   return (
     <div

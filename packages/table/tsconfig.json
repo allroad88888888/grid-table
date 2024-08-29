@@ -4,10 +4,12 @@
     "rootDir": "src",
     "outDir": "es",
     "declarationDir": "@types",
-    "declarationMap": true,
+    "declarationMap": true
   },
-  "include": ["./src/**/*","rollup.config.mjs"],
-  "references": [{
-    "path": "./../core/tsconfig.json"
-  }]
+  "include": ["./src/**/*", "rollup.config.mjs"],
+  "references": [
+    {
+      "path": "./../core/tsconfig.json"
+    }
+  ]
 }

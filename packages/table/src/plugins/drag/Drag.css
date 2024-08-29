@@ -1,22 +1,21 @@
-
-
-.grid-table-drag-item{
-  height:100%;
+.grid-table-drag-item {
+  height: 100%;
   width: 2px;
   cursor: col-resize;
+  margin-inline-start: auto;
 }
 
-.grid-table-drag-mv-line{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    left: 0;
-    z-index: 2;
-    background: blue;
-    pointer-events: none;
+.grid-table-drag-mv-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  left: 0;
+  z-index: 2;
+  background: blue;
+  pointer-events: none;
 }
 
-.grid-drag-ing{
+.grid-drag-ing {
   user-select: none;
 }
