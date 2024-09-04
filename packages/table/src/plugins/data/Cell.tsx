@@ -5,7 +5,7 @@ import { atom, useAtomValue } from 'einfach-state'
 import { useMemo } from 'react'
 import clsx from 'clsx'
 import { easyGet } from 'einfach-utils'
-import { useExpandItem } from './useExpand'
+import { useExpandItem } from './tree'
 import './Cell.css'
 
 export function DataCell(props: CellProps) {
@@ -43,6 +43,7 @@ export function DataCell(props: CellProps) {
     rowIndex,
     columnIndex,
     path,
+    enable: columnOption.enabledExpand,
   })
 
   const cellVal = useMemo(() => {

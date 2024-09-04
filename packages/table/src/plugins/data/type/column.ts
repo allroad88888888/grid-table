@@ -20,4 +20,9 @@ export interface ColumnType {
   title?: ReactNode
 
   width?: number
+
+  /**
+   * 树形展开按钮显示
+   */
+  enabledExpand?: boolean
 }

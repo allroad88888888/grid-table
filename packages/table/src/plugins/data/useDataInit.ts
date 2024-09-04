@@ -4,7 +4,7 @@ import type { DataItem, UseDataProps } from './type/common'
 import { useData } from './useData'
 import { format } from './format'
 import { useBasic } from '../../basic'
-import { useExpand } from './useExpand'
+import { useExpand } from './tree'
 
 export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemInfo>) {
   const { dataSource, columns } = props
@@ -35,7 +35,17 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
       },
       dataCore,
     )
-    store.setter(columnOptionsAtom, columns)
+    const newColumns = [...columns]
+    const hasTreeExpand = columns.every((column) => {
+      return !column.enabledExpand
+    })
+    if (hasTreeExpand) {
+      newColumns[0] = {
+        ...newColumns[0],
+        enabledExpand: true,
+      }
+    }
+    store.setter(columnOptionsAtom, newColumns)
     store.setter(relationAtom, relation)
     store.setter(showPathListAtom, showPathList)
     store.setter(nodeLevelAtom, levelMap)

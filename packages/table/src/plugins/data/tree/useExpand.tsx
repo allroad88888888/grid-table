@@ -1,31 +1,22 @@
 import type { Position } from '@grid-table/core'
 import { atom, useAtom, useAtomValue } from 'einfach-state'
 import { useLayoutEffect } from 'react'
-import { useData } from './useData'
-import { useBasic } from '../../basic'
-import { getChildrenNodeList } from './tree'
 import clsx from 'clsx'
 import './useExpand.css'
+import { useBasic } from '../../../basic'
+import { useData } from '../useData'
+import { getChildrenNodeList } from './utils'
 
 /**
  * 收缩列有哪些
  */
 export const collapseNodeListAtom = atom<Set<string>>(new Set<string>())
-/**
- * 树形表格 展开按钮 应该显示在哪一列
- */
-export const expandColumnIndexAtom = atom(0)
 
-type UseExpandProps = {
-  expandColumnIndex?: number
-}
+type UseExpandProps = {}
 
-export function useExpand({ expandColumnIndex = 0 }: UseExpandProps = {}) {
+export function useExpand({}: UseExpandProps = {}) {
   const { store, rowCountAtom } = useBasic()
   const { showPathListAtom, relationAtom, root } = useData()
-  useLayoutEffect(() => {
-    store.setter(expandColumnIndexAtom, expandColumnIndex)
-  }, [expandColumnIndex, store])
 
   useLayoutEffect(() => {
     return store.setter(showPathListAtom, (_getter, prev) => {
@@ -48,12 +39,14 @@ export function useExpandItem({
   rowIndex,
   columnIndex,
   path,
+  enable = false,
 }: Position & {
   path: string
+  enable?: boolean
 }) {
   const { parentNodeSetAtom, nodeLevelAtom } = useData()
   const parentNodeSet = useAtomValue(parentNodeSetAtom)
-  const expandColIndex = useAtomValue(expandColumnIndexAtom)
+
   const [collapseNodeList, setCollapseNodeList] = useAtom(collapseNodeListAtom)
 
   const levelMap = useAtomValue(nodeLevelAtom)
@@ -64,7 +57,7 @@ export function useExpandItem({
 
   return {
     expendDom:
-      (level !== 0 || hasChildren) && expandColIndex === columnIndex ? (
+      (level !== 0 || hasChildren) && enable ? (
         <>
           <span
             style={{
@@ -94,7 +87,6 @@ export function useExpandItem({
               style={{
                 paddingInlineStart: '10px',
                 marginInlineEnd: '4px',
-                paddingBlockStart: '100%',
               }}
             ></i>
           ) : null}

@@ -1,10 +1,10 @@
-import { useLayoutEffect, useState } from 'react'
+import { useLayoutEffect } from 'react'
 import type { ColumnType } from '../data/type'
 import { useData } from '../data'
 import { atom, useAtom } from 'einfach-state'
 import { useInit } from 'einfach-utils'
 import './useRowSelection.css'
-import { expandColumnIndexAtom } from '../data/useExpand'
+
 // import { getChildrenNodeList } from '../data/tree'
 
 export interface UseRowSelectionProps
@@ -23,7 +23,6 @@ export function useRowSelection(props: UseRowSelectionProps | undefined) {
       return
     }
 
-    store.setter(expandColumnIndexAtom, 1)
     return store.setter(columnOptionsAtom, (_getter, prev) => {
       const option: ColumnType = {
         title: props.title,

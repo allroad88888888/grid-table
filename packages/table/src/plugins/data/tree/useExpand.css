@@ -39,4 +39,5 @@
 
 .grid-table-expand-item {
   cursor: pointer;
+  height: 100%;
 }
