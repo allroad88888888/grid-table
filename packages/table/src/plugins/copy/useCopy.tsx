@@ -28,10 +28,13 @@ export const copyAreaAtom = atom<Area>({
  * @returns
  */
 export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
-  const { store, getCellStateAtomById } = useBasic()
+  const { store, getCellStateAtomById, rowIndexListAtom, columnIndexListAtom } = useBasic()
 
   const down = useAtomValue(cellDownAtom, { store })
   const up = useAtomValue(cellUpAtom, { store })
+
+  const rowIndexList = useAtomValue(rowIndexListAtom, { store })
+  const columnIndexList = useAtomValue(columnIndexListAtom, { store })
 
   const onCopy = useCallback(
     (e: React.ClipboardEvent<HTMLDivElement>) => {
@@ -93,8 +96,8 @@ export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
     for (let j = rowStartIndex; j <= rowEndIndex; j += 1) {
       for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
         const cellId = getCellId({
-          rowIndex: j,
-          columnIndex: i,
+          rowIndex: rowIndexList[j],
+          columnIndex: columnIndexList[i],
         })
 
         cancelList.push(

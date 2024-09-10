@@ -5,13 +5,18 @@ import { useBasic } from '../basic'
 import { getCellId } from '../utils/getCellId'
 
 export function useCell({ rowIndex, columnIndex, style }: CellProps) {
-  const { store, columnListAtom, rowListAtom, getColumnStateAtomByIndex, getCellStateAtomById } =
-    useBasic()
+  const {
+    store,
+    columnIndexListAtom,
+    rowIndexListAtom,
+    getColumnStateAtomByIndex,
+    getCellStateAtomById,
+  } = useBasic()
 
   const cellInfoAtom = useMemo(() => {
     return atom((getter) => {
-      const columnList = getter(columnListAtom)
-      const rowList = getter(rowListAtom)
+      const columnList = getter(columnIndexListAtom)
+      const rowList = getter(rowIndexListAtom)
       const gridRowIndex = rowList[rowIndex] === undefined ? rowIndex : rowList[rowIndex]
       const gridColumnIndex =
         columnList[columnIndex] === undefined ? columnIndex : columnList[columnIndex]
@@ -39,11 +44,11 @@ export function useCell({ rowIndex, columnIndex, style }: CellProps) {
     })
   }, [
     columnIndex,
-    columnListAtom,
+    columnIndexListAtom,
     getCellStateAtomById,
     getColumnStateAtomByIndex,
     rowIndex,
-    rowListAtom,
+    rowIndexListAtom,
   ])
 
   const { style: stateStyle, ...state } = useAtomValue(cellInfoAtom, { store })
@@ -58,14 +63,20 @@ export function useCell({ rowIndex, columnIndex, style }: CellProps) {
 }
 
 export function useTHeadCell({ rowIndex, columnIndex, style }: CellProps) {
-  const { store, columnListAtom, getColumnStateAtomByIndex: getColumnStateAtomByIndex } = useBasic()
-  const columnList = useAtomValue(columnListAtom, { store })
+  const {
+    store,
+    columnIndexListAtom,
+    getColumnStateAtomByIndex: getColumnStateAtomByIndex,
+  } = useBasic()
+  const columnList = useAtomValue(columnIndexListAtom, { store })
   const gridColumnIndex =
     columnList[columnIndex] === undefined ? columnIndex : columnList[columnIndex]
   const { style: columnStyle = {}, className } = useAtomValue(
     getColumnStateAtomByIndex(gridColumnIndex),
     { store },
   )
+
+  // console.log(columnStyle, style)
 
   return {
     rowIndex,

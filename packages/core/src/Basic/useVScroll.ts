@@ -16,8 +16,6 @@ export function useVScroll<T extends HTMLElement>(props: UseVScrollProps) {
     stateScrollLeft: 0,
   })
 
-  const [overCount, setOverCount] = useState(4)
-
   const { totalLength, sizeList } = useMemo(() => {
     const tempListSize = [0]
     let tempTotalHeight = 0
@@ -54,13 +52,14 @@ export function useVScroll<T extends HTMLElement>(props: UseVScrollProps) {
           return index >= stateCurrent[stateProp] + length
         }) + visibleStartIndex
     }
+
     const res = {
-      startIndex: Math.max(0, visibleStartIndex - overCount),
-      endIndex: Math.min(itemCount, visibleEndIndex + overCount),
+      startIndex: Math.max(0, visibleStartIndex - overscanCount),
+      endIndex: Math.min(itemCount, visibleEndIndex + overscanCount),
     }
     return res
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stateCurrent[stateProp], itemCount, length, overCount, calcItemSize])
+  }, [stateCurrent[stateProp], itemCount, length, overscanCount, calcItemSize])
 
   useEffect(() => {
     if (onItemsRendered && startIndex >= 0) {
@@ -77,15 +76,6 @@ export function useVScroll<T extends HTMLElement>(props: UseVScrollProps) {
     stateCurrent.stateScrollLeft = Math.max(scrollLeft, 0)
     doRender()
   }, [])
-
-  useEffect(() => {
-    const ct = setTimeout(() => {
-      setOverCount(overscanCount)
-    }, 1000)
-    return () => {
-      clearTimeout(ct)
-    }
-  }, [itemCount, overscanCount])
 
   const showIndexList = useMemo(() => {
     const indexList = new Set(props.stayIndexList)

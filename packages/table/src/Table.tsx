@@ -7,44 +7,44 @@ import { useTableClassNameValue } from './hooks'
 import { Cell } from './components/Cell'
 import { Row } from './components/Row'
 import { THeadCellBasic } from './components/TheadCell'
-import { atom, useAtomValue, getDefaultStore, Provider as StoreProvider } from 'einfach-state'
+import { atom, Provider as StoreProvider, useAtom } from 'einfach-state'
 import { useEffect, useRef } from 'react'
 import { DragLine } from './plugins/drag'
 import { useSticky } from './plugins/sticky'
 import { useAreaSelected } from './plugins/areaSelected'
 import { useTableEvents } from './hooks/useTableEvents'
 import { useCopy } from './plugins/copy/useCopy'
+import { useCellSizeByCalcFn } from './plugins/calcSizeByFn/useCellSizeByCalcFn'
 
 const stickyListAtom = atom({
-  // topIndexList: [2, 4, 6],
-  // bottomIndexList: [16, 18, 19],
-  topIndexList: [],
-  bottomIndexList: [],
+  topIndexList: [2, 4, 6],
+  bottomIndexList: [16, 18, 19],
+  // topIndexList: [] as number[],
+  // bottomIndexList: [] as number[],
 })
 
 const rowCountAtom = atom(30)
 const columnCountAtom = atom(40)
 // const headerRowCountAtom = atom(0)
-const { setter } = getDefaultStore()
 
 function Table() {
-  const rowCount = useAtomValue(rowCountAtom)
-  const columnCount = useAtomValue(columnCountAtom)
-  const stickyList = useAtomValue(stickyListAtom)
+  const [rowCount, setRowCount] = useAtom(rowCountAtom)
+  const [columnCount, setColumnCount] = useAtom(columnCountAtom)
+  const [stickyList, setStickyList] = useAtom(stickyListAtom)
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   setter(stickyListAtom, {
-    //     topIndexList: [3],
-    //     bottomIndexList: [16],
-    //   })
-    // }, 3000)
-    // setTimeout(() => {
-    //   setter(columnCountAtom, 10)
-    // }, 300)
-    // setTimeout(() => {
-    //   setter(rowCountAtom, 100)
-    // }, 500)
+    setTimeout(() => {
+      setStickyList({
+        topIndexList: [3],
+        bottomIndexList: [16],
+      })
+    }, 700)
+    setTimeout(() => {
+      setColumnCount(20)
+    }, 300)
+    setTimeout(() => {
+      setRowCount(100)
+    }, 500)
   }, [])
 
   const tableEvents = useTableEvents()
@@ -58,6 +58,14 @@ function Table() {
     },
   })
 
+  useCellSizeByCalcFn({
+    calcColumnSize: calcColumnWidth,
+    columnCount,
+    calcRowSize: calcRowHeight,
+    rowCount,
+    calcTheadRowSize: calcRowHeight,
+  })
+
   const {
     columnCalcSize,
     rowCalcSize,
@@ -65,12 +73,7 @@ function Table() {
     onResize,
     rowCount: realRowCount,
     columnCount: realColumnCount,
-  } = useBasicInit({
-    columnCalcSize: calcColumnWidth,
-    columnCount,
-    rowCalcSize: calcRowHeight,
-    rowCount,
-  })
+  } = useBasicInit({})
   const { stayIndexList } = useSticky(stickyList)
 
   // const { stayIndexList: rowStayIndexList } = useSticky({
@@ -83,8 +86,6 @@ function Table() {
   const tableClassName = useTableClassNameValue()
 
   useAreaSelected()
-
-  // console.log('columnStayIndexList', stayIndexList)
 
   const tableRef = useRef<HTMLDivElement>(null)
 

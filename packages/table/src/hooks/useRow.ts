@@ -4,8 +4,8 @@ import type { CSSProperties } from 'react'
 import { useBasic } from '../basic'
 
 export function useRow({ rowIndex, style }: RowProps) {
-  const { store, rowListAtom, getRowStateAtomByIndex } = useBasic()
-  const rowList = useAtomValue(rowListAtom, { store })
+  const { store, rowIndexListAtom, getRowStateAtomByIndex } = useBasic()
+  const rowList = useAtomValue(rowIndexListAtom, { store })
   const gridRowIndex = rowList[rowIndex]
   const { style: rowStyle = {}, className } = useAtomValue(getRowStateAtomByIndex(gridRowIndex), {
     store,

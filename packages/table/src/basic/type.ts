@@ -24,17 +24,17 @@ export interface TableOption {
 export type BasicStore = ReturnType<typeof buildBasic>
 
 export interface UseBasicInitProps extends TableOption {
-  columnCount: number
-  columnCalcSize: (index: number) => number
-  rowCount: number
-  rowCalcSize: (index: number) => number
-  theadRowCount?: number
-  /**
-   * 没有就取 rowCalcSize
-   * @param index
-   * @returns
-   */
-  theadCalcSize?: (index: number) => number
+  // columnCount: number
+  // columnCalcSize: (index: number) => number
+  // rowCount: number
+  // rowCalcSize: (index: number) => number
+  // theadRowCount?: number
+  // /**
+  //  * 没有就取 rowCalcSize
+  //  * @param index
+  //  * @returns
+  //  */
+  // theadCalcSize?: (index: number) => number
 }
 
 export type EventsSet = {
@@ -52,6 +52,8 @@ export interface EventsItem {
   onMouseUp: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onMouseOver: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onMouseEnter: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onMouseOut: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onContextMenu: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onCopy: (e: React.ClipboardEvent<HTMLDivElement>) => void
 }

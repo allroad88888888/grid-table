@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import { useCallback, useLayoutEffect } from 'react'
 import { useAtomValue, atom } from 'einfach-state'
 import { useBasic } from '../../basic'
@@ -17,7 +16,8 @@ export const cellUpAtom = atom<Position>(emptyPosition)
 const isTouchAtom = atom<boolean>(false)
 
 export function useAreaSelected() {
-  const { store, cellEventsAtom, getCellStateAtomById } = useBasic()
+  const { store, cellEventsAtom, getCellStateAtomById, rowIndexListAtom, columnIndexListAtom } =
+    useBasic()
 
   const onMouseDown = useCallback(
     (position: Position, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -40,13 +40,14 @@ export function useAreaSelected() {
     [store],
   )
 
-  const onMouseOver = useCallback(
+  const onMouseEnter = useCallback(
     (position: Position, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const isTouch = store.getter(isTouchAtom)
+
       if (!isTouch) {
         return
       }
-      if (e.button === 0) {
+      if (e.buttons === 1) {
         if (down.columnIndex === position.columnIndex && down.rowIndex === position.rowIndex) {
           return
         }
@@ -67,6 +68,10 @@ export function useAreaSelected() {
     const rowEndIndex = Math.max(up.rowIndex, down.rowIndex)
     const columnStartIndex = Math.min(up.columnIndex, down.columnIndex)
     const columnEndIndex = Math.max(up.columnIndex, down.columnIndex)
+
+    const rowIndexList = store.getter(rowIndexListAtom)
+    const columnIndexList = store.getter(columnIndexListAtom)
+
     if (rowStartIndex === -1 || columnStartIndex === -1) {
       return
     }
@@ -74,43 +79,17 @@ export function useAreaSelected() {
     for (let j = rowStartIndex; j <= rowEndIndex; j += 1) {
       for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
         const cellId = getCellId({
-          rowIndex: j,
-          columnIndex: i,
+          rowIndex: rowIndexList[j],
+          columnIndex: columnIndexList[i],
         })
 
         cancelList.push(
           store.setter(getCellStateAtomById(cellId), (_getter, prev) => {
-            const nextStyle: CSSProperties = {
-              ...prev.style,
-              borderTop: 'none',
-              borderBottom: 'none',
-              borderLeft: 'none',
-              borderRight: 'none',
-              backgroundColor: 'rgba(0,0,0,0.3)',
-            }
-            const borderStyle = '1px solid blue'
-            if (j === rowStartIndex) {
-              nextStyle.borderTop = borderStyle
-              // if (i === columnStartIndex) {
-              //   nextStyle.borderTopLeftRadius = '4px'
-              // }
-            }
-            if (j === rowEndIndex) {
-              nextStyle.borderBottom = borderStyle
-            }
-
-            if (i === columnStartIndex) {
-              nextStyle.borderLeft = borderStyle
-            }
-            if (i === columnEndIndex) {
-              nextStyle.borderRight = borderStyle
-            }
-            // nextStyle.userSelect = 'text'
-
+            const nextClsx = new Set(prev.className)
+            nextClsx.add('select-cell-item')
             return {
               ...prev,
-              style: nextStyle,
-              // className: prev.className,
+              className: nextClsx,
             }
           })!,
         )
@@ -134,22 +113,23 @@ export function useAreaSelected() {
     return store.setter(cellEventsAtom, (getter, prev) => {
       const next = { ...prev }
 
-      if (!('onMouseOver' in prev)) {
-        next['onMouseOver'] = new Set()
+      if (!('onMouseEnter' in prev)) {
+        next['onMouseEnter'] = new Set()
       }
+
       if (!('onMouseDown' in prev)) {
         next['onMouseDown'] = new Set()
       }
       if (!('onMouseUp' in prev)) {
         next['onMouseUp'] = new Set()
       }
-      next['onMouseOver']!.add(onMouseOver)
+      next['onMouseEnter']!.add(onMouseEnter)
       next['onMouseDown']!.add(onMouseDown)
       next['onMouseUp']!.add(onMouseUp)
 
       return next
     })
-  }, [cellEventsAtom, onMouseOver, onMouseDown, onMouseUp, store])
+  }, [cellEventsAtom, onMouseEnter, onMouseDown, onMouseUp, store])
 
   const onContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault()

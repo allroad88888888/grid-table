@@ -16,13 +16,10 @@ export interface UseDragProps {
    * 是否固定宽度
    */
   fixedWidth?: boolean
-
-  width: number
-  // hiddenDragIndex?: number
 }
 
-export function useDrag({ columnBaseSize, fixedWidth = false, width }: UseDragProps) {
-  const { store, columnSizeMapAtom, columnListAtom, resizeAtom } = useBasic()
+export function useDrag({ columnBaseSize, fixedWidth = false }: UseDragProps) {
+  const { store, columnSizeListAtom, columnIndexListAtom, resizeAtom } = useBasic()
   const selectIndex = useAtomValue(selectColumnIndexAtom, { store })
   const left = useAtomValue(leftAtom, { store })
 
@@ -30,13 +27,13 @@ export function useDrag({ columnBaseSize, fixedWidth = false, width }: UseDragPr
 
   const sizeMapAtom = useInit(() => {
     return atom((getter) => {
-      const columnSizeMap = getter(columnSizeMapAtom)
-      const columnList = getter(columnListAtom)
+      const columnSizeMap = getter(columnSizeListAtom)
+      const columnList = getter(columnIndexListAtom)
       const sizeMap: Map<number, number> = new Map()
 
       let prevSize = 0
       for (const columnIndex of columnList) {
-        prevSize += columnSizeMap.get(columnIndex)!
+        prevSize += columnSizeMap[columnIndex]
         sizeMap.set(columnIndex, prevSize)
       }
       return sizeMap
@@ -51,32 +48,31 @@ export function useDrag({ columnBaseSize, fixedWidth = false, width }: UseDragPr
     const [firstX] = store.getter(firstEventAtom)!
     const sizeMap = store.getter(sizeMapAtom)
     const currentX = sizeMap.get(selectIndex)!
-    const tempColumnSize = store.getter(columnSizeMapAtom)
-    const currentSize = tempColumnSize.get(selectIndex)!
+    const tempColumnSize = store.getter(columnSizeListAtom)
+    const currentSize = tempColumnSize[selectIndex]
 
     store.setter(leftAtom, currentX - 2)
 
     function mouseup() {
       if (store.getter(leftAtom) !== currentX - 2) {
-        store.setter(columnSizeMapAtom, (prevState) => {
+        store.setter(columnSizeListAtom, (getter, prevState) => {
+          const next = [...prevState]
           const index = store.getter(selectColumnIndexAtom)!
           const tLeft = store.getter(leftAtom)!
           /**
            * 计算宽度
            */
-          const current = tempColumnSize.get(index)!
+          const current = tempColumnSize[index]!
           const tWidth = tLeft - sizeMap.get(index)! + currentSize
           const realWidth = Math.floor(tWidth / columnBaseSize) * columnBaseSize
-          prevState.set(index, realWidth)
-
-          console.log(`index:${index}`, realWidth)
+          next.splice(index, 1, realWidth)
 
           if (fixedWidth && index < sizeMap.size - 1) {
-            const nextWidth = current - realWidth + tempColumnSize.get(index + 1)!
-            prevState.set(index + 1, Math.ceil(nextWidth / columnBaseSize) * columnBaseSize)
+            const nextWidth = current - realWidth + tempColumnSize[index + 1]!
+            next.splice(index + 1, 1, Math.ceil(nextWidth / columnBaseSize) * columnBaseSize)
           }
 
-          return new Map(prevState)
+          return next
         })
       }
 

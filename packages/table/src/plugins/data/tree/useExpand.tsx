@@ -15,7 +15,7 @@ export const collapseNodeListAtom = atom<Set<string>>(new Set<string>())
 type UseExpandProps = {}
 
 export function useExpand({}: UseExpandProps = {}) {
-  const { store, rowCountAtom } = useBasic()
+  const { store } = useBasic()
   const { showPathListAtom, relationAtom, root } = useData()
 
   useLayoutEffect(() => {
@@ -27,12 +27,12 @@ export function useExpand({}: UseExpandProps = {}) {
     })
   }, [relationAtom, root, showPathListAtom, store])
 
-  useLayoutEffect(() => {
-    return store.setter(rowCountAtom, (_getter, prev) => {
-      const showPathList = _getter(showPathListAtom)
-      return showPathList.length
-    })
-  }, [])
+  // useLayoutEffect(() => {
+  //   return store.setter(rowCountAtom, (_getter, prev) => {
+  //     const showPathList = _getter(showPathListAtom)
+  //     return showPathList.length
+  //   })
+  // }, [])
 }
 
 export function useExpandItem({

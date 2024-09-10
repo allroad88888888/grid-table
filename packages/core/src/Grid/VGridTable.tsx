@@ -119,6 +119,7 @@ export function VGridTable(props: VGridTableProps) {
       gridTemplateRows: `repeat(${theadHeight / theadBaseSize}, ${theadBaseSize}px)`,
       gridTemplateColumns: `repeat(${totalWidth / columnBaseSize}, ${columnBaseSize}px)`,
     }
+
     if (TheadTr) {
       $headRows.push(
         <TheadTr key={rowIndex} rowIndex={rowIndex} style={theadRowStyle}>

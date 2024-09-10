@@ -2,7 +2,7 @@ import type { AntdTableProps } from './type'
 import { useAutoSizer, VGridTable } from '@grid-table/core/src'
 import { useInit } from 'einfach-utils'
 import { Provider as StoreProvider } from 'einfach-state'
-import { useCallback, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { BasicContext, buildBasic, useBasicInit } from '../basic'
 import { useTableEvents } from '../hooks/useTableEvents'
 import { useSticky } from '../plugins/sticky'
@@ -10,14 +10,14 @@ import { useTableClassNameValue } from '../hooks'
 import { useAreaSelected } from '../plugins/areaSelected'
 import { useCopy } from '../plugins/copy/useCopy'
 import { DragLine } from '../plugins/drag'
-import { Row } from '../components'
-import { useAutoWidth } from '../plugins/autoWidth'
 import './../Table.css'
 import { DataCell } from '../plugins/data/Cell'
 import { DataProvider } from '../plugins/data/provider'
 import { useDataInit } from '../plugins/data/useDataInit'
 import { DataCellThead } from '../plugins/data'
 import { useRowSelection } from '../plugins/select'
+import { useCellSizeByColumn } from '../plugins/calcSizeByColumn/useSizeByColumn'
+import { Row } from '../plugins/data/Row'
 
 export function AntdTable(props: AntdTableProps) {
   const { columns, dataSource } = props
@@ -28,19 +28,6 @@ export function AntdTable(props: AntdTableProps) {
 
   const tableEvents = useTableEvents()
 
-  const calcRowHeight = useCallback(
-    (index: number) => {
-      return rowHeight
-    },
-    [rowHeight],
-  )
-
-  const calcColumnWidth = useAutoWidth({
-    width,
-    defaultItemWidth: cellDefaultWidth,
-    columns,
-  })
-
   const { loading } = useDataInit({
     dataSource,
     columns,
@@ -49,7 +36,7 @@ export function AntdTable(props: AntdTableProps) {
     root: props.root,
   })
 
-  const { columnCount, stickyList } = useMemo(() => {
+  const { stickyList } = useMemo(() => {
     const leftFixedColList: number[] = []
     const rightFixedColList: number[] = []
     columns.forEach((column, index) => {
@@ -69,11 +56,12 @@ export function AntdTable(props: AntdTableProps) {
     }
   }, [columns])
 
-  const { rowCount } = useMemo(() => {
-    return {
-      rowCount: dataSource.length,
-    }
-  }, [dataSource])
+  useCellSizeByColumn({
+    rowHeight,
+    rowCount: dataSource.length,
+    columnMinWidth: cellDefaultWidth,
+    wrapWidth: width,
+  })
 
   const {
     columnCalcSize,
@@ -82,12 +70,7 @@ export function AntdTable(props: AntdTableProps) {
     onResize,
     rowCount: realRowCount,
     columnCount: realColumnCount,
-  } = useBasicInit({
-    columnCalcSize: calcColumnWidth,
-    columnCount,
-    rowCalcSize: calcRowHeight,
-    rowCount,
-  })
+  } = useBasicInit({})
 
   useRowSelection(props.rowSelection)
   const { stayIndexList } = useSticky(stickyList)
@@ -105,6 +88,7 @@ export function AntdTable(props: AntdTableProps) {
         height: 'auto',
         maxHeight: '100%',
         position: 'relative',
+        border: '1px solid red',
       }}
       ref={ref}
       {...tableEvents}
@@ -114,7 +98,7 @@ export function AntdTable(props: AntdTableProps) {
       ) : (
         <>
           {copy}
-          <DragLine columnBaseSize={1} width={width} />
+          <DragLine columnBaseSize={1} />
           <VGridTable
             className={`grid-table grid-table-border ${tableClassName}`}
             style={{

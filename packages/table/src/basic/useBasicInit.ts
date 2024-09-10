@@ -5,28 +5,21 @@ import { useBasic } from './useBasic'
 import type { ResizeParam } from '@grid-table/core'
 
 export function useBasicInit(props: UseBasicInitProps) {
-  const { columnCalcSize, columnCount, rowCalcSize, rowCount } = props
   const { rowBaseSize = 1, columnBaseSize = 1, theadBaseSize = 1 } = props as TableOption
-  const { theadCalcSize = rowCalcSize } = props
+
   const {
     store,
-    columnSizeMapAtom,
-    rowSizeMapAtom,
+    columnSizeListAtom,
+    rowSizeListAtom,
     resizeAtom,
-    columnListAtom,
-    rowListAtom,
+    columnIndexListAtom,
+    rowIndexListAtom,
     clear,
     optionsAtom,
-    rowCountAtom,
-    columnCountAtom,
+    theadRowSizeListAtom,
   } = useBasic()
 
   const { setter } = store
-
-  useLayoutEffect(() => {
-    setter(rowCountAtom, rowCount)
-    setter(columnCountAtom, columnCount)
-  }, [columnCount, columnCountAtom, rowCount, rowCountAtom, setter])
 
   useLayoutEffect(() => {
     setter(optionsAtom, {
@@ -36,76 +29,39 @@ export function useBasicInit(props: UseBasicInitProps) {
     })
   }, [setter, optionsAtom, rowBaseSize, columnBaseSize, theadBaseSize])
 
-  useLayoutEffect(() => {
-    function setColumnList() {
-      const count = store.getter(columnCountAtom)
-      const columnList = []
-      for (let i = 0; i < count; i += 1) {
-        columnList.push(i)
-      }
-      setter(columnListAtom, columnList)
-    }
-    setColumnList()
-
-    setter(columnSizeMapAtom, (prev) => {
-      const count = store.getter(columnCountAtom)
-      const sizeMap = new Map()
-      for (let i = 0; i < count; i += 1) {
-        sizeMap.set(i, columnCalcSize(i))
-      }
-      return sizeMap
-    })
-
-    function setRowList() {
-      const count = store.getter(rowCountAtom)
-      const rowList = []
-      for (let i = 0; i < count; i += 1) {
-        rowList.push(i)
-      }
-      setter(rowListAtom, rowList)
-    }
-    setRowList()
-
-    setter(rowSizeMapAtom, (prev) => {
-      const count = store.getter(rowCountAtom)
-      const sizeMap = new Map()
-      for (let i = 0; i < count; i += 1) {
-        sizeMap.set(i, rowCalcSize(i))
-      }
-      return sizeMap
-    })
-  }, [columnCalcSize, rowCalcSize, store])
-
   useEffect(() => {
     return clear
   }, [clear])
 
-  const columnList = useAtomValue(columnListAtom, { store })
-  const rowList = useAtomValue(rowListAtom, { store })
-  const columnSizeMap = useAtomValue(columnSizeMapAtom, { store })
-  const rowSizeMap = useAtomValue(rowSizeMapAtom, { store })
+  const columnIndexList = useAtomValue(columnIndexListAtom, { store })
+  const rowIndexList = useAtomValue(rowIndexListAtom, { store })
+  const columnSizeList = useAtomValue(columnSizeListAtom, { store })
+  const rowSizeList = useAtomValue(rowSizeListAtom, { store })
+
+  const theadRowSizeList = useAtomValue(theadRowSizeListAtom, { store })
 
   const newRowCalcSize = useCallback(
     (index: number) => {
-      const gridIndex = rowList[index]
-      return rowSizeMap.get(gridIndex)!
+      const gridIndex = rowIndexList[index] || 0
+      return rowSizeList[gridIndex]
     },
-    [rowList, rowSizeMap],
+    [rowIndexList, rowSizeList],
   )
 
   const newColumnCalcSize = useCallback(
     (index: number) => {
-      const gridIndex = columnList[index]
-      return columnSizeMap.get(gridIndex)!
+      const gridIndex = columnIndexList[index] || 0
+
+      return columnSizeList[gridIndex]
     },
-    [columnList, columnSizeMap],
+    [columnIndexList, columnSizeList],
   )
 
   const newTheadCalcSize = useCallback(
     (index: number) => {
-      return theadCalcSize(index)
+      return theadRowSizeList[index] || 0
     },
-    [theadCalcSize],
+    [theadRowSizeList],
   )
 
   const onResize = useCallback(
@@ -115,9 +71,11 @@ export function useBasicInit(props: UseBasicInitProps) {
     [resizeAtom, setter],
   )
 
+  console.log(`rowIndexList.length`, rowIndexList.length)
+
   return {
-    rowCount: useAtomValue(rowCountAtom, { store }),
-    columnCount: useAtomValue(columnCountAtom, { store }),
+    rowCount: rowIndexList.length,
+    columnCount: columnIndexList.length,
     rowCalcSize: newRowCalcSize,
     columnCalcSize: newColumnCalcSize,
     theadCalcSize: newTheadCalcSize,

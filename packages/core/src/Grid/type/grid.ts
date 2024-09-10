@@ -8,14 +8,14 @@ export interface Position {
 
 interface BaseProps {
   rowIndex: number
-  style: React.CSSProperties
+  style?: React.CSSProperties
 }
 
 /**
  * 行 渲染参数
  */
 export interface RowProps extends BaseProps {
-  children: ReactNode
+  children?: ReactNode
 }
 
 /**

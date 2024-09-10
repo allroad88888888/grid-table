@@ -9,7 +9,7 @@ import { useExpand } from './tree'
 export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemInfo>) {
   const { dataSource, columns } = props
 
-  const { store, getColumnStateAtomByIndex } = useBasic()
+  const { store, getColumnStateAtomByIndex, rowIndexListAtom, rowSizeListAtom } = useBasic()
 
   const dataCore = useData()
   const {
@@ -92,6 +92,14 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
       })
     }
   }, [columns, getColumnStateAtomByIndex, store])
+
+  useLayoutEffect(() => {
+    store.setter(rowIndexListAtom, (_getter, prevRowIndexList) => {
+      const showPathList = _getter(showPathListAtom)
+      const next = prevRowIndexList.slice(0, showPathList.length)
+      return next
+    })
+  }, [])
 
   useExpand()
 

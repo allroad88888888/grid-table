@@ -66,16 +66,16 @@ export function useSticky(props: useStickyProps = {}) {
     store,
     getColumnStateAtomByIndex,
     getRowStateAtomByIndex,
-    columnListAtom,
-    rowListAtom,
-    rowSizeMapAtom,
-    columnSizeMapAtom,
+    columnIndexListAtom,
+    rowIndexListAtom,
+    rowSizeListAtom,
+    columnSizeListAtom,
   } = useBasic()
   const { setter, getter } = store
 
   const isRow = direction === 'row'
 
-  const listAtom = isRow ? rowListAtom : columnListAtom
+  const listAtom = isRow ? rowIndexListAtom : columnIndexListAtom
 
   const idsList = useAtomValue(listAtom, { store })
 
@@ -93,18 +93,15 @@ export function useSticky(props: useStickyProps = {}) {
       return
     }
     return setter(listAtom, (_getter, prev) => {
-      // const tempTopIndexList = _getter(topAtom)
-      // const tempIndexList = _getter(bottomAtom)
-      const newIdsList = _getter(listAtom)
       const setIdsList = new Set(prev)
       const setList = new Set(
         [...topIndexList, ...bottomIndexList].filter((index) => {
           return setIdsList.has(index)
         }),
       )
-      const newList = [
+      const newList: number[] = [
         ...topIndexList,
-        ...newIdsList.filter((index) => {
+        ...prev.filter((index) => {
           return !setList.has(index)
         }),
         ...bottomIndexList,
@@ -114,17 +111,11 @@ export function useSticky(props: useStickyProps = {}) {
     })
   }, [bottomIndexList, topIndexList])
 
-  // useLayoutEffect(() => {
-  //   return setter((getter,prev)=>{
-
-  //   })
-  // }, [bottomIndexList, topIndexList])
-
   const { todo } = useMethods({
     todo(type: StickyType, nextState: number[] = []) {
       const { position } = Config[type]
       const getStateAtomByIndex = isRow ? getRowStateAtomByIndex : getColumnStateAtomByIndex
-      const sizeAtom = isRow ? rowSizeMapAtom : columnSizeMapAtom
+      const sizeAtom = isRow ? rowSizeListAtom : columnSizeListAtom
       const isTop = type.indexOf('Bottom') > 0 ? false : true
 
       let startPosition: number = isTop ? topSpace : 0
@@ -138,7 +129,7 @@ export function useSticky(props: useStickyProps = {}) {
       tempState.forEach((tIndex, index) => {
         const atomEntity = getStateAtomByIndex(tIndex)
         const sizeList = getter(sizeAtom)
-        if (!sizeList.has(tIndex)) {
+        if (tIndex > sizeList.length - 1) {
           throw `can't find index ${tIndex}`
         }
         cancelList.push(
@@ -162,7 +153,7 @@ export function useSticky(props: useStickyProps = {}) {
           })!,
         )
 
-        startPosition += sizeList.get(tIndex)!
+        startPosition += sizeList[tIndex]
         positionList.push(startPosition)
       })
       return () => {
@@ -174,10 +165,10 @@ export function useSticky(props: useStickyProps = {}) {
   })
 
   useLayoutEffect(() => {
-    return todo(`${direction}Top`, topIndexList)
+    return todo(`${direction}Top`, [...topIndexList])
   }, [topIndexList])
   useLayoutEffect(() => {
-    return todo(`${direction}Bottom`, bottomIndexList)
+    return todo(`${direction}Bottom`, [...bottomIndexList])
   }, [bottomIndexList])
 
   const stayIndexList = useMemo(() => {

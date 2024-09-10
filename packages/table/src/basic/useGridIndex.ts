@@ -2,9 +2,9 @@ import { useAtomValue } from 'einfach-state'
 import { useBasic } from './useBasic'
 
 export function useGridIndex({ rowIndex, columnIndex }: { rowIndex: number; columnIndex: number }) {
-  const { columnListAtom, rowListAtom } = useBasic()
-  const columnList = useAtomValue(columnListAtom)
-  const rowList = useAtomValue(rowListAtom)
+  const { columnIndexListAtom, rowIndexListAtom } = useBasic()
+  const columnList = useAtomValue(columnIndexListAtom)
+  const rowList = useAtomValue(rowIndexListAtom)
   return {
     rowIndex: rowList[rowIndex],
     columnIndex: columnList[columnIndex],

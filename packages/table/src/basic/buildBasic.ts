@@ -9,8 +9,8 @@ export function buildBasic() {
 
   const { createAtomFamily, clear } = createAtomFamilyEntity()
 
-  const columnListAtom = incrementAtom<number[]>([])
-  const rowListAtom = incrementAtom<number[]>([])
+  const columnIndexListAtom = incrementAtom<number[]>([])
+  const rowIndexListAtom = incrementAtom<number[]>([])
 
   const getColumnStateAtomByIndex = createAtomFamily({
     debuggerKey: 'basic column info',
@@ -38,15 +38,13 @@ export function buildBasic() {
 
   const cellEventsAtom = incrementAtom({} as EventsCellSet)
 
-  const columnSizeMapAtom = atom<Map<number, number>>(new Map())
-  const rowSizeMapAtom = atom<Map<number, number>>(new Map())
+  const columnSizeListAtom = incrementAtom<number[]>([])
+  const rowSizeListAtom = incrementAtom<number[]>([])
+  const theadRowSizeListAtom = incrementAtom<number[]>([])
 
   const hasInitAtom = atom<boolean>(false)
 
   const optionsAtom = atom<TableOption>({})
-
-  const rowCountAtom = incrementAtom(0)
-  const columnCountAtom = incrementAtom(0)
 
   /**
    * 宽高
@@ -55,20 +53,19 @@ export function buildBasic() {
 
   return {
     createAtomFamily,
+    theadRowSizeListAtom,
     store,
     cellEventsAtom,
-    columnListAtom,
-    rowListAtom,
+    columnIndexListAtom,
+    rowIndexListAtom,
     getColumnStateAtomByIndex,
     getRowStateAtomByIndex,
     getCellStateAtomById,
-    columnSizeMapAtom,
-    rowSizeMapAtom,
+    columnSizeListAtom,
+    rowSizeListAtom,
     hasInitAtom,
     optionsAtom,
     resizeAtom,
-    rowCountAtom,
-    columnCountAtom,
     clear,
   }
 }

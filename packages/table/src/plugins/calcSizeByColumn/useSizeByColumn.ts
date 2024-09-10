@@ -1,9 +1,10 @@
-import { useInit } from 'einfach-utils'
 import { useBasic } from '../../basic'
-import type { BasicOption } from './type'
+import { useLayoutEffect } from 'react'
+import { useAtomValue } from 'einfach-state'
+import { useData } from '../data'
+import { useAutoWidth } from './useAutoWidth'
 
 interface UseSizeByColumnProps {
-  columns: BasicOption[]
   /**
    * 列最小宽度
    * @default 25
@@ -11,21 +12,39 @@ interface UseSizeByColumnProps {
   columnMinWidth?: number
   rowHeight: number
   rowCount: number
+  wrapWidth: number
 }
 
 export function useCellSizeByColumn(props: UseSizeByColumnProps) {
-  const { columns, rowCount, rowHeight, columnMinWidth = 25 } = props
-  const { rowSizeListAtom, columnSizeListAtom, store } = useBasic()
-  useInit(() => {
+  const { rowCount, rowHeight, columnMinWidth = 25, wrapWidth } = props
+  const { rowSizeListAtom, columnSizeListAtom, store, rowIndexListAtom, columnIndexListAtom } =
+    useBasic()
+  const { columnOptionsAtom } = useData()
+  const columns = useAtomValue(columnOptionsAtom, { store })
+
+  useLayoutEffect(() => {
     const sizeList = new Array(rowCount)
     sizeList.fill(rowHeight)
+    const indexList = []
+    for (let i = 0; i < rowCount; i += 1) {
+      indexList.push(i)
+    }
+    store.setter(rowIndexListAtom, indexList)
     store.setter(rowSizeListAtom, sizeList)
-  }, [rowCount, rowHeight])
+  }, [rowCount, rowHeight, rowIndexListAtom, rowSizeListAtom, store])
 
-  useInit(() => {
-    const sizeList = columns.map((column) => {
+  useLayoutEffect(() => {
+    const indexList: number[] = []
+    const sizeList = columns.map((column, index) => {
+      indexList.push(index)
       return column.width || columnMinWidth
     })
     store.setter(columnSizeListAtom, sizeList)
-  }, [columns])
+    store.setter(columnIndexListAtom, indexList)
+  }, [columnIndexListAtom, columnMinWidth, columnSizeListAtom, columns, store])
+
+  useAutoWidth({
+    width: wrapWidth,
+    defaultItemWidth: columnMinWidth,
+  })
 }

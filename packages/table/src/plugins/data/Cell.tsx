@@ -1,12 +1,13 @@
 import type { CellProps } from '@grid-table/core'
 import { useCell, useCellEvents } from '../../hooks'
 import { useData } from './useData'
-import { atom, useAtomValue } from 'einfach-state'
+import { useAtomValue } from 'einfach-state'
 import { useMemo } from 'react'
 import clsx from 'clsx'
 import { easyGet } from 'einfach-utils'
 import { useExpandItem } from './tree'
 import './Cell.css'
+import { useRowInfo } from './useRowInfo'
 
 export function DataCell(props: CellProps) {
   const { rowIndex, columnIndex, style, className } = useCell(props)
@@ -15,28 +16,10 @@ export function DataCell(props: CellProps) {
     columnIndex,
   })
 
-  const { showPathListAtom, columnOptionsAtom, getRowInfoAtomByPath } = useData()
+  const { columnOptionsAtom } = useData()
 
-  const { rowInfoAtom, pathAtom } = useMemo(() => {
-    const _pathAtom = atom((_getter) => {
-      const pathList = _getter(showPathListAtom)
-      const path = pathList[rowIndex]
-      return path
-    })
+  const { path, rowInfo } = useRowInfo({ rowIndex })
 
-    const _rowInfoAtom = atom((_getter) => {
-      const path = _getter(_pathAtom)
-      return _getter(getRowInfoAtomByPath(path))
-    })
-
-    return {
-      pathAtom: _pathAtom,
-      rowInfoAtom: _rowInfoAtom,
-    }
-  }, [getRowInfoAtomByPath, rowIndex, showPathListAtom])
-
-  const path = useAtomValue(pathAtom)
-  const rowInfo = useAtomValue(rowInfoAtom)
   const columnOption = useAtomValue(columnOptionsAtom)[columnIndex]
 
   const { expendDom } = useExpandItem({

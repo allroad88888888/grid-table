@@ -29,6 +29,7 @@ const columns: ColumnType[] = [
           if (tag === 'loser') {
             color = 'volcano'
           }
+
           return (
             <Tag color={color} id={tag} key={tag}>
               {tag.toUpperCase()}
@@ -40,15 +41,9 @@ const columns: ColumnType[] = [
   },
   {
     title: 'Action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>
-          Invite
-          {record.name}
-        </a>
-        <a>Delete</a>
-      </Space>
-    ),
+    render: (_, record) => {
+      return <>操作列</>
+    },
   },
 ]
 const data = [
