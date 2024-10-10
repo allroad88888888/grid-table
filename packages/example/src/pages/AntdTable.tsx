@@ -1,5 +1,5 @@
+import type { ColumnType } from '@grid/table'
 import AntdTable from '@grid/table/src/AntdTable'
-import type { ColumnType } from '@grid/table/src/plugins/data/type'
 import { Space, Tag } from 'antd'
 
 const columns: ColumnType[] = [
@@ -127,6 +127,10 @@ const data = [
   },
 ]
 
+const rowSelection = {
+  width: 20,
+}
+
 export function AntdTableDemo() {
   return (
     <div
@@ -134,7 +138,7 @@ export function AntdTableDemo() {
         width: 800,
       }}
     >
-      <AntdTable columns={columns} dataSource={data} />
+      <AntdTable columns={columns} dataSource={data} rowSelection={rowSelection} />
     </div>
   )
 }

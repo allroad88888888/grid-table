@@ -3,11 +3,10 @@ import { atom, useAtom } from 'einfach-state'
 import { useInit } from 'einfach-utils'
 import './useRowSelection.css'
 import type { PositionId, RowId } from '@grid-table/basic/src'
-import { getIdByObj } from '@grid-table/basic/src'
+import { getIdByObj, useBasic } from '@grid-table/basic/src'
 import { useData } from '../../core'
 import type { ColumnType } from '../../types'
-
-// import { getChildrenNodeList } from '../data/tree'
+import clsx from 'clsx'
 
 export interface UseRowSelectionProps
   extends Pick<ColumnType, 'title' | 'fixed' | 'width' | 'render'> {
@@ -19,13 +18,14 @@ export interface UseRowSelectionProps
  * @param props
  */
 export function useRowSelection(props: UseRowSelectionProps | undefined) {
+  const { columnIndexListAtom } = useBasic()
   const { store, getColumnOptionAtomByColumnId } = useData()
   useLayoutEffect(() => {
     if (!props) {
       return
     }
     const option: ColumnType = {
-      title: props.title,
+      title: props.title || <Checkbox />,
       width: props.width,
       render: props.render || render,
       fixed: props.fixed,
@@ -33,9 +33,12 @@ export function useRowSelection(props: UseRowSelectionProps | undefined) {
 
     const columnId = getIdByObj(option)
 
-    return store.setter(getColumnOptionAtomByColumnId(columnId), option)
+    store.setter(getColumnOptionAtomByColumnId(columnId), option)
+    store.setter(columnIndexListAtom, (getter, prev) => {
+      return [columnId, ...prev]
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props])
+  }, [])
 }
 
 function render(text: string | undefined, rowInfo: Record<string, any>, rowPath: PositionId) {
@@ -44,25 +47,60 @@ function render(text: string | undefined, rowInfo: Record<string, any>, rowPath:
 
 const nodeSelectionSetAtom = atom<Set<RowId>>(new Set<RowId>())
 
-export function Checkbox({ rowId }: PositionId) {
+export enum CheckedEnum {
+  checked = 'checked',
+  unChecked = 'unChecked',
+  partiallyChecked = 'partiallyChecked',
+}
+
+export function Checkbox({ rowId }: Partial<PositionId>) {
+  const { rowIdShowListAtom } = useBasic()
   const checkedAtom = useInit(() => {
+    if (!rowId) {
+      return atom(
+        (getter) => {
+          const nodeSelectionSet = getter(nodeSelectionSetAtom)
+          // rowIdShowListAtom 取哪个id是个问题
+          return nodeSelectionSet.size === 0
+            ? CheckedEnum.unChecked
+            : nodeSelectionSet.size === getter(rowIdShowListAtom).length
+              ? CheckedEnum.checked
+              : CheckedEnum.partiallyChecked
+        },
+        (getter, setter, tId?: RowId) => {
+          const nodeSelectionSet = new Set(getter(nodeSelectionSetAtom))
+
+          if (!tId) {
+            if (nodeSelectionSet.size === 0) {
+              setter(nodeSelectionSetAtom, new Set(getter(rowIdShowListAtom)))
+            } else {
+              setter(nodeSelectionSetAtom, new Set())
+            }
+
+            return
+          }
+        },
+      )
+    }
     return atom(
       (getter) => {
         const nodeSelectionMap = getter(nodeSelectionSetAtom)
-        return nodeSelectionMap.has(rowId)
+        return nodeSelectionMap.has(rowId) ? CheckedEnum.checked : CheckedEnum.unChecked
       },
-      (getter, setter, rowPath: RowId) => {
-        // const relation = getter(relationAtom)
-        const nodeSelectionMap = new Set(getter(nodeSelectionSetAtom))
+      (getter, setter, tId?: RowId) => {
+        if (!tId) {
+          return
+        }
+        const nodeSelectionSet = new Set(getter(nodeSelectionSetAtom))
 
         function checkedNode(node: RowId) {
-          if (nodeSelectionMap.has(node)) {
-            nodeSelectionMap.delete(node)
+          if (nodeSelectionSet.has(node)) {
+            nodeSelectionSet.delete(node)
           } else {
-            nodeSelectionMap.add(node)
+            nodeSelectionSet.add(node)
           }
         }
-        checkedNode(rowPath)
+        checkedNode(tId)
 
         // if (relation.has(rowPath)) {
         //   getChildrenNodeList(rowPath, relation, {
@@ -70,19 +108,20 @@ export function Checkbox({ rowId }: PositionId) {
         //   })
         // }
 
-        setter(nodeSelectionSetAtom, nodeSelectionMap)
+        setter(nodeSelectionSetAtom, nodeSelectionSet)
       },
     )
   }, [rowId])
   const [isChecked, handChecked] = useAtom(checkedAtom)
 
-  // const [isChecked,setChecked] = useState()
   return (
     <>
       <input
         type="checkbox"
-        checked={isChecked}
-        className={'grid-table-row-selection-item'}
+        checked={isChecked === CheckedEnum.checked}
+        className={clsx('grid-table-row-selection-item', {
+          'grid-table-row-selection-partially': isChecked === CheckedEnum.partiallyChecked,
+        })}
         onChange={() => {
           handChecked(rowId)
         }}
