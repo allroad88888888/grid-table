@@ -1,26 +1,32 @@
-import AntdTable from '@grid/table/src/antd/AntdTable'
+import AntdTable from '@grid/table/src/AntdTable'
 import type { ColumnType } from '@grid/table/src/plugins/data/type'
 import { Space, Tag } from 'antd'
+
 const columns: ColumnType[] = [
   {
     title: 'Name',
     dataIndex: 'name',
-
+    width: 100,
     render: (text) => {
       return <a>{text}</a>
     },
   },
   {
     title: 'Age',
+    width: 40,
+    fixed: 'left',
     dataIndex: 'age',
   },
   {
     title: 'Address',
+    fixed: 'right',
+    width: 200,
     dataIndex: 'address',
   },
   {
     title: 'Tags',
     dataIndex: 'tags',
+    width: 300,
     render: (_, { tags }) => (
       <>
         {tags.map((tag) => {
@@ -39,6 +45,7 @@ const columns: ColumnType[] = [
   },
   {
     title: 'Action',
+    width: 200,
     render: (_, record) => (
       <Space size="middle">
         <a>
@@ -48,6 +55,52 @@ const columns: ColumnType[] = [
         <a>Delete</a>
       </Space>
     ),
+  },
+  {
+    title: 'column1',
+    width: 100,
+    fixed: 'right',
+    render(cellInfo, rowInfo, { rowId, columnId }) {
+      return (
+        <div>
+          {rowId}-{columnId}
+        </div>
+      )
+    },
+  },
+  {
+    title: 'column2',
+    width: 100,
+    render(cellInfo, rowInfo, { rowId, columnId }) {
+      return (
+        <div>
+          {rowId}-{columnId}
+        </div>
+      )
+    },
+  },
+  {
+    title: 'column3',
+    width: 100,
+    fixed: 'left',
+    render(cellInfo, rowInfo, { rowId, columnId }) {
+      return (
+        <div>
+          {rowId}-{columnId}
+        </div>
+      )
+    },
+  },
+  {
+    title: 'column4',
+    width: 100,
+    render(cellInfo, rowInfo, { rowId, columnId }) {
+      return (
+        <div>
+          {rowId}-{columnId}
+        </div>
+      )
+    },
   },
 ]
 const data = [
@@ -75,7 +128,15 @@ const data = [
 ]
 
 export function AntdTableDemo() {
-  return <AntdTable columns={columns} dataSource={data} />
+  return (
+    <div
+      style={{
+        width: 800,
+      }}
+    >
+      <AntdTable columns={columns} dataSource={data} />
+    </div>
+  )
 }
 
 export default AntdTableDemo

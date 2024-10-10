@@ -1,8 +1,8 @@
-import type { Position } from '@grid-table/core'
+import type { ColumnId, RowId } from '@grid-table/basic/src'
 
-const connectKey = '-'
-export function getCellId({ rowIndex, columnIndex }: Position) {
-  return `${rowIndex}${connectKey}${columnIndex}`
+const connectKey = '||'
+export function getCellId({ rowId, columnId }: { rowId: RowId; columnId: ColumnId }) {
+  return `${rowId}${connectKey}${columnId}`
 }
 
 export function getRowIndexByCellId(cellId: string) {

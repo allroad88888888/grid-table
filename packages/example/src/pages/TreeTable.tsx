@@ -1,4 +1,4 @@
-import AntdTable from '@grid/table/src/antd/AntdTable'
+import AntdTable from '@grid/table/src/AntdTable'
 import type { ColumnType } from '@grid/table/src/plugins/data/type'
 import { Space, Tag } from 'antd'
 

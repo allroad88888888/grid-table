@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "es",
+    "declarationDir": "@types",
+    "declarationMap": true
+  },
+  "include": ["./src/**/*", "rollup.config.mjs"],
+  "references": [
+    {
+      "path": "./../core/tsconfig.json"
+    }
+  ]
+}

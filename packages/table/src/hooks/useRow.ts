@@ -1,10 +1,10 @@
 import { useAtomValue } from 'einfach-state'
 import type { RowProps } from '@grid-table/core'
 import type { CSSProperties } from 'react'
-import { useBasic } from '../basic'
+import { useBasic } from '@grid-table/basic/src'
 
 export function useRow({ rowIndex, style }: RowProps) {
-  const { store, rowIndexListAtom, getRowStateAtomByIndex } = useBasic()
+  const { store, rowIndexListAtom, getRowStateAtomById: getRowStateAtomByIndex } = useBasic()
   const rowList = useAtomValue(rowIndexListAtom, { store })
   const gridRowIndex = rowList[rowIndex]
   const { style: rowStyle = {}, className } = useAtomValue(getRowStateAtomByIndex(gridRowIndex), {

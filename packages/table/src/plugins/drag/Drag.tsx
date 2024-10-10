@@ -1,3 +1,4 @@
+import type { ColumnId } from '@grid-table/basic/src'
 import './Drag.css'
 import type { UseDragProps } from './useDrag'
 import { useDrag, useDrayItem } from './useDrag'
@@ -18,10 +19,10 @@ export function DragLine(props: UseDragProps) {
 }
 
 interface ColumnDragItemProps {
-  columnIndex: number
+  columnId: ColumnId
 }
 
-export function ColumnDragItem({ columnIndex }: ColumnDragItemProps) {
-  const { mousedown } = useDrayItem(columnIndex)
+export function ColumnDragItem({ columnId }: ColumnDragItemProps) {
+  const { mousedown } = useDrayItem(columnId)
   return <div className="grid-table-drag-item" onMouseDown={mousedown} />
 }

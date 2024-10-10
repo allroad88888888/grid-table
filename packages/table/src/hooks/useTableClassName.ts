@@ -1,6 +1,6 @@
 import { useAtomValue } from 'einfach-state'
-import { useBasic } from '../basic'
 import { incrementAtom } from '../utils/incrementAtom'
+import { useBasic } from '@grid-table/basic/src'
 
 export const tableClassNameAtom = incrementAtom(new Set<string>())
 

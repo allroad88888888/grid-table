@@ -1,12 +1,12 @@
 import { atom, useAtomValue } from 'einfach-state'
-import { useInit } from 'einfach-utils'
 import { useLayoutEffect } from 'react'
-import { useBasic } from '../../basic'
 import { tableClassNameAtom } from '../../hooks'
+import type { ColumnId } from '@grid-table/basic/src'
+import { useBasic } from '@grid-table/basic/src'
 
-const selectColumnIndexAtom = atom<number | undefined>(undefined)
+const selectColumnIndexAtom = atom<ColumnId | undefined>(undefined)
 const firstEventAtom = atom<[number, number] | undefined>(undefined)
-const leftAtom = atom<number | undefined>(undefined)
+const leftAtom = atom<number | undefined>(0)
 
 const DragIngClassName = 'grid-drag-ing'
 
@@ -18,63 +18,34 @@ export interface UseDragProps {
   fixedWidth?: boolean
 }
 
-export function useDrag({ columnBaseSize, fixedWidth = false }: UseDragProps) {
-  const { store, columnSizeListAtom, columnIndexListAtom, resizeAtom } = useBasic()
-  const selectIndex = useAtomValue(selectColumnIndexAtom, { store })
+export function useDrag({ columnBaseSize = 40, fixedWidth = false }: UseDragProps) {
+  const { store, columnSizeMapAtom, resizeAtom } = useBasic()
+  const selectColumnId = useAtomValue(selectColumnIndexAtom, { store })
   const left = useAtomValue(leftAtom, { store })
 
   const { height } = useAtomValue(resizeAtom, { store })
 
-  const sizeMapAtom = useInit(() => {
-    return atom((getter) => {
-      const columnSizeMap = getter(columnSizeListAtom)
-      const columnList = getter(columnIndexListAtom)
-      const sizeMap: Map<number, number> = new Map()
-
-      let prevSize = 0
-      for (const columnIndex of columnList) {
-        prevSize += columnSizeMap[columnIndex]
-        sizeMap.set(columnIndex, prevSize)
-      }
-      return sizeMap
-    })
-  })
-
   useLayoutEffect(() => {
-    if (selectIndex === undefined) {
+    if (selectColumnId === undefined) {
       return
     }
 
-    const [firstX] = store.getter(firstEventAtom)!
-    const sizeMap = store.getter(sizeMapAtom)
-    const currentX = sizeMap.get(selectIndex)!
-    const tempColumnSize = store.getter(columnSizeListAtom)
-    const currentSize = tempColumnSize[selectIndex]
+    const [firstX, firstLeft] = store.getter(firstEventAtom)!
 
-    store.setter(leftAtom, currentX - 2)
+    const columnSizeMap = store.getter(columnSizeMapAtom)
 
-    function mouseup() {
-      if (store.getter(leftAtom) !== currentX - 2) {
-        store.setter(columnSizeListAtom, (getter, prevState) => {
-          const next = [...prevState]
-          const index = store.getter(selectColumnIndexAtom)!
-          const tLeft = store.getter(leftAtom)!
-          /**
-           * 计算宽度
-           */
-          const current = tempColumnSize[index]!
-          const tWidth = tLeft - sizeMap.get(index)! + currentSize
-          const realWidth = Math.floor(tWidth / columnBaseSize) * columnBaseSize
-          next.splice(index, 1, realWidth)
+    const currentWidth = columnSizeMap.get(selectColumnId) || 0
 
-          if (fixedWidth && index < sizeMap.size - 1) {
-            const nextWidth = current - realWidth + tempColumnSize[index + 1]!
-            next.splice(index + 1, 1, Math.ceil(nextWidth / columnBaseSize) * columnBaseSize)
-          }
-
-          return next
-        })
+    function mouseup(event: MouseEvent) {
+      if (!selectColumnId) {
+        return
       }
+      const nextSizeMap = new Map(columnSizeMap)
+      const mvLength = event.clientX - firstX
+      const nextWidth = Math.max(columnBaseSize, currentWidth + mvLength)
+      nextSizeMap.set(selectColumnId, nextWidth)
+
+      store.setter(columnSizeMapAtom, nextSizeMap)
 
       store.setter(selectColumnIndexAtom, undefined)
       store.setter(firstEventAtom, undefined)
@@ -88,7 +59,7 @@ export function useDrag({ columnBaseSize, fixedWidth = false }: UseDragProps) {
 
     function mouseMove(event: MouseEvent) {
       const mvLength = event.clientX - firstX
-      const tLeft = Math.max(currentX - currentSize + 40, currentX + mvLength)
+      const tLeft = Math.max(firstLeft - currentWidth + columnBaseSize, firstLeft + mvLength)
       store.setter(leftAtom, tLeft)
     }
     document.body.addEventListener('mousemove', mouseMove)
@@ -99,21 +70,22 @@ export function useDrag({ columnBaseSize, fixedWidth = false }: UseDragProps) {
       document.body.removeEventListener('mousemove', mouseMove)
       document.body.removeEventListener('mouseleave', mouseup)
     }
-  }, [selectIndex])
+  }, [selectColumnId])
 
   return {
-    selectIndex,
+    selectIndex: selectColumnId,
     left,
     height,
   }
 }
 
-export function useDrayItem(columnIndex: number) {
+export function useDrayItem(columnId: ColumnId) {
   const { store } = useBasic()
   function mousedown(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-    store.setter(selectColumnIndexAtom, columnIndex)
-    store.setter(firstEventAtom, [e.clientX, e.clientY])
-
+    store.setter(selectColumnIndexAtom, columnId)
+    const left = (e.target as HTMLDivElement).offsetLeft + 2
+    store.setter(leftAtom, left)
+    store.setter(firstEventAtom, [e.clientX, left])
     const next = new Set(store.getter(tableClassNameAtom))
     next.add(DragIngClassName)
     store.setter(tableClassNameAtom, next)

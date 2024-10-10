@@ -1,9 +1,11 @@
 import { useLayoutEffect } from 'react'
-import type { ColumnType } from '../data/type'
-import { useData } from '../data'
 import { atom, useAtom } from 'einfach-state'
 import { useInit } from 'einfach-utils'
 import './useRowSelection.css'
+import type { PositionId, RowId } from '@grid-table/basic/src'
+import { getIdByObj } from '@grid-table/basic/src'
+import { useData } from '../../core'
+import type { ColumnType } from '../../types'
 
 // import { getChildrenNodeList } from '../data/tree'
 
@@ -17,43 +19,43 @@ export interface UseRowSelectionProps
  * @param props
  */
 export function useRowSelection(props: UseRowSelectionProps | undefined) {
-  const { store, columnOptionsAtom } = useData()
+  const { store, getColumnOptionAtomByColumnId } = useData()
   useLayoutEffect(() => {
     if (!props) {
       return
     }
+    const option: ColumnType = {
+      title: props.title,
+      width: props.width,
+      render: props.render || render,
+      fixed: props.fixed,
+    }
 
-    return store.setter(columnOptionsAtom, (_getter, prev) => {
-      const option: ColumnType = {
-        title: props.title,
-        width: props.width,
-        render: props.render || render,
-        fixed: props.fixed,
-      }
-      return [option, ...prev]
-    })
+    const columnId = getIdByObj(option)
+
+    return store.setter(getColumnOptionAtomByColumnId(columnId), option)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 }
 
-function render(text: string | undefined, rowInfo: Record<string, any>, rowPath: string) {
-  return <Checkbox rowPath={rowPath} />
+function render(text: string | undefined, rowInfo: Record<string, any>, rowPath: PositionId) {
+  return <Checkbox {...rowPath} />
 }
 
-const nodeSelectionSetAtom = atom<Set<string>>(new Set<string>())
+const nodeSelectionSetAtom = atom<Set<RowId>>(new Set<RowId>())
 
-export function Checkbox({ rowPath }: { rowPath: string }) {
+export function Checkbox({ rowId }: PositionId) {
   const checkedAtom = useInit(() => {
     return atom(
       (getter) => {
         const nodeSelectionMap = getter(nodeSelectionSetAtom)
-        return nodeSelectionMap.has(rowPath)
+        return nodeSelectionMap.has(rowId)
       },
-      (getter, setter, rowPath: string) => {
+      (getter, setter, rowPath: RowId) => {
         // const relation = getter(relationAtom)
         const nodeSelectionMap = new Set(getter(nodeSelectionSetAtom))
 
-        function checkedNode(node: string) {
+        function checkedNode(node: RowId) {
           if (nodeSelectionMap.has(node)) {
             nodeSelectionMap.delete(node)
           } else {
@@ -71,7 +73,7 @@ export function Checkbox({ rowPath }: { rowPath: string }) {
         setter(nodeSelectionSetAtom, nodeSelectionMap)
       },
     )
-  }, [rowPath])
+  }, [rowId])
   const [isChecked, handChecked] = useAtom(checkedAtom)
 
   // const [isChecked,setChecked] = useState()
@@ -82,7 +84,7 @@ export function Checkbox({ rowPath }: { rowPath: string }) {
         checked={isChecked}
         className={'grid-table-row-selection-item'}
         onChange={() => {
-          handChecked(rowPath)
+          handChecked(rowId)
         }}
       />
     </>

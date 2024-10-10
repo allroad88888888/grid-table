@@ -1,11 +1,11 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { atom, useAtomValue } from 'einfach-state'
-import { useBasic } from '../../basic'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
 import { cellDownAtom, cellUpAtom } from '../areaSelected'
 import type { Area } from '../areaSelected/type'
 import { getCellId } from '../../utils/getCellId'
+import { useBasic } from '@grid-table/basic/src'
 
 interface Props {
   getDataByArea?: (area: Area) => string
@@ -28,13 +28,10 @@ export const copyAreaAtom = atom<Area>({
  * @returns
  */
 export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
-  const { store, getCellStateAtomById, rowIndexListAtom, columnIndexListAtom } = useBasic()
+  const { store, getCellStateAtomById, rowIdShowListAtom, columnIdShowListAtom } = useBasic()
 
   const down = useAtomValue(cellDownAtom, { store })
   const up = useAtomValue(cellUpAtom, { store })
-
-  const rowIndexList = useAtomValue(rowIndexListAtom, { store })
-  const columnIndexList = useAtomValue(columnIndexListAtom, { store })
 
   const onCopy = useCallback(
     (e: React.ClipboardEvent<HTMLDivElement>) => {
@@ -93,11 +90,14 @@ export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
       return
     }
     const cancelList: (() => void)[] = []
+
+    const rowIndexList = store.getter(rowIdShowListAtom)
+    const columnIndexList = store.getter(columnIdShowListAtom)
     for (let j = rowStartIndex; j <= rowEndIndex; j += 1) {
       for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
         const cellId = getCellId({
-          rowIndex: rowIndexList[j],
-          columnIndex: columnIndexList[i],
+          rowId: rowIndexList[j],
+          columnId: columnIndexList[i],
         })
 
         cancelList.push(

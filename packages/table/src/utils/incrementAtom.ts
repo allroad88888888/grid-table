@@ -1,5 +1,11 @@
-import type { Getter, Read, Setter } from 'einfach-state'
+import type { Getter, Read, Setter, WritableAtom } from 'einfach-state'
 import { atom } from 'einfach-state'
+
+export type IncrementAtom<T> = WritableAtom<
+  T,
+  [read: T | ((getter: Getter, prev: T) => T)],
+  (() => void) | undefined
+>
 
 export function incrementAtom<T>(initState: T | Read<T>) {
   type ReadFn = (getter: Getter, prev: T) => T

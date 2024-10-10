@@ -1,31 +1,30 @@
 import { useCallback, useLayoutEffect } from 'react'
 import { useAtomValue, atom } from 'einfach-state'
-import { useBasic } from '../../basic'
 import { tableClassNameAtom } from '../../hooks'
 import './AreaSelected.css'
-import type { Position } from '@grid-table/core'
 import { getCellId } from '../../utils/getCellId'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
+import type { PositionId } from '@grid-table/basic/src'
+import { useBasic } from '@grid-table/basic/src'
 
-const emptyPosition: Position = {
-  rowIndex: -1,
+const emptyPosition: PositionId = {
+  rowId: -1,
+  columnId: -1,
   columnIndex: -1,
+  rowIndex: -1,
 }
-export const cellDownAtom = atom<Position>(emptyPosition)
-export const cellUpAtom = atom<Position>(emptyPosition)
+export const cellDownAtom = atom<PositionId>(emptyPosition)
+export const cellUpAtom = atom<PositionId>(emptyPosition)
 const isTouchAtom = atom<boolean>(false)
 
 export function useAreaSelected() {
-  const { store, cellEventsAtom, getCellStateAtomById, rowIndexListAtom, columnIndexListAtom } =
+  const { store, cellEventsAtom, getCellStateAtomById, rowIdShowListAtom, columnIdShowListAtom } =
     useBasic()
 
   const onMouseDown = useCallback(
-    (position: Position, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    (position: PositionId, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (e.button === 0) {
-        store.setter(cellDownAtom, {
-          rowIndex: position.rowIndex,
-          columnIndex: position.columnIndex,
-        })
+        store.setter(cellDownAtom, position)
         store.setter(cellUpAtom, emptyPosition)
         store.setter(isTouchAtom, true)
       }
@@ -34,27 +33,25 @@ export function useAreaSelected() {
   )
 
   const onMouseUp = useCallback(
-    (position: Position, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    (position: PositionId, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       store.setter(isTouchAtom, false)
     },
     [store],
   )
 
   const onMouseEnter = useCallback(
-    (position: Position, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    (position: PositionId, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const isTouch = store.getter(isTouchAtom)
 
       if (!isTouch) {
         return
       }
+
       if (e.buttons === 1) {
-        if (down.columnIndex === position.columnIndex && down.rowIndex === position.rowIndex) {
+        if (down.columnId === position.columnId && down.rowId === position.rowId) {
           return
         }
-        store.setter(cellUpAtom, {
-          rowIndex: position.rowIndex,
-          columnIndex: position.columnIndex,
-        })
+        store.setter(cellUpAtom, position)
       }
     },
     [store],
@@ -69,18 +66,19 @@ export function useAreaSelected() {
     const columnStartIndex = Math.min(up.columnIndex, down.columnIndex)
     const columnEndIndex = Math.max(up.columnIndex, down.columnIndex)
 
-    const rowIndexList = store.getter(rowIndexListAtom)
-    const columnIndexList = store.getter(columnIndexListAtom)
+    const rowIndexList = store.getter(rowIdShowListAtom)
+    const columnIndexList = store.getter(columnIdShowListAtom)
 
     if (rowStartIndex === -1 || columnStartIndex === -1) {
       return
     }
+
     const cancelList: (() => void)[] = []
     for (let j = rowStartIndex; j <= rowEndIndex; j += 1) {
       for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
         const cellId = getCellId({
-          rowIndex: rowIndexList[j],
-          columnIndex: columnIndexList[i],
+          rowId: rowIndexList[j],
+          columnId: columnIndexList[i],
         })
 
         cancelList.push(

@@ -8,7 +8,7 @@ import Copy from './pages/Copy'
 import AntdTable from './pages/AntdTable'
 import TreeTable from './pages/TreeTable'
 
-export const currentRouterAtom = atom('index')
+export const currentRouterAtom = atom('/antd')
 
 export function Empty() {
   return <div>empty</div>
@@ -21,26 +21,26 @@ export const RouterMapping: Record<
     label: string
   }
 > = {
-  '/list': {
-    component: DemoList,
-    label: '列表',
-  },
-  '/basicTable': {
-    component: BasicTable,
-    label: '基础表格',
-  },
-  '/table': {
-    component: Table,
-    label: '表格',
-  },
-  '/atom': {
-    component: Atom,
-    label: '表格',
-  },
-  '/copy': {
-    component: Copy,
-    label: '复制',
-  },
+  // '/list': {
+  //   component: DemoList,
+  //   label: '列表',
+  // },
+  // '/basicTable': {
+  //   component: BasicTable,
+  //   label: '基础表格',
+  // },
+  // '/table': {
+  //   component: Table,
+  //   label: '表格',
+  // },
+  // '/atom': {
+  //   component: Atom,
+  //   label: '表格',
+  // },
+  // '/copy': {
+  //   component: Copy,
+  //   label: '复制',
+  // },
   '/antd': {
     component: AntdTable,
     label: 'antd-table',
