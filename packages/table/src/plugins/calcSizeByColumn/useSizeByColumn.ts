@@ -20,23 +20,29 @@ export function useCellSizeByColumn(props: UseSizeByColumnProps) {
   const { rowHeight, columnMinWidth = 25, wrapWidth, columns } = props
   const { store, columnIdShowListAtom, columnSizeMapAtom } = useBasic()
 
+  /**
+   * 监听columns变动
+   */
   useLayoutEffect(() => {
-    const nextMap = new Map<ColumnId, number>()
+    const nextMap = new Map<ColumnId, number>(store.getter(columnSizeMapAtom))
     columns.forEach((column) => {
-      // if (!('width' in column)) {
-      //   return
-      // }
       const columnId = getIdByObj(column)
+      if (nextMap.has(columnId)) {
+        return
+      }
       nextMap.set(columnId, column.width || columnMinWidth)
     })
     store.setter(columnSizeMapAtom, nextMap)
   }, [columns, columnMinWidth, store, columnSizeMapAtom])
 
+  /**
+   * 监听 容器宽度
+   */
   useLayoutEffect(() => {
     if (wrapWidth <= 0) {
       return
     }
-    return store.setter(columnSizeMapAtom, (_getter, prevColumns) => {
+    return store.setter(columnSizeMapAtom, (prevColumns) => {
       let remainingLength = wrapWidth - 2
       let hasPropWidthLength = 0
 
@@ -45,9 +51,7 @@ export function useCellSizeByColumn(props: UseSizeByColumnProps) {
         remainingLength -= width!
       }
 
-      const columnShowIdList = _getter(columnIdShowListAtom)
-
-      columnShowIdList
+      const columnShowIdList = store.getter(columnIdShowListAtom)
 
       const emptyWidthLength = columnShowIdList.length - hasPropWidthLength
       let autoItemWidth = columnMinWidth

@@ -18,7 +18,7 @@ export interface UseRowSelectionProps
  * @param props
  */
 export function useRowSelection(props: UseRowSelectionProps | undefined) {
-  const { columnIndexListAtom } = useBasic()
+  const { columnIndexListAtom, columnSizeMapAtom } = useBasic()
   const { store, getColumnOptionAtomByColumnId } = useData()
   useLayoutEffect(() => {
     if (!props) {
@@ -34,7 +34,15 @@ export function useRowSelection(props: UseRowSelectionProps | undefined) {
     const columnId = getIdByObj(option)
 
     store.setter(getColumnOptionAtomByColumnId(columnId), option)
-    store.setter(columnIndexListAtom, (getter, prev) => {
+    if (props.width) {
+      store.setter(columnSizeMapAtom, (prev) => {
+        const next = new Map(prev)
+        next.set(columnId, props.width!)
+        return next
+      })
+    }
+
+    store.setter(columnIndexListAtom, (prev) => {
       return [columnId, ...prev]
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -8,7 +8,7 @@ import Copy from './pages/Copy'
 import AntdTable from './pages/AntdTable'
 import TreeTable from './pages/TreeTable'
 
-export const currentRouterAtom = atom('/antd')
+export const currentRouterAtom = atom('/tree')
 
 export function Empty() {
   return <div>empty</div>

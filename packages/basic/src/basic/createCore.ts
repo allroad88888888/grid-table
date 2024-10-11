@@ -20,14 +20,14 @@ export function createCore() {
   /**
    * 列 id list
    */
-  const columnIndexListAtom = incrementAtom<ColumnId[]>([])
+  const columnIndexListAtom = atom<ColumnId[]>([])
   /**
    * 行 id list
    */
-  const rowIndexListAtom = incrementAtom<RowId[]>([])
+  const rowIndexListAtom = atom<RowId[]>([])
 
-  const columnSizeMapAtom = incrementAtom(new Map<ColumnId, number>())
-  const rowSizeMapAtom = incrementAtom(new Map<RowId, number>())
+  const columnSizeMapAtom = atom(new Map<ColumnId, number>())
+  const rowSizeMapAtom = atom(new Map<RowId, number>())
 
   /**
    * 展示列 id list
