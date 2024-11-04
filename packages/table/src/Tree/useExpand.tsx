@@ -1,12 +1,11 @@
 import { atom, useAtom, useAtomValue } from 'einfach-state'
-import { useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 import clsx from 'clsx'
 import './useExpand.css'
-
 import { getChildrenNodeList } from './utils'
-import type { PositionId, RowId } from '@grid-table/basic/src'
-import { useBasic } from '@grid-table/basic/src'
-import { useData } from '../core'
+import type { PositionId, RowId } from '@grid-table/basic'
+import { useBasic } from '@grid-table/basic'
+import { useData } from '../core/useData'
 
 /**
  * 收缩列有哪些
@@ -19,7 +18,7 @@ export function useExpand({}: UseExpandProps = {}) {
   const { store, rowIdShowListAtom } = useBasic()
   const { relationAtom, root } = useData()
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     return store.setter(rowIdShowListAtom, (_getter, prev) => {
       const collapseNodeList = _getter(collapseNodeListAtom)
       const relation = _getter(relationAtom)
@@ -28,7 +27,7 @@ export function useExpand({}: UseExpandProps = {}) {
     })
   }, [relationAtom, root, rowIdShowListAtom, store])
 
-  // useLayoutEffect(() => {
+  // useEffect(() => {
   //   return store.setter(rowCountAtom, (_getter, prev) => {
   //     const showPathList = _getter(showPathListAtom)
   //     return showPathList.length

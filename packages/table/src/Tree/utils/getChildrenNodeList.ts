@@ -1,4 +1,4 @@
-import type { RowId } from '@grid-table/basic/src'
+import type { RowId } from '@grid-table/basic'
 
 interface Option {
   /**

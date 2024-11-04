@@ -3,7 +3,7 @@ import type { CellProps } from '@grid-table/core'
 import { useMemo, type CSSProperties } from 'react'
 
 import { getCellId } from '../utils/getCellId'
-import { useBasic } from '@grid-table/basic/src'
+import { useBasic } from '@grid-table/basic'
 
 export function useCell({ rowIndex, columnIndex, style }: CellProps) {
   const {
@@ -36,6 +36,8 @@ export function useCell({ rowIndex, columnIndex, style }: CellProps) {
         rowId,
         columnId,
         cellId,
+        // className: '',
+        // style: '',
         style: {
           ...columnStyle,
           ...selfStyle,

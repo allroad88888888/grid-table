@@ -1,6 +1,6 @@
 import type { CellProps } from '@grid-table/core'
 import { useCell, useCellEvents } from '../../hooks'
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import clsx from 'clsx'
 import { easyGet } from 'einfach-utils'
 import { useExpandItem } from '../../Tree'
@@ -8,7 +8,7 @@ import { useColumnOption } from '../../hooks/useColumnOption'
 import { useRowInfo } from '../../hooks/useRowInfo'
 import './Cell.css'
 
-export function DataCell(props: CellProps) {
+export const DataCell = memo(function DataCell(props: CellProps) {
   const { rowId, columnId, style, className } = useCell(props)
   const events = useCellEvents({
     rowId,
@@ -36,7 +36,8 @@ export function DataCell(props: CellProps) {
     return easyGet(rowInfo, columnOption.dataIndex)
   }, [columnOption.dataIndex, rowInfo])
 
-  const { render } = columnOption
+  const { render, renderComponent } = columnOption
+
   const children = useMemo(() => {
     if (render) {
       return render(cellVal, rowInfo as unknown as Record<string, any>, {
@@ -49,6 +50,8 @@ export function DataCell(props: CellProps) {
     return cellVal
   }, [render, cellVal, rowInfo, rowId, columnId, props.rowIndex, props.columnIndex])
 
+  const RenderComponent = renderComponent
+
   return (
     <div
       style={style}
@@ -56,7 +59,20 @@ export function DataCell(props: CellProps) {
       {...events}
     >
       {expendDom}
-      {children}
+      {RenderComponent ? (
+        <RenderComponent
+          text={cellVal}
+          rowInfo={rowInfo!}
+          param={{
+            rowId,
+            columnId,
+            columnIndex: props.columnIndex,
+            rowIndex: props.rowIndex,
+          }}
+        />
+      ) : (
+        children
+      )}
     </div>
   )
-}
+})

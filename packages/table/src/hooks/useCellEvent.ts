@@ -1,7 +1,7 @@
 import { useAtomValue } from 'einfach-state'
 import { useMemo } from 'react'
-import type { EventsCellSet, EventsItem, PositionId } from '@grid-table/basic/src'
-import { useBasic } from '@grid-table/basic/src'
+import type { EventsCellSet, EventsItem, PositionId } from '@grid-table/basic'
+import { useBasic } from '@grid-table/basic'
 
 export function useCellEvents(position: PositionId) {
   const { store, cellEventsAtom } = useBasic()
@@ -14,10 +14,13 @@ export function useCellEvents(position: PositionId) {
     tempList.map((key) => {
       eventObj[key] = (e) => {
         events[key].forEach((event) => {
+          // @ts-ignore
           event(position, e)
         })
       }
     })
     return eventObj
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events, position.rowId, position.columnId])
 }

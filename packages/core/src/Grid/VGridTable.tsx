@@ -26,7 +26,7 @@ export function VGridTable(props: VGridTableProps) {
     theadCellComponent,
     theadRowCalcSize: theadRowSize,
     theadBaseSize = 1,
-    theadClass,
+    theadClassName: theadClass,
   } = props
 
   const { onResize } = props
@@ -88,6 +88,8 @@ export function VGridTable(props: VGridTableProps) {
 
   const Empty = props.emptyComponent || Fragment
 
+  const Loading = props.loadingComponent || Fragment
+
   const $headRows: ReactNode[] = []
 
   const theadHeight = useMemo(() => {
@@ -141,7 +143,9 @@ export function VGridTable(props: VGridTableProps) {
       <div role="thead" className={theadClass}>
         {$headRows}
       </div>
-      {rowIndexList.length === 0 ? (
+      {props.loading ? (
+        <Loading />
+      ) : rowIndexList.length === 0 ? (
         <Empty />
       ) : (
         <div

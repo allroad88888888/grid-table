@@ -20,10 +20,10 @@
   "dependencies": {
     "@grid-table/core": "workspace:*",
     "@grid-table/basic": "workspace:*",
-    "@grid/table": "workspace:*",
+    "@grid-table/view": "workspace:*",
     "antd": "^5.20.2",
-    "einfach-state": "^0.6.7",
-    "einfach-utils": "^0.5.2",
+    "einfach-state": "^0.8.0",
+    "einfach-utils": "^0.5.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   }

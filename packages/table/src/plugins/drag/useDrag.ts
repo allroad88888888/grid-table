@@ -1,8 +1,8 @@
 import { atom, useAtomValue } from 'einfach-state'
-import { useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 import { tableClassNameAtom } from '../../hooks'
-import type { ColumnId } from '@grid-table/basic/src'
-import { useBasic } from '@grid-table/basic/src'
+import type { ColumnId } from '@grid-table/basic'
+import { useBasic } from '@grid-table/basic'
 
 const selectColumnIndexAtom = atom<ColumnId | undefined>(undefined)
 const firstEventAtom = atom<[number, number] | undefined>(undefined)
@@ -11,21 +11,21 @@ const leftAtom = atom<number | undefined>(0)
 const DragIngClassName = 'grid-drag-ing'
 
 export interface UseDragProps {
-  columnBaseSize: number
+  dragColumnMinSize?: number
   /**
    * 是否固定宽度
    */
   fixedWidth?: boolean
 }
 
-export function useDrag({ columnBaseSize = 40, fixedWidth = false }: UseDragProps) {
+export function useDrag({ dragColumnMinSize = 40, fixedWidth = false }: UseDragProps) {
   const { store, columnSizeMapAtom, resizeAtom } = useBasic()
   const selectColumnId = useAtomValue(selectColumnIndexAtom, { store })
   const left = useAtomValue(leftAtom, { store })
 
   const { height } = useAtomValue(resizeAtom, { store })
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (selectColumnId === undefined) {
       return
     }
@@ -42,7 +42,7 @@ export function useDrag({ columnBaseSize = 40, fixedWidth = false }: UseDragProp
       }
       const nextSizeMap = new Map(columnSizeMap)
       const mvLength = event.clientX - firstX
-      const nextWidth = Math.max(columnBaseSize, currentWidth + mvLength)
+      const nextWidth = Math.max(dragColumnMinSize, currentWidth + mvLength)
       nextSizeMap.set(selectColumnId, nextWidth)
 
       store.setter(columnSizeMapAtom, nextSizeMap)
@@ -59,7 +59,8 @@ export function useDrag({ columnBaseSize = 40, fixedWidth = false }: UseDragProp
 
     function mouseMove(event: MouseEvent) {
       const mvLength = event.clientX - firstX
-      const tLeft = Math.max(firstLeft - currentWidth + columnBaseSize, firstLeft + mvLength)
+
+      const tLeft = Math.max(firstLeft - currentWidth + dragColumnMinSize, firstLeft + mvLength)
       store.setter(leftAtom, tLeft)
     }
     document.body.addEventListener('mousemove', mouseMove)

@@ -1,1 +1,1 @@
-export * from './createAtomFamily'
+export * from './memoize'

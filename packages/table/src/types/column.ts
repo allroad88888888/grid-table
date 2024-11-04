@@ -1,9 +1,9 @@
-import type { PositionId } from '@grid-table/basic/src'
-import type { ReactNode } from 'react'
+import type { PositionId } from '@grid-table/basic'
+import type { ComponentType, ReactNode } from 'react'
 
 export type Align = 'left' | 'right' | 'center'
 
-export interface ColumnType {
+export interface ColumnType<ItemInfo = Record<string, any>> {
   /**
    * @default
    * left
@@ -14,7 +14,12 @@ export interface ColumnType {
    * for copy pasted
    */
   dataIndex?: string | string[]
-  render?: (text: string | undefined, rowInfo: Record<string, any>, param: PositionId) => ReactNode
+  renderComponent?: ComponentType<{
+    text: string | undefined
+    rowInfo: ItemInfo
+    param: PositionId
+  }>
+  render?: (text: string | undefined, rowInfo: ItemInfo, param: PositionId) => ReactNode
 
   fixed?: 'left' | 'right'
 

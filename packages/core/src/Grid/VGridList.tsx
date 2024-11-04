@@ -31,7 +31,6 @@ export function VGridList(props: VGridListProps) {
         key={index}
         index={index}
         style={{
-          border: '1px solid red',
           gridColumnStart: 1,
           gridColumnEnd: 1,
           gridRowStart: sizeList[index] / baseSize + 1,

@@ -1,10 +1,10 @@
 import type { CSSProperties } from 'react'
-import { useEffect, useLayoutEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import type { AtomEntity } from 'einfach-state'
 import { atom, useAtomValue } from 'einfach-state'
 import { useMethods, useInit } from 'einfach-utils'
-import type { ColumnId, RowId } from '@grid-table/basic/src'
-import { useBasic } from '@grid-table/basic/src'
+import type { ColumnId, RowId } from '@grid-table/basic'
+import { useBasic } from '@grid-table/basic'
 
 export interface useStickyProps {
   topIndexList?: RowId[]
@@ -86,7 +86,7 @@ export function useSticky(props: useStickyProps = {}) {
     setter(topAtom, topIndexList)
   }, [bottomIndexList, topIndexList])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (fixed === false) {
       return
     }
@@ -163,10 +163,10 @@ export function useSticky(props: useStickyProps = {}) {
     },
   })
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     return todo(`${direction}Top`, [...topIndexList])
   }, [topIndexList])
-  useLayoutEffect(() => {
+  useEffect(() => {
     return todo(`${direction}Bottom`, [...bottomIndexList])
   }, [bottomIndexList])
 

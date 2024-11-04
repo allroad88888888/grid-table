@@ -1,4 +1,4 @@
-import type { ColumnId } from '@grid-table/basic/src'
+import type { ColumnId } from '@grid-table/basic'
 import { useAtomValue } from 'einfach-state'
 import { useData } from '../core'
 

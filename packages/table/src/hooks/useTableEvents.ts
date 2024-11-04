@@ -1,9 +1,7 @@
-import { useAtomValue } from 'einfach-state'
-
-import { incrementAtom } from '../utils/incrementAtom'
+import { incrementAtom, useAtomValue } from 'einfach-state'
 import type {} from 'einfach-state'
 import { useMemo } from 'react'
-import type { EventsItem, EventsSet } from '@grid-table/basic/src'
+import type { EventsItem, EventsSet } from '@grid-table/basic'
 
 export const tableEventsAtom = incrementAtom({} as EventsSet)
 

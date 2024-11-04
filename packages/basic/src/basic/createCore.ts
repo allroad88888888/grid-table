@@ -1,4 +1,5 @@
-import { createStore, atom } from 'einfach-state'
+import type { Store } from 'einfach-state'
+import { createStore, atom, incrementAtom } from 'einfach-state'
 import { createAtomFamilyEntity } from '../utils/createAtomFamily'
 import type {
   CellId,
@@ -10,11 +11,8 @@ import type {
   RowItemState,
 } from './type'
 import type { ResizeParam } from '@grid-table/core'
-import { incrementAtom } from '../utils/incrementAtom'
 
-export function createCore() {
-  const store = createStore()
-
+export function createCore(store: Store = createStore()) {
   const { createAtomFamily, clear } = createAtomFamilyEntity()
 
   /**

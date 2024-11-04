@@ -1,4 +1,4 @@
-import type { ColumnId, RowId } from '@grid-table/basic/src'
+import type { ColumnId, RowId } from '@grid-table/basic'
 
 const connectKey = '||'
 export function getCellId({ rowId, columnId }: { rowId: RowId; columnId: ColumnId }) {

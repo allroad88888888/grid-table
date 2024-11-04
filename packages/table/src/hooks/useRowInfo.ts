@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { atom, useAtomValue } from 'einfach-state'
-import type { RowId } from '@grid-table/basic/src'
-import { useBasic } from '@grid-table/basic/src'
+import type { RowId } from '@grid-table/basic'
+import { useBasic } from '@grid-table/basic'
 import { useData } from '../core'
 
 export function useRowInfo({ rowIndex }: { rowIndex: number }) {

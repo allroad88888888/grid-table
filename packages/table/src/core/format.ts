@@ -1,21 +1,9 @@
 import type { DataContextType } from './createDataContext'
-import type { DataItem, UseDataProps } from '../types'
+import type { ColumnType, DataItem, UseDataProps } from '../types'
 import { ROOT } from '../utils/const'
-import { getIdByObj } from '@grid-table/basic/src'
+import { getIdByObj } from '@grid-table/basic'
 
-export function format<ItemInfo extends DataItem>(
-  props: Pick<UseDataProps<ItemInfo>, 'dataSource' | 'columns' | 'idProp' | 'parentProp' | 'root'>,
-  context: DataContextType,
-) {
-  const { dataSource, columns } = props
-  const { idProp, parentProp, root = ROOT } = props
-  const { getRowInfoAtomByRowId: getRowInfoByPath } = context
-
-  const relation = new Map<string, string[]>()
-  relation.set(root, [])
-
-  const infoMap = new Map<string, Record<string, any>>()
-
+export function columnInit(columns: ColumnType[]) {
   const columnIdList: string[] = []
   const columnMap = new Map()
   columns.forEach((column) => {
@@ -23,6 +11,25 @@ export function format<ItemInfo extends DataItem>(
     columnIdList.push(columnId)
     columnMap.set(columnId, column)
   })
+
+  return {
+    columnMap,
+    columnIdList,
+  }
+}
+
+export function format<ItemInfo extends DataItem>(
+  props: Pick<UseDataProps<ItemInfo>, 'dataSource' | 'idProp' | 'parentProp' | 'root'>,
+  context: DataContextType,
+) {
+  const { dataSource } = props
+  const { idProp, parentProp, root = ROOT } = props
+  const { getRowInfoAtomByRowId: getRowInfoByPath } = context
+
+  const relation = new Map<string, string[]>()
+  relation.set(root, [])
+
+  const infoMap = new Map<string, Record<string, any>>()
 
   dataSource.forEach((rowInfo, rowIndex) => {
     const path = idProp ? rowInfo[idProp] : `${rowIndex}`
@@ -48,7 +55,7 @@ export function format<ItemInfo extends DataItem>(
       const childrenPathList: string[] = []
       pathRelation.set(parentPath ? parentPath : root, childrenPathList)
       children.forEach((cId) => {
-        const cPath = `${parentPath}/${cId}`
+        const cPath = `${parentPath ? `${parentPath}/` : ''}${cId}`
         levelMap.set(cPath, level)
         pathList.push(cPath)
         getRowInfoByPath(cPath, infoMap.get(cId))
@@ -64,7 +71,5 @@ export function format<ItemInfo extends DataItem>(
     showPathList: pathList,
     isTree: !!parentProp,
     levelMap,
-    columnMap,
-    columnIdList,
   }
 }

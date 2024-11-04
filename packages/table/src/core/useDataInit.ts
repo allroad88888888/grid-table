@@ -1,9 +1,9 @@
-import { useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 import { useAtomValue } from 'einfach-state'
 import type { DataItem, UseDataProps } from '../types'
 import { useData } from './useData'
-import { format } from './format'
-import { useBasic } from '@grid-table/basic/src'
+import { columnInit, format } from './format'
+import { useBasic } from '@grid-table/basic'
 import { useExpand } from '../Tree'
 
 export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemInfo>) {
@@ -21,38 +21,48 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
   const { clear, loadingAtom, relationAtom, root, nodeLevelAtom, getColumnOptionAtomByColumnId } =
     dataCore
   const loading = useAtomValue(loadingAtom)
+  /**
+   * 列配置项处理
+   */
+  useEffect(() => {
+    const { columnMap, columnIdList } = columnInit(columns)
 
-  useLayoutEffect(() => {
+    /**
+     * 树形处理
+     */
+    const hasTreeExpand = columns.every((column) => {
+      return !column.enabledExpand
+    })
+    if (hasTreeExpand) {
+      columns[0].enabledExpand = true
+    }
+
+    for (const [columnId, columnOption] of columnMap) {
+      getColumnOptionAtomByColumnId(columnId, columnOption)
+    }
+
+    store.setter(columnIndexListAtom, columnIdList)
+  }, [columnIndexListAtom, columns, getColumnOptionAtomByColumnId, props.columns, store])
+
+  /**
+   * 数据处理
+   */
+  useEffect(() => {
     store.setter(loadingAtom, true)
-    const { showPathList, relation, levelMap, columnMap, columnIdList } = format(
+    const { showPathList, relation, levelMap } = format(
       {
         dataSource,
-        columns,
         idProp: props.idProp,
         parentProp: props.parentProp,
         root,
       },
       dataCore,
     )
-    for (const [columnId, columnOption] of columnMap) {
-      getColumnOptionAtomByColumnId(columnId, columnOption)
-    }
-
-    const hasTreeExpand = columns.every((column) => {
-      return !column.enabledExpand
-    })
-
-    if (hasTreeExpand) {
-      columns[0].enabledExpand = true
-    }
 
     store.setter(relationAtom, relation)
     store.setter(rowIndexListAtom, showPathList)
-    store.setter(columnIndexListAtom, columnIdList)
     store.setter(nodeLevelAtom, levelMap)
     store.setter(loadingAtom, false)
-
-    return clear
   }, [
     clear,
     columnIndexListAtom,
@@ -72,7 +82,7 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
     store,
   ])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const clearList: (() => void)[] = []
     columns.forEach((column, colIndex) => {
       clearList.push(

@@ -1,30 +1,50 @@
-import { useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 import { atom, useAtom } from 'einfach-state'
 import { useInit } from 'einfach-utils'
 import './useRowSelection.css'
-import type { PositionId, RowId } from '@grid-table/basic/src'
-import { getIdByObj, useBasic } from '@grid-table/basic/src'
+import type { PositionId, RowId } from '@grid-table/basic'
+import { getIdByObj, useBasic } from '@grid-table/basic'
 import { useData } from '../../core'
 import type { ColumnType } from '../../types'
 import clsx from 'clsx'
 
-export interface UseRowSelectionProps
-  extends Pick<ColumnType, 'title' | 'fixed' | 'width' | 'render'> {
-  selectedRowKeys?: string[]
+export interface UseRowSelectionProps<ItemInfo = Record<string, any>>
+  extends Pick<ColumnType<ItemInfo>, 'title' | 'fixed' | 'width' | 'render'> {
+  // selectedRowKeys?: string[]
+  onChange?: (selectedRowKeys: RowId[], rowInfoList: ItemInfo[]) => void
 }
 
 /**
  * 选择框
  * @param props
  */
-export function useRowSelection(props: UseRowSelectionProps | undefined) {
+export function useRowSelection<ItemInfo = Record<string, any>>(
+  props: UseRowSelectionProps<ItemInfo> | undefined,
+) {
   const { columnIndexListAtom, columnSizeMapAtom } = useBasic()
-  const { store, getColumnOptionAtomByColumnId } = useData()
-  useLayoutEffect(() => {
+  const { store, getColumnOptionAtomByColumnId, getRowInfoAtomByRowId } = useData()
+  /**
+   * onChange
+   */
+  useEffect(() => {
+    if (!props?.onChange) {
+      return
+    }
+    store.sub(nodeSelectionSetAtom, () => {
+      const selectIds = Array.from(store.getter(nodeSelectionSetAtom))
+      const rowInfoList = selectIds.map((tRowId) => {
+        return store.getter(getRowInfoAtomByRowId(tRowId)) as ItemInfo
+      })
+      props?.onChange?.(selectIds, rowInfoList)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props?.onChange])
+
+  useEffect(() => {
     if (!props) {
       return
     }
-    const option: ColumnType = {
+    const option: ColumnType<ItemInfo> = {
       title: props.title || <Checkbox />,
       width: props.width,
       render: props.render || render,
@@ -33,7 +53,7 @@ export function useRowSelection(props: UseRowSelectionProps | undefined) {
 
     const columnId = getIdByObj(option)
 
-    store.setter(getColumnOptionAtomByColumnId(columnId), option)
+    store.setter(getColumnOptionAtomByColumnId(columnId), option as ColumnType)
     if (props.width) {
       store.setter(columnSizeMapAtom, (prev) => {
         const next = new Map(prev)
@@ -45,15 +65,14 @@ export function useRowSelection(props: UseRowSelectionProps | undefined) {
     store.setter(columnIndexListAtom, (prev) => {
       return [columnId, ...prev]
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [columnIndexListAtom, columnSizeMapAtom, getColumnOptionAtomByColumnId, props, store])
 }
 
-function render(text: string | undefined, rowInfo: Record<string, any>, rowPath: PositionId) {
+function render(text: string | undefined, rowInfo: any, rowPath: PositionId) {
   return <Checkbox {...rowPath} />
 }
 
-const nodeSelectionSetAtom = atom<Set<RowId>>(new Set<RowId>())
+export const nodeSelectionSetAtom = atom<Set<RowId>>(new Set<RowId>())
 
 export enum CheckedEnum {
   checked = 'checked',
@@ -126,6 +145,7 @@ export function Checkbox({ rowId }: Partial<PositionId>) {
     <>
       <input
         type="checkbox"
+        name="grid-table-checkbox"
         checked={isChecked === CheckedEnum.checked}
         className={clsx('grid-table-row-selection-item', {
           'grid-table-row-selection-partially': isChecked === CheckedEnum.partiallyChecked,

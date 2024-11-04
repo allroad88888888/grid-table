@@ -1,11 +1,11 @@
-import { useCallback, useLayoutEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useAtomValue, atom } from 'einfach-state'
 import { tableClassNameAtom } from '../../hooks'
 import './AreaSelected.css'
 import { getCellId } from '../../utils/getCellId'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
-import type { PositionId } from '@grid-table/basic/src'
-import { useBasic } from '@grid-table/basic/src'
+import type { PositionId } from '@grid-table/basic'
+import { useBasic } from '@grid-table/basic'
 
 const emptyPosition: PositionId = {
   rowId: -1,
@@ -17,7 +17,7 @@ export const cellDownAtom = atom<PositionId>(emptyPosition)
 export const cellUpAtom = atom<PositionId>(emptyPosition)
 const isTouchAtom = atom<boolean>(false)
 
-export function useAreaSelected() {
+export function useAreaSelected({ enable = false }: { enable?: boolean } = {}) {
   const { store, cellEventsAtom, getCellStateAtomById, rowIdShowListAtom, columnIdShowListAtom } =
     useBasic()
 
@@ -60,7 +60,10 @@ export function useAreaSelected() {
   const down = useAtomValue(cellDownAtom, { store })
   const up = useAtomValue(cellUpAtom, { store })
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (!enable) {
+      return
+    }
     const rowStartIndex = Math.min(up.rowIndex, down.rowIndex)
     const rowEndIndex = Math.max(up.rowIndex, down.rowIndex)
     const columnStartIndex = Math.min(up.columnIndex, down.columnIndex)
@@ -99,15 +102,21 @@ export function useAreaSelected() {
         cancel()
       })
     }
-  }, [up, down, store, getCellStateAtomById])
+  }, [up, down, store, getCellStateAtomById, enable])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (!enable) {
+      return
+    }
     return store.setter(tableClassNameAtom, (getter, clsList) => {
       return new Set(clsList.add('user-select-none'))
     })
-  }, [store])
+  }, [store, enable])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (!enable) {
+      return
+    }
     return store.setter(cellEventsAtom, (getter, prev) => {
       const next = { ...prev }
 
@@ -127,7 +136,7 @@ export function useAreaSelected() {
 
       return next
     })
-  }, [cellEventsAtom, onMouseEnter, onMouseDown, onMouseUp, store])
+  }, [cellEventsAtom, onMouseEnter, onMouseDown, onMouseUp, store, enable])
 
   const onContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault()
@@ -135,7 +144,10 @@ export function useAreaSelected() {
     store.setter(cellUpAtom, emptyPosition)
   }, [])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (!enable) {
+      return
+    }
     return store.setter(tableEventsAtom, (_getter, prev) => {
       const next = { ...prev }
 
@@ -145,5 +157,5 @@ export function useAreaSelected() {
       next['onContextMenu']!.add(onContextMenu)
       return next
     })
-  }, [onContextMenu, store])
+  }, [onContextMenu, store, enable])
 }

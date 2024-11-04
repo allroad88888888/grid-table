@@ -1,23 +1,25 @@
-import { useAutoSizer, VGridTable } from '@grid-table/core/src'
-import { useInit } from 'einfach-utils'
-import { Provider as StoreProvider, useAtomValue } from 'einfach-state'
-import { useMemo, useRef } from 'react'
-import type { RowId } from '@grid-table/basic/src'
-import { BasicContext, createCore, getIdByObj, useBasic } from '@grid-table/basic/src'
+import { useAutoSizer, VGridTable } from '@grid-table/core'
+import { useAtomValue } from 'einfach-state'
+import { Fragment, useMemo, useRef } from 'react'
+import type { RowId } from '@grid-table/basic'
+import { getIdByObj, useBasic } from '@grid-table/basic'
 import { useTableEvents } from './hooks/useTableEvents'
 import { useSticky } from './plugins/sticky'
 import { useTableClassNameValue } from './hooks'
 import { useAreaSelected } from './plugins/areaSelected'
 import { useCopy } from './plugins/copy/useCopy'
 import { DragLine } from './plugins/drag'
-import './Table.css'
 import { useRowSelection } from './plugins/select'
 import { useCellSizeByColumn } from './plugins/calcSizeByColumn/useSizeByColumn'
 import type { AntdTableProps } from './types/type'
-import { DataProvider, useDataInit } from './core'
+import { useDataInit } from './core'
 import { DataCell, DataCellThead, Row } from './components'
+import { Provider } from './Provider'
+import clsx from 'clsx'
 
-export function AntdTable(props: AntdTableProps) {
+import './Table.css'
+
+export function TableWithNoProvider(props: AntdTableProps) {
   const { columns, dataSource } = props
   const { cellDefaultWidth = 80, rowHeight = 36 } = props
 
@@ -74,48 +76,48 @@ export function AntdTable(props: AntdTableProps) {
   const { stayIndexList } = useSticky(stickyList)
 
   const tableClassName = useTableClassNameValue()
-  useAreaSelected()
+  useAreaSelected({ enable: props.enableCopy })
 
-  const copy = useCopy()
+  const copy = useCopy({
+    enable: props.enableCopy,
+  })
+
+  const LoadingComponent = props.loadingComponent || Fragment
 
   return (
     <div
-      style={{
-        maxWidth: '100%',
-        width: loading ? '100%' : 'fit-content',
-        height: 'auto',
-        maxHeight: '100%',
-        position: 'relative',
-        border: '1px solid red',
-      }}
+      style={props.style}
+      className={clsx('grid-table-plugin-wrapper', {
+        'grid-table-plugin-loading ': loading,
+      })}
       ref={ref}
       {...tableEvents}
     >
       {loading ? (
-        <div>loading</div>
+        <LoadingComponent />
       ) : (
         <>
           {copy}
-          <DragLine columnBaseSize={1} />
+          <DragLine dragColumnMinSize={props.cellDefaultWidth} />
           <VGridTable
             className={`grid-table grid-table-border ${tableClassName}`}
-            style={{
-              height: '100%',
-              width: '100%',
-            }}
             theadCellComponent={DataCellThead}
             theadRowCalcSize={calcHeadRowSizeByIndex}
-            theadBaseSize={12}
+            theadBaseSize={props.theadBaseSize}
             rowCount={rowIdShowList.length}
             rowCalcSize={calcRowSizeByIndex}
-            rowBaseSize={12}
+            rowBaseSize={props.rowBaseSize || props.rowHeight}
             tbodyTrComponent={Row}
             columnCount={columnIdShowList.length}
             columnCalcSize={calcColumnSizeByIndex}
-            columnBaseSize={1}
+            columnBaseSize={props.columnBaseSize}
             columnStayIndexList={stayIndexList}
             cellComponent={DataCell}
-            // onResize={onResize}
+            overColumnCount={props.overColumnCount}
+            overRowCount={props.overRowCount}
+            emptyComponent={props.emptyComponent}
+            loadingComponent={props.loadingComponent}
+            loading={props.loading}
           />
         </>
       )}
@@ -124,16 +126,9 @@ export function AntdTable(props: AntdTableProps) {
 }
 
 export default (props: AntdTableProps) => {
-  const basicValue = useInit(() => {
-    return createCore()
-  })
   return (
-    <StoreProvider store={basicValue.store}>
-      <BasicContext.Provider value={basicValue}>
-        <DataProvider store={basicValue.store} root={props?.root}>
-          <AntdTable {...props} />
-        </DataProvider>
-      </BasicContext.Provider>
-    </StoreProvider>
+    <Provider root={props?.root}>
+      <TableWithNoProvider {...props} />
+    </Provider>
   )
 }

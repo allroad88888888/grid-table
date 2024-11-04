@@ -10,6 +10,8 @@ export function useVScroll<T extends HTMLElement>(props: UseVScrollProps) {
 
   const { stateProp } = Options[direction]
 
+  const [realOverCount, setRealOverCount] = useState(overscanCount)
+
   const doRender = useDoRender()
   const { current: stateCurrent } = useRef({
     stateScrollTop: 0,
@@ -54,12 +56,12 @@ export function useVScroll<T extends HTMLElement>(props: UseVScrollProps) {
     }
 
     const res = {
-      startIndex: Math.max(0, visibleStartIndex - overscanCount),
-      endIndex: Math.min(itemCount, visibleEndIndex + overscanCount),
+      startIndex: Math.max(0, visibleStartIndex - realOverCount),
+      endIndex: Math.min(itemCount, visibleEndIndex + realOverCount),
     }
     return res
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stateCurrent[stateProp], itemCount, length, overscanCount, calcItemSize])
+  }, [stateCurrent[stateProp], itemCount, length, realOverCount, calcItemSize])
 
   useEffect(() => {
     if (onItemsRendered && startIndex >= 0) {
@@ -69,6 +71,12 @@ export function useVScroll<T extends HTMLElement>(props: UseVScrollProps) {
       })
     }
   })
+
+  useEffect(() => {
+    setTimeout(() => {
+      setRealOverCount(overscanCount * 2)
+    }, props.overCountIncrementTime || 1000)
+  }, [])
 
   const onScroll = useCallback((event: React.UIEvent<T, UIEvent>) => {
     const { scrollTop, scrollLeft } = event.currentTarget

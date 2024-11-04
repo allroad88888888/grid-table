@@ -14,11 +14,12 @@ const config = defineConfig({
     }),
     commonjs(),
     postcss({
-      plugins: [],
+      inject: false,
+      extract: true,
     }),
     swc({
       swc: {
-        minify: true,
+        minify: false,
         jsc: {
           target: 'es2019',
           parser: {
@@ -40,6 +41,8 @@ const config = defineConfig({
     'einfach-state',
     'einfach-utils',
     '@grid-table/core',
+    '@grid-table/basic',
+    'clsx',
     'react/jsx-runtime',
     'react/jsx-dev-runtime',
   ],
@@ -47,12 +50,20 @@ const config = defineConfig({
     {
       format: 'esm',
       sourcemap: true,
+
       file: './dist/index.js',
     },
     {
       plugins: [terser()],
       format: 'esm',
-      file: './dist/index.mini.js',
+      file: './dist/index.min.js',
+    },
+    {
+      format: 'esm',
+      sourcemap: true,
+      plugins: [],
+      dir: 'es',
+      preserveModules: true,
     },
   ],
 })

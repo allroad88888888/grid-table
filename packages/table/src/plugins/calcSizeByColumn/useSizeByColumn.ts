@@ -1,8 +1,9 @@
-import { useCallback, useLayoutEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useAtomValue } from 'einfach-state'
-import type { ColumnId } from '@grid-table/basic/src'
-import { getIdByObj, useBasic } from '@grid-table/basic/src'
+import type { ColumnId } from '@grid-table/basic'
+import { getIdByObj, useBasic } from '@grid-table/basic'
 import type { ColumnType } from '../../types'
+import { distributeToNewArray } from './utils'
 
 interface UseSizeByColumnProps {
   /**
@@ -23,10 +24,11 @@ export function useCellSizeByColumn(props: UseSizeByColumnProps) {
   /**
    * 监听columns变动
    */
-  useLayoutEffect(() => {
+  useEffect(() => {
     const nextMap = new Map<ColumnId, number>(store.getter(columnSizeMapAtom))
     columns.forEach((column) => {
       const columnId = getIdByObj(column)
+
       if (nextMap.has(columnId)) {
         return
       }
@@ -38,43 +40,40 @@ export function useCellSizeByColumn(props: UseSizeByColumnProps) {
   /**
    * 监听 容器宽度
    */
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (wrapWidth <= 0) {
       return
     }
     return store.setter(columnSizeMapAtom, (prevColumns) => {
-      let remainingLength = wrapWidth - 2
-      let hasPropWidthLength = 0
+      const remainingLength = wrapWidth - 2
 
-      for (const [, width] of prevColumns) {
-        hasPropWidthLength += 1
-        remainingLength -= width!
-      }
+      console.log(`wrapWidth:${wrapWidth}`)
 
       const columnShowIdList = store.getter(columnIdShowListAtom)
-
-      const emptyWidthLength = columnShowIdList.length - hasPropWidthLength
-      let autoItemWidth = columnMinWidth
-      if (remainingLength > emptyWidthLength * columnMinWidth) {
-        autoItemWidth = remainingLength / emptyWidthLength
+      const currentTotalWidth = columnShowIdList.reduce<number>((prev, tId) => {
+        return prev + prevColumns.get(tId)!
+      }, 0)
+      // 表格宽度大于容器宽度 啥也不做
+      if (currentTotalWidth >= remainingLength) {
+        return prevColumns
       }
 
-      let last = autoItemWidth
-
-      if (autoItemWidth % 1 > 0) {
-        autoItemWidth = Math.floor(autoItemWidth)
-        last = autoItemWidth + 1
-      }
-
-      let temp = 0
+      const newWidthList = distributeToNewArray(
+        columnShowIdList.map((tId) => {
+          return prevColumns.get(tId)!
+        }),
+        remainingLength,
+      )
 
       const next = new Map(prevColumns)
-      columnShowIdList.forEach((columnId) => {
-        if (prevColumns.has(columnId)) {
-          return
-        }
-        next.set(columnId, temp === emptyWidthLength ? last : autoItemWidth)
-        temp += 1
+      columnShowIdList.forEach((tId, index) => {
+        next.set(tId, newWidthList[index])
+      })
+
+      let total = 0
+
+      next.forEach((value, key) => {
+        total += value
       })
 
       return next

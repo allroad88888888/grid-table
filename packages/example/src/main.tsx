@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client'
 import { useAtom } from 'einfach-state'
 import { currentRouterAtom, Empty, RouterMapping } from './router'
 import './index.css'
+import { Suspense } from 'react'
 
 function App() {
   const [currentUrl, setUrl] = useAtom(currentRouterAtom)
@@ -12,7 +13,7 @@ function App() {
       style={{
         display: 'grid',
         gridTemplateRows: '1fr',
-        gridTemplateColumns: '180px 1260px',
+        gridTemplateColumns: '180px auto',
       }}
     >
       <div>
@@ -38,7 +39,9 @@ function App() {
         })}
       </div>
       <div>
-        <Component />
+        <Suspense fallback={<div>loading</div>}>
+          <Component />
+        </Suspense>
       </div>
     </div>
   )

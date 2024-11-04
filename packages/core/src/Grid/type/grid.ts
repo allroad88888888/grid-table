@@ -39,7 +39,7 @@ interface THeaderProps {
   theadBaseSize?: number
   theadTrComponent?: ComponentType<RowProps>
   theadCellComponent: ComponentType<CellProps>
-  theadClass?: string
+  theadClassName?: string
 }
 
 interface TBodyRowProps {

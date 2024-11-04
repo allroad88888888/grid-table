@@ -1,9 +1,7 @@
-import { atom, type Store } from 'einfach-state'
-import { createAtomFamilyEntity } from '../utils/createAtomFamily'
+import { atom, incrementAtom, type Store } from 'einfach-state'
 import type { ColumnType } from '../types'
-import { incrementAtom } from '../utils/incrementAtom'
 import { ROOT } from '../utils/const'
-import type { ColumnId, RowId } from '@grid-table/basic/src'
+import { createAtomFamilyEntity, type ColumnId, type RowId } from '@grid-table/basic'
 
 export function createDataContent(store: Store, { root = ROOT }: { root?: string }) {
   const { createAtomFamily, clear } = createAtomFamilyEntity()

@@ -1,14 +1,19 @@
 import type { CSSProperties } from 'react'
-import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { atom, useAtomValue } from 'einfach-state'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
 import { cellDownAtom, cellUpAtom } from '../areaSelected'
 import type { Area } from '../areaSelected/type'
 import { getCellId } from '../../utils/getCellId'
-import { useBasic } from '@grid-table/basic/src'
+import { useBasic } from '@grid-table/basic'
 
 interface Props {
   getDataByArea?: (area: Area) => string
+  /**
+   * 是否开启复制功能
+   * @default false
+   */
+  enable?: boolean
 }
 
 function emptyFn() {
@@ -27,7 +32,7 @@ export const copyAreaAtom = atom<Area>({
  * 这里逻辑 是弄个隐藏的text 制造能触发copy的事件
  * @returns
  */
-export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
+export function useCopy({ getDataByArea = emptyFn, enable = false }: Props = {}) {
   const { store, getCellStateAtomById, rowIdShowListAtom, columnIdShowListAtom } = useBasic()
 
   const down = useAtomValue(cellDownAtom, { store })
@@ -60,7 +65,10 @@ export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
     [down, up, getDataByArea, store],
   )
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (enable === false) {
+      return
+    }
     return store.setter(tableEventsAtom, (_getter, prev) => {
       const next = { ...prev }
       if (!('onCopy' in prev)) {
@@ -69,7 +77,7 @@ export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
       next['onCopy']!.add(onCopy)
       return next
     })
-  }, [onCopy, store])
+  }, [enable, onCopy, store])
 
   const ref = useRef<HTMLTextAreaElement>(null)
 
@@ -83,7 +91,10 @@ export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
 
   const area = useAtomValue(copyAreaAtom, { store })
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (enable === false) {
+      return
+    }
     const { rowStartIndex, rowEndIndex, columnStartIndex, columnEndIndex } = area
 
     if (rowStartIndex === -1 || columnStartIndex === -1) {
@@ -138,9 +149,9 @@ export function useCopy({ getDataByArea = emptyFn }: Props = {}) {
         cancel()
       })
     }
-  }, [area, store, getCellStateAtomById])
+  }, [area, store, getCellStateAtomById, enable, rowIdShowListAtom, columnIdShowListAtom])
 
-  if (down.columnIndex === -1 || up.columnIndex === -1) {
+  if (enable === false || down.columnIndex === -1 || up.columnIndex === -1) {
     return null
   }
 

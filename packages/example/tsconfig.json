@@ -6,7 +6,11 @@
     "declarationDir": "@types",
     "declarationMap": true
   },
-  "include": ["./src/**/*", "./vite.config.mts", "./*.mjs"],
+  "include": [
+    "./src/**/*",
+    "./../vite.config.mts",
+    "./*.mjs"
+  ],
   "references": [
     {
       "path": "./../core/tsconfig.json"

@@ -1,6 +1,6 @@
-import type { ColumnType } from '@grid/table'
-import AntdTable from '@grid/table/src/AntdTable'
-import { Space, Tag } from 'antd'
+import type { ColumnType } from '@grid-table/view'
+import AntdTable from '@grid-table/view/src/AntdTable'
+import { Tag } from 'antd'
 
 const columns: ColumnType[] = [
   {
@@ -24,7 +24,7 @@ const columns: ColumnType[] = [
     dataIndex: 'tags',
     render: (_, { tags }) => (
       <>
-        {tags.map((tag) => {
+        {(tags as string[]).map((tag) => {
           let color = tag.length > 5 ? 'geekblue' : 'green'
           if (tag === 'loser') {
             color = 'volcano'

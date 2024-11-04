@@ -1,4 +1,4 @@
-import type { ColumnId } from '@grid-table/basic/src'
+import type { ColumnId } from '@grid-table/basic'
 import './Drag.css'
 import type { UseDragProps } from './useDrag'
 import { useDrag, useDrayItem } from './useDrag'
