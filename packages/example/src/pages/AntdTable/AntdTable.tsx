@@ -3,13 +3,15 @@ import type { UseRowSelectionProps } from '@grid-table/view/src/plugins/select'
 import { atom, useSetAtom, useAtomValue } from 'einfach-state'
 import { DataList } from './mock'
 import { useColumnConfig } from './useColumnConfig'
+import './Table.css'
 
 const rowSelection: UseRowSelectionProps = {
   width: 42,
   fixed: 'left',
+  align: 'center',
 }
 
-async function sleep(time = 1000) {
+async function sleep(time = 300) {
   return new Promise((rev) => {
     setTimeout(() => {
       rev(true)
@@ -41,7 +43,7 @@ export function AntdTableDemo() {
       style={{
         width: '100%',
         height: '600px',
-        border: '1px solid blue',
+        // border: '1px solid blue',
       }}
     >
       <AntdTable
@@ -49,7 +51,6 @@ export function AntdTableDemo() {
         columns={columns}
         dataSource={dataList}
         rowSelection={rowSelection}
-        overRowCount={30}
       />
     </div>
   )

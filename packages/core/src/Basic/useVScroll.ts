@@ -3,7 +3,7 @@ import { Options } from './option'
 import { useDoRender } from '../utils/useDoRender'
 import type { UseVScrollProps } from './type'
 
-export function useVScroll<T extends HTMLElement>(props: UseVScrollProps) {
+export function useVScroll(props: UseVScrollProps) {
   const { itemCount, overscanCount = 10, calcItemSize, onItemsRendered, direction = 'row' } = props
 
   const length = direction === 'row' ? props.height : props.width
@@ -78,11 +78,20 @@ export function useVScroll<T extends HTMLElement>(props: UseVScrollProps) {
     }, props.overCountIncrementTime || 1000)
   }, [])
 
-  const onScroll = useCallback((event: React.UIEvent<T, UIEvent>) => {
-    const { scrollTop, scrollLeft } = event.currentTarget
+  const tickingRef = useRef(false)
+
+  const scrollHandler = useCallback(() => {
+    tickingRef.current = false
+    doRender()
+  }, [])
+  const onScroll = useCallback((event: Event) => {
+    const { scrollTop, scrollLeft } = event.currentTarget as Element
     stateCurrent.stateScrollTop = Math.max(scrollTop, 0)
     stateCurrent.stateScrollLeft = Math.max(scrollLeft, 0)
-    doRender()
+    if (tickingRef.current === false) {
+      requestAnimationFrame(scrollHandler)
+      tickingRef.current = true
+    }
   }, [])
 
   const showIndexList = useMemo(() => {

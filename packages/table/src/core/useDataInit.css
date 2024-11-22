@@ -1,7 +1,14 @@
 .gird-table-text-left {
   text-align: left;
+  justify-content: start;
 }
 
 .gird-table-text-right {
   text-align: right;
+  justify-content: end;
+}
+
+.gird-table-text-center {
+  text-align: center;
+  justify-content: center;
 }

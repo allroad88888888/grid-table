@@ -28,6 +28,12 @@ export interface ColumnType<ItemInfo = Record<string, any>> {
   width?: number
 
   /**
+   * 作为列名单独使用 不传会自动生成，
+   * 合并行列 有作用
+   */
+  key?: string
+
+  /**
    * 树形展开按钮显示
    */
   enabledExpand?: boolean

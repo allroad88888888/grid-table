@@ -1,4 +1,4 @@
-import { atom, useAtomValue } from 'einfach-state'
+import { atom, useAtomValue, useStore } from 'einfach-state'
 import { useEffect } from 'react'
 import { tableClassNameAtom } from '../../hooks'
 import type { ColumnId } from '@grid-table/basic'
@@ -19,7 +19,8 @@ export interface UseDragProps {
 }
 
 export function useDrag({ dragColumnMinSize = 40, fixedWidth = false }: UseDragProps) {
-  const { store, columnSizeMapAtom, resizeAtom } = useBasic()
+  const { columnSizeMapAtom, resizeAtom } = useBasic()
+  const store = useStore()
   const selectColumnId = useAtomValue(selectColumnIndexAtom, { store })
   const left = useAtomValue(leftAtom, { store })
 
@@ -81,7 +82,7 @@ export function useDrag({ dragColumnMinSize = 40, fixedWidth = false }: UseDragP
 }
 
 export function useDrayItem(columnId: ColumnId) {
-  const { store } = useBasic()
+  const store = useStore()
   function mousedown(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     store.setter(selectColumnIndexAtom, columnId)
     const left = (e.target as HTMLDivElement).offsetLeft + 2

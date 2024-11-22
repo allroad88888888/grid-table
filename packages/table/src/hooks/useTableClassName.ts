@@ -1,10 +1,9 @@
-import { incrementAtom, useAtomValue } from 'einfach-state'
-import { useBasic } from '@grid-table/basic'
+import { incrementAtom, useAtomValue, useStore } from 'einfach-state'
 
 export const tableClassNameAtom = incrementAtom(new Set<string>())
 
 export function useTableClassNameValue(className?: string | undefined) {
-  const { store } = useBasic()
+  const store = useStore()
   const val = useAtomValue(tableClassNameAtom, { store })
   return `${className ? `${className} ` : ''} ${Array.from(val).join(' ')}`
 }

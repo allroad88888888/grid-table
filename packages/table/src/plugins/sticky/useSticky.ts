@@ -1,16 +1,20 @@
 import type { CSSProperties } from 'react'
 import { useEffect, useMemo } from 'react'
 import type { AtomEntity } from 'einfach-state'
-import { atom, useAtomValue } from 'einfach-state'
+import { atom, useAtomValue, useStore } from 'einfach-state'
 import { useMethods, useInit } from 'einfach-utils'
 import type { ColumnId, RowId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
 
-export interface useStickyProps {
+export interface UseStickyProps {
   topIndexList?: RowId[]
   bottomIndexList?: RowId[]
   direction?: 'row' | 'column'
   topSpace?: number
+  /**
+   * @default true
+   */
+  bordered?: boolean
   /**
    *
    * @default
@@ -52,18 +56,18 @@ const Config: Record<
   },
 }
 
-const EmptyArray: number[] = []
-export function useSticky(props: useStickyProps = {}) {
+const EmptyArray: string[] = []
+export function useSticky(props: UseStickyProps = {}) {
   const {
     bottomIndexList = EmptyArray,
     topIndexList = EmptyArray,
     direction = 'column',
     topSpace = 0,
     fixed = true,
+    bordered: border = true,
   } = props
 
   const {
-    store,
     getColumnStateAtomById,
     getRowStateAtomById,
     rowSizeMapAtom,
@@ -71,6 +75,7 @@ export function useSticky(props: useStickyProps = {}) {
     columnIdShowListAtom,
     rowIdShowListAtom,
   } = useBasic()
+  const store = useStore()
   const { setter, getter } = store
 
   const isRow = direction === 'row'
@@ -141,9 +146,21 @@ export function useSticky(props: useStickyProps = {}) {
             if (isRow) {
               newStyle.zIndex = 1
             }
-            if (index === tempState.length - 1 && isTop) {
-              newStyle.borderRightWidth = '1px '
-              newStyle.borderRightStyle = 'solid'
+            if (index === tempState.length - 1 && isTop && border && direction == 'column') {
+              if (index === 0) {
+                /**
+                 * 取消最左边border- 不占用1px 让外围的border 1px
+                 */
+                newStyle.borderLeftWidth = 0
+              }
+              if (index === tempState.length - 1) {
+                newStyle.borderRightWidth = '1px'
+                newStyle.borderRightStyle = 'solid'
+                /**
+                 * 遮第一列的left-border 1px
+                 */
+                newStyle.marginRight = '-1px'
+              }
             }
             return {
               ...prevState,
@@ -165,10 +182,10 @@ export function useSticky(props: useStickyProps = {}) {
 
   useEffect(() => {
     return todo(`${direction}Top`, [...topIndexList])
-  }, [topIndexList])
+  }, [topIndexList, border])
   useEffect(() => {
     return todo(`${direction}Bottom`, [...bottomIndexList])
-  }, [bottomIndexList])
+  }, [bottomIndexList, border])
 
   const stayIndexListAtom = useMemo(() => {
     return atom((getter) => {

@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef } from 'react'
-import { atom, useAtomValue } from 'einfach-state'
+import { atom, useAtomValue, useStore } from 'einfach-state'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
 import { cellDownAtom, cellUpAtom } from '../areaSelected'
 import type { Area } from '../areaSelected/type'
@@ -33,7 +33,8 @@ export const copyAreaAtom = atom<Area>({
  * @returns
  */
 export function useCopy({ getDataByArea = emptyFn, enable = false }: Props = {}) {
-  const { store, getCellStateAtomById, rowIdShowListAtom, columnIdShowListAtom } = useBasic()
+  const store = useStore()
+  const { getCellStateAtomById, rowIdShowListAtom, columnIdShowListAtom } = useBasic()
 
   const down = useAtomValue(cellDownAtom, { store })
   const up = useAtomValue(cellUpAtom, { store })

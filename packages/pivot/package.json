@@ -1,0 +1,51 @@
+{
+  "name": "@grid-table/pivot",
+  "version": "0.0.1",
+  "description": "grid-table pivot",
+  "main": "es/index.js",
+  "module": "es/index.js",
+  "typings": "es/index.d.ts",
+  "license": "MIT",
+  "files": [
+    "es",
+    "@types",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -build&&rollup --config rollup.config.mjs"
+  },
+  "keywords": [
+    "react",
+    "atom"
+  ],
+  "peerDependencies": {
+    "clsx": "^2.0.0",
+    "einfach-state": "^0.8.0",
+    "einfach-utils": "^0.5.3",
+    "react": "^16 || ^17 || ^18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-swc": "^0.3.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@swc/core": "^1.4.11",
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.3.3",
+    "rollup": "^4.19.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@antv/s2": "^1.56.0",
+    "@grid-table/basic": "workspace:*",
+    "@grid-table/core": "workspace:^*",
+    "@grid-table/view": "workspace:^*",
+    "clsx": "^2.1.1"
+  }
+}

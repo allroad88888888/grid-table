@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 
-export type RowId = string | number
+export type RowId = string
 
 export type ColumnId = RowId
 
@@ -12,7 +12,7 @@ export interface TableBasicProps {
 }
 
 interface CommonState {
-  width: number
+  // width: number
   style?: CSSProperties
   className?: Set<string>
 }

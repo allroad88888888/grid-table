@@ -5,9 +5,10 @@ import Atom from './pages/Atom'
 import Copy from './pages/Copy'
 import AntdTable from './pages/AntdTable'
 import TreeTable from './pages/TreeTable'
+import { PivotDemo } from './pages/Pivot'
 import { CallBackDemo } from './pages/CallBack'
 
-export const currentRouterAtom = atom('/antd')
+export const currentRouterAtom = atom('/pivot')
 
 export function Empty() {
   return <div>empty</div>
@@ -44,5 +45,9 @@ export const RouterMapping: Record<
   '/callback': {
     component: CallBackDemo,
     label: 'CallBackDemo',
+  },
+  '/pivot': {
+    component: PivotDemo,
+    label: 'pivot-demo',
   },
 }

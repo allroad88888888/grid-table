@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/view",
-  "version": "0.1.27",
+  "version": "0.1.39",
   "description": "grid-table table",
   "main": "es/index.js",
   "module": "es/index.js",

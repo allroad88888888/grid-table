@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { useAtomValue, atom } from 'einfach-state'
+import { useAtomValue, atom, useStore } from 'einfach-state'
 import { tableClassNameAtom } from '../../hooks'
 import './AreaSelected.css'
 import { getCellId } from '../../utils/getCellId'
@@ -8,8 +8,8 @@ import type { PositionId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
 
 const emptyPosition: PositionId = {
-  rowId: -1,
-  columnId: -1,
+  rowId: ' -1',
+  columnId: '-1',
   columnIndex: -1,
   rowIndex: -1,
 }
@@ -18,8 +18,9 @@ export const cellUpAtom = atom<PositionId>(emptyPosition)
 const isTouchAtom = atom<boolean>(false)
 
 export function useAreaSelected({ enable = false }: { enable?: boolean } = {}) {
-  const { store, cellEventsAtom, getCellStateAtomById, rowIdShowListAtom, columnIdShowListAtom } =
+  const { cellEventsAtom, getCellStateAtomById, rowIdShowListAtom, columnIdShowListAtom } =
     useBasic()
+  const store = useStore()
 
   const onMouseDown = useCallback(
     (position: PositionId, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

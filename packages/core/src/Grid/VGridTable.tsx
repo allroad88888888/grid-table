@@ -1,19 +1,12 @@
 import type { ReactNode } from 'react'
-import React, { Fragment, useCallback, useLayoutEffect, useMemo, useRef } from 'react'
+import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useAutoSizer } from '../AutoSizer'
 import type { VGridTableProps } from './type'
 import { useVScroll } from '../Basic/useVScroll'
 
 export function VGridTable(props: VGridTableProps) {
   const { style, className, children } = props
-  const {
-    rowCalcSize,
-    rowCount,
-    rowBaseSize = 1,
-    overRowCount,
-    rowStayIndexList,
-    tbodyTrComponent,
-  } = props
+  const { rowCalcSize, rowCount, rowBaseSize = 1, overRowCount, rowStayIndexList } = props
   const {
     columnCalcSize,
     columnBaseSize = 1,
@@ -22,7 +15,7 @@ export function VGridTable(props: VGridTableProps) {
     columnStayIndexList,
   } = props
   const {
-    theadRowCount: headerRowCount = 1,
+    theadRowCount = 1,
     theadCellComponent,
     theadRowCalcSize: theadRowSize,
     theadBaseSize = 1,
@@ -71,20 +64,24 @@ export function VGridTable(props: VGridTableProps) {
   }, [width, height, onResize])
 
   const onScroll = useCallback(
-    (event: React.UIEvent<HTMLElement, UIEvent>) => {
+    (event: Event) => {
       onXScroll(event)
       onYScroll(event)
     },
     [onXScroll, onYScroll],
   )
 
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    ref.current.addEventListener('scroll', onScroll, { passive: true })
+  }, [])
+
   const CellTbody = props.cellComponent
 
   const CellThead = theadCellComponent
-
-  const TBodyTr = tbodyTrComponent
-
-  const TheadTr = props.theadTrComponent
 
   const Empty = props.emptyComponent || Fragment
 
@@ -92,15 +89,17 @@ export function VGridTable(props: VGridTableProps) {
 
   const $headRows: ReactNode[] = []
 
-  const theadHeight = useMemo(() => {
+  const [theadHeight, theadSizeList] = useMemo(() => {
     let tempSize = 0
-    for (let rowIndex = 0; rowIndex < headerRowCount; rowIndex += 1) {
+    const tempTheadSizeList: number[] = [0]
+    for (let rowIndex = 0; rowIndex < theadRowCount; rowIndex += 1) {
       tempSize += theadRowSize(rowIndex)
+      tempTheadSizeList.push(tempSize)
     }
-    return tempSize
+    return [tempSize, tempTheadSizeList]
   }, [])
 
-  for (let rowIndex = 0; rowIndex < headerRowCount; rowIndex += 1) {
+  for (let rowIndex = 0; rowIndex < theadRowCount; rowIndex += 1) {
     const columnList = columnIndexList.map((columnIndex) => {
       return (
         <CellThead
@@ -108,41 +107,37 @@ export function VGridTable(props: VGridTableProps) {
           style={{
             gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
             gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
-            gridRowStart: 1,
-            gridRowEnd: theadRowSize(rowIndex) / theadBaseSize + 1,
+            gridRowStart: theadSizeList[rowIndex] / theadBaseSize + 1,
+            gridRowEnd: theadSizeList[rowIndex + 1] / theadBaseSize + 1,
           }}
           rowIndex={rowIndex}
           columnIndex={columnIndex}
         />
       )
     })
-    const theadRowStyle = {
-      display: 'grid',
-      gridTemplateRows: `repeat(${theadHeight / theadBaseSize}, ${theadBaseSize}px)`,
-      gridTemplateColumns: `repeat(${totalWidth / columnBaseSize}, ${columnBaseSize}px)`,
-    }
 
-    if (TheadTr) {
-      $headRows.push(
-        <TheadTr key={rowIndex} rowIndex={rowIndex} style={theadRowStyle}>
-          {columnList}
-        </TheadTr>,
-      )
-    } else {
-      $headRows.push(
-        <div key={rowIndex} role="row" style={theadRowStyle}>
-          {columnList}
-        </div>,
-      )
-    }
+    $headRows.push(<Fragment key={rowIndex}>{columnList}</Fragment>)
   }
 
   return (
-    <div ref={ref} role="table" style={style} className={className} onScroll={onScroll}>
+    <div ref={ref} role="table" style={style} className={className}>
       {children}
-      <div role="thead" className={theadClass}>
-        {$headRows}
-      </div>
+      {theadRowCount > 0 ? (
+        <div
+          role="thead"
+          key="thead"
+          className={theadClass}
+          style={{
+            display: 'grid',
+            width: totalWidth,
+            gridTemplateRows: `repeat(${theadHeight / theadBaseSize}, ${theadBaseSize}px)`,
+            gridTemplateColumns: `repeat(${totalWidth / columnBaseSize}, ${columnBaseSize}px)`,
+            height: theadHeight,
+          }}
+        >
+          {$headRows}
+        </div>
+      ) : null}
       {props.loading ? (
         <Loading />
       ) : rowIndexList.length === 0 ? (
@@ -153,22 +148,13 @@ export function VGridTable(props: VGridTableProps) {
           style={{
             display: 'grid',
             gridTemplateRows: `repeat(auto-fill, ${rowBaseSize}px)`,
+            gridTemplateColumns: `repeat(auto-fill, ${columnBaseSize}px)`,
             height: totalHeight,
             width: totalWidth,
           }}
+          key="tbody"
         >
           {rowIndexList.map((rowIndex) => {
-            const trStyle = {
-              gridColumnStart: 1,
-              gridColumnEnd: 1,
-              gridRowStart: rowSizeList[rowIndex] / rowBaseSize + 1,
-              gridRowEnd: rowSizeList[rowIndex + 1] / rowBaseSize + 1,
-              display: 'grid',
-              gridTemplateColumns: `repeat(auto-fill, ${columnBaseSize}px)`,
-              gridTemplateRows: `repeat(auto-fill, ${
-                rowSizeList[rowIndex + 1] - rowSizeList[rowIndex]
-              }px)`,
-            }
             const trChildren = columnIndexList.map((columnIndex) => {
               return (
                 <CellTbody
@@ -176,26 +162,15 @@ export function VGridTable(props: VGridTableProps) {
                   style={{
                     gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
                     gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
-                    gridRowStart: 1,
-                    gridRowEnd: 1,
+                    gridRowStart: rowSizeList[rowIndex] / rowBaseSize + 1,
+                    gridRowEnd: rowSizeList[rowIndex + 1] / rowBaseSize + 1,
                   }}
                   rowIndex={rowIndex}
                   columnIndex={columnIndex}
                 />
               )
             })
-            if (TBodyTr) {
-              return (
-                <TBodyTr rowIndex={rowIndex} style={trStyle} key={rowIndex}>
-                  {trChildren}
-                </TBodyTr>
-              )
-            }
-            return (
-              <div role="row" key={rowIndex} style={trStyle}>
-                {trChildren}
-              </div>
-            )
+            return <Fragment key={rowIndex}>{trChildren}</Fragment>
           })}
         </div>
       )}

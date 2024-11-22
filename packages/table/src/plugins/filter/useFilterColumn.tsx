@@ -2,9 +2,11 @@ import { useBasic, type ColumnId } from '@grid-table/basic'
 import { useData } from '../../core'
 import { useCallback } from 'react'
 import { easyGet } from 'einfach-utils'
+import { useStore } from 'einfach-state'
 
 export function useFilterColumn(columnId: ColumnId) {
-  const { rowIndexListAtom, store } = useBasic()
+  const store = useStore()
+  const { rowIndexListAtom } = useBasic()
   const { getRowInfoAtomByRowId, getColumnOptionAtomByColumnId } = useData()
 
   const getSelectOption = useCallback(() => {

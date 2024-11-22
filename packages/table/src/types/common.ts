@@ -8,4 +8,6 @@ export type UseDataProps<ItemInfo extends DataItem = DataItem> = {
   parentProp?: keyof ItemInfo
   idProp?: keyof ItemInfo
   root?: string
+  rowHeight?: number
+  headerDataSource?: ItemInfo[]
 }

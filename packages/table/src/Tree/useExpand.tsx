@@ -1,4 +1,4 @@
-import { atom, useAtom, useAtomValue } from 'einfach-state'
+import { atom, useAtom, useAtomValue, useStore } from 'einfach-state'
 import { useEffect } from 'react'
 import clsx from 'clsx'
 import './useExpand.css'
@@ -15,8 +15,10 @@ export const collapseNodeListAtom = atom<Set<RowId>>(new Set<RowId>())
 type UseExpandProps = {}
 
 export function useExpand({}: UseExpandProps = {}) {
-  const { store, rowIdShowListAtom } = useBasic()
-  const { relationAtom, root } = useData()
+  const { rowIdShowListAtom } = useBasic()
+  const store = useStore()
+  const { relationAtom, rootAtom } = useData()
+  const root = useAtomValue(rootAtom)
 
   useEffect(() => {
     return store.setter(rowIdShowListAtom, (_getter, prev) => {

@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from 'react'
-import { useAtomValue } from 'einfach-state'
-import type { ColumnId } from '@grid-table/basic'
-import { getIdByObj, useBasic } from '@grid-table/basic'
+import { useAtomValue, useSetAtom, useStore } from 'einfach-state'
+import { useBasic } from '@grid-table/basic'
 import type { ColumnType } from '../../types'
 import { distributeToNewArray } from './utils'
+import { initColumnsSizeByColumnsAtom } from './state'
 
 interface UseSizeByColumnProps {
   /**
@@ -19,23 +19,16 @@ interface UseSizeByColumnProps {
 
 export function useCellSizeByColumn(props: UseSizeByColumnProps) {
   const { rowHeight, columnMinWidth = 25, wrapWidth, columns } = props
-  const { store, columnIdShowListAtom, columnSizeMapAtom } = useBasic()
+  const { columnIdShowListAtom, columnSizeMapAtom } = useBasic()
+  const store = useStore()
+  const initColumnsSizeByColumns = useSetAtom(initColumnsSizeByColumnsAtom)
 
   /**
    * 监听columns变动
    */
   useEffect(() => {
-    const nextMap = new Map<ColumnId, number>(store.getter(columnSizeMapAtom))
-    columns.forEach((column) => {
-      const columnId = getIdByObj(column)
-
-      if (nextMap.has(columnId)) {
-        return
-      }
-      nextMap.set(columnId, column.width || columnMinWidth)
-    })
-    store.setter(columnSizeMapAtom, nextMap)
-  }, [columns, columnMinWidth, store, columnSizeMapAtom])
+    initColumnsSizeByColumns(columns, { columnMinWidth })
+  }, [columns, columnMinWidth, initColumnsSizeByColumns])
 
   /**
    * 监听 容器宽度
@@ -44,15 +37,15 @@ export function useCellSizeByColumn(props: UseSizeByColumnProps) {
     if (wrapWidth <= 0) {
       return
     }
+
     return store.setter(columnSizeMapAtom, (prevColumns) => {
       const remainingLength = wrapWidth - 2
-
-      console.log(`wrapWidth:${wrapWidth}`)
 
       const columnShowIdList = store.getter(columnIdShowListAtom)
       const currentTotalWidth = columnShowIdList.reduce<number>((prev, tId) => {
         return prev + prevColumns.get(tId)!
       }, 0)
+
       // 表格宽度大于容器宽度 啥也不做
       if (currentTotalWidth >= remainingLength) {
         return prevColumns

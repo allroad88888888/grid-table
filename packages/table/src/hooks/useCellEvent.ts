@@ -1,10 +1,11 @@
-import { useAtomValue } from 'einfach-state'
+import { useAtomValue, useStore } from 'einfach-state'
 import { useMemo } from 'react'
 import type { EventsCellSet, EventsItem, PositionId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
 
 export function useCellEvents(position: PositionId) {
-  const { store, cellEventsAtom } = useBasic()
+  const store = useStore()
+  const { cellEventsAtom } = useBasic()
 
   const events = useAtomValue(cellEventsAtom, { store })
 

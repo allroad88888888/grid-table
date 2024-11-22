@@ -1,7 +1,8 @@
-import { useContext } from 'react'
 import type {} from 'einfach-state'
-import { DataContext } from './provider'
+import { useAtomValue } from 'einfach-state'
+
+import { dataBasicAtom } from '../stateCore'
 
 export function useData() {
-  return useContext(DataContext)
+  return useAtomValue(dataBasicAtom)
 }

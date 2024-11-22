@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import type { ListProps } from './type'
 import { useAutoSizer } from '../AutoSizer'
 import { useVScroll } from '../Basic/useVScroll'
@@ -40,8 +40,16 @@ export function VGridList(props: VGridListProps) {
     )
   }
 
+  useEffect(() => {
+    if (!ref.current) {
+      return
+    }
+
+    ref.current.addEventListener('scroll', onScroll, { passive: true })
+  }, [])
+
   return (
-    <div ref={ref} style={style} className={className} onScroll={onScroll}>
+    <div ref={ref} style={style} className={className}>
       <div
         style={{
           display: 'grid',

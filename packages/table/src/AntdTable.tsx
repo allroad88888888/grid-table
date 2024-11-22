@@ -1,8 +1,8 @@
-import { useAutoSizer, VGridTable } from '@grid-table/core'
-import { useAtomValue } from 'einfach-state'
+import { useAutoSizer, VGridTable } from '@grid-table/core/src'
+import { useAtomValue, useStore } from 'einfach-state'
 import { Fragment, useMemo, useRef } from 'react'
 import type { RowId } from '@grid-table/basic'
-import { getIdByObj, useBasic } from '@grid-table/basic'
+import { headerRowIndexListAtom, useBasic } from '@grid-table/basic'
 import { useTableEvents } from './hooks/useTableEvents'
 import { useSticky } from './plugins/sticky'
 import { useTableClassNameValue } from './hooks'
@@ -16,36 +16,42 @@ import { useDataInit } from './core'
 import { DataCell, DataCellThead, Row } from './components'
 import { Provider } from './Provider'
 import clsx from 'clsx'
+import { useHeaderMergeCells, useMergeCells } from './plugins/mergeCells'
 
 import './Table.css'
+import { getColumnId } from './utils/getColumnId'
 
 export function TableWithNoProvider(props: AntdTableProps) {
   const { columns, dataSource } = props
   const { cellDefaultWidth = 80, rowHeight = 36 } = props
+  const { bordered = true } = props
 
   const ref = useRef<HTMLDivElement>(null)
   const { width } = useAutoSizer(ref)
 
   const tableEvents = useTableEvents()
 
-  const { store, rowIdShowListAtom, columnIdShowListAtom } = useBasic()
+  const { rowIdShowListAtom, columnIdShowListAtom } = useBasic()
+  const store = useStore()
 
   const rowIdShowList = useAtomValue(rowIdShowListAtom, { store })
   const columnIdShowList = useAtomValue(columnIdShowListAtom, { store })
 
+  const headerRowIndexList = useAtomValue(headerRowIndexListAtom)
+
   const { loading } = useDataInit({
-    dataSource,
-    columns,
-    parentProp: props.parentProp,
-    idProp: props.idProp,
-    root: props.root,
+    ...props,
+    /**
+     * 默认高度
+     */
+    rowHeight,
   })
 
   const { stickyList } = useMemo(() => {
     const leftFixedColList: RowId[] = []
     const rightFixedColList: RowId[] = []
     columns.forEach((column, index) => {
-      const columnId = getIdByObj(column)
+      const columnId = getColumnId(column)
       if (column.fixed === 'left') {
         leftFixedColList.push(columnId)
       }
@@ -73,7 +79,10 @@ export function TableWithNoProvider(props: AntdTableProps) {
   )
 
   useRowSelection(props.rowSelection)
-  const { stayIndexList } = useSticky(stickyList)
+  const { stayIndexList } = useSticky({
+    ...stickyList,
+    bordered: bordered,
+  })
 
   const tableClassName = useTableClassNameValue()
   useAreaSelected({ enable: props.enableCopy })
@@ -81,6 +90,10 @@ export function TableWithNoProvider(props: AntdTableProps) {
   const copy = useCopy({
     enable: props.enableCopy,
   })
+
+  useMergeCells()
+
+  useHeaderMergeCells()
 
   const LoadingComponent = props.loadingComponent || Fragment
 
@@ -104,9 +117,10 @@ export function TableWithNoProvider(props: AntdTableProps) {
             theadCellComponent={DataCellThead}
             theadRowCalcSize={calcHeadRowSizeByIndex}
             theadBaseSize={props.theadBaseSize}
+            theadRowCount={headerRowIndexList.length}
             rowCount={rowIdShowList.length}
             rowCalcSize={calcRowSizeByIndex}
-            rowBaseSize={props.rowBaseSize || props.rowHeight}
+            rowBaseSize={props.rowBaseSize || rowHeight}
             tbodyTrComponent={Row}
             columnCount={columnIdShowList.length}
             columnCalcSize={calcColumnSizeByIndex}

@@ -11,10 +11,6 @@ function createIdObj(id: string): IdObj {
   return idObj
 }
 
-// interface CreatAtom {
-//   <T extends AtomEntity<State>>(key: Key, initState?: State): T
-// }
-
 export interface CreateAtomFamilyOptions<Key, State> {
   debuggerKey: string
   createAtom?: <T extends AtomEntity<unknown>>(key: Key, initState?: AtomState<T>) => T

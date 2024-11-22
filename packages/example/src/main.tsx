@@ -11,12 +11,15 @@ function App() {
   return (
     <div
       style={{
-        display: 'grid',
-        gridTemplateRows: '1fr',
-        gridTemplateColumns: '180px auto',
+        display: 'flex',
       }}
     >
-      <div>
+      <div
+        style={{
+          width: '180px',
+          flexShrink: 0,
+        }}
+      >
         <div>
           当前页面链接
           {currentUrl}
@@ -38,7 +41,12 @@ function App() {
           )
         })}
       </div>
-      <div>
+      <div
+        style={{
+          flexGrow: 1,
+          width: 1,
+        }}
+      >
         <Suspense fallback={<div>loading</div>}>
           <Component />
         </Suspense>

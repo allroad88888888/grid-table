@@ -24,5 +24,5 @@ interface ColumnDragItemProps {
 
 export function ColumnDragItem({ columnId }: ColumnDragItemProps) {
   const { mousedown } = useDrayItem(columnId)
-  return <div className="grid-table-drag-item" onMouseDown={mousedown} />
+  return <span className="grid-table-drag-item" onMouseDown={mousedown} />
 }

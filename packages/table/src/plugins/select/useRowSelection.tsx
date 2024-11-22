@@ -1,15 +1,19 @@
 import { useEffect } from 'react'
-import { atom, useAtom } from 'einfach-state'
+import { atom, useAtom, useSetAtom, useStore } from 'einfach-state'
 import { useInit } from 'einfach-utils'
 import './useRowSelection.css'
 import type { PositionId, RowId } from '@grid-table/basic'
-import { getIdByObj, useBasic } from '@grid-table/basic'
+import { useBasic } from '@grid-table/basic'
 import { useData } from '../../core'
 import type { ColumnType } from '../../types'
 import clsx from 'clsx'
+import { columnAddAtom } from '../../stateColumn'
 
 export interface UseRowSelectionProps<ItemInfo = Record<string, any>>
-  extends Pick<ColumnType<ItemInfo>, 'title' | 'fixed' | 'width' | 'render'> {
+  extends Pick<
+    ColumnType<ItemInfo>,
+    'title' | 'fixed' | 'width' | 'render' | 'renderComponent' | 'align'
+  > {
   // selectedRowKeys?: string[]
   onChange?: (selectedRowKeys: RowId[], rowInfoList: ItemInfo[]) => void
 }
@@ -21,8 +25,10 @@ export interface UseRowSelectionProps<ItemInfo = Record<string, any>>
 export function useRowSelection<ItemInfo = Record<string, any>>(
   props: UseRowSelectionProps<ItemInfo> | undefined,
 ) {
-  const { columnIndexListAtom, columnSizeMapAtom } = useBasic()
-  const { store, getColumnOptionAtomByColumnId, getRowInfoAtomByRowId } = useData()
+  const { getRowInfoAtomByRowId } = useData()
+  const store = useStore()
+
+  const addColumn = useSetAtom(columnAddAtom)
   /**
    * onChange
    */
@@ -40,35 +46,25 @@ export function useRowSelection<ItemInfo = Record<string, any>>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props?.onChange])
 
+  const { width, title, render, fixed, renderComponent, align } = props || {}
+
   useEffect(() => {
     if (!props) {
       return
     }
     const option: ColumnType<ItemInfo> = {
-      title: props.title || <Checkbox />,
-      width: props.width,
-      render: props.render || render,
-      fixed: props.fixed,
+      title: title || <Checkbox />,
+      width: width,
+      render: render || Render,
+      renderComponent: renderComponent,
+      fixed: fixed,
+      align: align,
     }
-
-    const columnId = getIdByObj(option)
-
-    store.setter(getColumnOptionAtomByColumnId(columnId), option as ColumnType)
-    if (props.width) {
-      store.setter(columnSizeMapAtom, (prev) => {
-        const next = new Map(prev)
-        next.set(columnId, props.width!)
-        return next
-      })
-    }
-
-    store.setter(columnIndexListAtom, (prev) => {
-      return [columnId, ...prev]
-    })
-  }, [columnIndexListAtom, columnSizeMapAtom, getColumnOptionAtomByColumnId, props, store])
+    addColumn(option as ColumnType, 'top')
+  }, [addColumn, align, fixed, props, render, renderComponent, title, width])
 }
 
-function render(text: string | undefined, rowInfo: any, rowPath: PositionId) {
+function Render(text: string | undefined, rowInfo: any, rowPath: PositionId) {
   return <Checkbox {...rowPath} />
 }
 

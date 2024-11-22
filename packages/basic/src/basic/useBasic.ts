@@ -1,9 +1,9 @@
-import { useContext } from 'react'
-import { BasicContext } from './basicContext'
+import { useAtomValue } from 'einfach-state'
 import type {} from 'einfach-state'
-import type { Core } from './type'
+import type { Core } from './state'
+import { basicAtom } from './state'
 
 export function useBasic(): Core {
-  const res = useContext(BasicContext)
+  const res = useAtomValue(basicAtom)
   return res
 }
