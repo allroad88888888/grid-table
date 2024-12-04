@@ -1,11 +1,9 @@
 import type { CSSProperties } from 'react'
 import { memo } from 'react'
-import { useAtomValue, useSetAtom } from 'einfach-state'
-
-import { useStore, useLevel, useIdByIndex, useArrowAtom } from '../hooks'
-import { viewOptionAtom } from './state'
 import type { Id } from '../types'
-import { collapseNodeSetAtom } from '../state'
+import { useItem } from '../hooks/useItem'
+import clsx from 'clsx'
+import './TreeItem.css'
 
 interface ItemProps {
   index: number
@@ -15,18 +13,8 @@ interface ItemProps {
 function TreeItem(props: ItemProps) {
   const { index, style } = props
 
-  const { store } = useStore()
-  const id = useIdByIndex(index)
-  const level = useLevel({ id })
-
-  const arrowAtom = useArrowAtom(id)
-  const { levelSize, itemTag, Component, itemClassName } = useAtomValue(viewOptionAtom, { store })
-
-  const arrow = useAtomValue(arrowAtom, { store })
-
-  const setCollapseNodeSet = useSetAtom(collapseNodeSetAtom, { store })
-
-  const ItemTag = itemTag
+  const { id, ItemTag, arrow, level, levelSize, Component, itemClassName, onArrowClick } =
+    useItem(index)
 
   return (
     <ItemTag style={style} className={itemClassName}>
@@ -39,32 +27,16 @@ function TreeItem(props: ItemProps) {
       ></span>
       {arrow !== undefined ? (
         <span
-          style={{
-            height: '100%',
-            display: 'inline-block',
-            padding: '4px',
-            cursor: 'pointer',
-          }}
+          className="grid-tree-arrow"
           onClick={() => {
-            setCollapseNodeSet((prev) => {
-              if (prev.has(id)) {
-                prev.delete(id)
-              } else {
-                prev.add(id)
-              }
-              return new Set(prev)
-            })
+            onArrowClick(id)
           }}
         >
           <i
-            style={{
-              display: 'inline-block',
-              width: 8,
-              height: 8,
-              borderLeft: '1px solid black',
-              borderBottom: '1px solid black',
-              transform: arrow ? 'rotate(-45deg)' : 'rotate(-135deg)',
-            }}
+            className={clsx({
+              'grid-tree-arrow-expand': arrow === false,
+              'grid-tree-arrow-collapse': arrow,
+            })}
           ></i>
         </span>
       ) : null}

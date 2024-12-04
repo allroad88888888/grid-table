@@ -41,6 +41,8 @@ function GridTree(props: GridTreeProps) {
 
   const showIds = useAtomValue(showIdsAtom, { store })
 
+  const Item = props.ItemComponent || TreeItem
+
   return (
     <VGridList
       baseSize={size}
@@ -51,7 +53,7 @@ function GridTree(props: GridTreeProps) {
       tag={props.tag || 'ul'}
       overscanCount={props.overscanCount}
     >
-      {TreeItem}
+      {Item}
     </VGridList>
   )
 }

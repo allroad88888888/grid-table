@@ -71,6 +71,8 @@ export interface GridTreeViewOptions {
    */
   tag?: 'div' | 'ul'
   // 下面都是作用于 每一行上
+
+  ItemComponent?: ComponentType<{ index: number; style: CSSProperties }>
 }
 
 export interface GridTreeProps extends DataTodoProps, GridTreeViewOptions, GridTreeItemOptions {

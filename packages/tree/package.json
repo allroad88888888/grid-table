@@ -1,6 +1,6 @@
 {
   "name": "@grid-tree/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "grid-tree tree",
   "type": "module",
   "main": "./cjs/index.js",

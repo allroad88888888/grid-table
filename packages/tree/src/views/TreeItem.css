@@ -1,0 +1,20 @@
+.grid-tree-arrow {
+  height: 100%;
+  display: inline-block;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.grid-tree-arrow > i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+.grid-tree-arrow > .grid-tree-arrow-expand {
+  transform: rotate(-45deg);
+}
+.grid-tree-arrow > .grid-tree-arrow-collapse {
+  transform: rotate(-135deg);
+}
