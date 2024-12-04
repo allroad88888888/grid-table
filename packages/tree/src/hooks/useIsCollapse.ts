@@ -4,7 +4,7 @@ import type { Atom, Getter } from 'einfach-state'
 import type { Id } from '../types'
 import { collapseNodeSetAtom, parentSetIdAtom } from '../state'
 
-export function getArrowById(getter: Getter, id: Id): boolean | undefined {
+export function getIdCollapseById(getter: Getter, id: Id): boolean | undefined {
   const parentSetId = getter(parentSetIdAtom)
 
   if (!parentSetId.has(id)) {
@@ -13,10 +13,10 @@ export function getArrowById(getter: Getter, id: Id): boolean | undefined {
   return getter(collapseNodeSetAtom).has(id)
 }
 
-export function useArrowAtom(id: Id): Atom<boolean | undefined> {
+export function useIsCollapseAtom(id: Id): Atom<boolean | undefined> {
   const arrowAtom = useMemo(() => {
     return atom((getter) => {
-      return getArrowById(getter, id)
+      return getIdCollapseById(getter, id)
     })
   }, [id])
 

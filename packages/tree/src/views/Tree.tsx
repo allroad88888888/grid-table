@@ -1,4 +1,4 @@
-import { VGridList } from '@grid-table/core'
+import { VGridList } from '@grid-table/core/src'
 import type { GridTreeProps } from '../types'
 import { useCallback, useEffect } from 'react'
 import TreeItem from './TreeItem'
@@ -7,6 +7,7 @@ import { useStore } from '../hooks'
 import { useAtomValue, useSetAtom } from 'einfach-state'
 import { viewOptionAtom } from './state'
 import { easyMergeOptions } from '../utils/easyMergeOptions'
+import { useStayIndexList } from '../hooks/useStayIndexList'
 
 function GridTree(props: GridTreeProps) {
   const { store } = useStore()
@@ -18,11 +19,11 @@ function GridTree(props: GridTreeProps) {
       return easyMergeOptions(viewOption, {
         levelSize: props.levelSize,
         itemTag: props.itemTag,
-        Component: props.Component,
+        ContentComponent: props.ContentComponent,
         itemClassName: props.itemClassName,
       })
     })
-  }, [props.levelSize, props.itemTag, props.Component, props.itemClassName, setViewOptions])
+  }, [props.levelSize, props.itemTag, props.ContentComponent, props.itemClassName, setViewOptions])
 
   const { size = 36 } = props
 
@@ -36,12 +37,22 @@ function GridTree(props: GridTreeProps) {
       root: props.root,
       expendLevel: props.expendLevel,
       minLengthExpandAll: props.minLengthExpandAll,
+      showRoot: props.showRoot,
     })
-  }, [init, props.expendLevel, props.minLengthExpandAll, props.relation, props.root])
+  }, [
+    init,
+    props.expendLevel,
+    props.minLengthExpandAll,
+    props.relation,
+    props.root,
+    props.showRoot,
+  ])
 
   const showIds = useAtomValue(showIdsAtom, { store })
 
   const Item = props.ItemComponent || TreeItem
+
+  const stayIndexList = useStayIndexList(showIds, props.stayIds)
 
   return (
     <VGridList
@@ -52,6 +63,7 @@ function GridTree(props: GridTreeProps) {
       style={props.style}
       tag={props.tag || 'ul'}
       overscanCount={props.overscanCount}
+      stayIndexList={stayIndexList}
     >
       {Item}
     </VGridList>

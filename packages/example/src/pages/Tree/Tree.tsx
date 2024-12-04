@@ -1,6 +1,9 @@
 import GridTree from '@grid-tree/core/src'
 import mock from './mock'
 import './Tree.css'
+import TreeItem from './TreeItem'
+
+const stayIds = ['ROOT', 'AC']
 
 export function TreeDemo() {
   return (
@@ -14,6 +17,9 @@ export function TreeDemo() {
         border: '1px solid red',
         overflow: 'auto',
       }}
+      stayIds={stayIds}
+      showRoot
+      ItemComponent={TreeItem}
     />
   )
 }

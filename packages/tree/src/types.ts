@@ -58,7 +58,7 @@ export interface GridTreeItemOptions {
    */
   itemTag?: 'div' | 'li'
 
-  Component?: ComponentType<{ id: Id }>
+  ContentComponent?: ComponentType<{ id: Id }>
 
   itemClassName?: string
 }
@@ -73,6 +73,11 @@ export interface GridTreeViewOptions {
   // 下面都是作用于 每一行上
 
   ItemComponent?: ComponentType<{ index: number; style: CSSProperties }>
+
+  /**
+   * 不管虚拟滚动怎么滚，都会保留的id
+   */
+  stayIds?: Id[]
 }
 
 export interface GridTreeProps extends DataTodoProps, GridTreeViewOptions, GridTreeItemOptions {

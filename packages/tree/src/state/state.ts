@@ -64,9 +64,9 @@ export const collapseNodeSetAtom = atom(new Set<Id>())
 export const showIdsAtom = atom<Id[]>(function (getter) {
   const allIds = getter(allIdsAtom)
   const collapseNodeList = getter(collapseNodeSetAtom)
-
   const idParentIdMap = getter(idParentIdMapAtom)
   const parentIdLevel = getter(parentIdLevelAtom)
+
   let isValid = true
   let prevLevel: number = -2
 

@@ -1,31 +1,40 @@
+import { useExpandAll, useItem } from '@grid-tree/core/src/hooks'
 import type { CSSProperties } from 'react'
 import { memo } from 'react'
-import type { Id } from '../types'
-import { useItem } from '../hooks/useItem'
 import clsx from 'clsx'
-import './TreeItem.css'
+import { useCollapseAll } from './useCollapseAll'
 
 interface ItemProps {
   index: number
   style: CSSProperties
 }
 
+function ExpandAll() {
+  const expandAll = useExpandAll()
+  const collapseAll = useCollapseAll()
+  return (
+    <div className="grid-tree-item-root-todo">
+      <span onClick={collapseAll}>+</span>
+      <span onClick={expandAll}>-</span>
+    </div>
+  )
+}
+
 function TreeItem(props: ItemProps) {
   const { index, style } = props
 
-  const {
-    id,
-    ItemTag,
-    isCollapse,
-    level,
-    levelSize,
-    ContentComponent,
-    itemClassName,
-    onExpandOrCollapseClick: onArrowClick,
-  } = useItem(index)
+  const { id, isCollapse, level, levelSize, onExpandOrCollapseClick } = useItem(index)
 
   return (
-    <ItemTag style={style} className={itemClassName}>
+    <li
+      style={style}
+      className={clsx(
+        {
+          sticky: id === 'ROOT',
+        },
+        'grid-tree-item',
+      )}
+    >
       {/* 层级空 */}
       <span
         style={{
@@ -37,7 +46,7 @@ function TreeItem(props: ItemProps) {
         <span
           className="grid-tree-arrow"
           onClick={() => {
-            onArrowClick(id)
+            onExpandOrCollapseClick(id)
           }}
         >
           <i
@@ -48,14 +57,11 @@ function TreeItem(props: ItemProps) {
           ></i>
         </span>
       ) : null}
+      {id}
 
-      <ContentComponent id={id} />
-    </ItemTag>
+      {id === 'ROOT' ? <ExpandAll /> : null}
+    </li>
   )
-}
-
-export function DemoItemComponent({ id }: { id: Id }) {
-  return <>{id}</>
 }
 
 export default memo(TreeItem)

@@ -7,3 +7,24 @@
 .grid-tree-item {
   list-style: none;
 }
+
+.sticky {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.grid-tree-item-root-todo {
+  display: inline-block;
+  margin-left: auto;
+}
+
+.grid-tree-item-root-todo > span {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.grid-tree-item {
+  display: flex;
+}
