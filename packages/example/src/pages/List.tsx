@@ -1,5 +1,5 @@
-import type { ListItemProps } from '@grid-table/core/src'
-import { VGridList } from '@grid-table/core/src'
+import type { ListItemProps } from '@grid-table/core'
+import { VGridList } from '@grid-table/core'
 import { useMethods } from 'einfach-utils'
 import { rowIds } from '../mock/rowIds'
 

@@ -5,6 +5,7 @@ import path, { dirname } from 'path'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
 import postcss from 'rollup-plugin-postcss'
+import terser from '@rollup/plugin-terser'
 
 const products = [
   'packages/core',
@@ -98,6 +99,7 @@ export default products.map((dir) => {
       {
         format: 'commonjs',
         dir: `${dir}/dist`,
+        plugins: [terser()],
         entryFileNames: '[name].js',
         preserveModulesRoot: 'src', // 去掉 src 的根路径
       },

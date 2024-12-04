@@ -1,4 +1,4 @@
-import GridTree from '@grid-tree/core/src/Tree'
+import GridTree from '@grid-tree/core/src'
 import mock from './mock'
 import './Tree.css'
 

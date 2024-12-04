@@ -1,7 +1,6 @@
 import { describe, test, expect } from '@jest/globals'
 import { formatToTable } from './formatToTable'
 import { mockDataConfig } from './easy.mock'
-import { getCellId } from '@grid-table/view'
 
 describe('pivot', () => {
   test('easy', () => {
@@ -91,12 +90,12 @@ describe('pivot', () => {
         province: '子类别',
       },
       {
-        city: '省份',
+        city: '城市',
         column1: '数量',
         column2: '数量',
         column3: '数量',
         column4: '数量',
-        province: '城市',
+        province: '省份',
       },
     ])
     expect(res.columns).toStrictEqual([
@@ -146,44 +145,15 @@ describe('pivot', () => {
     expect(res.headerColumns).toStrictEqual(['headerColumn0', 'headerColumn1', 'headerColumn2'])
 
     expect(res.headerMergeCellList).toStrictEqual([
-      {
-        cellId: getCellId({
-          rowId: '0',
-          columnId: 'province',
-        }),
-        colIdList: ['city'],
-      },
-      {
-        cellId: getCellId({
-          rowId: '0',
-          columnId: 'column1',
-        }),
-        colIdList: ['column2'],
-      },
-      {
-        cellId: getCellId({
-          rowId: '0',
-          columnId: 'column3',
-        }),
-        colIdList: ['column4'],
-      },
+      { cellId: '0||province', colIdList: ['city'], rowIdList: [] },
+      { cellId: '0||column1', colIdList: ['column2'], rowIdList: [] },
+      { cellId: '0||column3', colIdList: ['column4'], rowIdList: [] },
+      { cellId: '1||province', colIdList: ['city'], rowIdList: [] },
     ])
 
     expect(res.bodyMergeCelList).toStrictEqual([
-      {
-        cellId: getCellId({
-          rowId: '0',
-          columnId: 'province',
-        }),
-        rowIdList: ['1', '2', '3'],
-      },
-      {
-        cellId: getCellId({
-          rowId: '4',
-          columnId: 'province',
-        }),
-        rowIdList: ['5', '6', '7'],
-      },
+      { cellId: '0||province', colIdList: [], rowIdList: ['1', '2', '3'] },
+      { cellId: '4||province', colIdList: [], rowIdList: ['5', '6', '7'] },
     ])
   })
 })

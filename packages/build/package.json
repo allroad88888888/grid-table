@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "grid-table build",
   "main": "src/index.js",
-  "type": "module",
   "module": "src/index.js",
   "typings": "src/index.d.ts",
   "license": "MIT",

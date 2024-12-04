@@ -1,4 +1,4 @@
-import { Pivot } from '@grid-table/pivot/src'
+import { Pivot } from '@grid-table/pivot'
 import { mockDataConfig } from './mock'
 
 import xx from './single-population-proportion.mock'

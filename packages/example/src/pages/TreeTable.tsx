@@ -1,5 +1,5 @@
 import type { ColumnType } from '@grid-table/view'
-import AntdTable from '@grid-table/view/src/AntdTable'
+import { AntdTable } from '@grid-table/view'
 import { Tag } from 'antd'
 
 const columns: ColumnType[] = [

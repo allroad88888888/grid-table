@@ -4,17 +4,8 @@
   "description": "grid-tree tree",
   "type": "module",
   "main": "./cjs/index.js",
+  "module": "./esm/index.mjs",
   "typings": "@types/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./esm/index.mjs",
-      "require": "./cjs/index.js"
-    },
-    "./*": {
-      "import": "./esm/*.mjs",
-      "require": "./cjs/*.js"
-    }
-  },
   "license": "MIT",
   "author": "allroad88888888@vip.qq.com",
   "files": [

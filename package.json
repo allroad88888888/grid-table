@@ -3,7 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "scripts": {
     "eslint": "npx eslint --config rules/.eslintrc ./ --fix",
     "test": "jest --collect-coverage",

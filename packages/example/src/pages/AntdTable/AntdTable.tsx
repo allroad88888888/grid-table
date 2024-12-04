@@ -1,4 +1,4 @@
-import AntdTable from '@grid-table/view/src/AntdTable'
+import { AntdTable } from '@grid-table/view'
 import type { UseRowSelectionProps } from '@grid-table/view/src/plugins/select'
 import { atom, useAtomValue } from 'einfach-state'
 import { DataList } from './mock'
