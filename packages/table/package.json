@@ -2,43 +2,54 @@
   "name": "@grid-table/view",
   "version": "0.1.39",
   "description": "grid-table table",
-  "main": "es/index.js",
-  "module": "es/index.js",
-  "typings": "es/index.d.ts",
+  "type": "module",
+  "main": "./cjs/index.js",
+  "typings": "@types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./esm/index.mjs",
+      "require": "./cjs/index.js"
+    },
+    "./*": {
+      "import": "./esm/*.mjs",
+      "require": "./cjs/*.js"
+    }
+  },
   "license": "MIT",
+  "author": "allroad88888888@vip.qq.com",
   "files": [
-    "es",
+    "esm",
+    "cjs",
     "@types",
-    "dist"
+    "README.md"
   ],
   "scripts": {
-    "build": "tsc -build&&rollup --config rollup.config.mjs"
+    "build": "tsc"
   },
   "keywords": [
     "react",
     "atom"
   ],
   "peerDependencies": {
-    "einfach-state": "^0.8.0",
-    "einfach-utils": "^0.5.3",
-    "clsx": "^2.0.0",
-    "react": "^16 || ^17 || ^18"
+    "einfach-state": ">=0.11.11",
+    "einfach-utils": ">=0.5.9",
+    "react": ">=16.8 <20"
   },
   "peerDependenciesMeta": {
+    "einfach-state": {
+      "optional": true
+    },
+    "einfach-utils": {
+      "optional": true
+    },
     "react": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^26.0.1",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-swc": "^0.3.1",
-    "@rollup/plugin-terser": "^0.4.4",
     "@swc/core": "^1.4.11",
     "@types/node": "^20.11.30",
     "@types/react": "^18.3.3",
-    "rollup": "^4.19.0",
-    "rollup-plugin-postcss": "^4.0.2",
     "typescript": "^5.4.3"
   },
   "dependencies": {

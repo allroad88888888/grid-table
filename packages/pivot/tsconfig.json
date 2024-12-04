@@ -2,9 +2,8 @@
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "rootDir": "src",
+    "declarationDir": "@types",
     "emitDeclarationOnly": true,
-    "declarationDir": "es",
-    "declarationMap": false
   },
   "include": [
     "./src/**/*",
@@ -16,6 +15,9 @@
     },
     {
       "path": "./../basic/tsconfig.json"
+    },
+    {
+      "path": "./../table/tsconfig.json"
     }
   ]
 }

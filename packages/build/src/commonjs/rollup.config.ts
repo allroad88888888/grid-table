@@ -1,3 +1,4 @@
+import type { RollupOptions } from 'rollup'
 import { defineConfig } from 'rollup'
 import resolve from '@rollup/plugin-node-resolve'
 import swc from '@rollup/plugin-swc'
@@ -5,8 +6,7 @@ import terser from '@rollup/plugin-terser'
 import commonjs from '@rollup/plugin-commonjs'
 import postcss from 'rollup-plugin-postcss'
 
-/** @type {import('rollup').RollupOptions} */
-const config = defineConfig({
+const defaultConfig: RollupOptions = defineConfig({
   input: './src/index.ts',
   plugins: [
     resolve({
@@ -14,11 +14,12 @@ const config = defineConfig({
     }),
     commonjs(),
     postcss({
-      plugins: [],
+      inject: false,
+      extract: true,
     }),
     swc({
       swc: {
-        minify: true,
+        minify: false,
         jsc: {
           target: 'es2019',
           parser: {
@@ -40,21 +41,31 @@ const config = defineConfig({
     'einfach-state',
     'einfach-utils',
     '@grid-table/core',
+    '@grid-table/basic',
+    'clsx',
     'react/jsx-runtime',
     'react/jsx-dev-runtime',
   ],
   output: [
-    {
-      format: 'esm',
-      sourcemap: true,
-      file: './dist/index.js',
-    },
+    // {
+    //   format: 'esm',
+    //   sourcemap: true,
+
+    //   file: './dist/index.js',
+    // },
     {
       plugins: [terser()],
       format: 'esm',
-      file: './dist/index.mini.js',
+      file: './dist/index.min.js',
+    },
+    {
+      format: 'es',
+      sourcemap: true,
+      dir: './es',
+      preserveModules: true,
+      preserveModulesRoot: 'src',
     },
   ],
 })
 
-export default config
+export default defaultConfig

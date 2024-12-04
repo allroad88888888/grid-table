@@ -1,0 +1,59 @@
+{
+  "name": "@grid-tree/core",
+  "version": "0.0.1",
+  "description": "grid-tree tree",
+  "type": "module",
+  "main": "./cjs/index.js",
+  "typings": "@types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./esm/index.mjs",
+      "require": "./cjs/index.js"
+    },
+    "./*": {
+      "import": "./esm/*.mjs",
+      "require": "./cjs/*.js"
+    }
+  },
+  "license": "MIT",
+  "author": "allroad88888888@vip.qq.com",
+  "files": [
+    "esm",
+    "cjs",
+    "@types",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "react",
+    "atom"
+  ],
+  "peerDependencies": {
+    "einfach-state": ">=0.11.11",
+    "einfach-utils": ">=0.5.9",
+    "react": ">=16.8 <20"
+  },
+  "peerDependenciesMeta": {
+    "einfach-state": {
+      "optional": true
+    },
+    "einfach-utils": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.3.3",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@grid-table/basic": "workspace:*",
+    "@grid-table/core": "workspace:^*",
+    "clsx": "^2.1.1"
+  }
+}

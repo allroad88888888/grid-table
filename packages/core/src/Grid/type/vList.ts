@@ -5,6 +5,10 @@ export interface ListProps extends UseVScrollProps {
   style?: CSSProperties
   className?: string
   children: ComponentType<{ index: number; style: CSSProperties }>
+  /**
+   * @default div
+   */
+  tag?: 'div' | 'ul'
 }
 
 export interface ListItemProps {

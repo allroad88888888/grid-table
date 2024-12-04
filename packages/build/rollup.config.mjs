@@ -7,16 +7,13 @@ import postcss from 'rollup-plugin-postcss'
 
 /** @type {import('rollup').RollupOptions} */
 const config = defineConfig({
-  input: './src/index.ts',
+  input: ['./src/esm/main.ts', './src/esm/workerTransformFile.ts'],
+  external: ['@swc/core'],
   plugins: [
     resolve({
       extensions: ['.ts', '.tsx', '.mjs', '.js', '.json'],
     }),
     commonjs(),
-    postcss({
-      inject: false,
-      extract: true,
-    }),
     swc({
       swc: {
         minify: false,
@@ -35,35 +32,12 @@ const config = defineConfig({
       },
     }),
   ],
-  external: [
-    'react',
-    'react-dom',
-    'einfach-state',
-    'einfach-utils',
-    '@grid-table/core',
-    '@grid-table/basic',
-    'clsx',
-    'react/jsx-runtime',
-    'react/jsx-dev-runtime',
-  ],
-  output: [
-    // {
-    //   format: 'esm',
-    //   sourcemap: true,
 
-    //   file: './dist/index.js',
-    // },
-    // {
-    //   plugins: [terser()],
-    //   format: 'esm',
-    //   file: './dist/index.min.js',
-    // },
+  output: [
     {
       format: 'es',
       sourcemap: true,
-      dir: './es',
-      preserveModules: true,
-      preserveModulesRoot: 'src',
+      dir: 'dist',
     },
   ],
 })

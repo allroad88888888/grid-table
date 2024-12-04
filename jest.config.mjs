@@ -10,6 +10,7 @@ const jestConfig = {
   transform: {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { ...config }],
   },
+  transformIgnorePatterns: ['node_modules/(?!einfach-state)'],
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   /**
    * 运行每个测试文件之前-执行这个路径里面的内容。

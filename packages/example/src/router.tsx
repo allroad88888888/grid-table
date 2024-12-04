@@ -7,8 +7,9 @@ import AntdTable from './pages/AntdTable'
 import TreeTable from './pages/TreeTable'
 import { PivotDemo } from './pages/Pivot'
 import { CallBackDemo } from './pages/CallBack'
+import { TreeDemo } from './pages/Tree'
 
-export const currentRouterAtom = atom('/pivot')
+export const currentRouterAtom = atom('/tree')
 
 export function Empty() {
   return <div>empty</div>
@@ -38,7 +39,7 @@ export const RouterMapping: Record<
     component: AntdTable,
     label: 'antd-table',
   },
-  '/tree': {
+  '/tree-table': {
     component: TreeTable,
     label: 'tree-table',
   },
@@ -49,5 +50,9 @@ export const RouterMapping: Record<
   '/pivot': {
     component: PivotDemo,
     label: 'pivot-demo',
+  },
+  '/tree': {
+    component: TreeDemo,
+    label: 'tree-demo',
   },
 }

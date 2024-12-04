@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
     "noEmitOnError": true,
     "allowJs": false,
     "noEmit": true,
@@ -26,11 +30,27 @@
     "jsx": "react-jsx",
     "inlineSourceMap": true
   },
-  "include": ["./**/*.test.ts", "./**/*.test.tsx", "./**/test", "./rules/setup-jest.ts"],
-  "exclude": ["node_modules", "**/node_modules", "**/@types/"],
+  "include": [
+    "./**/*.test.ts",
+    "./**/*.test.tsx",
+    "./**/test",
+    "./rules/setup-jest.ts",
+    "./rollup.config.mjs"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/node_modules",
+    "**/@types/"
+  ],
   "references": [
-    { "path": "./packages/core/tsconfig.json" },
-    { "path": "./packages/example/tsconfig.json" },
-    { "path": "./packages/table/tsconfig.json" }
+    {
+      "path": "./packages/core/tsconfig.json"
+    },
+    {
+      "path": "./packages/example/tsconfig.json"
+    },
+    {
+      "path": "./packages/table/tsconfig.json"
+    }
   ]
 }

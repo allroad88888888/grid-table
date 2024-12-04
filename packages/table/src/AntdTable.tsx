@@ -1,4 +1,4 @@
-import { useAutoSizer, VGridTable } from '@grid-table/core/src'
+import { useAutoSizer, VGridTable } from '@grid-table/core'
 import { useAtomValue, useStore } from 'einfach-state'
 import { Fragment, useMemo, useRef } from 'react'
 import type { RowId } from '@grid-table/basic'

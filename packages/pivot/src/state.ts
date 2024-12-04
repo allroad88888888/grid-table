@@ -2,7 +2,7 @@ import type { ColumnType } from '@grid-table/view'
 import { atom } from 'einfach-state'
 import type { PivotProps } from './type'
 import { formatToTable } from './format'
-import { headerMergeCellListAtom, mergeCellListAtom } from '@grid-table/view/src'
+import { headerMergeCellListAtom, mergeCellListAtom } from '@grid-table/view'
 
 export const dataListAtom = atom<Record<string, any>[]>([])
 

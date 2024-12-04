@@ -1,6 +1,6 @@
 import AntdTable from '@grid-table/view/src/AntdTable'
 import type { UseRowSelectionProps } from '@grid-table/view/src/plugins/select'
-import { atom, useSetAtom, useAtomValue } from 'einfach-state'
+import { atom, useAtomValue } from 'einfach-state'
 import { DataList } from './mock'
 import { useColumnConfig } from './useColumnConfig'
 import './Table.css'
@@ -32,8 +32,6 @@ const dataAtom = atom(async (getter) => {
 })
 
 export function AntdTableDemo() {
-  const refresh = useSetAtom(refreshAtom)
-
   const dataList = useAtomValue(dataAtom)
 
   const { columns } = useColumnConfig()

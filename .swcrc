@@ -17,5 +17,8 @@
     "externalHelpers": false,
     "keepClassNames": false
   },
-  "minify": false
+  "minify": false,
+  "module": {
+    "type": "es6"
+  }
 }

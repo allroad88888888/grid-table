@@ -1,12 +1,10 @@
 import { createStore, useAtomValue, useSetAtom } from 'einfach-state'
-import { Provider, TableWithNoProvider } from '@grid-table/view/src'
+import { Provider, TableWithNoProvider } from '@grid-table/view'
 import { useEffect, useState } from 'react'
 import type { PivotProps } from './type'
 import { columnListAtom, dataListAtom, headerDataListAtom, initAtom } from './state'
 
 export function Pivot(props: PivotProps) {
-  const { dataConfig } = props
-
   const dataList = useAtomValue(dataListAtom)
   const columns = useAtomValue(columnListAtom)
   const headerDataList = useAtomValue(headerDataListAtom)

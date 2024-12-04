@@ -9,7 +9,7 @@ interface VGridListProps extends Omit<ListProps, 'width' | 'height'> {
 }
 
 export function VGridList(props: VGridListProps) {
-  const { style, className } = props
+  const { style, className, tag = 'div' } = props
   const { baseSize, children } = props
 
   const ref = useRef<HTMLDivElement>(null)
@@ -48,9 +48,23 @@ export function VGridList(props: VGridListProps) {
     ref.current.addEventListener('scroll', onScroll, { passive: true })
   }, [])
 
+  const Tag = tag
+
   return (
-    <div ref={ref} style={style} className={className}>
-      <div
+    <div
+      ref={ref}
+      style={{
+        overflow: 'auto',
+        willChange: 'scroll-position',
+        contain: 'paint',
+        transform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+        overscrollBehavior: 'contain',
+        ...style,
+      }}
+      className={className}
+    >
+      <Tag
         style={{
           display: 'grid',
           gridTemplateRows: `repeat(auto-fill, ${baseSize}px)`,
@@ -58,7 +72,7 @@ export function VGridList(props: VGridListProps) {
         }}
       >
         {$items}
-      </div>
+      </Tag>
     </div>
   )
 }

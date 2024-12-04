@@ -9,3 +9,5 @@ es
 .npmrc
 coverage
 tsconfig.tsbuildinfo
+cjs
+esm

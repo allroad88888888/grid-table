@@ -16,7 +16,16 @@
       "path": "./../core/tsconfig.json"
     },
     {
+      "path": "./../basic/tsconfig.json"
+    },
+    {
+      "path": "./../pivot/tsconfig.json"
+    },
+    {
       "path": "./../table/tsconfig.json"
+    },
+    {
+      "path": "./../tree/tsconfig.json"
     }
   ]
 }
