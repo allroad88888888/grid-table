@@ -1,6 +1,6 @@
 {
   "name": "@grid-tree/core",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "grid-tree tree",
   "type": "module",
   "main": "./cjs/index.js",
@@ -43,7 +43,6 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
-    "@grid-table/basic": "workspace:*",
     "@grid-table/core": "workspace:^*",
     "clsx": "^2.1.1"
   }

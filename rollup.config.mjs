@@ -80,7 +80,7 @@ export default products.map((dir) => {
   return {
     ...config,
     input: `${dir}/src/index.ts`,
-    // treeshake: false,
+    treeshake: false,
     output: [
       {
         format: 'commonjs',

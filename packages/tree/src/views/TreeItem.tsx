@@ -1,6 +1,5 @@
 import type { CSSProperties } from 'react'
 import { memo } from 'react'
-import type { Id } from '../types'
 import { useItem } from '../hooks/useItem'
 import clsx from 'clsx'
 import './TreeItem.css'
@@ -52,10 +51,6 @@ function TreeItem(props: ItemProps) {
       <ContentComponent id={id} />
     </ItemTag>
   )
-}
-
-export function DemoItemComponent({ id }: { id: Id }) {
-  return <>{id}</>
 }
 
 export default memo(TreeItem)

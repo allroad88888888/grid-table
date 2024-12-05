@@ -1,4 +1,4 @@
-import { VGridList } from '@grid-table/core/src'
+import { VGridList } from '@grid-table/core'
 import type { GridTreeProps } from '../types'
 import { useCallback, useEffect } from 'react'
 import TreeItem from './TreeItem'
