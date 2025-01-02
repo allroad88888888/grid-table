@@ -18,7 +18,7 @@ const products = [
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const outputDirList = ['es', 'cjs', 'dist']
+const outputDirList = ['esm', 'cjs', 'dist']
 products.forEach((pName) => {
   outputDirList.forEach((output) => {
     const outputDir = path.resolve(__dirname, pName, output)
@@ -47,7 +47,7 @@ const config = defineConfig({
 
   plugins: [
     resolve({
-      extensions: ['.ts', '.tsx'],
+      extensions: ['.ts', '.tsx', '.css'],
     }),
 
     postcss({

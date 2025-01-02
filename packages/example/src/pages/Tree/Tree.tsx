@@ -3,7 +3,7 @@ import mock from './mock'
 import './Tree.css'
 import TreeItem from './TreeItem'
 
-const stayIds = ['ROOT', 'AC']
+const stayIds = ['_ROOT']
 
 export function TreeDemo() {
   return (
@@ -19,7 +19,10 @@ export function TreeDemo() {
       }}
       stayIds={stayIds}
       showRoot
+      root="_ROOT"
       ItemComponent={TreeItem}
+      expendLevel={0}
+      minLengthExpandAll={20}
     />
   )
 }

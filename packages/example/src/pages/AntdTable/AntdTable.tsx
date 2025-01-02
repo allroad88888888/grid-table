@@ -1,4 +1,4 @@
-import { AntdTable } from '@grid-table/view'
+import { Table } from '@grid-table/view/src'
 import type { UseRowSelectionProps } from '@grid-table/view/src/plugins/select'
 import { atom, useAtomValue } from 'einfach-state'
 import { DataList } from './mock'
@@ -37,20 +37,16 @@ export function AntdTableDemo() {
   const { columns } = useColumnConfig()
 
   return (
-    <div
+    <Table
       style={{
         width: '100%',
         height: '600px',
-        // border: '1px solid blue',
       }}
-    >
-      <AntdTable
-        enableCopy={true}
-        columns={columns}
-        dataSource={dataList}
-        rowSelection={rowSelection}
-      />
-    </div>
+      enableCopy={true}
+      columns={columns}
+      dataSource={dataList}
+      rowSelection={rowSelection}
+    />
   )
 }
 

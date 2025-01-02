@@ -38,8 +38,9 @@ export const columnAddAtom = atom(
 
     const { getColumnOptionAtomByColumnId } = getter(dataFamilyAtom)
     const { getColumnStateAtomById } = getter(basicAtom)
-    getColumnStateAtomById(columnId, {
+    setter(getColumnStateAtomById(columnId), {
       className: new Set([`gird-table-text-${column.align || 'left'}`]),
+      style: {},
     })
     setter(getColumnOptionAtomByColumnId(columnId), column)
     if (column.width) {

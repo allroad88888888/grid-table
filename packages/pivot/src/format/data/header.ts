@@ -51,9 +51,11 @@ export function getHeaderInfo(
   rows.forEach((rowKey, index) => {
     const newObj: Record<string, string> = {}
     columns.forEach((t, index) => {
-      newObj[tHeaderColumns[index]] = metaFieldMap.get(t)!
+      newObj[tHeaderColumns[index]] = metaFieldMap.has(t) ? metaFieldMap.get(t)! : t
     })
-    newObj[tHeaderColumns[tHeaderColumns.length - 1]] = metaFieldMap.get(rowKey)!
+    newObj[tHeaderColumns[tHeaderColumns.length - 1]] = metaFieldMap.has(rowKey)
+      ? metaFieldMap.get(rowKey)!
+      : rowKey
 
     headerData.splice(index, 0, newObj)
   })

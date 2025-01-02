@@ -38,8 +38,6 @@ export function useExpand({}: UseExpandProps = {}) {
 }
 
 export function useExpandItem({
-  rowIndex,
-  columnIndex,
   rowId,
   enable = false,
 }: PositionId & {

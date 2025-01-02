@@ -1,3 +1,15 @@
+.grid-table {
+  /* tbody合并单元格 */
+  --merge-cells-zIndex: 1;
+  /* 固定列头 */
+  --sticky-row-zIndex: 10;
+  --sticky-column-zIndex: 1;
+  /* --merge-cells-thead-zIndex: */
+  /* 表头-拖拽 */
+  --thead-control-with-zIndex: 31;
+  --thead-context-menu-zIndex: 20 /* --grid-bg-color: #fff; */;
+}
+
 .grid-table-plugin-wrapper {
   max-width: 100%;
   width: 100%;
@@ -49,7 +61,7 @@
   /**
   * 下面的 sticky 会遮挡
   */
-  z-index: 10;
+  z-index: var(--sticky-row-zIndex, 10);
 }
 
 .grid-table-border {
@@ -81,7 +93,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2px 4px;
+  padding: 2px 0px;
 }
 .grid-table .thead-cell > .grid-table-cell-data-item {
   flex: 1;
@@ -92,4 +104,12 @@
   align-items: center;
   padding: 2px 4px;
   /* contain: paint; */
+}
+
+.grid-table [role='row']:hover > * {
+  background-color: var(--grid-row-hover-bg-color, #fafafa);
+}
+
+.grid-table [role='row'] {
+  background-color: var(--grid-bg-color, #fff);
 }

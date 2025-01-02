@@ -46,6 +46,8 @@ export function formatToTable(dataConfig: DataConfig) {
   // const columnPropTree: PropTree = new Map()
   const headerRelation: HeaderRelation = {}
 
+  let indexId = 0
+
   data.forEach((item) => {
     const rowKey = rows
       .map((rowField) => {
@@ -60,7 +62,10 @@ export function formatToTable(dataConfig: DataConfig) {
      * 设置rowKey到 新的数据
      */
     if (!dataMap.has(rowKey)) {
-      const dataItem: Record<string, any> = {}
+      const dataItem: Record<string, any> = {
+        // id: indexId.toString(),
+      }
+      indexId += 1
       rows.forEach((rowField) => (dataItem[rowField] = item[rowField]))
       dataMap.set(rowKey, dataItem)
       transformedData.push(dataItem)
@@ -106,7 +111,7 @@ export function formatToTable(dataConfig: DataConfig) {
          * 把columns的最后一列的值设置
          */
         prevHeaderRelation[newColumnName] = {
-          label: metaFieldMap.get(val)!,
+          label: metaFieldMap.has(val) ? metaFieldMap.get(val)! : val,
           columnName: newColumnName,
         }
 
@@ -138,7 +143,7 @@ export function formatToTable(dataConfig: DataConfig) {
    * 0-1 列头 最后一行 需要保持不合并，rows最后一列 需要保持不跟前面的合并
    */
   const headerMergeCellList = mergeCells(realColumns, headerData.slice(0, -1))
-  const bodyMergeCelList = mergeCells(rows.slice(0, -1), transformedData)
+  const bodyMergeCelList = mergeCells(rows.slice(0, 1), transformedData)
 
   return {
     data: transformedData,

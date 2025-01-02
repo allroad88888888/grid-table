@@ -11,8 +11,9 @@ export const iniAtom = atom(0, (getter, setter, relation: Relation, props: DataT
 
   const options = getter(dataOptions)
 
-  const { allIds, parentIdLevel, idParentIdMap } = format(relation, options)
+  const { allIds, parentIdLevel, idParentIdMap, collapseNodeList } = format(relation, options)
 
+  setter(collapseNodeSetAtom, collapseNodeList)
   setter(relationAtom, relation)
   setter(rootAtom, options.root)
   setter(allIdsAtom, allIds)

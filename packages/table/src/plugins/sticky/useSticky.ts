@@ -1,80 +1,35 @@
 import type { CSSProperties } from 'react'
-import { useEffect, useMemo } from 'react'
-import type { AtomEntity } from 'einfach-state'
+import { useCallback, useEffect, useMemo } from 'react'
 import { atom, useAtomValue, useStore } from 'einfach-state'
-import { useMethods, useInit } from 'einfach-utils'
-import type { ColumnId, RowId } from '@grid-table/basic'
-import { useBasic } from '@grid-table/basic'
-
-export interface UseStickyProps {
-  topIndexList?: RowId[]
-  bottomIndexList?: RowId[]
-  direction?: 'row' | 'column'
-  topSpace?: number
-  /**
-   * @default true
-   */
-  bordered?: boolean
-  /**
-   *
-   * @default
-   * true
-   */
-  fixed?: boolean
-}
-
-const rowTopAtom = atom<RowId[]>([])
-const rowBottomAtom = atom<RowId[]>([])
-const columnTopAtom = atom<ColumnId[]>([])
-const columnBottomAtom = atom<ColumnId[]>([])
-
-type StickyType = 'rowTop' | 'rowBottom' | 'columnTop' | 'columnBottom'
-type PositionType = 'left' | 'right' | 'top' | 'bottom'
-
-const Config: Record<
-  StickyType,
-  {
-    position: PositionType
-    atomEntity: AtomEntity<RowId[]>
-  }
-> = {
-  rowTop: {
-    position: 'top',
-    atomEntity: rowTopAtom,
-  },
-  rowBottom: {
-    position: 'bottom',
-    atomEntity: rowBottomAtom,
-  },
-  columnTop: {
-    position: 'left',
-    atomEntity: columnTopAtom,
-  },
-  columnBottom: {
-    position: 'right',
-    atomEntity: columnBottomAtom,
-  },
-}
+import type { RowId } from '@grid-table/basic'
+import {
+  columnIdShowListAtom,
+  columnSizeMapAtom,
+  rowIdShowListAtom,
+  rowSizeMapAtom,
+  useBasic,
+} from '@grid-table/basic'
+import './sticky.css'
+import type { StickyType, UseStickyProps } from './type'
+import {
+  stickyBottomOptionAtom,
+  StickyConfig,
+  stickyLeftOptionAtom,
+  stickyRightOptionAtom,
+  stickyTopOptionAtom,
+} from './state'
 
 const EmptyArray: string[] = []
 export function useSticky(props: UseStickyProps = {}) {
   const {
-    bottomIndexList = EmptyArray,
-    topIndexList = EmptyArray,
+    bottomIdList = EmptyArray,
+    topIdList = EmptyArray,
     direction = 'column',
     topSpace = 0,
     fixed = true,
-    bordered: border = true,
   } = props
 
-  const {
-    getColumnStateAtomById,
-    getRowStateAtomById,
-    rowSizeMapAtom,
-    columnSizeMapAtom,
-    columnIdShowListAtom,
-    rowIdShowListAtom,
-  } = useBasic()
+  const { getColumnStateAtomById, getRowStateAtomById } = useBasic()
   const store = useStore()
   const { setter, getter } = store
 
@@ -82,15 +37,22 @@ export function useSticky(props: UseStickyProps = {}) {
 
   const listAtom = isRow ? rowIdShowListAtom : columnIdShowListAtom
 
-  const [bottomAtom, topAtom] = useInit(() => {
-    return [atom(bottomIndexList), atom(topIndexList)]
-  }, [])
-
+  /**
+   * 设置参数
+   */
   useEffect(() => {
-    setter(bottomAtom, bottomIndexList)
-    setter(topAtom, topIndexList)
-  }, [bottomIndexList, topIndexList])
+    if (isRow) {
+      setter(stickyBottomOptionAtom, bottomIdList)
+      setter(stickyTopOptionAtom, topIdList)
+    } else {
+      setter(stickyRightOptionAtom, bottomIdList)
+      setter(stickyLeftOptionAtom, topIdList)
+    }
+  }, [bottomIdList, isRow, setter, topIdList])
 
+  /**
+   * 固定列排序
+   */
   useEffect(() => {
     if (fixed === false) {
       return
@@ -98,35 +60,44 @@ export function useSticky(props: UseStickyProps = {}) {
     return setter(listAtom, (_getter, prev) => {
       const setIdsList = new Set(prev)
       const setList = new Set(
-        [...topIndexList, ...bottomIndexList].filter((index) => {
+        [...topIdList, ...bottomIdList].filter((index) => {
           return setIdsList.has(index)
         }),
       )
 
       const newList: RowId[] = [
-        ...topIndexList,
+        ...topIdList,
         ...prev.filter((index) => {
           return !setList.has(index)
         }),
-        ...bottomIndexList,
+        ...bottomIdList,
       ]
 
       return newList
     })
-  }, [bottomIndexList, topIndexList])
+  }, [bottomIdList, fixed, listAtom, setter, topIdList])
 
-  const { todo } = useMethods({
-    todo(type: StickyType, nextState: RowId[] = []) {
-      const { position } = Config[type]
+  const realTopIds = useAtomValue(StickyConfig[isRow ? 'rowTop' : 'columnTop'].atomEntity, {
+    store,
+  })
+  const realBottomIds = useAtomValue(
+    StickyConfig[isRow ? 'rowBottom' : 'columnBottom'].atomEntity,
+    { store },
+  )
+
+  const todo = useCallback(
+    (type: StickyType, ids: string[]) => {
+      const { position } = StickyConfig[type]
       const getStateAtomByIndex = isRow ? getRowStateAtomById : getColumnStateAtomById
+
       const sizeMapAtom = isRow ? rowSizeMapAtom : columnSizeMapAtom
       const isTop = type.indexOf('Bottom') > 0 ? false : true
 
       let startPosition: number = isTop ? topSpace : 0
-      let tempState = nextState
+      let tempState = ids
 
       if (isTop === false) {
-        tempState = nextState.reverse()
+        tempState = ids.reverse()
       }
       const cancelList: (() => void)[] = []
       const positionList: number[] = [startPosition]
@@ -140,31 +111,14 @@ export function useSticky(props: UseStickyProps = {}) {
           setter(atomEntity, (getter, prevState) => {
             const newStyle: CSSProperties = {
               ...prevState.style,
-              position: 'sticky',
               [position]: positionList[index],
             }
-            if (isRow) {
-              newStyle.zIndex = 1
-            }
-            if (index === tempState.length - 1 && isTop && border && direction == 'column') {
-              if (index === 0) {
-                /**
-                 * 取消最左边border- 不占用1px 让外围的border 1px
-                 */
-                newStyle.borderLeftWidth = 0
-              }
-              if (index === tempState.length - 1) {
-                newStyle.borderRightWidth = '1px'
-                newStyle.borderRightStyle = 'solid'
-                /**
-                 * 遮第一列的left-border 1px
-                 */
-                newStyle.marginRight = '-1px'
-              }
-            }
+            const newClass = [...Array.from(prevState.className), `sticky-${position}`]
+
             return {
               ...prevState,
               style: newStyle,
+              className: new Set(newClass),
             }
           })!,
         )
@@ -178,15 +132,19 @@ export function useSticky(props: UseStickyProps = {}) {
         })
       }
     },
-  })
+    [getColumnStateAtomById, getRowStateAtomById, getter, isRow, setter, topSpace],
+  )
 
   useEffect(() => {
-    return todo(`${direction}Top`, [...topIndexList])
-  }, [topIndexList, border])
+    return todo(`${direction}Top`, realTopIds)
+  }, [todo, direction, realTopIds])
   useEffect(() => {
-    return todo(`${direction}Bottom`, [...bottomIndexList])
-  }, [bottomIndexList, border])
+    return todo(`${direction}Bottom`, realBottomIds)
+  }, [todo, direction, realBottomIds])
 
+  /**
+   * 根据id 换算成table接受的index
+   */
   const stayIndexListAtom = useMemo(() => {
     return atom((getter) => {
       const showIds = getter(listAtom)
@@ -195,10 +153,10 @@ export function useSticky(props: UseStickyProps = {}) {
       }
       if (fixed === true) {
         return [
-          ...topIndexList.map((t, index) => {
+          ...topIdList.map((t, index) => {
             return index
           }),
-          ...bottomIndexList.map((t, index) => {
+          ...bottomIdList.map((t, index) => {
             return showIds.length - 1 - index
           }),
         ]
@@ -208,7 +166,7 @@ export function useSticky(props: UseStickyProps = {}) {
       showIds.forEach((sId, index) => {
         tMap.set(sId, index)
       })
-      return [...topIndexList, ...bottomIndexList].map((tId) => {
+      return [...topIdList, ...bottomIdList].map((tId) => {
         return tMap.get(tId)!
       })
     })

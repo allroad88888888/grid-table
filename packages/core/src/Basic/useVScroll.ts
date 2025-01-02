@@ -2,11 +2,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Options } from './option'
 import { useDoRender } from '../utils/useDoRender'
 import type { UseVScrollProps } from './type'
+import { useTransition } from './useTransition'
 
 export function useVScroll(props: UseVScrollProps) {
   const { itemCount, overscanCount = 10, calcItemSize, onItemsRendered, direction = 'row' } = props
 
   const length = direction === 'row' ? props.height : props.width
+
+  const [isPending, startTransition] = useTransition()
 
   const { stateProp } = Options[direction]
 
@@ -82,7 +85,8 @@ export function useVScroll(props: UseVScrollProps) {
 
   const scrollHandler = useCallback(() => {
     tickingRef.current = false
-    doRender()
+
+    startTransition(doRender)
   }, [])
   const onScroll = useCallback((event: Event) => {
     const { scrollTop, scrollLeft } = event.currentTarget as Element
@@ -95,6 +99,9 @@ export function useVScroll(props: UseVScrollProps) {
   }, [])
 
   const showIndexList = useMemo(() => {
+    if (!props.stayIndexList) {
+      return Array.from({ length: endIndex - startIndex }, (_, index) => startIndex + index)
+    }
     const indexList = new Set(props.stayIndexList)
     for (let index = startIndex; index < endIndex; index += 1) {
       indexList.add(index)
@@ -109,5 +116,6 @@ export function useVScroll(props: UseVScrollProps) {
     startIndex,
     endIndex,
     showIndexList,
+    isPending,
   }
 }

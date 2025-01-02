@@ -1,16 +1,21 @@
 import type { CSSProperties } from 'react'
 import { useEffect } from 'react'
+import type { Getter } from 'einfach-state'
 import { useAtomValue, useStore } from 'einfach-state'
-import { headerRowSizeMaAtom, useBasic } from '@grid-table/basic'
-import { getRowIdAndColIdByCellId } from '../../utils/getCellId'
-import { getAffectedCellSet } from './utils'
-import { headerMergeCellListAtom } from './stateHeader'
+import {
+  columnIdShowListAtom,
+  headerRowSizeMaAtom,
+  rowIdShowListAtom,
+  useBasic,
+} from '@grid-table/basic'
+import { getCellId, getRowIdAndColIdByCellId } from '../../utils/getCellId'
+import { theadMergeCellListAtom } from '../../components'
 
 export function useHeaderMergeCells() {
   const store = useStore()
   const { getHeaderCellStateAtomById, columnSizeMapAtom } = useBasic()
 
-  const cellList = useAtomValue(headerMergeCellListAtom)
+  const cellList = useAtomValue(theadMergeCellListAtom)
   const columnSizeMap = useAtomValue(columnSizeMapAtom)
   const rowSizeMap = useAtomValue(headerRowSizeMaAtom)
 
@@ -18,55 +23,107 @@ export function useHeaderMergeCells() {
     if (!cellList || cellList.length === 0) {
       return
     }
-
     const clearList: (() => void)[] = []
+    cellList?.forEach(({ cellId, rowIdList = [], colIdList = [] }) => {
+      const [curRowId, curColId] = getRowIdAndColIdByCellId(cellId)
 
-    const affectedCellSet = getAffectedCellSet(cellList)
-
-    cellList?.map(({ cellId, rowIdList = [], colIdList = [] }) => {
-      clearList.push(
-        store.setter(getHeaderCellStateAtomById(cellId), (getter, prev) => {
-          const [curRowId, curColId] = getRowIdAndColIdByCellId(cellId)
-
-          let next: CSSProperties = {}
-          if (rowIdList.length === 0 && colIdList.length === 0) {
-            next = {
-              display: 'none',
-            }
-          } else {
-            next = {
-              width: [curColId, ...colIdList].reduce<number>((prev, colId) => {
-                return prev + columnSizeMap.get(colId)!
+      function getStyle(getter: Getter, rowIndex: number, colIndex: number) {
+        let next: CSSProperties = {}
+        if (rowIdList.length === 0 && colIdList.length === 0) {
+          next = {
+            display: 'none',
+          }
+        } else {
+          const rowIdSet = new Set(getter(rowIdShowListAtom))
+          const columnIdSet = new Set(getter(columnIdShowListAtom))
+          next = {
+            width: [curColId, ...colIdList]
+              .filter((colId) => {
+                return columnIdSet.has(colId)
+              })
+              .reduce<number>((prev, colId) => {
+                return prev + (columnSizeMap.get(colId) || 0)
               }, 0),
-              height: [curRowId, ...rowIdList].reduce<number>((prev, rowId) => {
-                return prev + rowSizeMap.get(rowId)!
+            height: [curRowId, ...rowIdList]
+              .filter((rowId) => {
+                return rowIdSet.has(rowId)
+              })
+              .reduce<number>((prev, rowId) => {
+                return prev + (rowSizeMap.get(rowId) || 0)
               }, 0),
-            }
           }
 
-          return {
-            ...prev,
-            style: {
-              ...prev.style,
+          if (rowIndex) {
+            next = {
               ...next,
-            },
+              transform: `translateY(${-[curRowId, ...rowIdList]
+                .slice(0, rowIndex)
+                .filter((rowId) => {
+                  return rowIdSet.has(rowId)
+                })
+                .reduce<number>((prev, rowId) => {
+                  return prev + (rowSizeMap.get(rowId) || 0)
+                }, 0)}px)`,
+              // position: 'relative',
+              // top: -[curRowId, ...rowIdList]
+              //   .slice(0, rowIndex)
+              //   .filter((rowId) => {
+              //     return rowIdSet.has(rowId)
+              //   })
+              //   .reduce<number>((prev, rowId) => {
+              //     return prev + rowSizeMap.get(rowId)!
+              //   }, 0),
+            }
           }
-        })!,
-      )
-    })
+          if (colIndex) {
+            next = {
+              ...next,
 
-    affectedCellSet.forEach((cellId) => {
-      clearList.push(
-        store.setter(getHeaderCellStateAtomById(cellId), (getter, prev) => {
-          return {
-            ...prev,
-            style: {
-              ...prev.style,
-              display: 'none',
-            },
+              transform: `translateX(${-[curColId, ...colIdList]
+                .slice(0, colIndex)
+                .filter((colId) => {
+                  return columnIdSet.has(colId)
+                })
+                .reduce<number>((prev, colId) => {
+                  return prev + (columnSizeMap.get(colId) || 0)
+                }, 0)}px)`,
+              // position: 'relative',
+              // left: -[curColId, ...colIdList]
+              //   .slice(0, colIndex)
+              //   .filter((colId) => {
+              //     return columnIdSet.has(colId)
+              //   })
+              //   .reduce<number>((prev, colId) => {
+              //     return prev + columnSizeMap.get(colId)!
+              //   }, 0),
+            }
           }
-        })!,
-      )
+        }
+
+        return next
+      }
+
+      ;[curRowId, ...rowIdList].forEach((rowId, rowIndex) => {
+        ;[curColId, ...colIdList].forEach((colId, columnIndex) => {
+          const tCellId = getCellId({
+            rowId,
+            columnId: colId,
+          })
+          clearList.push(
+            store.setter(getHeaderCellStateAtomById(tCellId), (getter, prev) => {
+              const next = getStyle(getter, rowIndex, columnIndex)
+
+              return {
+                ...prev,
+                style: {
+                  ...prev.style,
+                  ...next,
+                },
+              }
+            })!,
+          )
+        })
+      })
     })
 
     return () => {
@@ -76,5 +133,3 @@ export function useHeaderMergeCells() {
     }
   }, [cellList, columnSizeMap, getHeaderCellStateAtomById, rowSizeMap, store])
 }
-
-export default ''

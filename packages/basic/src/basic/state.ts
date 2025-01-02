@@ -44,6 +44,11 @@ export const headerRowSizeMaAtom = atom(new Map<RowId, number>())
 export const cellEventsAtom = incrementAtom({} as EventsCellSet)
 
 /**
+ * header cellEvent
+ */
+export const theadCellEventsAtom = incrementAtom({} as EventsCellSet)
+
+/**
  * 宽高
  */
 export const resizeAtom = atom<ResizeParam>({ height: -1, width: -1 })
@@ -58,7 +63,7 @@ export const columnIdShowListAtom = incrementAtom((_getter) => {
 /**
  * 展示行 id list
  */
-const rowIdShowListAtom = incrementAtom((_getter) => {
+export const rowIdShowListAtom = incrementAtom((_getter) => {
   return _getter(rowIndexListAtom)
 })
 
@@ -71,7 +76,10 @@ export const basicAtom = atom(() => {
   const getColumnStateAtomById = createAtomFamily({
     debuggerKey: 'basic column info',
     createAtom: (key: ColumnId) => {
-      const atomEntity = incrementAtom({} as ColumnItemState)
+      const atomEntity = incrementAtom<ColumnItemState>({
+        style: {},
+        className: new Set(),
+      })
       return atomEntity
     },
   })
@@ -82,7 +90,10 @@ export const basicAtom = atom(() => {
   const getRowStateAtomById = createAtomFamily({
     debuggerKey: 'basic row info',
     createAtom: (key: RowId) => {
-      const atomEntity = incrementAtom({} as RowItemState)
+      const atomEntity = incrementAtom<RowItemState>({
+        style: {},
+        className: new Set(),
+      })
       return atomEntity
     },
   })
@@ -93,7 +104,10 @@ export const basicAtom = atom(() => {
   const getCellStateAtomById = createAtomFamily({
     debuggerKey: 'basic cell info',
     createAtom: (key: CellId) => {
-      const atomEntity = incrementAtom({} as CellState)
+      const atomEntity = incrementAtom<CellState>({
+        style: {},
+        className: new Set(),
+      })
       return atomEntity
     },
   })
@@ -104,7 +118,10 @@ export const basicAtom = atom(() => {
   const getHeaderCellStateAtomById = createAtomFamily({
     debuggerKey: 'header cell state',
     createAtom: (key: CellId) => {
-      const atomEntity = incrementAtom({} as CellState)
+      const atomEntity = incrementAtom<CellState>({
+        style: {},
+        className: new Set(),
+      })
       return atomEntity
     },
   })
@@ -126,6 +143,7 @@ export const basicAtom = atom(() => {
     columnSizeMapAtom,
     rowSizeMapAtom,
     headerRowSizeMaAtom,
+    theadCellEventsAtom,
   }
 })
 

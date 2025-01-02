@@ -1,6 +1,6 @@
 export default {
   relation: {
-    ROOT: [
+    _ROOT: [
       'A',
       'B',
       'C',

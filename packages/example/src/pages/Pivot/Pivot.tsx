@@ -1,14 +1,28 @@
-import { Pivot } from '@grid-table/pivot'
-import { mockDataConfig } from './mock'
+import type { DataConfig } from '@grid-table/pivot'
+import { Pivot } from '@grid-table/pivot/src'
+import xx from './xx.mock'
+import type { Theme } from '@grid-table/pivot/src/theme/types'
+// import '@grid-table/pivot/esm/index.css'
 
-import xx from './single-population-proportion.mock'
+const theme: Theme = {
+  headerCell: {
+    backgroundColor: '#3447A0',
+    color: 'white',
+    textAlign: 'center',
+  },
+}
 
 export function PivotDemo() {
   return (
     <div>
-      <Pivot dataConfig={mockDataConfig} />
-      {/* @ts-ignore */}
-      <Pivot dataConfig={xx} />
+      <Pivot
+        dataConfig={xx as unknown as DataConfig}
+        style={{
+          width: 1000,
+          height: 600,
+        }}
+        theme={theme}
+      />
     </div>
   )
 }

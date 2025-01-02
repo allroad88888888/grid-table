@@ -1,0 +1,35 @@
+export default {
+  dataCfg: {
+    fields: {
+      rows: ['organization', 'position'],
+      columns: ['fiscal_year'],
+      values: ['amount'],
+    },
+    meta: [
+      {
+        field: 'position',
+        name: '职位',
+      },
+      {
+        field: 'organization',
+        name: '组织',
+      },
+    ],
+    data: [
+      {
+        budget_plan: 'Simulation_1',
+        position: '销售总监',
+        organization: '西品全国销售',
+        fiscal_year: '2024',
+        amount: 200.0,
+      },
+      {
+        budget_plan: 'Simulation_1',
+        position: '销售总监',
+        organization: '西品全国销售',
+        fiscal_year: '2025',
+        amount: 1200.0,
+      },
+    ],
+  },
+}

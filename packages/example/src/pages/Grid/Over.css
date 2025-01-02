@@ -1,0 +1,32 @@
+.grid-over-demo {
+  width: 800px;
+  height: 500px;
+  border: 1px solid red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-over-container {
+  display: grid;
+  height: 36px;
+  width: 36px;
+  border: 1px solid blue;
+  grid-template-rows: repeat(auto-fill, 18px);
+  grid-template-columns: repeat(auto-fill, 18px);
+  overflow: visible;
+  /* grid-template-rows: repeat(4, 18px);
+  grid-template-columns: repeat(4, 18px); */
+}
+
+.grid-over-item {
+  grid-row-start: 1;
+  grid-column-start: 1;
+
+  height: 72px;
+  width: 72px;
+  /* grid-row-end: 4;
+  grid-column-end: 4; */
+
+  background-color: red;
+}

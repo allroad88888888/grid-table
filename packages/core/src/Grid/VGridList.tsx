@@ -16,7 +16,7 @@ export function VGridList(props: VGridListProps) {
 
   const { width, height } = useAutoSizer(ref)
 
-  const { onScroll, totalLength, sizeList, showIndexList } = useVScroll({
+  const { onScroll, totalLength, sizeList, showIndexList, isPending } = useVScroll({
     width,
     height,
     ...props,
@@ -60,6 +60,7 @@ export function VGridList(props: VGridListProps) {
             <Children
               key={index}
               index={index}
+              isPending={isPending}
               style={{
                 gridColumnStart: 1,
                 gridColumnEnd: 1,

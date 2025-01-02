@@ -2,31 +2,21 @@ import { useCallback, useEffect } from 'react'
 import { useAtomValue, atom, useStore } from 'einfach-state'
 import { tableClassNameAtom } from '../../hooks'
 import './AreaSelected.css'
-import { getCellId } from '../../utils/getCellId'
-import { tableEventsAtom } from '../../hooks/useTableEvents'
 import type { PositionId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
+import { areaCellIdsAtom, areaEndAtom, areaStartAtom, emptyPosition } from './state'
 
-const emptyPosition: PositionId = {
-  rowId: ' -1',
-  columnId: '-1',
-  columnIndex: -1,
-  rowIndex: -1,
-}
-export const cellDownAtom = atom<PositionId>(emptyPosition)
-export const cellUpAtom = atom<PositionId>(emptyPosition)
 const isTouchAtom = atom<boolean>(false)
 
 export function useAreaSelected({ enable = false }: { enable?: boolean } = {}) {
-  const { cellEventsAtom, getCellStateAtomById, rowIdShowListAtom, columnIdShowListAtom } =
-    useBasic()
+  const { cellEventsAtom, getCellStateAtomById } = useBasic()
   const store = useStore()
 
   const onMouseDown = useCallback(
     (position: PositionId, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       if (e.button === 0) {
-        store.setter(cellDownAtom, position)
-        store.setter(cellUpAtom, emptyPosition)
+        store.setter(areaStartAtom, position)
+        store.setter(areaEndAtom, emptyPosition)
         store.setter(isTouchAtom, true)
       }
     },
@@ -49,42 +39,28 @@ export function useAreaSelected({ enable = false }: { enable?: boolean } = {}) {
       }
 
       if (e.buttons === 1) {
+        const down = store.getter(areaEndAtom)
         if (down.columnId === position.columnId && down.rowId === position.rowId) {
           return
         }
-        store.setter(cellUpAtom, position)
+        store.setter(areaEndAtom, position)
       }
     },
     [store],
   )
 
-  const down = useAtomValue(cellDownAtom, { store })
-  const up = useAtomValue(cellUpAtom, { store })
+  const cellList = useAtomValue(areaCellIdsAtom, { store })
 
   useEffect(() => {
     if (!enable) {
       return
     }
-    const rowStartIndex = Math.min(up.rowIndex, down.rowIndex)
-    const rowEndIndex = Math.max(up.rowIndex, down.rowIndex)
-    const columnStartIndex = Math.min(up.columnIndex, down.columnIndex)
-    const columnEndIndex = Math.max(up.columnIndex, down.columnIndex)
-
-    const rowIndexList = store.getter(rowIdShowListAtom)
-    const columnIndexList = store.getter(columnIdShowListAtom)
-
-    if (rowStartIndex === -1 || columnStartIndex === -1) {
+    if (cellList.length === 0) {
       return
     }
-
     const cancelList: (() => void)[] = []
-    for (let j = rowStartIndex; j <= rowEndIndex; j += 1) {
-      for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
-        const cellId = getCellId({
-          rowId: rowIndexList[j],
-          columnId: columnIndexList[i],
-        })
-
+    cellList.forEach((cellIdList) => {
+      cellIdList.forEach((cellId) => {
         cancelList.push(
           store.setter(getCellStateAtomById(cellId), (_getter, prev) => {
             const nextClsx = new Set(prev.className)
@@ -95,15 +71,15 @@ export function useAreaSelected({ enable = false }: { enable?: boolean } = {}) {
             }
           })!,
         )
-      }
-    }
+      })
+    })
 
     return () => {
       cancelList.forEach((cancel) => {
         cancel()
       })
     }
-  }, [up, down, store, getCellStateAtomById, enable])
+  }, [cellList, store, getCellStateAtomById, enable])
 
   useEffect(() => {
     if (!enable) {
@@ -139,24 +115,24 @@ export function useAreaSelected({ enable = false }: { enable?: boolean } = {}) {
     })
   }, [cellEventsAtom, onMouseEnter, onMouseDown, onMouseUp, store, enable])
 
-  const onContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.preventDefault()
-    store.setter(cellDownAtom, emptyPosition)
-    store.setter(cellUpAtom, emptyPosition)
-  }, [])
+  // const onContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  //   e.preventDefault()
+  //   store.setter(areaStartAtom, emptyPosition)
+  //   store.setter(areaEndAtom, emptyPosition)
+  // }, [])
 
-  useEffect(() => {
-    if (!enable) {
-      return
-    }
-    return store.setter(tableEventsAtom, (_getter, prev) => {
-      const next = { ...prev }
+  // useEffect(() => {
+  //   if (!enable) {
+  //     return
+  //   }
+  //   return store.setter(tableEventsAtom, (_getter, prev) => {
+  //     const next = { ...prev }
 
-      if (!('onContextMenu' in prev)) {
-        next['onContextMenu'] = new Set()
-      }
-      next['onContextMenu']!.add(onContextMenu)
-      return next
-    })
-  }, [onContextMenu, store, enable])
+  //     if (!('onContextMenu' in prev)) {
+  //       next['onContextMenu'] = new Set()
+  //     }
+  //     next['onContextMenu']!.add(onContextMenu)
+  //     return next
+  //   })
+  // }, [onContextMenu, store, enable])
 }

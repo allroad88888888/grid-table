@@ -1,5 +1,5 @@
 import type { PositionId } from '@grid-table/basic'
-import type { ComponentType, ReactNode } from 'react'
+import type { ComponentType, CSSProperties, ReactNode } from 'react'
 
 export type Align = 'left' | 'right' | 'center'
 
@@ -14,16 +14,14 @@ export interface ColumnType<ItemInfo = Record<string, any>> {
    * for copy pasted
    */
   dataIndex?: string | string[]
-  renderComponent?: ComponentType<{
-    text: string | undefined
-    rowInfo: ItemInfo
-    param: PositionId
-  }>
+  renderComponent?: ComponentType<CustomCellProps<ItemInfo>>
   render?: (text: string | undefined, rowInfo: ItemInfo, param: PositionId) => ReactNode
 
   fixed?: 'left' | 'right'
 
   title?: ReactNode
+
+  titleComponent?: ComponentType<CustomHeaderCellProps>
 
   width?: number
 
@@ -37,4 +35,17 @@ export interface ColumnType<ItemInfo = Record<string, any>> {
    * 树形展开按钮显示
    */
   enabledExpand?: boolean
+}
+
+export interface CustomHeaderCellProps {
+  param: PositionId
+  style?: CSSProperties
+  className?: string
+  children?: ReactNode
+}
+
+export interface CustomCellProps<ItemInfo = Record<string, any>> {
+  text: string | undefined
+  rowInfo: ItemInfo
+  param: PositionId
 }

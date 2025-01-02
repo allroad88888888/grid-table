@@ -18,7 +18,7 @@
   bottom: 0;
   width: 2px;
   left: 0;
-  z-index: 31;
+  z-index: var(--thead-control-with-zIndex, 31);
   background: blue;
   pointer-events: none;
 }

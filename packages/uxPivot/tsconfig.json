@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "declarationDir": "@types",
+    "emitDeclarationOnly": true,
+  },
+  "include": [
+    "./src/**/*",
+    "./rollup.config.mjs",
+    "./build.mjs",
+    "./typing.d.ts"
+  ],
+  "references": [
+    {
+      "path": "./../pivot/tsconfig.json"
+    },
+  ]
+}

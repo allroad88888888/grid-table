@@ -1,5 +1,5 @@
-import type { ComponentType, ReactNode } from 'react'
-import type { ItemsRenderedProps } from '../../Basic/type'
+import type { ComponentType, CSSProperties, ReactNode } from 'react'
+import type { ColumnId, RowId } from './base'
 
 export interface Position {
   rowIndex: number
@@ -23,13 +23,16 @@ export interface RowProps extends BaseProps {
  */
 export interface CellProps extends BaseProps {
   columnIndex: number
+  cellId: string
+  columnId: ColumnId
+  rowId: RowId
   children?: ComponentType<Position>
 }
 
 /**
  * thead render 参数
  */
-interface THeaderProps {
+export interface THeaderProps {
   theadStyle?: React.CSSProperties
   /**
    * @default 1
@@ -37,17 +40,20 @@ interface THeaderProps {
   theadRowCount?: number
   theadRowCalcSize: (index: number) => number
   theadBaseSize?: number
-  theadTrComponent?: ComponentType<RowProps>
-  theadCellComponent: ComponentType<CellProps>
   theadClassName?: string
+  theadHasRow?: boolean
+
+  renderTheadCell: (props: CellsRenderProps) => ReactNode
 }
 
-interface TBodyRowProps {
+export interface TBodyRowProps {
   rowCount: number
   /**
    * @default 10
    */
   overRowCount?: number
+  tbodyHasRow?: boolean
+  renderTbodyCell: (props: CellsRenderProps) => ReactNode
   /**
    * @default 1
    * grid布局 row base length
@@ -57,16 +63,9 @@ interface TBodyRowProps {
   rowCalcSize: (index: number) => number
   rowCalcStyle?: (rowIndex: number) => React.CSSProperties | undefined
   rowStayIndexList?: number[]
-  /**
-   * trRender
-   * @param param
-   * @returns
-   */
-  tbodyTrComponent?: ComponentType<RowProps>
-  onTbodyRowsRendered?: (param: ItemsRenderedProps) => any
 }
 
-interface ColumnProps {
+export interface ColumnProps {
   /**
    * 列总数
    */
@@ -99,12 +98,7 @@ export interface VGridTableProps extends THeaderProps, TBodyRowProps, ColumnProp
    */
   style?: React.CSSProperties
   className?: string
-  /**
-   * cell render
-   * @param param
-   * @returns
-   */
-  cellComponent: ComponentType<CellProps>
+
   /**
    * 数据为空 渲染
    * @returns
@@ -120,10 +114,20 @@ export interface VGridTableProps extends THeaderProps, TBodyRowProps, ColumnProp
 
   children?: ReactNode
 
+  tbodyChildren?: ReactNode
+
+  theadChildren?: ReactNode
+
   onResize?: (param: ResizeParam) => void
 }
 
 export interface ResizeParam {
   height: number
   width: number
+}
+
+export interface CellsRenderProps {
+  rowIndexList: number[]
+  columnIndexList: number[]
+  getCellStyleByIndex: (rowIndex: number, columnIndex: number) => CSSProperties
 }

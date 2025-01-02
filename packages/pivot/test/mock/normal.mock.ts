@@ -1,6 +1,6 @@
-import type { DataConfig } from '../types'
+import type { DataConfig } from '../../src/format/types'
 
-export const mockDataConfig: DataConfig = {
+export default {
   describe: '标准交叉表数据。',
   fields: {
     rows: ['province', 'city'],
@@ -30,6 +30,7 @@ export const mockDataConfig: DataConfig = {
       name: '子类别',
     },
   ],
+
   data: [
     {
       number: 7789,
@@ -501,23 +502,36 @@ export const mockDataConfig: DataConfig = {
       number: 78868,
     },
   ],
-}
+} as DataConfig
 
-export const result = {
-  data: [
-    {
-      province: '浙江省',
-      city: '杭州市',
-      column1: 7789,
-      column2: 5343,
-      column3: 945,
-      column4: 1343,
-    },
-  ],
-  fields: {
-    column1: '桌子',
-    column2: '沙发',
-    column3: '笔',
-    column4: '纸张',
+export const dataList = [
+  { city: '杭州市', column1: 7789, column2: 5343, column3: 945, column4: 1343, province: '浙江省' },
+  { city: '绍兴市', column1: 2367, column2: 632, column3: 1304, column4: 1354, province: '浙江省' },
+  {
+    city: '宁波市',
+    column1: 3877,
+    column2: 7234,
+    column3: 1145,
+    column4: 1523,
+    province: '浙江省',
   },
-}
+  { city: '舟山市', column1: 4342, column2: 834, column3: 1432, column4: 1634, province: '浙江省' },
+  {
+    city: '成都市',
+    column1: 1723,
+    column2: 2451,
+    column3: 2335,
+    column4: 4004,
+    province: '四川省',
+  },
+  { city: '绵阳市', column1: 1822, column2: 2244, column3: 245, column4: 3077, province: '四川省' },
+  {
+    city: '南充市',
+    column1: 1943,
+    column2: 2333,
+    column3: 2457,
+    column4: 3551,
+    province: '四川省',
+  },
+  { city: '乐山市', column1: 2330, column2: 2445, column3: 2458, column4: 352, province: '四川省' },
+]

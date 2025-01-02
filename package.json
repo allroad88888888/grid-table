@@ -8,6 +8,7 @@
     "test": "jest --collect-coverage",
     "clearTypes": "rimraf ./packages/*/tsconfig.tsbuildinfo&&rimraf ./packages/*/@types",
     "build": "npm run clearTypes&&npx tsc --build&&npx rollup -c rollup.config.mjs",
+    "watch": "npx rollup -c rollup.config.mjs --watch",
     "tsc": "tsc -build",
     "prepare": "husky"
   },

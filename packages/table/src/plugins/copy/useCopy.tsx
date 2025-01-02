@@ -1,11 +1,11 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef } from 'react'
-import { atom, useAtomValue, useStore } from 'einfach-state'
+import { atom, useAtom, useAtomValue, useStore } from 'einfach-state'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
-import { cellDownAtom, cellUpAtom } from '../areaSelected'
+import { areaCellIdsAtom } from '../areaSelected/state'
 import type { Area } from '../areaSelected/type'
-import { getCellId } from '../../utils/getCellId'
 import { useBasic } from '@grid-table/basic'
+import { useDocumentClickHandler } from '../../utils/useDocumentClickHandler'
 
 interface Props {
   getDataByArea?: (area: Area) => string
@@ -22,48 +22,35 @@ function emptyFn() {
   return 'The table copy method does not pass parameters to the custom copy data method'
 }
 
-export const copyAreaAtom = atom<Area>({
-  rowStartIndex: -1,
-  rowEndIndex: -1,
-  columnStartIndex: -1,
-  columnEndIndex: -1,
-})
+export const showCopyStyleAtom = atom(false)
 /**
  * 这里逻辑 是弄个隐藏的text 制造能触发copy的事件
  * @returns
  */
-export function useCopy({ getDataByArea = emptyFn, enable = false }: Props = {}) {
+export function useCopy({ getDataByArea = emptyFn, enable = true }: Props = {}) {
   const store = useStore()
-  const { getCellStateAtomById, rowIdShowListAtom, columnIdShowListAtom } = useBasic()
+  const { getCellStateAtomById } = useBasic()
 
-  const down = useAtomValue(cellDownAtom, { store })
-  const up = useAtomValue(cellUpAtom, { store })
+  const [isShowStyle, showCopyStyle] = useAtom(showCopyStyleAtom, { store })
+
+  const cellIds = useAtomValue(areaCellIdsAtom, { store })
 
   const onCopy = useCallback(
     (e: React.ClipboardEvent<HTMLDivElement>) => {
-      const upInfo = store.getter(cellDownAtom)
-      const downInfo = store.getter(cellDownAtom)
-      if (upInfo.rowIndex === -1 || downInfo.rowIndex === -1) {
+      const cellIds = store.getter(areaCellIdsAtom)
+
+      if (!cellIds || cellIds.length === 0) {
         return
       }
-      const rowStartIndex = Math.min(up.rowIndex, down.rowIndex)
-      const rowEndIndex = Math.max(up.rowIndex, down.rowIndex)
-      const columnStartIndex = Math.min(up.columnIndex, down.columnIndex)
-      const columnEndIndex = Math.max(up.columnIndex, down.columnIndex)
-      const newArea = {
-        rowStartIndex,
-        rowEndIndex,
-        columnStartIndex,
-        columnEndIndex,
-      }
-      store.setter(copyAreaAtom, newArea)
-      const text = getDataByArea(newArea)
 
-      e.clipboardData.setData('text/plain', text)
+      showCopyStyle(true)
+      // const text = getDataByArea(newArea)
+
+      e.clipboardData.setData('text/plain', '')
       e.stopPropagation()
       e.preventDefault()
     },
-    [down, up, getDataByArea, store],
+    [showCopyStyle, store],
   )
 
   useEffect(() => {
@@ -83,35 +70,25 @@ export function useCopy({ getDataByArea = emptyFn, enable = false }: Props = {})
   const ref = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    if (!ref.current || up.rowIndex === -1 || down.rowIndex === -1) {
+    if (!ref.current || cellIds.length === 0) {
       return
     }
     // 模拟选中 触发onCopy
     ref.current.select()
-  }, [up, down])
-
-  const area = useAtomValue(copyAreaAtom, { store })
+  }, [cellIds.length])
 
   useEffect(() => {
-    if (enable === false) {
+    if (enable === false || isShowStyle === false) {
       return
     }
-    const { rowStartIndex, rowEndIndex, columnStartIndex, columnEndIndex } = area
 
-    if (rowStartIndex === -1 || columnStartIndex === -1) {
-      return
-    }
     const cancelList: (() => void)[] = []
 
-    const rowIndexList = store.getter(rowIdShowListAtom)
-    const columnIndexList = store.getter(columnIdShowListAtom)
-    for (let j = rowStartIndex; j <= rowEndIndex; j += 1) {
-      for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
-        const cellId = getCellId({
-          rowId: rowIndexList[j],
-          columnId: columnIndexList[i],
-        })
+    const rowLength = cellIds.length
 
+    cellIds.forEach((rowCellIds, rowIndex) => {
+      const columnLength = rowCellIds.length
+      rowCellIds.forEach((cellId, columnIndex) => {
         cancelList.push(
           store.setter(getCellStateAtomById(cellId), (_getter, prev) => {
             const nextStyle: CSSProperties = {
@@ -122,17 +99,17 @@ export function useCopy({ getDataByArea = emptyFn, enable = false }: Props = {})
               borderRight: 'none',
             }
             const borderStyle = '2px dashed blue'
-            if (j === rowStartIndex) {
+            if (rowIndex === 0) {
               nextStyle.borderTop = borderStyle
             }
-            if (j === rowEndIndex) {
+            if (rowIndex === rowLength - 1) {
               nextStyle.borderBottom = borderStyle
             }
 
-            if (i === columnStartIndex) {
+            if (columnIndex === 0) {
               nextStyle.borderLeft = borderStyle
             }
-            if (i === columnEndIndex) {
+            if (columnIndex === columnLength - 1) {
               nextStyle.borderRight = borderStyle
             }
 
@@ -142,17 +119,23 @@ export function useCopy({ getDataByArea = emptyFn, enable = false }: Props = {})
             }
           })!,
         )
-      }
-    }
+      })
+    })
 
     return () => {
       cancelList.forEach((cancel) => {
         cancel()
       })
     }
-  }, [area, store, getCellStateAtomById, enable, rowIdShowListAtom, columnIdShowListAtom])
+  }, [cellIds, enable, getCellStateAtomById, isShowStyle, store])
 
-  if (enable === false || down.columnIndex === -1 || up.columnIndex === -1) {
+  const cancel = useCallback(() => {
+    showCopyStyle(false)
+  }, [showCopyStyle])
+
+  useDocumentClickHandler(cancel)
+
+  if (enable === false || cellIds.length === 0) {
     return null
   }
 

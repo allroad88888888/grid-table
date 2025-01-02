@@ -40,7 +40,7 @@ export function format(relation: Relation, props: Required<DataTodoProps>) {
   // 默认展开几个层级 处理
   const collapseNodeList = new Set<Id>()
   parentIdLevel.forEach((level, tId) => {
-    if (level > expendLevel) {
+    if (level >= expendLevel) {
       collapseNodeList.add(tId)
     }
   })
@@ -55,6 +55,7 @@ export function format(relation: Relation, props: Required<DataTodoProps>) {
     allIds,
     idParentIdMap,
     parentIdLevel,
+    collapseNodeList,
   }
 }
 

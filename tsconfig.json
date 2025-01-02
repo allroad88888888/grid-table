@@ -47,7 +47,13 @@
       "path": "./packages/core/tsconfig.json"
     },
     {
+      "path": "./packages/pivot/tsconfig.json"
+    },
+    {
       "path": "./packages/example/tsconfig.json"
+    },
+    {
+      "path": "./packages/tree/tsconfig.json"
     },
     {
       "path": "./packages/table/tsconfig.json"

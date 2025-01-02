@@ -46,7 +46,7 @@
     "@antv/s2": "^2.0.0",
     "@grid-table/basic": "workspace:*",
     "@grid-table/core": "workspace:^*",
-    "@grid-table/view": "workspace:^*",
+    "@grid-table/view": "workspace:*",
     "clsx": "^2.1.1"
   }
 }

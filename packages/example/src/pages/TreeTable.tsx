@@ -1,5 +1,5 @@
 import type { ColumnType } from '@grid-table/view'
-import { AntdTable } from '@grid-table/view'
+import { Table } from '@grid-table/view'
 import { Tag } from 'antd'
 
 const columns: ColumnType[] = [
@@ -108,7 +108,7 @@ const rowSelection = {
 
 export function TreeTableDemo() {
   return (
-    <AntdTable
+    <Table
       rowSelection={rowSelection}
       columns={columns}
       dataSource={data}

@@ -1,11 +1,10 @@
-import type { ReactNode } from 'react'
 import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { useAutoSizer } from '../AutoSizer'
-import type { VGridTableProps } from './type'
 import { useVScroll } from '../Basic/useVScroll'
+import type { VGridTableProps } from './type'
 
 export function VGridTable(props: VGridTableProps) {
-  const { style, className, children } = props
+  const { style, className, children, theadChildren, tbodyChildren } = props
   const { rowCalcSize, rowCount, rowBaseSize = 1, overRowCount, rowStayIndexList } = props
   const {
     columnCalcSize,
@@ -13,13 +12,16 @@ export function VGridTable(props: VGridTableProps) {
     columnCount,
     overColumnCount,
     columnStayIndexList,
+    renderTbodyCell,
+    tbodyHasRow,
   } = props
   const {
     theadRowCount = 1,
-    theadCellComponent,
+    renderTheadCell,
     theadRowCalcSize: theadRowSize,
     theadBaseSize = 1,
     theadClassName: theadClass,
+    theadHasRow,
   } = props
 
   const { onResize } = props
@@ -79,15 +81,9 @@ export function VGridTable(props: VGridTableProps) {
     ref.current.addEventListener('scroll', onScroll, { passive: true })
   }, [])
 
-  const CellTbody = props.cellComponent
-
-  const CellThead = theadCellComponent
-
   const Empty = props.emptyComponent || Fragment
 
   const Loading = props.loadingComponent || Fragment
-
-  const $headRows: ReactNode[] = []
 
   const [theadHeight, theadSizeList] = useMemo(() => {
     let tempSize = 0
@@ -99,25 +95,40 @@ export function VGridTable(props: VGridTableProps) {
     return [tempSize, tempTheadSizeList]
   }, [])
 
-  for (let rowIndex = 0; rowIndex < theadRowCount; rowIndex += 1) {
-    const columnList = columnIndexList.map((columnIndex) => {
-      return (
-        <CellThead
-          key={`${rowIndex}-${columnIndex}`}
-          style={{
-            gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
-            gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
-            gridRowStart: theadSizeList[rowIndex] / theadBaseSize + 1,
-            gridRowEnd: theadSizeList[rowIndex + 1] / theadBaseSize + 1,
-          }}
-          rowIndex={rowIndex}
-          columnIndex={columnIndex}
-        />
-      )
-    })
+  const getTheadCellStyle = useCallback(
+    (rowIndex: number, columnIndex: number) => {
+      const tStyle = {
+        gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
+        gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
+        gridRowStart: theadSizeList[rowIndex] / theadBaseSize + 1,
+        gridRowEnd: theadSizeList[rowIndex + 1] / theadBaseSize + 1,
+      }
+      if (theadHasRow) {
+        tStyle.gridRowStart = 1
+        tStyle.gridRowEnd =
+          (theadSizeList[rowIndex + 1] - theadSizeList[rowIndex]) / theadBaseSize + 1
+      }
+      return tStyle
+    },
+    [columnBaseSize, columnSizeList, theadBaseSize, theadHasRow, theadSizeList],
+  )
 
-    $headRows.push(<Fragment key={rowIndex}>{columnList}</Fragment>)
-  }
+  const getTbodyCellStyle = useCallback(
+    (rowIndex: number, columnIndex: number) => {
+      const tStyle = {
+        gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
+        gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
+        gridRowStart: rowSizeList[rowIndex] / rowBaseSize + 1,
+        gridRowEnd: rowSizeList[rowIndex + 1] / rowBaseSize + 1,
+      }
+      if (tbodyHasRow) {
+        tStyle.gridRowStart = 1
+        tStyle.gridRowEnd = (rowSizeList[rowIndex + 1] - rowSizeList[rowIndex]) / rowBaseSize + 1
+      }
+      return tStyle
+    },
+    [columnBaseSize, columnSizeList, rowBaseSize, rowSizeList, tbodyHasRow],
+  )
 
   return (
     <div ref={ref} role="table" style={style} className={className}>
@@ -135,7 +146,12 @@ export function VGridTable(props: VGridTableProps) {
             height: theadHeight,
           }}
         >
-          {$headRows}
+          {renderTheadCell({
+            rowIndexList: Array.from({ length: theadRowCount }, (_, index) => index),
+            columnIndexList,
+            getCellStyleByIndex: getTheadCellStyle,
+          })}
+          {theadChildren}
         </div>
       ) : null}
       {props.loading ? (
@@ -154,23 +170,11 @@ export function VGridTable(props: VGridTableProps) {
           }}
           key="tbody"
         >
-          {rowIndexList.map((rowIndex) => {
-            const trChildren = columnIndexList.map((columnIndex) => {
-              return (
-                <CellTbody
-                  key={`${rowIndex}-${columnIndex}`}
-                  style={{
-                    gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
-                    gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
-                    gridRowStart: rowSizeList[rowIndex] / rowBaseSize + 1,
-                    gridRowEnd: rowSizeList[rowIndex + 1] / rowBaseSize + 1,
-                  }}
-                  rowIndex={rowIndex}
-                  columnIndex={columnIndex}
-                />
-              )
-            })
-            return <Fragment key={rowIndex}>{trChildren}</Fragment>
+          {tbodyChildren}
+          {renderTbodyCell({
+            rowIndexList,
+            columnIndexList,
+            getCellStyleByIndex: getTbodyCellStyle,
           })}
         </div>
       )}

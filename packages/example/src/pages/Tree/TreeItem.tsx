@@ -7,6 +7,7 @@ import { useCollapseAll } from './useCollapseAll'
 interface ItemProps {
   index: number
   style: CSSProperties
+  isPending?: boolean
 }
 
 function ExpandAll() {
@@ -20,10 +21,20 @@ function ExpandAll() {
   )
 }
 
+// const
+
 function TreeItem(props: ItemProps) {
-  const { index, style } = props
+  const { index, style, isPending } = props
 
   const { id, isCollapse, level, levelSize, onExpandOrCollapseClick } = useItem(index)
+
+  if (isPending) {
+    return (
+      <li style={style} className={clsx('grid-tree-item')}>
+        loading
+      </li>
+    )
+  }
 
   return (
     <li

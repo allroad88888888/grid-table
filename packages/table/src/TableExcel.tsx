@@ -13,32 +13,35 @@ import { useRowSelection } from './plugins/select'
 import { useCellSizeByColumn } from './plugins/calcSizeByColumn/useSizeByColumn'
 import type { AntdTableProps } from './types/type'
 import { useDataInit } from './core'
-import { DataCell, DataCellThead, Row } from './components'
-import { Provider } from './Provider'
 import clsx from 'clsx'
 import { useHeaderMergeCells, useMergeCells } from './plugins/mergeCells'
 
 import './Table.css'
 import { getColumnId } from './utils/getColumnId'
+import { useTheadSelected } from './plugins/areaSelected/useTheadSelected'
+import { TheadContextMenu } from './plugins/theadContextMenu/TheadContextMenu'
+import { useRenderTheadCells } from './components/Cell/renderTheadCells'
+import { useRenderTbodyCells } from './components/Cell/renderTbodyCells'
+import { Provider } from './Provider'
 
-export function TableWithNoProvider(props: AntdTableProps) {
+export function TableExcel(props: AntdTableProps) {
   const { columns, dataSource } = props
   const { cellDefaultWidth = 80, rowHeight = 36 } = props
-  const { bordered = true } = props
 
   const ref = useRef<HTMLDivElement>(null)
   const { width } = useAutoSizer(ref)
-
-  const tableEvents = useTableEvents()
-
-  const { rowIdShowListAtom, columnIdShowListAtom } = useBasic()
   const store = useStore()
 
+  /** 表格事件功能 */
+  const tableEvents = useTableEvents()
+
+  /** 虚拟滚动功能 */
+  const { rowIdShowListAtom, columnIdShowListAtom } = useBasic()
   const rowIdShowList = useAtomValue(rowIdShowListAtom, { store })
   const columnIdShowList = useAtomValue(columnIdShowListAtom, { store })
-
   const headerRowIndexList = useAtomValue(headerRowIndexListAtom)
 
+  /** 数据+列功能 */
   const { loading } = useDataInit({
     ...props,
     /**
@@ -47,6 +50,7 @@ export function TableWithNoProvider(props: AntdTableProps) {
     rowHeight,
   })
 
+  /** 固定列功能 */
   const { stickyList } = useMemo(() => {
     const leftFixedColList: RowId[] = []
     const rightFixedColList: RowId[] = []
@@ -62,8 +66,8 @@ export function TableWithNoProvider(props: AntdTableProps) {
     return {
       columnCount: columns.length,
       stickyList: {
-        topIndexList: leftFixedColList,
-        bottomIndexList: rightFixedColList,
+        topIdList: leftFixedColList,
+        bottomIdList: rightFixedColList,
       },
     }
   }, [columns])
@@ -77,23 +81,32 @@ export function TableWithNoProvider(props: AntdTableProps) {
       columns,
     },
   )
-
+  /** tbody每行 新加checkbox */
   useRowSelection(props.rowSelection)
-  const { stayIndexList } = useSticky({
-    ...stickyList,
-    bordered: bordered,
-  })
+  /** 固定列攻功能 */
+  const { stayIndexList } = useSticky(stickyList)
 
   const tableClassName = useTableClassNameValue()
-  useAreaSelected({ enable: props.enableCopy })
+  /** tbody区域选中功能 */
+  useAreaSelected({ enable: props.enableCopy || props.enableSelectArea })
 
+  /** 列选中区域功能 */
+  useTheadSelected({ enable: props.enableSelectArea })
+  /**
+   * 复制功能
+   */
   const copy = useCopy({
     enable: props.enableCopy,
   })
 
+  /** tbody单元格合并功能 */
   useMergeCells()
 
+  /** thead单元格合并功能 */
   useHeaderMergeCells()
+
+  const { renderTheadCells } = useRenderTheadCells()
+  const { renderTBodyCells } = useRenderTbodyCells()
 
   const LoadingComponent = props.loadingComponent || Fragment
 
@@ -114,24 +127,24 @@ export function TableWithNoProvider(props: AntdTableProps) {
           <DragLine dragColumnMinSize={props.cellDefaultWidth} />
           <VGridTable
             className={`grid-table grid-table-border ${tableClassName}`}
-            theadCellComponent={DataCellThead}
+            renderTbodyCell={renderTBodyCells}
+            renderTheadCell={renderTheadCells}
             theadRowCalcSize={calcHeadRowSizeByIndex}
             theadBaseSize={props.theadBaseSize}
             theadRowCount={headerRowIndexList.length}
             rowCount={rowIdShowList.length}
             rowCalcSize={calcRowSizeByIndex}
             rowBaseSize={props.rowBaseSize || rowHeight}
-            tbodyTrComponent={Row}
             columnCount={columnIdShowList.length}
             columnCalcSize={calcColumnSizeByIndex}
             columnBaseSize={props.columnBaseSize}
             columnStayIndexList={stayIndexList}
-            cellComponent={DataCell}
             overColumnCount={props.overColumnCount}
             overRowCount={props.overRowCount}
             emptyComponent={props.emptyComponent}
             loadingComponent={props.loadingComponent}
             loading={props.loading}
+            theadChildren={<TheadContextMenu />}
           />
         </>
       )}
@@ -142,7 +155,7 @@ export function TableWithNoProvider(props: AntdTableProps) {
 export default (props: AntdTableProps) => {
   return (
     <Provider root={props?.root}>
-      <TableWithNoProvider {...props} />
+      <TableExcel {...props} />
     </Provider>
   )
 }

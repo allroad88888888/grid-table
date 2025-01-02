@@ -9,12 +9,13 @@ import { useRowInfo } from '../../hooks/useRowInfo'
 import './Cell.css'
 
 export const DataCell = memo(function DataCell(props: CellProps) {
-  const { rowId, columnId, style, className } = useCell(props)
+  const { rowId, columnId, style, className, cellId } = useCell(props)
   const events = useCellEvents({
     rowId,
     columnId,
-    columnIndex: props.columnIndex,
-    rowIndex: props.rowIndex,
+    // columnIndex: props.columnIndex,
+    // rowIndex: props.rowIndex,
+    cellId,
   })
 
   const { rowInfo } = useRowInfo({ rowIndex: props.rowIndex })
@@ -24,9 +25,10 @@ export const DataCell = memo(function DataCell(props: CellProps) {
   const { expendDom } = useExpandItem({
     rowId,
     columnId,
-    rowIndex: props.rowIndex,
-    columnIndex: props.columnIndex,
+    // rowIndex: props.rowIndex,
+    // columnIndex: props.columnIndex,
     enable: columnOption.enabledExpand,
+    cellId,
   })
 
   const cellVal = useMemo(() => {
@@ -43,12 +45,13 @@ export const DataCell = memo(function DataCell(props: CellProps) {
       return render(cellVal, rowInfo as unknown as Record<string, any>, {
         rowId,
         columnId,
-        rowIndex: props.rowIndex,
-        columnIndex: props.columnIndex,
+        // rowIndex: props.rowIndex,
+        // columnIndex: props.columnIndex,
+        cellId,
       })
     }
     return cellVal
-  }, [render, cellVal, rowInfo, rowId, columnId, props.rowIndex, props.columnIndex])
+  }, [render, cellVal, rowInfo, rowId, columnId, cellId])
 
   const RenderComponent = renderComponent
 
@@ -66,8 +69,9 @@ export const DataCell = memo(function DataCell(props: CellProps) {
           param={{
             rowId,
             columnId,
-            columnIndex: props.columnIndex,
-            rowIndex: props.rowIndex,
+            // columnIndex: props.columnIndex,
+            // rowIndex: props.rowIndex,
+            cellId,
           }}
         />
       ) : (

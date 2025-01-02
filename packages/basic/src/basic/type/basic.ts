@@ -13,8 +13,8 @@ export interface TableBasicProps {
 
 interface CommonState {
   // width: number
-  style?: CSSProperties
-  className?: Set<string>
+  style: CSSProperties
+  className: Set<string>
 }
 
 export interface ColumnItemState extends CommonState {}
@@ -26,6 +26,7 @@ export interface CellState extends CommonState {}
 export type PositionId = {
   rowId: RowId
   columnId: ColumnId
-  columnIndex: number
-  rowIndex: number
+  // columnIndex: number
+  // rowIndex: number
+  cellId: CellId
 }

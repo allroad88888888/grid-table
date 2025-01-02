@@ -1,0 +1,48 @@
+{
+  "name": "@vip-root/pivot",
+  "version": "1.1.4",
+  "description": "grid-table table",
+  "type": "module",
+  "main": "./cjs/index.js",
+  "module": "./esm/index.mjs",
+  "typings": "@types/index.d.ts",
+  "license": "MIT",
+  "author": "allroad88888888@vip.qq.com",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "react",
+    "atom"
+  ],
+  "devDependencies": {
+    "@deepfos/ux-cli": "^1.0.37",
+    "@rollup/plugin-alias": "^5.1.1",
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-swc": "^0.4.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.3.3",
+    "archiver": "^7.0.1",
+    "rollup": "^4.19.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@deepfos/ux-state": "link:node_modules/@deepfos/ux-cli/.types/state",
+    "@deepfos/ux-utils": "link:node_modules/@deepfos/ux-cli/.types/utils",
+    "@deepfos/ux-view": "link:node_modules/@deepfos/ux-cli/.types/view",
+    "@grid-table/pivot": "workspace:*",
+    "clsx": "^2.1.1",
+    "einfach-form": "^0.2.7",
+    "einfach-state": "^0.11.14",
+    "einfach-utils": "^0.5.11",
+    "jotai": "1.13.1",
+    "react": "^18.3.1"
+  }
+}

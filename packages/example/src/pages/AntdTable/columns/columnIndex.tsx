@@ -1,5 +1,5 @@
 import type { ColumnProps } from './type'
 
 export function ColumnIndex({ param }: ColumnProps) {
-  return <>{param.rowIndex}</>
+  return <>{param.cellId}</>
 }

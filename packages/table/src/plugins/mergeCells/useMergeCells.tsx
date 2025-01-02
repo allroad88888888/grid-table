@@ -1,18 +1,17 @@
 import type { CSSProperties } from 'react'
 import { useEffect } from 'react'
-import { atom, useAtomValue, useStore } from 'einfach-state'
-import type { MergeCellIdItem } from './types'
-import { useBasic } from '@grid-table/basic'
+import { useAtomValue, useStore } from 'einfach-state'
+
+import { columnIdShowListAtom, rowIdShowListAtom, useBasic } from '@grid-table/basic'
 import { getRowIdAndColIdByCellId } from '../../utils/getCellId'
 import { getAffectedCellSet } from './utils'
-
-export const mergeCellListAtom = atom<MergeCellIdItem[] | undefined>(undefined)
+import { tbodyMergeCellListAtom } from '../../components'
 
 export function useMergeCells() {
   const store = useStore()
   const { getCellStateAtomById, columnSizeMapAtom, rowSizeMapAtom } = useBasic()
 
-  const cellList = useAtomValue(mergeCellListAtom)
+  const cellList = useAtomValue(tbodyMergeCellListAtom)
   const columnSizeMap = useAtomValue(columnSizeMapAtom)
   const rowSizeMap = useAtomValue(rowSizeMapAtom)
 
@@ -49,13 +48,25 @@ export function useMergeCells() {
               display: 'none',
             }
           } else {
+            const rowIdSet = new Set(getter(rowIdShowListAtom))
+            const columnIdSet = new Set(getter(columnIdShowListAtom))
+
             next = {
-              width: [curColId, ...colIdList].reduce<number>((prev, colId) => {
-                return prev + columnSizeMap.get(colId)!
-              }, 0),
-              height: [curRowId, ...rowIdList].reduce<number>((prev, rowId) => {
-                return prev + rowSizeMap.get(rowId)!
-              }, 0),
+              width: [curColId, ...colIdList]
+                .filter((colId) => {
+                  return columnIdSet.has(colId)
+                })
+                .reduce<number>((prev, colId) => {
+                  return prev + columnSizeMap.get(colId)!
+                }, 0),
+              height: [curRowId, ...rowIdList]
+                .filter((rowId) => {
+                  return rowIdSet.has(rowId)
+                })
+                .reduce<number>((prev, rowId) => {
+                  return prev + rowSizeMap.get(rowId)!
+                }, 0),
+              zIndex: 1,
             }
           }
 

@@ -8,8 +8,9 @@ import TreeTable from './pages/TreeTable'
 import { PivotDemo } from './pages/Pivot'
 import { CallBackDemo } from './pages/CallBack'
 import { TreeDemo } from './pages/Tree'
+import { GridOverDemo } from './pages/Grid/Over'
 
-export const currentRouterAtom = atom('/tree')
+export const currentRouterAtom = atom('/pivot')
 
 export function Empty() {
   return <div>empty</div>
@@ -53,6 +54,10 @@ export const RouterMapping: Record<
   },
   '/tree': {
     component: TreeDemo,
+    label: 'tree-demo',
+  },
+  '/gridOver': {
+    component: GridOverDemo,
     label: 'tree-demo',
   },
 }
