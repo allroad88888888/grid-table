@@ -1,32 +1,31 @@
 import type { ColumnType } from './types'
 import { atom, incrementAtom } from 'einfach-state'
-import { createAtomFamilyEntity, type ColumnId, type RowId } from '@grid-table/basic'
+import { type ColumnId } from '@grid-table/basic'
 import { nodeLevelAtom, parentNodeSetAtom, relationAtom, rootAtom } from './tree/stateTree'
 import { loadingAtom } from './state'
+import { createAtomFamily } from './utils/createAtomFamily'
+
+export const getColumnOptionAtomByColumnId = createAtomFamily({
+  debuggerKey: 'ColumnOption-Atom-By-ColumnId',
+  createAtom(key: ColumnId, initState?: ColumnType) {
+    return incrementAtom(initState!)
+  },
+})
+
+export const getRowInfoAtomByRowId = createAtomFamily<Record<string, any> | null>({
+  debuggerKey: 'RowInfo-Atom-By-RowId',
+})
+
+export const getHeaderRowInfoAtomByRowId = createAtomFamily<Record<string, any> | null>({
+  debuggerKey: 'Header-RowInfo-Atom-By-RowId',
+})
 
 export const dataFamilyAtom = atom(() => {
-  const { createAtomFamily, clear } = createAtomFamilyEntity()
-
-  const getColumnOptionAtomByColumnId = createAtomFamily({
-    debuggerKey: 'ColumnOption-Atom-By-ColumnId',
-    createAtom(key: ColumnId, initState?: ColumnType) {
-      return incrementAtom(initState!)
-    },
-  })
-
-  const getRowInfoAtomByRowId = createAtomFamily<Record<string, any> | null, RowId>({
-    debuggerKey: 'RowInfo-Atom-By-RowId',
-  })
-
-  const getHeaderRowInfoAtomByRowId = createAtomFamily<Record<string, any> | null, RowId>({
-    debuggerKey: 'Header-RowInfo-Atom-By-RowId',
-  })
-
   return {
     getRowInfoAtomByRowId,
     getColumnOptionAtomByColumnId,
     getHeaderRowInfoAtomByRowId,
-    clear,
+    clear: () => {},
   }
 })
 

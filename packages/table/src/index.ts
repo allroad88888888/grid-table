@@ -1,6 +1,7 @@
 export * from './components'
 export * from './hooks'
 export * from './types'
+export * from './stateCore'
 export * from './utils'
 export * from '@grid-table/basic'
 export * from '@grid-table/core'

@@ -3,17 +3,17 @@ import { useCallback, useEffect, useRef } from 'react'
 import { atom, useAtom, useAtomValue, useStore } from 'einfach-state'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
 import { areaCellIdsAtom } from '../areaSelected/state'
-import type { Area } from '../areaSelected/type'
+import type { CellId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
 import { useDocumentClickHandler } from '../../utils/useDocumentClickHandler'
 
-interface Props {
-  getDataByArea?: (area: Area) => string
+export interface CopyProps {
+  copyGetDataByCellIds?: (cellIds: CellId[][]) => string
   /**
    * 是否开启复制功能
    * @default false
    */
-  enable?: boolean
+  enableCopy?: boolean
 }
 
 function emptyFn() {
@@ -27,7 +27,10 @@ export const showCopyStyleAtom = atom(false)
  * 这里逻辑 是弄个隐藏的text 制造能触发copy的事件
  * @returns
  */
-export function useCopy({ getDataByArea = emptyFn, enable = true }: Props = {}) {
+export function useCopy({
+  copyGetDataByCellIds: getDataByArea = emptyFn,
+  enableCopy: enable = true,
+}: CopyProps = {}) {
   const store = useStore()
   const { getCellStateAtomById } = useBasic()
 
@@ -44,13 +47,13 @@ export function useCopy({ getDataByArea = emptyFn, enable = true }: Props = {}) 
       }
 
       showCopyStyle(true)
-      // const text = getDataByArea(newArea)
+      const text = getDataByArea(cellIds)
 
-      e.clipboardData.setData('text/plain', '')
+      e.clipboardData.setData('text/plain', text)
       e.stopPropagation()
       e.preventDefault()
     },
-    [showCopyStyle, store],
+    [getDataByArea, showCopyStyle, store],
   )
 
   useEffect(() => {

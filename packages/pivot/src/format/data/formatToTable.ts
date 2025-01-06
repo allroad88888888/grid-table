@@ -2,6 +2,7 @@ import type { DataConfig } from '../types'
 import { JoinKey } from './const'
 import { getHeaderInfo } from './header'
 import { mergeCells } from './mergeCells'
+import { mergeCellsForTree } from './mregeCellsForTree'
 import type { HeaderRelation } from './type'
 
 export function formatToTable(dataConfig: DataConfig) {
@@ -143,7 +144,10 @@ export function formatToTable(dataConfig: DataConfig) {
    * 0-1 列头 最后一行 需要保持不合并，rows最后一列 需要保持不跟前面的合并
    */
   const headerMergeCellList = mergeCells(realColumns, headerData.slice(0, -1))
-  const bodyMergeCelList = mergeCells(rows.slice(0, 1), transformedData)
+  // debugger
+  // const bodyMergeCelList = mergeCells(rows, transformedData)
+
+  const bodyMergeCelList = mergeCellsForTree(rows, transformedData)
 
   return {
     data: transformedData,

@@ -64,15 +64,6 @@ export function useHeaderMergeCells() {
                 .reduce<number>((prev, rowId) => {
                   return prev + (rowSizeMap.get(rowId) || 0)
                 }, 0)}px)`,
-              // position: 'relative',
-              // top: -[curRowId, ...rowIdList]
-              //   .slice(0, rowIndex)
-              //   .filter((rowId) => {
-              //     return rowIdSet.has(rowId)
-              //   })
-              //   .reduce<number>((prev, rowId) => {
-              //     return prev + rowSizeMap.get(rowId)!
-              //   }, 0),
             }
           }
           if (colIndex) {
@@ -87,15 +78,6 @@ export function useHeaderMergeCells() {
                 .reduce<number>((prev, colId) => {
                   return prev + (columnSizeMap.get(colId) || 0)
                 }, 0)}px)`,
-              // position: 'relative',
-              // left: -[curColId, ...colIdList]
-              //   .slice(0, colIndex)
-              //   .filter((colId) => {
-              //     return columnIdSet.has(colId)
-              //   })
-              //   .reduce<number>((prev, colId) => {
-              //     return prev + columnSizeMap.get(colId)!
-              //   }, 0),
             }
           }
         }

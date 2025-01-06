@@ -2,6 +2,7 @@ import type { UseDataProps } from './common'
 import type { UseRowSelectionProps } from '../plugins/select/useRowSelection'
 import type { CSSProperties } from 'react'
 import type { VGridTableProps } from '@grid-table/core'
+import type { CopyProps } from '../plugins'
 
 export type AntdTableProps = {
   className?: string
@@ -33,12 +34,13 @@ export type AntdTableProps = {
    * 复制功能是否启用
    * @default false
    */
-  enableCopy?: boolean
+  // enableCopy?: boolean
   /**
    * 是否开启区域选中
    */
   enableSelectArea?: boolean
-} & UseDataProps &
+} & CopyProps &
+  UseDataProps &
   Pick<
     VGridTableProps,
     | 'theadBaseSize'

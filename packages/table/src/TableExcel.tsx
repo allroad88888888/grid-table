@@ -96,7 +96,8 @@ export function TableExcel(props: AntdTableProps) {
    * 复制功能
    */
   const copy = useCopy({
-    enable: props.enableCopy,
+    enableCopy: props.enableCopy,
+    copyGetDataByCellIds: props.copyGetDataByCellIds,
   })
 
   /** tbody单元格合并功能 */
