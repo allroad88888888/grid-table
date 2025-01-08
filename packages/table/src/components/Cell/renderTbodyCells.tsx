@@ -1,5 +1,5 @@
 import type { CellsRenderProps, Position } from '@grid-table/core'
-import { useCallback } from 'react'
+import { Fragment, useCallback } from 'react'
 import { useAtomValue, useStore } from 'einfach-state'
 import { mergeCellBodyMapAtom } from './stateMergeCells'
 import type { CellId } from '@grid-table/basic'
@@ -43,30 +43,35 @@ export function useRenderTbodyCells() {
   const renderTBodyCells = useCallback(
     ({ columnIndexList, rowIndexList, getCellStyleByIndex }: CellsRenderProps) => {
       const renderCellIds = new Set<CellId>()
+
       return (
         <>
           {rowIndexList.map((rowIndex) => {
-            return columnIndexList.map((columnIndex) => {
-              const { cellId, columnId, rowId } = getCellIdByPosition({
-                rowIndex,
-                columnIndex,
-              })
-              if (renderCellIds.has(cellId)) {
-                return null
-              }
-              renderCellIds.add(cellId)
-              return (
-                <DataCell
-                  key={`${cellId}`}
-                  columnIndex={columnIndex}
-                  rowIndex={rowIndex}
-                  style={getCellStyleByIndex(rowIndex, columnIndex)}
-                  cellId={cellId}
-                  columnId={columnId}
-                  rowId={rowId}
-                />
-              )
-            })
+            return (
+              <Fragment key={rowIndex}>
+                {columnIndexList.map((columnIndex) => {
+                  const { cellId, columnId, rowId } = getCellIdByPosition({
+                    rowIndex,
+                    columnIndex,
+                  })
+                  if (renderCellIds.has(cellId)) {
+                    return null
+                  }
+                  renderCellIds.add(cellId)
+                  return (
+                    <DataCell
+                      key={`${cellId}`}
+                      columnIndex={columnIndex}
+                      rowIndex={rowIndex}
+                      style={getCellStyleByIndex(rowIndex, columnIndex)}
+                      cellId={cellId}
+                      columnId={columnId}
+                      rowId={rowId}
+                    />
+                  )
+                })}
+              </Fragment>
+            )
           })}
         </>
       )

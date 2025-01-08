@@ -13,6 +13,7 @@ const products = [
   'packages/basic',
   'packages/table',
   'packages/pivot',
+  'packages/excel',
 ]
 
 const __filename = fileURLToPath(import.meta.url)
@@ -39,6 +40,7 @@ const config = defineConfig({
     '@grid-table/view',
     '@grid-tree/core',
     '@grid-table/pivot',
+    '@grid-table/excel',
     '@grid-table/basic',
     'clsx',
     'react/jsx-runtime',

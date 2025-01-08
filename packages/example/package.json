@@ -21,6 +21,7 @@
     "@grid-table/basic": "workspace:*",
     "@grid-table/core": "workspace:*",
     "@grid-table/pivot": "workspace:*",
+    "@grid-table/excel": "workspace:*",
     "@grid-table/view": "workspace:*",
     "@grid-tree/core": "workspace:*",
     "antd": "^5.20.2",

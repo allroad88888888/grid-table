@@ -1,0 +1,53 @@
+{
+  "name": "@grid-table/excel",
+  "version": "0.1.0",
+  "description": "grid-table excel",
+  "type": "module",
+  "main": "./cjs/index.js",
+  "module": "./esm/index.mjs",
+  "typings": "@types/index.d.ts",
+  "license": "MIT",
+  "author": "allroad88888888@vip.qq.com",
+  "files": [
+    "esm",
+    "cjs",
+    "@types",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "react",
+    "atom"
+  ],
+  "peerDependencies": {
+    "einfach-state": ">=0.11.11",
+    "einfach-utils": ">=0.5.9",
+    "react": ">=16.8 <20"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "einfach-state": {
+      "optional": true
+    },
+    "einfach-utils": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.3.3",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@antv/s2": "^2.0.0",
+    "@formulajs/formulajs": "^4.4.9",
+    "@grid-table/basic": "workspace:*",
+    "@grid-table/core": "workspace:^*",
+    "@grid-table/view": "workspace:*",
+    "clsx": "^2.1.1"
+  }
+}

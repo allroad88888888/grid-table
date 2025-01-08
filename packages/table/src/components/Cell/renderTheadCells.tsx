@@ -46,27 +46,31 @@ export function useRenderTheadCells() {
       return (
         <Fragment>
           {rowIndexList.map((rowIndex) => {
-            return columnIndexList.map((columnIndex) => {
-              const { cellId, columnId, rowId } = getCellIdByPosition({
-                rowIndex,
-                columnIndex,
-              })
-              if (renderCellIds.has(cellId)) {
-                return null
-              }
-              renderCellIds.add(cellId)
-              return (
-                <DataCellThead
-                  key={`${cellId}`}
-                  columnIndex={columnIndex}
-                  rowIndex={rowIndex}
-                  style={getCellStyleByIndex(rowIndex, columnIndex)}
-                  cellId={cellId}
-                  columnId={columnId}
-                  rowId={rowId}
-                />
-              )
-            })
+            return (
+              <Fragment key={rowIndex}>
+                {columnIndexList.map((columnIndex) => {
+                  const { cellId, columnId, rowId } = getCellIdByPosition({
+                    rowIndex,
+                    columnIndex,
+                  })
+                  if (renderCellIds.has(cellId)) {
+                    return null
+                  }
+                  renderCellIds.add(cellId)
+                  return (
+                    <DataCellThead
+                      key={`${cellId}`}
+                      columnIndex={columnIndex}
+                      rowIndex={rowIndex}
+                      style={getCellStyleByIndex(rowIndex, columnIndex)}
+                      cellId={cellId}
+                      columnId={columnId}
+                      rowId={rowId}
+                    />
+                  )
+                })}
+              </Fragment>
+            )
           })}
         </Fragment>
       )

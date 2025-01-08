@@ -57,6 +57,9 @@
     },
     {
       "path": "./packages/table/tsconfig.json"
+    },
+    {
+      "path": "./packages/excel/tsconfig.json"
     }
   ]
 }

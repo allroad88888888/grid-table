@@ -9,8 +9,9 @@ import { PivotDemo } from './pages/Pivot'
 import { CallBackDemo } from './pages/CallBack'
 import { TreeDemo } from './pages/Tree'
 import { GridOverDemo } from './pages/Grid/Over'
+import { ExcelDemo } from './pages/Excel'
 
-export const currentRouterAtom = atom('/pivot')
+export const currentRouterAtom = atom('/excel')
 
 export function Empty() {
   return <div>empty</div>
@@ -59,5 +60,9 @@ export const RouterMapping: Record<
   '/gridOver': {
     component: GridOverDemo,
     label: 'tree-demo',
+  },
+  '/excel': {
+    component: ExcelDemo,
+    label: 'excel-demo',
   },
 }

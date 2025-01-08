@@ -42,6 +42,7 @@
   transform: translateZ(0); /* 启用 GPU 加速 */
   backface-visibility: hidden;
   overscroll-behavior: contain; /* 控制滚动行为，防止滚动链发生 */
+  scroll-behavior: smooth;
 
   /**
   * for useDrag

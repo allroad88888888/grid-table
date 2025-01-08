@@ -2,14 +2,12 @@
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "es",
     "declarationDir": "@types",
-    "declarationMap": true
+    "emitDeclarationOnly": true,
   },
   "include": [
     "./src/**/*",
-    "./../vite.config.mts",
-    "./*.mjs"
+    "rollup.config.mjs"
   ],
   "references": [
     {
@@ -19,16 +17,7 @@
       "path": "./../basic/tsconfig.json"
     },
     {
-      "path": "./../pivot/tsconfig.json"
-    },
-    {
       "path": "./../table/tsconfig.json"
-    },
-    {
-      "path": "./../tree/tsconfig.json"
-    },
-    {
-      "path": "./../excel/tsconfig.json"
     }
   ]
 }
