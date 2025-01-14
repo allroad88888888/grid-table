@@ -47,5 +47,5 @@ export interface CustomHeaderCellProps {
 export interface CustomCellProps<ItemInfo = Record<string, any>> {
   text: string | undefined
   rowInfo: ItemInfo
-  param: PositionId
+  param: PositionId & { rowIndex: number; colIndex: number }
 }

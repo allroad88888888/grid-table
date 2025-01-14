@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/view",
-  "version": "0.2.0",
+  "version": "0.2.4",
   "description": "grid-table table",
   "type": "module",
   "main": "./cjs/index.js",
@@ -26,6 +26,10 @@
     "einfach-utils": ">=0.5.9",
     "react": ">=16.8 <20"
   },
+  "sideEffects": [
+    "*.css",
+    "*.less"
+  ],
   "peerDependenciesMeta": {
     "einfach-state": {
       "optional": true

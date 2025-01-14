@@ -69,8 +69,8 @@ export const DataCell = memo(function DataCell(props: CellProps) {
           param={{
             rowId,
             columnId,
-            // columnIndex: props.columnIndex,
-            // rowIndex: props.rowIndex,
+            colIndex: props.columnIndex,
+            rowIndex: props.rowIndex,
             cellId,
           }}
         />

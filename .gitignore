@@ -11,4 +11,3 @@ coverage
 tsconfig.tsbuildinfo
 cjs
 esm
-packages/uxPivots

@@ -21,11 +21,11 @@ export const columnInitAtom = atom(0, (getter, setter, columns: ColumnType[]) =>
   const { getColumnStateAtomById } = getter(basicAtom)
 
   for (const [columnId, columnOption] of columnMap) {
-    getColumnOptionAtomByColumnId(columnId, columnOption)
-    getColumnStateAtomById(columnId),
-      {
-        className: new Set([`gird-table-text-${columnOption.align || 'left'}`]),
-      }
+    setter(getColumnOptionAtomByColumnId(columnId), columnOption)
+    setter(getColumnStateAtomById(columnId), {
+      className: new Set([`gird-table-text-${columnOption.align || 'left'}`]),
+      style: {},
+    })
   }
 
   setter(columnIndexListAtom, columnIdList)
