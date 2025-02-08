@@ -1,4 +1,4 @@
-import { atom, useSetAtom } from 'einfach-state'
+import { atom, useSetAtom } from '@einfach/state'
 import { collapseNodeSetAtom } from '../state'
 import { useStore } from './useStore'
 

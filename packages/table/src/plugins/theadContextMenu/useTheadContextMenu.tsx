@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { useStore, useSetAtom } from 'einfach-state'
+import { useStore, useSetAtom } from '@einfach/state'
 
 import type { PositionId } from '@grid-table/basic'
 import { headerRowIndexListAtom, theadCellEventsAtom } from '@grid-table/basic'

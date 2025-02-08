@@ -1,5 +1,5 @@
 import type { CellId, ColumnType } from '@grid-table/view'
-import { atom } from 'einfach-state'
+import { atom } from '@einfach/state'
 import type { PivotProps } from './type'
 import { formatToTable } from './format'
 import {
@@ -9,7 +9,7 @@ import {
   tbodyMergeCellListAtom,
   theadMergeCellListAtom,
 } from '@grid-table/view'
-import { easyGet } from 'einfach-utils'
+import { easyGet } from '@einfach/utils'
 
 export const dataListAtom = atom<Record<string, any>[]>([])
 

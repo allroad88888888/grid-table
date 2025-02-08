@@ -1,4 +1,4 @@
-import { atom } from 'einfach-state'
+import { atom } from '@einfach/state'
 import type { GridTreeItemOptions, Id } from '../types'
 
 export function DemoItemComponent({ id }: { id: Id }) {

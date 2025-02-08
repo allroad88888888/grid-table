@@ -1,7 +1,7 @@
 import { useColumnHide } from '../theadColumnHide/useColumnHide'
 import { columnContextMenuOptionsAtom, columnContextMenuPositionAtom } from './state'
 import { useTheadContextMenu } from './useTheadContextMenu'
-import { useStore, useAtomValue, useAtom } from 'einfach-state'
+import { useStore, useAtomValue, useAtom } from '@einfach/state'
 import './theadContextMenu.css'
 
 export function TheadContextMenu() {

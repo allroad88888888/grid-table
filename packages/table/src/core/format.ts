@@ -1,4 +1,4 @@
-import type { ColumnType, DataItem, UseDataProps } from '../types'
+import type { ColumnType, DataItem, TreeProps, UseDataProps } from '../types'
 import { ROOT } from '../utils/const'
 import type { RowId } from '@grid-table/basic'
 import { getColumnId } from '../utils/getColumnId'
@@ -19,10 +19,7 @@ export function columnInit(columns: ColumnType[]) {
 }
 
 export function format<ItemInfo extends DataItem>(
-  props: Pick<
-    UseDataProps<ItemInfo>,
-    'dataSource' | 'idProp' | 'parentProp' | 'root' | 'rowHeight'
-  >,
+  props: UseDataProps<ItemInfo>,
   {
     iteratorFn,
   }: {
@@ -30,7 +27,7 @@ export function format<ItemInfo extends DataItem>(
   },
 ) {
   const { dataSource, rowHeight } = props
-  const { idProp, parentProp, root = ROOT } = props
+  const { root = ROOT } = props
 
   const relation = new Map<string, string[]>()
   relation.set(root, [])
@@ -38,6 +35,9 @@ export function format<ItemInfo extends DataItem>(
   const infoMap = new Map<string, Record<string, any>>()
 
   const rowSizeMap = new Map<RowId, number>()
+
+  const { idProp, parentProp } = props as TreeProps
+  // const { relation: dataRelation } = props as TreeRelationProps
 
   dataSource.forEach((rowInfo, rowIndex) => {
     const path = idProp ? rowInfo[idProp] : `${rowIndex}`

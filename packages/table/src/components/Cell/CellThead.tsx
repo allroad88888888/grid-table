@@ -1,6 +1,6 @@
 import type { CellProps } from '@grid-table/core'
-import { atom, useAtomValue } from 'einfach-state'
-import { easyGet } from 'einfach-utils'
+import { atom, useAtomValue } from '@einfach/state'
+import { easyGet } from '@einfach/utils'
 import { useCellThead } from '../../hooks'
 import clsx from 'clsx'
 import { useData } from '../../core'

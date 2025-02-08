@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/excel",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "grid-table excel",
   "type": "module",
   "main": "./cjs/index.js",
@@ -22,18 +22,18 @@
     "atom"
   ],
   "peerDependencies": {
-    "einfach-state": ">=0.11.11",
-    "einfach-utils": ">=0.5.9",
+    "@einfach/state": ">=0.1.4",
+    "@einfach/utils": ">=0.1.4",
     "react": ">=16.8 <20"
   },
   "peerDependenciesMeta": {
     "react": {
       "optional": true
     },
-    "einfach-state": {
+    "@einfach/statee": {
       "optional": true
     },
-    "einfach-utils": {
+    "@einfach/utils": {
       "optional": true
     }
   },

@@ -2,10 +2,10 @@ import { defineConfig } from 'rollup'
 import resolve from '@rollup/plugin-node-resolve'
 import swc from '@rollup/plugin-swc'
 import path, { dirname } from 'path'
-import fs from 'fs'
+import fs from 'fs-extra'
+import { globSync } from 'glob'
 import { fileURLToPath } from 'url'
 import postcss from 'rollup-plugin-postcss'
-import terser from '@rollup/plugin-terser'
 
 const products = [
   'packages/core',
@@ -29,13 +29,28 @@ products.forEach((pName) => {
   })
 })
 
+function copy({ root, pattern, dest }) {
+  const rootPath = path.resolve(root)
+  const files = globSync(pattern, { cwd: rootPath, nodir: true })
+  // 复制匹配到的文件
+  files.forEach((file) => {
+    const srcFile = path.join(rootPath, file)
+    const destFile = path.join(rootPath, dest, file.replace(/^src/, ''))
+
+    // 确保目标目录存在
+    fs.ensureDirSync(path.dirname(destFile))
+    // 复制文件
+    fs.copySync(srcFile, destFile)
+  })
+}
+
 /** @type {import('rollup').RollupOptions} */
 const config = defineConfig({
   external: [
     'react',
     'react-dom',
-    'einfach-state',
-    'einfach-utils',
+    '@einfach/state',
+    '@einfach/utils',
     '@grid-table/core',
     '@grid-table/view',
     '@grid-tree/core',
@@ -45,6 +60,7 @@ const config = defineConfig({
     'clsx',
     'react/jsx-runtime',
     'react/jsx-dev-runtime',
+    /\.css$/,
   ],
 
   plugins: [
@@ -78,6 +94,17 @@ const config = defineConfig({
 
 /** @type {import('rollup').RollupOptions} */
 export default products.map((dir) => {
+  copy({
+    root: dir,
+    pattern: 'src/**/*.{svg,png,jpg,css,less}',
+    dest: 'cjs',
+  })
+  copy({
+    root: dir,
+    pattern: 'src/**/*.{svg,png,jpg,css,less}',
+    dest: 'esm',
+  })
+
   /** @type {import('rollup').RollupOptions} */
   return {
     ...config,
@@ -96,13 +123,6 @@ export default products.map((dir) => {
         dir: `${dir}/esm`,
         entryFileNames: '[name].mjs',
         preserveModules: true, // 保留模块结构
-        preserveModulesRoot: 'src', // 去掉 src 的根路径
-      },
-      {
-        format: 'commonjs',
-        dir: `${dir}/dist`,
-        plugins: [terser()],
-        entryFileNames: '[name].js',
         preserveModulesRoot: 'src', // 去掉 src 的根路径
       },
     ],

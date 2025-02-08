@@ -3,9 +3,9 @@
   z-index: var(--sticky-column-zIndex, 1);
 }
 
-.grid-table [role='thead'] > .sticky-left {
+/* .grid-table [role='thead'] > .sticky-left {
   background-color: black;
-}
+} */
 
 /* 完美解决合并列导致的border失效问题 */
 .grid-table .sticky-left:has(+ :not(.sticky-left)) {

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { createContext, useState } from 'react'
-import { createStore, type Store } from 'einfach-state'
+import { createStore, type Store } from '@einfach/state'
 
 export type GridTreeStore = {
   store: Store

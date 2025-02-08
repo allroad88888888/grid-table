@@ -26,8 +26,8 @@
     "@grid-tree/core": "workspace:*",
     "antd": "^5.20.2",
     "clsx": "^2.1.1",
-    "einfach-state": "^0.11.11",
-    "einfach-utils": "^0.5.9",
+    "@einfach/state": "^0.1.4",
+    "@einfach/utils": "^0.1.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   }

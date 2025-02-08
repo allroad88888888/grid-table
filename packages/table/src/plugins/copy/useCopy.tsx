@@ -1,11 +1,12 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef } from 'react'
-import { atom, useAtom, useAtomValue, useStore } from 'einfach-state'
+import { atom, useAtom, useAtomValue, useStore, useSetAtom } from '@einfach/state'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
 import { areaCellIdsAtom } from '../areaSelected/state'
 import type { CellId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
 import { useDocumentClickHandler } from '../../utils/useDocumentClickHandler'
+import { copyAtom } from './state'
 
 export interface CopyProps {
   copyGetDataByCellIds?: (cellIds: CellId[][]) => string
@@ -16,27 +17,25 @@ export interface CopyProps {
   enableCopy?: boolean
 }
 
-function emptyFn() {
-  // eslint-disable-next-line no-console
-  console.warn('The table copy method does not pass parameters to the custom copy data method')
-  return 'The table copy method does not pass parameters to the custom copy data method'
-}
+// function emptyFn() {
+//   // eslint-disable-next-line no-console
+//   console.warn('The table copy method does not pass parameters to the custom copy data method')
+//   return 'The table copy method does not pass parameters to the custom copy data method'
+// }
 
 export const showCopyStyleAtom = atom(false)
 /**
  * 这里逻辑 是弄个隐藏的text 制造能触发copy的事件
  * @returns
  */
-export function useCopy({
-  copyGetDataByCellIds: getDataByArea = emptyFn,
-  enableCopy: enable = true,
-}: CopyProps = {}) {
+export function useCopy({ copyGetDataByCellIds, enableCopy: enable = true }: CopyProps = {}) {
   const store = useStore()
   const { getCellStateAtomById } = useBasic()
 
   const [isShowStyle, showCopyStyle] = useAtom(showCopyStyleAtom, { store })
 
   const cellIds = useAtomValue(areaCellIdsAtom, { store })
+  const copy = useSetAtom(copyAtom)
 
   const onCopy = useCallback(
     (e: React.ClipboardEvent<HTMLDivElement>) => {
@@ -47,13 +46,13 @@ export function useCopy({
       }
 
       showCopyStyle(true)
-      const text = getDataByArea(cellIds)
+      const text = copyGetDataByCellIds ? copyGetDataByCellIds(cellIds) : copy(cellIds)
 
       e.clipboardData.setData('text/plain', text)
       e.stopPropagation()
       e.preventDefault()
     },
-    [getDataByArea, showCopyStyle, store],
+    [copy, copyGetDataByCellIds, showCopyStyle, store],
   )
 
   useEffect(() => {

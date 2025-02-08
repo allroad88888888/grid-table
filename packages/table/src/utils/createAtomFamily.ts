@@ -1,5 +1,5 @@
-import type { Atom, AtomState, AtomEntity } from 'einfach-state'
-import { atom } from 'einfach-state'
+import type { Atom, AtomState, AtomEntity } from '@einfach/state'
+import { atom } from '@einfach/state'
 
 type IdObj = {
   id: string

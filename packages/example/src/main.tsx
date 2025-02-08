@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { useAtom } from 'einfach-state'
+import { useAtom } from '@einfach/state'
 import { currentRouterAtom, Empty, RouterMapping } from './router'
 import './index.css'
 import { Suspense } from 'react'

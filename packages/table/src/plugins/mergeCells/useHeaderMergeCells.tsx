@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import { useEffect } from 'react'
-import type { Getter } from 'einfach-state'
-import { useAtomValue, useStore } from 'einfach-state'
+import type { Getter } from '@einfach/state'
+import { useAtomValue, useStore } from '@einfach/state'
 import {
   columnIdShowListAtom,
   headerRowSizeMaAtom,

@@ -1,6 +1,6 @@
 import type { CellsRenderProps, Position } from '@grid-table/core'
 import { Fragment, useCallback } from 'react'
-import { useAtomValue, useStore } from 'einfach-state'
+import { useAtomValue, useStore } from '@einfach/state'
 import { mergeCellBodyMapAtom } from './stateMergeCells'
 import type { CellId } from '@grid-table/basic'
 import { columnIdShowListAtom, rowIdShowListAtom } from '@grid-table/basic'

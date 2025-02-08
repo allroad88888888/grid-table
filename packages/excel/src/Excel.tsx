@@ -1,4 +1,4 @@
-import { createStore, useAtomValue, useSetAtom } from 'einfach-state'
+import { createStore, useAtomValue, useSetAtom } from '@einfach/state'
 import { Provider, TableExcel } from '@grid-table/view'
 import { useEffect, useState } from 'react'
 import { columnListAtom, dataListAtom } from './state/coreState'

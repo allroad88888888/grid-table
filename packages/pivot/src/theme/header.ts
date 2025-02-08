@@ -1,4 +1,4 @@
-import { atom } from 'einfach-state'
+import { atom } from '@einfach/state'
 import type { HeaderCellTheme } from './types/header'
 import { basicAtom, columnIndexListAtom, getCellId, headerRowIndexListAtom } from '@grid-table/view'
 import { mergeStyles } from '../utils/mergeStyles'

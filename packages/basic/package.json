@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/basic",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "grid-table table",
   "type": "module",
   "main": "./cjs/index.js",
@@ -23,8 +23,8 @@
   ],
   "peerDependencies": {
     "react": ">=16.8 <20",
-    "einfach-state": ">=0.11.11",
-    "einfach-utils": ">=0.5.9"
+    "@einfach/state": ">=0.1.4",
+    "@einfach/utils": ">=0.1.4"
   },
   "peerDependenciesMeta": {
     "react": {

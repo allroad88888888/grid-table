@@ -1,7 +1,7 @@
 import { getCellId } from '../../utils/getCellId'
 import type { CellId, ColumnId, PositionId } from '@grid-table/basic'
 import { columnIdShowListAtom, rowIdShowListAtom } from '@grid-table/basic'
-import { atom } from 'einfach-state'
+import { atom } from '@einfach/state'
 
 export const areaSelectEnableAtom = atom(false)
 
@@ -15,10 +15,13 @@ export const areaEndAtom = atom<PositionId>(emptyPosition)
 
 export const areaCellIdsAtom = atom<CellId[][]>((getter) => {
   const areaStart = getter(areaStartAtom)
-  const areaEnd = getter(areaEndAtom)
+  let areaEnd = getter(areaEndAtom)
 
-  if (areaStart.cellId === '-1' || areaEnd.cellId === '-1') {
+  if (areaStart.cellId === '-1') {
     return []
+  }
+  if (areaEnd.cellId === '-1') {
+    areaEnd = areaStart
   }
 
   const rowIdList = getter(rowIdShowListAtom)

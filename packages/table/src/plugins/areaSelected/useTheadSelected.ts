@@ -1,6 +1,6 @@
 import type { PositionId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
-import { atom, useStore } from 'einfach-state'
+import { atom, useStore } from '@einfach/state'
 import { useCallback, useEffect } from 'react'
 import { areaStartAtom, areaEndAtom } from './state'
 import { getCellId } from '../../utils'

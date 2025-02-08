@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { atom, useAtomValue } from 'einfach-state'
-import type { Getter } from 'einfach-state'
+import { atom, useAtomValue } from '@einfach/state'
+import type { Getter } from '@einfach/state'
 import type { Id } from '../types'
 import { idParentIdMapAtom, parentIdLevelAtom } from '../state'
 import { getIdByIndex } from './useIdByIndex'

@@ -35,6 +35,7 @@
     "./**/*.test.tsx",
     "./**/test",
     "./rules/setup-jest.ts",
+    "./rules/empty.ts",
     "./rollup.config.mjs"
   ],
   "exclude": [
@@ -45,6 +46,9 @@
   "references": [
     {
       "path": "./packages/core/tsconfig.json"
+    },
+    {
+      "path": "./packages/basic/tsconfig.json"
     },
     {
       "path": "./packages/pivot/tsconfig.json"

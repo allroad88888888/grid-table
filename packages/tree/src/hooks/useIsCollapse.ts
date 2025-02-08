@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { atom } from 'einfach-state'
-import type { Atom, Getter } from 'einfach-state'
+import { atom } from '@einfach/state'
+import type { Atom, Getter } from '@einfach/state'
 import type { Id } from '../types'
 import { collapseNodeSetAtom, parentSetIdAtom } from '../state'
 

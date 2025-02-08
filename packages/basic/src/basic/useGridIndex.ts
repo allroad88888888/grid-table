@@ -1,4 +1,4 @@
-import { useAtomValue } from 'einfach-state'
+import { useAtomValue } from '@einfach/state'
 import { useBasic } from './useBasic'
 
 export function useGridIndex({ rowIndex, columnIndex }: { rowIndex: number; columnIndex: number }) {

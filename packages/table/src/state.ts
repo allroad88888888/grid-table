@@ -1,20 +1,19 @@
 import type { UseDataProps } from './types'
 import { format } from './core/format'
-import { atom } from 'einfach-state'
+import { atom } from '@einfach/state'
 import { rowIndexListAtom, rowSizeMapAtom } from '@grid-table/basic'
 import { nodeLevelAtom, relationAtom, rootAtom } from './tree/stateTree'
-import { dataFamilyAtom } from './stateCore'
+import { dataFamilyAtom, loadingAtom } from './stateCore'
 
-export const loadingAtom = atom(true)
-
+//  'idProp' | 'parentProp' | 'dataSource' | 'root' | 'rowHeight
 export const dataInitAtom = atom<
   Record<string, any>[],
-  [Pick<UseDataProps, 'idProp' | 'parentProp' | 'dataSource' | 'root' | 'rowHeight'>],
+  [Omit<UseDataProps, 'columns' | 'headerDataSource'>],
   void
 >([], (getter, setter, props) => {
   setter(loadingAtom, true)
   const { getRowInfoAtomByRowId } = getter(dataFamilyAtom)
-  const { showPathList, relation, levelMap, rowSizeMap } = format(props, {
+  const { showPathList, relation, levelMap, rowSizeMap } = format(props as UseDataProps, {
     iteratorFn: (rowId, rowInfo) => {
       setter(getRowInfoAtomByRowId(rowId), rowInfo!)
     },

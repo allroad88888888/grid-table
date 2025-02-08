@@ -1,6 +1,6 @@
 import { Table } from '@grid-table/view/src'
 import type { UseRowSelectionProps } from '@grid-table/view/src/plugins/select'
-import { atom, useAtomValue } from 'einfach-state'
+import { atom, useAtomValue } from '@einfach/state'
 import { DataList } from './mock'
 import { useColumnConfig } from './useColumnConfig'
 import './Table.css'

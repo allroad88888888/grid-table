@@ -1,4 +1,4 @@
-import { useAtomValue, useStore } from 'einfach-state'
+import { useAtomValue, useStore } from '@einfach/state'
 import { useMemo } from 'react'
 import type { EventsCellSet, EventsItem, PositionId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'

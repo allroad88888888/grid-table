@@ -1,6 +1,6 @@
 import type { ColumnType } from './types'
 import { columnInit } from './core/format'
-import { atom } from 'einfach-state'
+import { atom } from '@einfach/state'
 import { basicAtom, columnIndexListAtom, columnSizeMapAtom } from '@grid-table/basic'
 import { dataFamilyAtom } from './stateCore'
 import { getColumnId } from './utils/getColumnId'

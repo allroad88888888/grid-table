@@ -1,5 +1,5 @@
-import { useAtomValue } from 'einfach-state'
-import type {} from 'einfach-state'
+import { useAtomValue } from '@einfach/state'
+import type {} from '@einfach/state'
 import type { Core } from './state'
 import { basicAtom } from './state'
 

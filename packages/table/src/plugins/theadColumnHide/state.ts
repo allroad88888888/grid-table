@@ -1,5 +1,5 @@
 import type { ColumnId } from '@grid-table/basic'
-import { atom } from 'einfach-state'
+import { atom } from '@einfach/state'
 import { columnContextMenuPositionAtom } from '../theadContextMenu/state'
 
 export const hideColumnsAtom = atom<ColumnId[]>([])

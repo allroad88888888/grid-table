@@ -1,7 +1,7 @@
 import type { ColumnId, RowId } from '@grid-table/basic'
 import { columnIdShowListAtom, rowIdShowListAtom } from '@grid-table/basic'
-import { atom } from 'einfach-state'
-import type { AtomEntity } from 'einfach-state'
+import { atom } from '@einfach/state'
+import type { AtomEntity } from '@einfach/state'
 import type { PositionType, StickyType } from './type'
 
 export const stickyOptions = atom<{

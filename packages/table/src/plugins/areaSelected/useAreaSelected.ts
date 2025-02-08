@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { useAtomValue, atom, useStore } from 'einfach-state'
+import { useAtomValue, atom, useStore } from '@einfach/state'
 import { tableClassNameAtom } from '../../hooks'
 import './AreaSelected.css'
 import type { PositionId } from '@grid-table/basic'

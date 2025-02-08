@@ -1,9 +1,11 @@
 import type { ColumnType } from './types'
-import { atom, incrementAtom } from 'einfach-state'
+import { atom, incrementAtom } from '@einfach/state'
 import { type ColumnId } from '@grid-table/basic'
 import { nodeLevelAtom, parentNodeSetAtom, relationAtom, rootAtom } from './tree/stateTree'
-import { loadingAtom } from './state'
+
 import { createAtomFamily } from './utils/createAtomFamily'
+
+export const loadingAtom = atom(true)
 
 export const getColumnOptionAtomByColumnId = createAtomFamily({
   debuggerKey: 'ColumnOption-Atom-By-ColumnId',

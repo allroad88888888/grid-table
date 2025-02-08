@@ -1,6 +1,6 @@
-import { useInit } from 'einfach-utils'
-import type { Store } from 'einfach-state'
-import { createStore, Provider as StoreProvider } from 'einfach-state'
+import { useInit } from '@einfach/utils'
+import type { Store } from '@einfach/state'
+import { createStore, Provider as StoreProvider } from '@einfach/state'
 import { type ReactNode } from 'react'
 
 export function Provider({

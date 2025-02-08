@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/pivot",
-  "version": "0.0.1",
+  "version": "0.3.1",
   "description": "grid-table pivot",
   "type": "module",
   "main": "./cjs/index.js",
@@ -22,18 +22,22 @@
     "atom"
   ],
   "peerDependencies": {
-    "einfach-state": ">=0.11.11",
-    "einfach-utils": ">=0.5.9",
+    "@einfach/state": ">=0.1.4",
+    "@einfach/utils": ">=0.1.4",
+    "@grid-table/view": ">=0.3.0",
     "react": ">=16.8 <20"
   },
   "peerDependenciesMeta": {
     "react": {
       "optional": true
     },
-    "einfach-state": {
+    "@einfach/state": {
       "optional": true
     },
-    "einfach-utils": {
+    "@einfach/utils": {
+      "optional": true
+    },
+    "@grid-table/view": {
       "optional": true
     }
   },

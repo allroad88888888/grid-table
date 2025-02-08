@@ -1,6 +1,6 @@
 import type { Position } from '@grid-table/core'
 import { useBasic } from '@grid-table/basic'
-import { useStore, useAtomValue } from 'einfach-state'
+import { useStore, useAtomValue } from '@einfach/state'
 import { getCellId } from '../utils'
 
 export function useTbodyCellId({ rowIndex, columnIndex }: Position) {

@@ -1,4 +1,4 @@
-import { atom } from 'einfach-state'
+import { atom } from '@einfach/state'
 import type { ComponentType } from 'react'
 import DemoList from './pages/List'
 import Atom from './pages/Atom'
@@ -11,7 +11,7 @@ import { TreeDemo } from './pages/Tree'
 import { GridOverDemo } from './pages/Grid/Over'
 import { ExcelDemo } from './pages/Excel'
 
-export const currentRouterAtom = atom('/antd')
+export const currentRouterAtom = atom('/pivot')
 
 export function Empty() {
   return <div>empty</div>
