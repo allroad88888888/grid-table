@@ -1,5 +1,5 @@
 import type { CustomCellProps } from '@grid-table/view'
 
-export function ColumnIndex({ param }: CustomCellProps) {
+export function ColumnIndex({ position: param }: CustomCellProps) {
   return param.rowId.toString()
 }

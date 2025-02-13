@@ -47,7 +47,7 @@ export function DataCellThead(props: CellProps) {
       <TitleComponent
         style={style}
         className={clsx('thead-cell', className)}
-        param={{
+        position={{
           rowId,
           cellId: props.cellId,
           // rowIndex: props.rowIndex,

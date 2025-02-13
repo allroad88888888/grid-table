@@ -144,7 +144,7 @@ export function formatToTable(dataConfig: DataConfig) {
    * 0-1 列头 最后一行 需要保持不合并，rows最后一列 需要保持不跟前面的合并
    */
   const headerMergeCellList = mergeCells(realColumns, headerData.slice(0, -1))
-  // debugger
+
   // const bodyMergeCelList = mergeCells(rows, transformedData)
 
   const bodyMergeCelList = mergeCellsForTree(rows, transformedData)

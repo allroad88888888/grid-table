@@ -8,6 +8,8 @@ export * from '@grid-table/core'
 export * from './Provider'
 export * from './plugins'
 export * from './utils'
+export * from './core'
+
 export { TableExcel } from './TableExcel'
 
 export { default as Table } from './TableExcel'

@@ -33,7 +33,8 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
     initData({
       dataSource,
       idProp: props.idProp as string,
-      parentProp: props.parentProp as string,
+      parentProp: props.parentProp,
+      relation: props.relation,
       root: props.root,
       rowHeight: props.rowHeight,
     })
@@ -42,6 +43,7 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
     initData,
     props.idProp,
     props.parentProp,
+    props.relation,
     props.root,
     props.rowHeight,
     rowSizeMapAtom,

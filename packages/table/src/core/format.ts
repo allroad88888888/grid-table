@@ -1,4 +1,4 @@
-import type { ColumnType, DataItem, TreeProps, UseDataProps } from '../types'
+import type { ColumnType, DataItem, UseDataProps } from '../types'
 import { ROOT } from '../utils/const'
 import type { RowId } from '@grid-table/basic'
 import { getColumnId } from '../utils/getColumnId'
@@ -28,27 +28,30 @@ export function format<ItemInfo extends DataItem>(
 ) {
   const { dataSource, rowHeight } = props
   const { root = ROOT } = props
+  const { idProp, parentProp, relation: dataRelation } = props
 
-  const relation = new Map<string, string[]>()
-  relation.set(root, [])
+  let relation: Map<string, string[]> = new Map()
+
+  if (dataRelation) {
+    relation = new Map(Object.entries(dataRelation))
+  } else {
+    relation.set(root, [])
+  }
 
   const infoMap = new Map<string, Record<string, any>>()
 
   const rowSizeMap = new Map<RowId, number>()
 
-  const { idProp, parentProp } = props as TreeProps
-  // const { relation: dataRelation } = props as TreeRelationProps
-
   dataSource.forEach((rowInfo, rowIndex) => {
     const path = idProp ? rowInfo[idProp] : `${rowIndex}`
-    const parentId = parentProp ? rowInfo[parentProp] || root : root
-
     infoMap.set(path, rowInfo)
-
-    if (!relation.has(parentId)) {
-      relation.set(parentId, [])
+    if (!dataRelation) {
+      const parentId = parentProp ? rowInfo[parentProp] || root : root
+      if (!relation.has(parentId)) {
+        relation.set(parentId, [])
+      }
+      relation.get(parentId)!.push(path)
     }
-    relation.get(parentId)!.push(path)
   })
 
   const pathList: string[] = []

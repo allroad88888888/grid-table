@@ -2,17 +2,38 @@ import { createStore, useAtomValue, useSetAtom } from '@einfach/state'
 import { Provider, TableExcel } from '@grid-table/view'
 import { useEffect, useState } from 'react'
 import type { PivotProps } from './type'
-import { columnListAtom, copyAtom, dataListAtom, headerDataListAtom, initAtom } from './state'
+import { columnListAtom, dataListAtom, headerDataListAtom, initAtom } from './state'
 import { useTheme } from './theme/useTheme'
+import { useTree } from './tree/useTree'
 
-export function Pivot(props: PivotProps) {
+function PivotData(props: PivotProps) {
   const dataList = useAtomValue(dataListAtom)
   const columns = useAtomValue(columnListAtom)
   const headerDataList = useAtomValue(headerDataListAtom)
 
-  const init = useSetAtom(initAtom)
+  useTree({
+    treeRow: props.dataConfig.treeRow,
+    treeColumn: props.dataConfig.treeColumn,
+  })
 
-  const copy = useSetAtom(copyAtom)
+  return (
+    <TableExcel
+      overRowCount={22}
+      dataSource={dataList}
+      headerDataSource={headerDataList}
+      columns={columns}
+      rowHeight={36}
+      bordered={true}
+      className={props.className}
+      style={props.style}
+      enableSelectArea={true}
+    />
+  )
+}
+
+export function Pivot(props: PivotProps) {
+  const columns = useAtomValue(columnListAtom)
+  const init = useSetAtom(initAtom)
 
   useEffect(() => {
     init({
@@ -26,20 +47,7 @@ export function Pivot(props: PivotProps) {
     return <div>loading</div>
   }
 
-  return (
-    <TableExcel
-      overRowCount={22}
-      dataSource={dataList}
-      headerDataSource={headerDataList}
-      columns={columns}
-      rowHeight={36}
-      bordered={true}
-      className={props.className}
-      style={props.style}
-      enableSelectArea={true}
-      copyGetDataByCellIds={copy}
-    />
-  )
+  return <PivotData {...props} />
 }
 
 export default (props: PivotProps) => {

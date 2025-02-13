@@ -1,3 +1,4 @@
+import type { TreePropsItem } from '../../../tree/type'
 import type { Data } from './data'
 import type { FilterParam } from './filter'
 import type { SortParams } from './sort'
@@ -26,6 +27,21 @@ export interface Fields {
   valueInCols?: boolean
 }
 
+export interface TreeInfo {
+  /**
+   * 关系
+   */
+  relation: Record<string, string[]>
+  /**
+   * 关系是哪个字段
+   */
+  relationProp: string
+  /**
+   * 形成关系 是哪个字段
+   */
+  relationSetProp: string
+}
+
 export interface DataConfig {
   fields: Fields
   meta?: Meta[]
@@ -33,5 +49,8 @@ export interface DataConfig {
   totalData?: Data[]
   sortParams?: SortParams
   filterParams?: FilterParam[]
+  treeRow?: TreePropsItem
+  treeColumn?: TreePropsItem
+
   [key: string]: unknown
 }

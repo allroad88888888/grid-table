@@ -28,13 +28,6 @@ export function useExpand({}: UseExpandProps = {}) {
       return next
     })
   }, [relationAtom, root, rowIdShowListAtom, store])
-
-  // useEffect(() => {
-  //   return store.setter(rowCountAtom, (_getter, prev) => {
-  //     const showPathList = _getter(showPathListAtom)
-  //     return showPathList.length
-  //   })
-  // }, [])
 }
 
 export function useExpandItem({

@@ -66,7 +66,7 @@ export const DataCell = memo(function DataCell(props: CellProps) {
         <RenderComponent
           text={cellVal}
           rowInfo={rowInfo!}
-          param={{
+          position={{
             rowId,
             columnId,
             colIndex: props.columnIndex,

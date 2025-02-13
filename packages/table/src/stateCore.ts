@@ -1,6 +1,6 @@
 import type { ColumnType } from './types'
 import { atom, incrementAtom } from '@einfach/state'
-import { type ColumnId } from '@grid-table/basic'
+import type { ColumnId } from '@grid-table/basic'
 import { nodeLevelAtom, parentNodeSetAtom, relationAtom, rootAtom } from './tree/stateTree'
 
 import { createAtomFamily } from './utils/createAtomFamily'

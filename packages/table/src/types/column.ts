@@ -38,7 +38,7 @@ export interface ColumnType<ItemInfo = Record<string, any>> {
 }
 
 export interface CustomHeaderCellProps {
-  param: PositionId
+  position: PositionId
   style?: CSSProperties
   className?: string
   children?: ReactNode
@@ -47,5 +47,5 @@ export interface CustomHeaderCellProps {
 export interface CustomCellProps<ItemInfo = Record<string, any>> {
   text: string | undefined
   rowInfo: ItemInfo
-  param: PositionId & { rowIndex: number; colIndex: number }
+  position: PositionId & { rowIndex: number; colIndex: number }
 }
