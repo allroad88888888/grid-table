@@ -13,7 +13,10 @@ export const copyAtom = atom(undefined, (getter, setter, cellIds: CellId[][]) =>
     return cellList.map((cellId) => {
       const [, columnId] = getRowIdAndColIdByCellId(cellId)
       const columnOption = getter(getColumnOptionAtomByColumnId(columnId))
-      const cellInfo = easyGet(rowInfo, columnOption.dataIndex!, '')
+      if (!columnOption.dataIndex) {
+        return ''
+      }
+      const cellInfo = easyGet(rowInfo, columnOption.dataIndex, '')
       return cellInfo
     })
   })

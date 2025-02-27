@@ -61,7 +61,7 @@ export const areaCellIdsAtom = atom<CellId[][]>((getter) => {
     for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
       const colId = columnIdList[i]
       if (disabledCols.has(colId)) {
-        break
+        continue
       }
       const cellId = getCellId({
         rowId: rowIdList[j],
