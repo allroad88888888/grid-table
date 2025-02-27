@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { useAtomValue, useSetAtom, useStore } from '@einfach/state'
-import { useBasic } from '@grid-table/basic'
+import { rowIdShowListAtom, rowSizeMapAtom, useBasic } from '@grid-table/basic'
 import type { ColumnType } from '../../types'
 import { distributeToNewArray } from './utils'
 import { initColumnsSizeByColumnsAtom } from './state'
@@ -73,7 +73,7 @@ export function useCellSizeByColumn(props: UseSizeByColumnProps) {
     })
   }, [columnIdShowListAtom, columnMinWidth, columnSizeMapAtom, store, wrapWidth])
 
-  const columnIdShowList = useAtomValue(columnIdShowListAtom)
+  const columnIdShowList = useAtomValue(columnIdShowListAtom, { store })
 
   const columnSizeMap = useAtomValue(columnSizeMapAtom, { store })
   const calcColumnSizeByIndex = useCallback(
@@ -84,9 +84,16 @@ export function useCellSizeByColumn(props: UseSizeByColumnProps) {
     [columnIdShowList, columnMinWidth, columnSizeMap],
   )
 
-  const calcRowSizeByIndex = useCallback(() => {
-    return rowHeight
-  }, [rowHeight])
+  const rowSizeMap = useAtomValue(rowSizeMapAtom, { store })
+  const rowIdShowList = useAtomValue(rowIdShowListAtom, { store })
+
+  const calcRowSizeByIndex = useCallback(
+    (index: number) => {
+      const rowId = rowIdShowList[index]
+      return rowSizeMap.get(rowId)!
+    },
+    [rowIdShowList, rowSizeMap],
+  )
 
   const calcHeadRowSizeByIndex = useCallback(() => {
     return rowHeight

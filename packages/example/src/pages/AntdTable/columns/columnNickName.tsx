@@ -1,5 +1,5 @@
-import type { ColumnProps } from './type'
+import type { CustomCellProps } from './type'
 
-export function ColumnNickName({ rowInfo }: ColumnProps) {
+export function ColumnNickName({ rowInfo }: CustomCellProps) {
   return <>{rowInfo.initiator.nickName || rowInfo.initiator.userName}</>
 }

@@ -1,6 +1,7 @@
 import { RunStatusLanguage } from './options'
-import type { ColumnProps } from './type'
+import type { Info } from './server'
+import type { CustomCellProps } from './type'
 
-export function ColumnRunStatus({ rowInfo }: ColumnProps) {
+export function ColumnRunStatus({ rowInfo }: CustomCellProps<Info>) {
   return <>{RunStatusLanguage[rowInfo.runStatus]}</>
 }

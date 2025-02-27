@@ -1,6 +1,7 @@
 import { TriggerTypeLanguage } from './options'
-import type { ColumnProps } from './type'
+import type { Info } from './server'
+import type { CustomCellProps } from './type'
 
-export function ColumnTrigger({ rowInfo }: ColumnProps) {
+export function ColumnTrigger({ rowInfo }: CustomCellProps<Info>) {
   return <>{TriggerTypeLanguage[rowInfo.triggerType]}</>
 }

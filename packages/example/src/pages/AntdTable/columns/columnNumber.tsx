@@ -1,5 +1,5 @@
-import type { ColumnProps } from './type'
+import type { CustomCellProps } from './type'
 
-export function ColumnNumber({ text }: ColumnProps) {
+export function ColumnNumber({ text }: CustomCellProps) {
   return text
 }

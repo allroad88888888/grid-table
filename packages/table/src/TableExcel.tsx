@@ -155,7 +155,7 @@ export function TableExcel(props: AntdTableProps) {
 
 export default (props: AntdTableProps) => {
   return (
-    <Provider root={props?.root}>
+    <Provider root={props?.root} store={props.store}>
       <TableExcel {...props} />
     </Provider>
   )

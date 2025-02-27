@@ -3,6 +3,7 @@ import type { UseRowSelectionProps } from '../plugins/select/useRowSelection'
 import type { CSSProperties } from 'react'
 import type { VGridTableProps } from '@grid-table/core'
 import type { CopyProps } from '../plugins'
+import type { Store } from '@einfach/state'
 
 export type AntdTableProps = {
   className?: string
@@ -39,6 +40,7 @@ export type AntdTableProps = {
    * 是否开启区域选中
    */
   enableSelectArea?: boolean
+  store?: Store
 } & CopyProps &
   UseDataProps &
   Pick<

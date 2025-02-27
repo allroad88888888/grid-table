@@ -1,5 +1,5 @@
 import { filerZero } from './columnTime'
-import type { ColumnProps } from './type'
+import type { CustomCellProps } from './type'
 
 function formatDuration(startTime?: number, endTime?: number) {
   if (!startTime || !endTime) {
@@ -13,6 +13,6 @@ function formatDuration(startTime?: number, endTime?: number) {
   return `${filerZero(h)}:${filerZero(m)}:${filerZero(s)}`
 }
 
-export function ColumnDuration({ rowInfo }: ColumnProps) {
+export function ColumnDuration({ rowInfo }: CustomCellProps) {
   return <>{formatDuration(rowInfo.start_time, rowInfo.end_time)}</>
 }

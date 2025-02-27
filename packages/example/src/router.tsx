@@ -11,7 +11,7 @@ import { TreeDemo } from './pages/Tree'
 import { GridOverDemo } from './pages/Grid/Over'
 import { ExcelDemo } from './pages/Excel'
 
-export const currentRouterAtom = atom('/pivot')
+export const currentRouterAtom = atom('/antd')
 
 export function Empty() {
   return <div>empty</div>

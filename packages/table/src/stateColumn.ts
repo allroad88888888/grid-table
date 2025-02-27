@@ -1,9 +1,10 @@
 import type { ColumnType } from './types'
 import { columnInit } from './core/format'
-import { atom } from '@einfach/state'
+import { atom, selectAtom } from '@einfach/state'
 import { basicAtom, columnIndexListAtom, columnSizeMapAtom } from '@grid-table/basic'
 import { dataFamilyAtom } from './stateCore'
 import { getColumnId } from './utils/getColumnId'
+import { easyEqual } from '@einfach/utils'
 
 export const columnInitAtom = atom(0, (getter, setter, columns: ColumnType[]) => {
   const { columnMap, columnIdList } = columnInit(columns)
@@ -21,6 +22,7 @@ export const columnInitAtom = atom(0, (getter, setter, columns: ColumnType[]) =>
   const { getColumnStateAtomById } = getter(basicAtom)
 
   for (const [columnId, columnOption] of columnMap) {
+    columnOption.key = columnId
     setter(getColumnOptionAtomByColumnId(columnId), columnOption)
     setter(getColumnStateAtomById(columnId), {
       className: new Set([`gird-table-text-${columnOption.align || 'left'}`]),
@@ -58,4 +60,17 @@ export const columnAddAtom = atom(
       return [...prev, columnId]
     })
   },
+)
+
+export const columnsOptionAtom = selectAtom(
+  atom((getter) => {
+    const { getColumnOptionAtomByColumnId } = getter(dataFamilyAtom)
+    return getter(columnIndexListAtom).map((colId) => {
+      return getter(getColumnOptionAtomByColumnId(colId))
+    })
+  }),
+  (cols) => {
+    return cols
+  },
+  easyEqual,
 )

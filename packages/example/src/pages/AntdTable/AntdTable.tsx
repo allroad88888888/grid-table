@@ -1,9 +1,10 @@
-import { Table } from '@grid-table/view/src'
+import { rowSizeMapAtom, Table } from '@grid-table/view'
 import type { UseRowSelectionProps } from '@grid-table/view/src/plugins/select'
-import { atom, useAtomValue } from '@einfach/state'
+import { atom, useAtomValue, createStore } from '@einfach/state'
 import { DataList } from './mock'
 import { useColumnConfig } from './useColumnConfig'
 import './Table.css'
+import { useEffect } from 'react'
 
 const rowSelection: UseRowSelectionProps = {
   width: 42,
@@ -31,10 +32,20 @@ const dataAtom = atom(async (getter) => {
   return DataList
 })
 
+const store = createStore()
+
 export function AntdTableDemo() {
   const dataList = useAtomValue(dataAtom)
 
   const { columns } = useColumnConfig()
+
+  useEffect(() => {
+    store.setter(rowSizeMapAtom, (prev) => {
+      const next = new Map(prev)
+      next.set('2', 72)
+      return next
+    })
+  }, [])
 
   return (
     <Table
@@ -46,6 +57,8 @@ export function AntdTableDemo() {
       columns={columns}
       dataSource={dataList}
       rowSelection={rowSelection}
+      store={store}
+      rowBaseSize={36}
     />
   )
 }

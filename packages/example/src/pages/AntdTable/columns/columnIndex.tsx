@@ -1,5 +1,5 @@
-import type { ColumnProps } from './type'
+import type { CustomCellProps } from './type'
 
-export function ColumnIndex({ param }: ColumnProps) {
-  return <>{param.rowId}</>
+export function ColumnIndex({ position }: CustomCellProps) {
+  return <>{position.rowId}</>
 }

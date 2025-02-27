@@ -1,7 +1,9 @@
 import { getCellId } from '../../utils/getCellId'
 import type { CellId, ColumnId, PositionId } from '@grid-table/basic'
 import { columnIdShowListAtom, rowIdShowListAtom } from '@grid-table/basic'
-import { atom } from '@einfach/state'
+import { atom, selectAtom } from '@einfach/state'
+import { easyEqual } from '@einfach/utils'
+import { columnsOptionAtom } from '../../stateColumn'
 
 export const areaSelectEnableAtom = atom(false)
 
@@ -12,6 +14,23 @@ export const emptyPosition: PositionId = {
 }
 export const areaStartAtom = atom<PositionId>(emptyPosition)
 export const areaEndAtom = atom<PositionId>(emptyPosition)
+
+/**
+ * 过滤哪些列 不能被选中
+ */
+export const areaDisabledColsAtom = selectAtom(
+  columnsOptionAtom,
+  (cols) => {
+    return cols
+      .filter((options) => {
+        return !('dataIndex' in options)
+      })
+      .map((options) => {
+        return options.key
+      })
+  },
+  easyEqual,
+)
 
 export const areaCellIdsAtom = atom<CellId[][]>((getter) => {
   const areaStart = getter(areaStartAtom)
@@ -35,13 +54,18 @@ export const areaCellIdsAtom = atom<CellId[][]>((getter) => {
   const columnStartIndex = Math.min(...columnList)
   const columnEndIndex = Math.max(...columnList)
 
+  const disabledCols = new Set(getter(areaDisabledColsAtom))
   const cellList: CellId[][] = []
   for (let j = rowStartIndex; j <= rowEndIndex; j += 1) {
     const childIds = []
     for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
+      const colId = columnIdList[i]
+      if (disabledCols.has(colId)) {
+        break
+      }
       const cellId = getCellId({
         rowId: rowIdList[j],
-        columnId: columnIdList[i],
+        columnId: colId,
       })
       childIds.push(cellId)
     }

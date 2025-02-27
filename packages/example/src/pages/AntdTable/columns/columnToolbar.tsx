@@ -1,5 +1,5 @@
-import type { ColumnProps } from './type'
+import type { CustomCellProps } from './type'
 
-export function ColumnToolbar({ rowInfo }: ColumnProps) {
+export function ColumnToolbar({ rowInfo }: CustomCellProps) {
   return <>操作列</>
 }
