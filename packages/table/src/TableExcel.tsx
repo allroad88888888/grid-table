@@ -27,6 +27,7 @@ import { Provider } from './Provider'
 export function TableExcel(props: AntdTableProps) {
   const { columns, dataSource } = props
   const { cellDefaultWidth = 80, rowHeight = 36 } = props
+  const { enableHeadContextMenu } = props
 
   const ref = useRef<HTMLDivElement>(null)
   const { width } = useAutoSizer(ref)
@@ -145,7 +146,7 @@ export function TableExcel(props: AntdTableProps) {
             emptyComponent={props.emptyComponent}
             loadingComponent={props.loadingComponent}
             loading={props.loading}
-            theadChildren={<TheadContextMenu />}
+            theadChildren={<TheadContextMenu enableContextMenu={enableHeadContextMenu} />}
           />
         </>
       )}

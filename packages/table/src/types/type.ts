@@ -40,6 +40,10 @@ export type AntdTableProps = {
    * 是否开启区域选中
    */
   enableSelectArea?: boolean
+  /**
+   * header 右键
+   */
+  enableHeadContextMenu?: boolean
   store?: Store
 } & CopyProps &
   UseDataProps &

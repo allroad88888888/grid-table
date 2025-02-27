@@ -54,6 +54,7 @@ export function AntdTableDemo() {
         height: '600px',
       }}
       enableCopy={true}
+      enableHeadContextMenu={true}
       columns={columns}
       dataSource={dataList}
       rowSelection={rowSelection}

@@ -7,11 +7,14 @@ import type { ColumnContextMenuOption } from '../theadContextMenu/type'
 import { columnIdShowListAtom } from '@grid-table/basic'
 import { hideColumnsAtom } from './state'
 
-export function useColumnHide() {
+export function useColumnHide(enable: boolean = false) {
   const store = useStore()
   const setTheadContextMenu = useSetAtom(columnContextMenuOptionsAtom, { store })
   useEffect(() => {
-    setTheadContextMenu((prev = []) => {
+    if (!enable) {
+      return
+    }
+    return setTheadContextMenu((prev = []) => {
       return [
         ...prev,
         {
@@ -19,7 +22,7 @@ export function useColumnHide() {
         },
       ] as ColumnContextMenuOption[]
     })
-  }, [setTheadContextMenu])
+  }, [enable, setTheadContextMenu])
 
   const hideColumns = useAtomValue(hideColumnsAtom, { store })
 
