@@ -11,9 +11,9 @@ export function useTheme(theme?: Theme) {
   const headerIds = useAtomValue(headerRowIndexListAtom)
 
   useEffect(() => {
-    if (!theme?.headerCell) {
+    if (!theme) {
       return
     }
-    return initHeaderTheme(theme.headerCell)
-  }, [initHeaderTheme, theme?.headerCell, columns, headerIds])
+    return initHeaderTheme(theme)
+  }, [initHeaderTheme, theme, columns, headerIds])
 }

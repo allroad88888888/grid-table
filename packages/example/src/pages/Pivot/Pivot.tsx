@@ -8,10 +8,19 @@ import type { Theme } from '@grid-table/pivot/src/theme/types'
 // import '@grid-table/pivot/esm/index.css'
 
 const theme: Theme = {
-  headerCell: {
-    backgroundColor: '#3447A0',
+  colCell: {
+    backgroundColor: '#800',
     color: 'white',
     textAlign: 'center',
+  },
+  cornerCell: {
+    backgroundColor: '#f00',
+  },
+  rowCell: {
+    backgroundColor: '#a987eb',
+  },
+  dataCell: {
+    backgroundColor: '#00f',
   },
 }
 

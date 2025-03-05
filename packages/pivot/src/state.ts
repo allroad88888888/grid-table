@@ -12,7 +12,7 @@ export const columnListAtom = atom<ColumnType[]>([])
 export const headerDataListAtom = atom<Record<string, any>[]>([])
 
 export const headerColumnListAtom = atom([])
-
+export const fieldsRowsAtom = atom<string[]>([])
 export const initAtom = atom(undefined, (getter, setter, { dataConfig }: PivotProps) => {
   const { data, columns, headerData, headerMergeCellList, bodyMergeCelList } =
     formatToTable(dataConfig)
@@ -40,4 +40,5 @@ export const initAtom = atom(undefined, (getter, setter, { dataConfig }: PivotPr
   setter(headerDataListAtom, headerData)
   setter(theadMergeCellListAtom, headerMergeCellList)
   setter(tbodyMergeCellListAtom, bodyMergeCelList)
+  setter(fieldsRowsAtom, dataConfig.fields.rows ?? [])
 })

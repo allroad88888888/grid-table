@@ -2,6 +2,8 @@ import type { BodyCellTheme } from './body'
 import type { HeaderCellTheme } from './header'
 
 export interface Theme {
-  headerCell?: HeaderCellTheme
-  bodyCell?: BodyCellTheme
+  cornerCell?: HeaderCellTheme
+  dataCell?: BodyCellTheme
+  colCell?: HeaderCellTheme
+  rowCell?: HeaderCellTheme
 }
