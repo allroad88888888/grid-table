@@ -81,15 +81,17 @@ export function formatToTable(dataConfig: DataConfig) {
 
     if (isFull) {
       values.forEach((val) => {
+
+        const tempKey = `${columnKey}_${val}`
         /**
          * 根据columns 获取新的列名
          */
-        if (!newColumnNameMap.has(columnKey)) {
+        if (!newColumnNameMap.has(tempKey)) {
           const tName = `column${(columnIndex += 1)}`
-          newColumnNameMap.set(columnKey, tName)
+          newColumnNameMap.set(tempKey, tName)
           realColumns.push(tName)
         }
-        const newColumnName = newColumnNameMap.get(columnKey)!
+        const newColumnName = newColumnNameMap.get(tempKey)!
 
         let prevHeaderRelation: HeaderRelation = headerRelation
         /**
