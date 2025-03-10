@@ -1,5 +1,5 @@
 import type { DataConfig } from '../types'
-import { JoinKey } from './const'
+import { JoinKey, ValueJoinKey } from './const'
 import { getHeaderInfo } from './header'
 import { mergeCells } from './mergeCells'
 import { mergeCellsForTree } from './mregeCellsForTree'
@@ -81,8 +81,7 @@ export function formatToTable(dataConfig: DataConfig) {
 
     if (isFull) {
       values.forEach((val) => {
-
-        const tempKey = `${columnKey}_${val}`
+        const tempKey = `${columnKey}${ValueJoinKey}${val}`
         /**
          * 根据columns 获取新的列名
          */
@@ -158,6 +157,7 @@ export function formatToTable(dataConfig: DataConfig) {
     headerColumns,
     headerMergeCellList,
     bodyMergeCelList,
+    newColumnNameMap,
     /**
      * for-test
      */

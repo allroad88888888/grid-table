@@ -4,26 +4,26 @@ import { Pivot } from '@grid-table/pivot/src'
 // import data2 from './single-population-proportion.mock'
 // import { mockDataConfig as data3 } from './mock'
 // import { treeData } from './tree.mock'
-import type { Theme } from '@grid-table/pivot/src/theme/types'
+// import type { Theme } from '@grid-table/pivot/src/theme/types'
 import { doubleData } from './double.mock'
 // import '@grid-table/pivot/esm/index.css'
 
-const theme: Theme = {
-  colCell: {
-    backgroundColor: '#800',
-    color: 'white',
-    textAlign: 'center',
-  },
-  cornerCell: {
-    backgroundColor: '#f00',
-  },
-  rowCell: {
-    backgroundColor: '#a987eb',
-  },
-  dataCell: {
-    backgroundColor: '#00f',
-  },
-}
+// const theme: Theme = {
+//   colCell: {
+//     backgroundColor: '#800',
+//     color: 'white',
+//     textAlign: 'center',
+//   },
+//   cornerCell: {
+//     backgroundColor: '#f00',
+//   },
+//   rowCell: {
+//     backgroundColor: '#a987eb',
+//   },
+//   dataCell: {
+//     backgroundColor: '#00f',
+//   },
+// }
 
 export function PivotDemo() {
   return (
@@ -34,7 +34,7 @@ export function PivotDemo() {
           width: 1000,
           height: 600,
         }}
-        theme={theme}
+        // theme={theme}
       />
       {/* <Pivot
         dataConfig={data1 as unknown as DataConfig}

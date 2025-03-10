@@ -6,6 +6,7 @@ import type { SortParams } from './sort'
 export interface Meta {
   field: string
   name: string
+  formatter?: Function
 }
 
 export declare interface CustomTreeItem {
