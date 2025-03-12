@@ -2,11 +2,13 @@ import type { TreePropsItem } from '../../../tree/type'
 import type { Data } from './data'
 import type { FilterParam } from './filter'
 import type { SortParams } from './sort'
+import type { CustomCellProps } from '../../../../../table/src/types'
 
 export interface Meta {
   field: string
   name: string
   formatter?: Function
+  renderComponent?: React.ComponentType<CustomCellProps<Record<string, any>>> | undefined
 }
 
 export declare interface CustomTreeItem {

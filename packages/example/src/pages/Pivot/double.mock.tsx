@@ -1,3 +1,9 @@
+import type { CustomCellProps } from '@grid-table/view'
+
+export function Column({ text }: CustomCellProps) {
+  return <>{text}xx</>
+}
+// React.ComponentType<CustomCellProps<Record<string, any>>> | undefined
 export const doubleData = {
   data: [
     {
@@ -33,7 +39,7 @@ export const doubleData = {
       增长: -2332.444,
       备注: 'A',
       环比: -0.33,
-      上期收入: 80000,
+      上期收入: 80000899999999,
       月份1: 2,
       结束日期: '2023-12-30T05:06:06',
       产品: '330铝555',
@@ -263,16 +269,16 @@ export const doubleData = {
     {
       field: '上期收入',
       name: '上期收入',
+      renderComponent: Column,
     },
     {
       field: '同比',
       name: '同比',
-      // formatter: (function () {
-      //   const format = 'undefined'
+      // formatter: function () {
+      //   const format = '无'
       //   const precision = 1
-      //   const unitDisplay = { content: '比例啊' }
+      //   const unitDisplay = { content: 'dd后缀啊啊啊啊啊啊啊啊' }
       //   const unitValue = 1
-      //   const formatNull = undefined
       //   function div(arg1, arg2) {
       //     if (!arg1) return arg1
       //     let t1 = 0
@@ -295,7 +301,6 @@ export const doubleData = {
       //     return Number(sign + x.slice(0, x.length - diff) + '.' + x.slice(x.length - diff))
       //   }
       //   return function (item) {
-      //     if (['undefined', 'null'].includes(typeof item) && formatNull) return '<空>'
       //     if (typeof item !== 'number') return item
 
       //     let uv = unitValue
@@ -334,7 +339,7 @@ export const doubleData = {
 
       //     return val
       //   }
-      // })(),
+      // },
     },
   ],
   treeRow: {
