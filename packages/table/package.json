@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/view",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "grid-table table",
   "type": "module",
   "main": "./cjs/index.js",

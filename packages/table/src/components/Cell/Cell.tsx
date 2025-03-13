@@ -35,7 +35,8 @@ export const DataCell = memo(function DataCell(props: CellProps) {
     if (!columnOption.dataIndex) {
       return ''
     }
-    return easyGet(rowInfo, columnOption.dataIndex)
+    const val = easyGet(rowInfo, columnOption.dataIndex)
+    return typeof val === 'boolean' ? String(val) : val
   }, [columnOption.dataIndex, rowInfo])
 
   const { render, renderComponent } = columnOption

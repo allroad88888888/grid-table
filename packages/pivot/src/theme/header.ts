@@ -23,16 +23,34 @@ export const initHeaderThemeAtom = atom(0, (getter, setter, theme: Theme) => {
   const cornerCancelList: (() => void)[] = []
   const rowCancelList: (() => void)[] = []
   const dataCancelList: (() => void)[] = []
-  // const corner: string[] = []
-  // const col: string[] = []
-  // const row: string[] = []
+  const cornerIds: string[] = []
   headerIds.forEach((rowId) => {
+    // 角头
+    rows.forEach((rowsId) => {
+      const cornerId = getCellId({
+        rowId,
+        columnId: rowsId,
+      })
+      cornerIds.push(cornerId)
+      cornerCancelList.push(
+        setter(getHeaderCellStateAtomById(cornerId), (getter, prev) => {
+          const next = {
+            ...prev,
+            style: mergeStyles([prev.style, cornerCell]),
+          }
+          return next
+        })!,
+      )
+    })
     // 列头
     columnIds.forEach((columnId) => {
       const cellId = getCellId({
         rowId,
         columnId,
       })
+      if (cornerIds.includes(cellId)) {
+        return
+      }
       // col.push(cellId)
       colCancelList.push(
         setter(getHeaderCellStateAtomById(cellId), (getter, prev) => {
@@ -44,25 +62,7 @@ export const initHeaderThemeAtom = atom(0, (getter, setter, theme: Theme) => {
         })!,
       )
     })
-    // 角头
-    rows.forEach((rowsId) => {
-      const cornerId = getCellId({
-        rowId,
-        columnId: rowsId,
-      })
-      // corner.push(cornerId)
-      cornerCancelList.push(
-        setter(getHeaderCellStateAtomById(cornerId), (getter, prev) => {
-          const next = {
-            ...prev,
-            style: mergeStyles([prev.style, cornerCell]),
-          }
-          return next
-        })!,
-      )
-    })
   })
-
   const dataIds: string[] = columnIds.filter((n) => !rows.includes(n)) ?? []
 
   rowBodyIds.map((rowBodyId) => {
