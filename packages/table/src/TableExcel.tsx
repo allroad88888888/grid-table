@@ -23,7 +23,7 @@ import { TheadContextMenu } from './plugins/theadContextMenu/TheadContextMenu'
 import { useRenderTheadCells } from './components/Cell/renderTheadCells'
 import { useRenderTbodyCells } from './components/Cell/renderTbodyCells'
 import { Provider } from './Provider'
-
+import './var.css'
 export function TableExcel(props: AntdTableProps) {
   const { columns, dataSource } = props
   const { cellDefaultWidth = 80, rowHeight = 36 } = props

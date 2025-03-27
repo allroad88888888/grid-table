@@ -1,0 +1,19 @@
+.grid-table {
+  /* Z-Index变量 */
+  --grid-merge-cells-zIndex: 1;
+  --grid-sticky-row-zIndex: 10;
+  --grid-sticky-column-zIndex: 1;
+  --grid-thead-control-zIndex: 31;
+  --grid-thead-context-menu-zIndex: 20;
+  
+  /* 颜色变量 */
+  --grid-border-color: #f0f0f0;
+  --grid-bg-color: #fff;
+  --grid-row-hover-bg-color: #fafafa;
+
+  /* 单元格边框样式 */
+  --grid-cell-border-style: dashed;
+
+  /* 表格边框样式 */
+  --grid-table-border-style: solid;
+} 

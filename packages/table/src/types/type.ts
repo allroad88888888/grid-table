@@ -11,7 +11,7 @@ export type AntdTableProps = {
   /**
    * @default true
    */
-  bordered?: boolean
+  bordered?: boolean | 'dotted' | 'dashed' | 'solid' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset'
   /**
    * 行高度
    * @default 36

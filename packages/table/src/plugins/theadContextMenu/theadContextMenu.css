@@ -2,14 +2,14 @@
   /* padding-inline-start: 0; */
   padding: 4px;
   background-color: white;
-  z-index: var(--thead-context-menu-zIndex, 20);
+  z-index: var(--grid-thead-context-menu-zIndex);
 }
 
 .grid-table-thead-context-menu-container > li {
   list-style-type: none;
   cursor: pointer;
   padding: 4px 2px;
-  border-bottom: 1px solid var(--grid-border-color, #f0f0f0);
+  border-bottom: 1px solid var(--grid-border-color);
 }
 .grid-table-thead-context-menu-container > li:last-child {
   border-bottom-width: 0;

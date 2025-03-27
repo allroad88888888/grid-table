@@ -1,14 +1,3 @@
-.grid-table {
-  /* tbody合并单元格 */
-  --merge-cells-zIndex: 1;
-  /* 固定列头 */
-  --sticky-row-zIndex: 10;
-  --sticky-column-zIndex: 1;
-  /* --merge-cells-thead-zIndex: */
-  /* 表头-拖拽 */
-  --thead-control-with-zIndex: 31;
-  --thead-context-menu-zIndex: 20 /* --grid-bg-color: #fff; */;
-}
 
 .grid-table-plugin-wrapper {
   max-width: 100%;
@@ -57,34 +46,24 @@
 .grid-table [role='thead'] {
   position: sticky;
   top: 0;
-  background-color: var(--grid-bg-color, #fff);
+  background-color: var(--grid-bg-color);
   width: max-content;
   /**
   * 下面的 sticky 会遮挡
   */
-  z-index: var(--sticky-row-zIndex, 10);
+  z-index: var(--sticky-row-zIndex);
 }
 
 .grid-table-border {
-  border: 1px solid var(--grid-border-color, #f0f0f0);
+  border: 1px var(--grid-table-border-style) var(--grid-border-color);
 }
 .grid-table-border .grid-table-cell,
 .thead-cell {
-  background-color: var(--grid-bg-color, #fff);
-  border-left: 1px solid var(--grid-border-color, #f0f0f0);
-  border-bottom: 1px solid var(--grid-border-color, #f0f0f0);
-  border-color: var(--grid-border-color, #f0f0f0);
+  background-color: var(--grid-bg-color);
+  border-left: 1px var(--grid-cell-border-style) var(--grid-border-color);
+  border-bottom: 1px var(--grid-cell-border-style) var(--grid-border-color);
+  border-color: var(--grid-border-color);
 }
-/* .grid-table-border [role='row'] > * {
-  background-color: var(--grid-bg-color, #fff);
-  border-left: 1px solid var(--grid-border-color, #f0f0f0);
-  border-bottom: 1px solid var(--grid-border-color, #f0f0f0);
-  border-color: var(--grid-border-color, #f0f0f0);
-}
-
-.grid-table-border [role='row'] > :first-child {
-  border-left-width: 0;
-} */
 
 .grid-table-border [role='tbody'] > :last-child > * {
   border-bottom-width: 0;
@@ -108,9 +87,9 @@
 }
 
 .grid-table [role='row']:hover > * {
-  background-color: var(--grid-row-hover-bg-color, #fafafa);
+  background-color: var(--grid-row-hover-bg-color);
 }
 
 .grid-table [role='row'] {
-  background-color: var(--grid-bg-color, #fff);
+  background-color: var(--grid-bg-color);
 }
