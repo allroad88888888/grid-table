@@ -35,7 +35,9 @@ describe('pivot', () => {
       ],
       data: mockData.data,
     })
-    expect(res.data).toStrictEqual(dataList)
+
+    const processedData = res.data.map(({ oldItem, ...rest }) => rest)
+    expect(processedData).toStrictEqual(dataList)
 
     expect(res.headerData).toStrictEqual([
       {

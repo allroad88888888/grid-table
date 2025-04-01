@@ -2,30 +2,61 @@ import type { DataConfig } from '@grid-table/pivot'
 import { Pivot } from '@grid-table/pivot/src'
 import { doubleData } from './double.mock'
 
-// import data1 from './xx.mock'
-// import data2 from './single-population-proportion.mock'
-// import { mockDataConfig as data3 } from './mock'
-// import { treeData } from './tree.mock'
-// import type { Theme } from '@grid-table/pivot/src/theme/types'
-// import '@grid-table/pivot/esm/index.css'
-
+// const theme = {
+//   rowCell: {
+//     border: '1px solid red',
+//   },
+//   colCell: {
+//     border: '1px solid #f00',
+//   },
+//   cornerCell: {
+//     border: '1px dotted #800',
+//     color: 'red',
+//   },
+//   dataCell: {
+//     border: '1px dotted #a987eb',
+//     borderLeft: '1px solid #dadada',
+//   },
+// }
 const theme = {
-  rowCell: {
-    border: '1px solid red',
+  cornerCell: {
+    fontSize: 'var(--ux-font-size-base, 12px)',
+    borderType: 'border',
+    borderStyle: 'solid',
+    borderWidth: '1px',
+    backgroundColor: '#8666E1',
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    borderColor: '#d9d9d9',
   },
   colCell: {
-    border: '1px solid #f00',
+    fontSize: 'var(--ux-font-size-base, 12px)',
+    borderType: 'border',
+    borderStyle: 'solid',
+    borderWidth: '1px',
+    backgroundColor: '#8666E1',
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    borderColor: '#d9d9d9',
   },
-  cornerCell: {
-    border: '1px dotted #800',
-    color: 'red',
+  rowCell: {
+    fontSize: 'var(--ux-font-size-base, 12px)',
+    color: 'var(--ux-text-color, rgba(0, 0, 0, 0.65)',
+    // borderType: 'border',
+    // borderStyle: 'solid',
+    // borderWidth: '1px',
+    // backgroundColor: 'var(--ux-primary-1,#eeefff)',
+    // borderColor: 'var(--ux-primary-color,#555FFF)',
+    border: '1px dotted #8666E1',
+    borderLeft: '1px solid #d9d9d9',
   },
   dataCell: {
-    border: '1px dotted #a987eb',
-    borderLeft: '1px solid #dadada',
+    fontSize: '12px',
+    color: 'rgba(0, 0, 0, 0.65)',
+    border: '1px dotted #8666E1',
+    borderLeft: '1px solid #d9d9d9',
   },
 }
-
 export function PivotDemo() {
   return (
     <div style={{ margin: 100 }}>
@@ -33,9 +64,10 @@ export function PivotDemo() {
         dataConfig={doubleData as unknown as DataConfig}
         style={{
           width: 1000,
-          height: 600,
+          height: 300,
         }}
         theme={theme}
+        rowHeight={20}
       />
       {/* <Pivot
         dataConfig={data1 as unknown as DataConfig}

@@ -5,7 +5,7 @@
   --grid-sticky-column-zIndex: 1;
   --grid-thead-control-zIndex: 31;
   --grid-thead-context-menu-zIndex: 20;
-  
+  --sticky-row-zIndex: 90;
   /* 颜色变量 */
   --grid-border-color: #f0f0f0;
   --grid-bg-color: #fff;
@@ -16,4 +16,4 @@
 
   /* 表格边框样式 */
   --grid-table-border-style: solid;
-} 
+}

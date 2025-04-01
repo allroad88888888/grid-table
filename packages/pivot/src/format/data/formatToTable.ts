@@ -63,12 +63,11 @@ export function formatToTable(dataConfig: DataConfig) {
      * 设置rowKey到 新的数据
      */
     if (!dataMap.has(rowKey)) {
-      const dataItem: Record<string, any> = {
-        // id: indexId.toString(),
-      }
+      const dataItem: Record<string, any> = { oldItem: item }
       indexId += 1
       rows.forEach((rowField) => (dataItem[rowField] = item[rowField]))
       dataMap.set(rowKey, dataItem)
+
       transformedData.push(dataItem)
     }
 
@@ -120,7 +119,6 @@ export function formatToTable(dataConfig: DataConfig) {
         /**
          * 根据values-设置新列名的值
          */
-
         dataItem[newColumnName] = item[val]
       })
     }
@@ -149,7 +147,6 @@ export function formatToTable(dataConfig: DataConfig) {
   // const bodyMergeCelList = mergeCells(rows, transformedData)
 
   const bodyMergeCelList = mergeCellsForTree(rows, transformedData)
-
   return {
     data: transformedData,
     columns: realColumns,

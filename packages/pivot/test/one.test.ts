@@ -11,6 +11,13 @@ describe('pivot', () => {
         column2: 1200,
         organization: '西品全国销售',
         position: '销售总监',
+        oldItem: {
+          budget_plan: 'Simulation_1',
+          position: '销售总监',
+          organization: '西品全国销售',
+          fiscal_year: '2024',
+          amount: 200.0,
+        },
       },
     ])
 

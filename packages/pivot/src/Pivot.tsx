@@ -7,10 +7,10 @@ import { useTheme } from './theme/useTheme'
 import { useTree } from './tree/useTree'
 
 function PivotData(props: PivotProps) {
+  const { rowHeight = 36 } = props
   const dataList = useAtomValue(dataListAtom)
   const columns = useAtomValue(columnListAtom)
   const headerDataList = useAtomValue(headerDataListAtom)
-
   useTree({
     treeRow: props.dataConfig.treeRow,
     treeColumn: props.dataConfig.treeColumn,
@@ -22,7 +22,7 @@ function PivotData(props: PivotProps) {
       dataSource={dataList}
       headerDataSource={headerDataList}
       columns={columns}
-      rowHeight={36}
+      rowHeight={rowHeight}
       bordered={true}
       className={props.className}
       style={props.style}

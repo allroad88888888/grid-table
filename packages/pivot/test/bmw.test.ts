@@ -5,7 +5,8 @@ import mockData, { dataList } from './mock/bmw.test.mock'
 describe('pivot', () => {
   test('easy', () => {
     const res = formatToTable(mockData.dataCfg)
-    expect(res.data).toStrictEqual(dataList)
+    const processedData = res.data.map(({ oldItem, ...rest }) => rest)
+    expect(processedData).toStrictEqual(dataList)
 
     expect(res.headerData).toStrictEqual([
       { column1: '青年', column2: '中年', column3: '老年', level: '人群' },
