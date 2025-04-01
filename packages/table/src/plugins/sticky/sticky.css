@@ -12,11 +12,11 @@
   border-left-width: 0;
 }
 .grid-table .sticky-left:first-child {
-  border-left-width: 0
+  border-left-width: 0;
 }
 
 .grid-table .sticky-left + :not(.sticky-left) {
-  border-left-width: 0;
+  border-left-width: 0 !important;
 }
 
 .grid-table .sticky-right {
