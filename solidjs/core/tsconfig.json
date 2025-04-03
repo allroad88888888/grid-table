@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.solidjs.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "declarationDir": "@types",
+    "emitDeclarationOnly": true,
+    "strict": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "isolatedModules": true
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx"
+  ]
+}

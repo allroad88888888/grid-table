@@ -1,0 +1,41 @@
+{
+  "name": "@grid-table-solidjs/core",
+  "version": "0.1.0",
+  "description": "grid-table core",
+  "type": "module",
+  "main": "./cjs/index.js",
+  "module": "./esm/index.mjs",
+  "typings": "@types/index.d.ts",
+  "license": "MIT",
+  "author": "allroad88888888@vip.qq.com",
+  "files": [
+    "esm",
+    "cjs",
+    "@types",
+    "README.md"
+  ],
+  "keywords": [
+    "solidjs"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "peerDependencies": {
+    "solid-js": ">=1.9.0"
+  },
+  "peerDependenciesMeta": {
+    "solid-js": {
+      "optional": false
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "csstype": "^3.1.3",
+    "solid-js": "^1.9.0",
+    "vite": "^5.1.4",
+    "vite-plugin-solid": "^2.10.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {}
+}

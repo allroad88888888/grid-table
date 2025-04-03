@@ -31,9 +31,9 @@
     "inlineSourceMap": true
   },
   "include": [
-    "./**/*.test.ts",
-    "./**/*.test.tsx",
-    "./**/test",
+    "./packages/**/*.test.ts",
+    "./packages/**/*.test.tsx",
+    "./packages/**/test",
     "./rules/setup-jest.ts",
     "./rules/empty.ts",
     "./rollup.config.mjs"
