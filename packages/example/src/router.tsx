@@ -10,8 +10,10 @@ import { CallBackDemo } from './pages/CallBack'
 import { TreeDemo } from './pages/Tree'
 import { GridOverDemo } from './pages/Grid/Over'
 import { ExcelDemo } from './pages/Excel'
+import { LargeTableDemo } from './pages/LargeTable'
 
-export const currentRouterAtom = atom('/pivot')
+// 设置默认路由为百万表格
+export const currentRouterAtom = atom('/large-table')
 
 export function Empty() {
   return <div>empty</div>
@@ -24,6 +26,10 @@ export const RouterMapping: Record<
     label: string
   }
 > = {
+  '/large-table': {
+    component: LargeTableDemo,
+    label: '百万格子表格',
+  },
   '/list': {
     component: DemoList,
     label: '列表',
