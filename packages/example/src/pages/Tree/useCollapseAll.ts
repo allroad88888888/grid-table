@@ -1,5 +1,5 @@
 import { collapseNodeSetAtom, parentSetIdAtom, useStore } from '@grid-tree/core/src'
-import { atom, useSetAtom } from '@einfach/state'
+import { atom, useSetAtom } from '@einfach/react'
 
 export const collapseAllAtom = atom(0, (getter, setter) => {
   const parentSetId = getter(parentSetIdAtom)

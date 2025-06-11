@@ -1,6 +1,6 @@
 import { rowSizeMapAtom, Table } from '@grid-table/view'
 import type { UseRowSelectionProps } from '@grid-table/view/src/plugins/select'
-import { atom, useAtomValue, createStore } from '@einfach/state'
+import { atom, useAtomValue, createStore } from '@einfach/react'
 import { DataList } from './mock'
 import { useColumnConfig } from './useColumnConfig'
 import './Table.css'

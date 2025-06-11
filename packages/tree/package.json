@@ -1,10 +1,10 @@
 {
   "name": "@grid-tree/core",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "grid-tree tree",
   "type": "module",
-  "main": "./cjs/index.js",
-  "module": "./esm/index.mjs",
+  "main": "./esm/index.js",
+  "module": "./esm/index.js",
   "typings": "@types/index.d.ts",
   "license": "MIT",
   "author": "allroad88888888@vip.qq.com",
@@ -22,12 +22,12 @@
     "atom"
   ],
   "peerDependencies": {
-    "@einfach/state": ">=0.1.4",
-    "@einfach/utils": ">=0.1.4",
+    "@einfach/react": ">=0.3.4",
+    "@einfach/utils": ">=0.2.2",
     "react": ">=16.8 <20"
   },
   "peerDependenciesMeta": {
-    "@einfach/state": {
+    "@einfach/react": {
       "optional": true
     },
     "@einfach/utils": {

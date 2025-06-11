@@ -1,5 +1,5 @@
 import { describe, test, expect } from '@jest/globals'
-import { createStore } from '@einfach/state'
+import { createStore } from '@einfach/react'
 import easy from './mock/easy.mock'
 import { allIdsAtom, iniAtom, parentIdLevelAtom } from './../src/state'
 

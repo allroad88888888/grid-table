@@ -1,5 +1,5 @@
 import type { ColumnType } from './types'
-import { atom, incrementAtom } from '@einfach/state'
+import { atom, incrementAtom } from '@einfach/react'
 import type { ColumnId } from '@grid-table/basic'
 import { nodeLevelAtom, parentNodeSetAtom, relationAtom, rootAtom } from './tree/stateTree'
 

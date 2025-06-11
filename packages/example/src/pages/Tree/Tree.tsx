@@ -1,14 +1,16 @@
 import GridTree from '@grid-tree/core/src'
-import mock from './mock'
 import './Tree.css'
 import TreeItem from './TreeItem'
+import { useAtomValue } from '@einfach/react'
+import { relationAsyncAtom } from './atoms'
 
 const stayIds = ['_ROOT']
 
 export function TreeDemo() {
+  const relation = useAtomValue(relationAsyncAtom)
   return (
     <GridTree
-      relation={mock.relation}
+      relation={relation}
       className="grid-tree-container"
       itemClassName="grid-tree-item"
       style={{
@@ -21,7 +23,7 @@ export function TreeDemo() {
       showRoot
       root="_ROOT"
       ItemComponent={TreeItem}
-      expendLevel={0}
+      // expendLevel={0}
       minLengthExpandAll={20}
     />
   )

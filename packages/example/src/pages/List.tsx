@@ -1,6 +1,6 @@
 import type { ListItemProps } from '@grid-table/core'
 import { VGridList } from '@grid-table/core'
-import { useMethods } from '@einfach/utils'
+import { useMethods } from '@einfach/react-utils'
 import { rowIds } from '../mock/rowIds'
 
 function Item({ index, style }: ListItemProps) {

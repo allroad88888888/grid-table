@@ -1,4 +1,4 @@
-import { atom } from '@einfach/state'
+import { atom } from '@einfach/react'
 import type { ComponentType } from 'react'
 import DemoList from './pages/List'
 import Atom from './pages/Atom'
@@ -10,8 +10,11 @@ import { CallBackDemo } from './pages/CallBack'
 import { TreeDemo } from './pages/Tree'
 import { GridOverDemo } from './pages/Grid/Over'
 import { ExcelDemo } from './pages/Excel'
+import { LargeTableDemo } from './pages/LargeTable'
+import ModernDebounceThrottle from './pages/ModernDebounceThrottle'
 
-export const currentRouterAtom = atom('/pivot')
+// 设置默认路由为百万表格
+export const currentRouterAtom = atom('/tree')
 
 export function Empty() {
   return <div>empty</div>
@@ -24,6 +27,10 @@ export const RouterMapping: Record<
     label: string
   }
 > = {
+  '/large-table': {
+    component: LargeTableDemo,
+    label: '百万格子表格',
+  },
   '/list': {
     component: DemoList,
     label: '列表',
@@ -64,5 +71,9 @@ export const RouterMapping: Record<
   '/excel': {
     component: ExcelDemo,
     label: 'excel-demo',
+  },
+  '/modern-debounce': {
+    component: ModernDebounceThrottle,
+    label: '现代防抖节流',
   },
 }

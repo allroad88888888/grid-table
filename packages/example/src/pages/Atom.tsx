@@ -1,4 +1,4 @@
-import { atom, selectAtom, createStore, useAtomValue } from '@einfach/state'
+import { atom, selectAtom, createStore, useAtomValue } from '@einfach/react'
 import { Suspense } from 'react'
 
 interface Pagination {

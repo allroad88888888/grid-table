@@ -1,4 +1,4 @@
-import { atom } from '@einfach/state'
+import { atom } from '@einfach/react'
 import type { DataTodoProps, Id, Relation } from './../types'
 import { ROOT } from './../utils'
 import { format } from '../utils/format'

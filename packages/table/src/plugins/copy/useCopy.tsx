@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef } from 'react'
-import { atom, useAtom, useAtomValue, useStore, useSetAtom } from '@einfach/state'
+import { atom, useAtom, useAtomValue, useStore, useSetAtom } from '@einfach/react'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
 import { areaCellIdsAtom } from '../areaSelected/state'
 import type { CellId } from '@grid-table/basic'

@@ -1,7 +1,7 @@
 import { getCellId } from '../../utils/getCellId'
 import type { CellId, ColumnId, PositionId } from '@grid-table/basic'
 import { columnIdShowListAtom, rowIdShowListAtom } from '@grid-table/basic'
-import { atom, selectAtom } from '@einfach/state'
+import { atom, selectAtom } from '@einfach/react'
 import { easyEqual } from '@einfach/utils'
 import { columnsOptionAtom } from '../../stateColumn'
 

@@ -1,5 +1,5 @@
-import { incrementAtom, useAtomValue } from '@einfach/state'
-import type {} from '@einfach/state'
+import { incrementAtom, useAtomValue } from '@einfach/react'
+import type {} from '@einfach/react'
 import { useMemo } from 'react'
 import type { EventsItem, EventsSet } from '@grid-table/basic'
 

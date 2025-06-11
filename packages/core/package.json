@@ -1,10 +1,10 @@
 {
   "name": "@grid-table/core",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "grid-table core",
   "type": "module",
-  "main": "./cjs/index.js",
-  "module": "./esm/index.mjs",
+  "main": "./esm/index.js",
+  "module": "./esm/index.js",
   "typings": "@types/index.d.ts",
   "license": "MIT",
   "author": "allroad88888888@vip.qq.com",

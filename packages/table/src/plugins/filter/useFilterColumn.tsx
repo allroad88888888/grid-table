@@ -2,7 +2,7 @@ import { useBasic, type ColumnId } from '@grid-table/basic'
 import { useData } from '../../core'
 import { useCallback } from 'react'
 import { easyGet } from '@einfach/utils'
-import { useStore } from '@einfach/state'
+import { useStore } from '@einfach/react'
 
 export function useFilterColumn(columnId: ColumnId) {
   const store = useStore()

@@ -10,7 +10,7 @@ const jestConfig = {
   transform: {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { ...config }],
   },
-  transformIgnorePatterns: ['node_modules/(?!@einfach/state)'],
+  transformIgnorePatterns: ['node_modules/(?!@einfach/react)'],
   extensionsToTreatAsEsm: ['.ts', '.tsx'],
   moduleNameMapper: {
     // 如果你只需要忽略 css 导入，可以映射到一个空对象（自定义一个 __mocks__/styleMock.js 文件）

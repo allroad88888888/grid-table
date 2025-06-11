@@ -1,4 +1,4 @@
-import { atom, useStore, useAtomValue, useSetAtom } from '@einfach/state'
+import { atom, useStore, useAtomValue, useSetAtom } from '@einfach/react'
 import { useCallback, useMemo } from 'react'
 import { areaColumnIdsAtom } from '../areaSelected'
 import { hideColumnAtom, hideColumnsAtom } from './state'

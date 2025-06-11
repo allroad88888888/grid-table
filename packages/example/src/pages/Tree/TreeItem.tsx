@@ -1,8 +1,10 @@
-import { useExpandAll, useItem } from '@grid-tree/core/src/hooks'
+import { useExpandAll, useItem } from '@grid-tree/core/src'
 import type { CSSProperties } from 'react'
-import { memo } from 'react'
+import { Suspense } from 'react'
 import clsx from 'clsx'
 import { useCollapseAll } from './useCollapseAll'
+import { useAtomValue } from '@einfach/react'
+import { getInfoAtomById } from './atoms'
 
 interface ItemProps {
   index: number
@@ -24,17 +26,11 @@ function ExpandAll() {
 // const
 
 function TreeItem(props: ItemProps) {
-  const { index, style, isPending } = props
+  const { index, style } = props
 
   const { id, isCollapse, level, levelSize, onExpandOrCollapseClick } = useItem(index)
 
-  if (isPending) {
-    return (
-      <li style={style} className={clsx('grid-tree-item')}>
-        loading
-      </li>
-    )
-  }
+  useAtomValue(getInfoAtomById(id))
 
   return (
     <li
@@ -75,4 +71,16 @@ function TreeItem(props: ItemProps) {
   )
 }
 
-export default memo(TreeItem)
+export default (props: ItemProps) => {
+  return (
+    <Suspense
+      fallback={
+        <li style={props.style} className={clsx('grid-tree-item')}>
+          loading
+        </li>
+      }
+    >
+      <TreeItem {...props} />
+    </Suspense>
+  )
+}

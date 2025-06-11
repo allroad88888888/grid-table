@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import { showIdsAtom } from '../state'
 import { useStore } from './useStore'
-import { useAtomValue, atom } from '@einfach/state'
-import type { Getter } from '@einfach/state'
+import { useAtomValue, atom } from '@einfach/react'
+import type { Getter } from '@einfach/react'
 
 export function getIdByIndex(getter: Getter, index: number) {
   return getter(showIdsAtom)[index]

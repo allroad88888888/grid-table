@@ -1,10 +1,10 @@
 {
   "name": "@grid-table/pivot",
-  "version": "0.3.8",
+  "version": "0.5.0",
   "description": "grid-table pivot",
   "type": "module",
-  "main": "./cjs/index.js",
-  "module": "./esm/index.mjs",
+  "main": "./esm/index.js",
+  "module": "./esm/index.js",
   "typings": "@types/index.d.ts",
   "license": "MIT",
   "author": "allroad88888888@vip.qq.com",
@@ -22,8 +22,8 @@
     "atom"
   ],
   "peerDependencies": {
-    "@einfach/state": ">=0.1.4",
-    "@einfach/utils": ">=0.1.4",
+    "@einfach/react": ">=0.3.4",
+    "@einfach/utils": ">=0.2.2",
     "@grid-table/view": ">=0.3.0",
     "react": ">=16.8 <20"
   },
@@ -31,7 +31,7 @@
     "react": {
       "optional": true
     },
-    "@einfach/state": {
+    "@einfach/react": {
       "optional": true
     },
     "@einfach/utils": {

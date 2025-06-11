@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { atom, useAtom, useSetAtom, useStore } from '@einfach/state'
-import { useInit } from '@einfach/utils'
+import { atom, useAtom, useSetAtom, useStore } from '@einfach/react'
+import { useInit } from '@einfach/react-utils'
 import './useRowSelection.css'
 import type { PositionId, RowId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'

@@ -1,0 +1,38 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Gulp: 监视文件变化",
+			"type": "shell",
+			"command": "npx gulp",
+			"isBackground": true,
+			"presentation": {
+				"reveal": "always",
+				"panel": "dedicated",
+				"clear": false
+			},
+			"problemMatcher": [
+				{
+					"pattern": {
+						"regexp": ".",
+						"file": 1,
+						"location": 2,
+						"message": 3
+					},
+					"background": {
+						"activeOnStart": true,
+						"beginsPattern": ".",
+						"endsPattern": "Finished"
+					}
+				}
+			],
+			"runOptions": {
+				"runOn": "folderOpen"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+	]
+}

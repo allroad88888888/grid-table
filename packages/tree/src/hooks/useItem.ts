@@ -1,4 +1,4 @@
-import { atom, useAtomValue, useSetAtom } from '@einfach/state'
+import { atom, useAtomValue, useSetAtom } from '@einfach/react'
 import { useStore } from './useStore'
 import { useIdByIndex } from './useIdByIndex'
 import { useLevel } from './useLevel'

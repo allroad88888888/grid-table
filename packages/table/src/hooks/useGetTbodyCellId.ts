@@ -1,6 +1,6 @@
 import type { Position } from '@grid-table/core'
 import { useCallback } from 'react'
-import { useAtomValue, useStore } from '@einfach/state'
+import { useAtomValue, useStore } from '@einfach/react'
 import { columnIdShowListAtom, rowIdShowListAtom } from '@grid-table/basic'
 import { mergeCellBodyMapAtom } from '../components'
 import { getCellId, getRowIdAndColIdByCellId } from '../utils'

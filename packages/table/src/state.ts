@@ -1,6 +1,6 @@
 import type { UseDataProps } from './types'
 import { format } from './core/format'
-import { atom } from '@einfach/state'
+import { atom } from '@einfach/react'
 import { rowIndexListAtom, rowSizeMapAtom } from '@grid-table/basic'
 import { nodeLevelAtom, relationAtom, rootAtom } from './tree/stateTree'
 import { dataFamilyAtom, loadingAtom } from './stateCore'

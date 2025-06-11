@@ -38,7 +38,7 @@ const defaultConfig: RollupOptions = defineConfig({
   external: [
     'react',
     'react-dom',
-    '@einfach/state',
+    '@einfach/react',
     '@einfach/utils',
     '@grid-table/core',
     '@grid-table/basic',

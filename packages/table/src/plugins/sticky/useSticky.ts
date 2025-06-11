@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useMemo } from 'react'
-import { atom, useAtomValue, useStore } from '@einfach/state'
+import { atom, useAtomValue, useStore } from '@einfach/react'
 import type { RowId } from '@grid-table/basic'
 import {
   columnIdShowListAtom,

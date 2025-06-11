@@ -1,5 +1,5 @@
 import type { ColumnType } from '@grid-table/view'
-import { atom } from '@einfach/state'
+import { atom } from '@einfach/react'
 import type { PivotProps } from './type'
 import { formatToTable } from './format'
 import { tbodyMergeCellListAtom, theadMergeCellListAtom } from '@grid-table/view'

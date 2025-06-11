@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { useAtomValue, useSetAtom, useStore } from '@einfach/state'
+import { useAtomValue, useSetAtom, useStore } from '@einfach/react'
 import { rowIdShowListAtom, rowSizeMapAtom, useBasic } from '@grid-table/basic'
 import type { ColumnType } from '../../types'
 import { distributeToNewArray } from './utils'

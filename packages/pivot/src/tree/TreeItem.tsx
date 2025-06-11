@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue } from '@einfach/state'
+import { useAtom, useAtomValue } from '@einfach/react'
 import { collapsedRowRootsAtom, rowLevelMapAtom, rowRelationAtom } from './state'
 import clsx from 'clsx'
 

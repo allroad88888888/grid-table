@@ -5,7 +5,7 @@
   "description": "grid-table example",
   "license": "MIT",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite --force"
   },
   "devDependencies": {
     "@types/node": "^20.11.30",
@@ -25,8 +25,9 @@
     "@grid-tree/core": "workspace:*",
     "antd": "^5.20.2",
     "clsx": "^2.1.1",
-    "@einfach/state": "^0.1.4",
-    "@einfach/utils": "^0.1.4",
+    "@einfach/react": "^0.3.4",
+    "@einfach/utils": "^0.2.2",
+    "@einfach/react-utils": "^0.2.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   }

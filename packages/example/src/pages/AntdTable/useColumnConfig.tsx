@@ -1,6 +1,6 @@
 import type { ColumnType } from '@grid-table/view'
 
-import { useInit } from '@einfach/utils'
+import { useInit } from '@einfach/react-utils'
 import { ColumnIndex } from './columns/columnIndex'
 import { ColumnString } from './columns/columnString'
 import { ColumnTrigger } from './columns/columnTriggerType'

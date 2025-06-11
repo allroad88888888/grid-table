@@ -1,4 +1,4 @@
-import { atom } from '@einfach/state'
+import { atom } from '@einfach/react'
 import type { ColumnContextMenuOption } from './type'
 
 /**

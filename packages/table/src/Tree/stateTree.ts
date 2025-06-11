@@ -1,4 +1,4 @@
-import { atom } from '@einfach/state'
+import { atom } from '@einfach/react'
 
 import { type RowId } from '@grid-table/basic'
 import { ROOT } from '../utils/const'

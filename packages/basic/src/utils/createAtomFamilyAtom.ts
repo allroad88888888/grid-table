@@ -1,5 +1,5 @@
-import { type Atom, type AtomEntity, type AtomState } from '@einfach/state'
-import { atom } from '@einfach/state'
+import { type Atom, type AtomEntity, type AtomState } from '@einfach/react'
+import { atom } from '@einfach/react'
 
 export type Id = string | number | boolean | undefined | symbol
 

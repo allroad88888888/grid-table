@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useAtomValue, useSetAtom } from '@einfach/state'
+import { useAtomValue, useSetAtom } from '@einfach/react'
 import type { DataItem, UseDataProps } from '../types'
 import { useData } from './useData'
 import { useBasic } from '@grid-table/basic'

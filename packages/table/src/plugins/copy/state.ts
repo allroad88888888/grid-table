@@ -1,4 +1,4 @@
-import { atom } from '@einfach/state'
+import { atom } from '@einfach/react'
 import type { CellId } from '@grid-table/basic'
 import { getRowIdAndColIdByCellId } from '../../utils'
 import { getColumnOptionAtomByColumnId, getRowInfoAtomByRowId } from '../../stateCore'

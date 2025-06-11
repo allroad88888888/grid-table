@@ -1,5 +1,5 @@
-import type { Store } from '@einfach/state'
-import { createStore, atom, incrementAtom } from '@einfach/state'
+import type { Store } from '@einfach/react'
+import { createStore, atom, incrementAtom } from '@einfach/react'
 import { createAtomFamilyEntity } from '../utils/createAtomFamily'
 import type {
   CellId,

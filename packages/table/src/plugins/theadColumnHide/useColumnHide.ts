@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useStore, useSetAtom, useAtomValue } from '@einfach/state'
+import { useStore, useSetAtom, useAtomValue } from '@einfach/react'
 import { columnContextMenuOptionsAtom } from '../theadContextMenu/state'
 import { ColumnHide } from './ColumnHide'
 import type { ColumnContextMenuOption } from '../theadContextMenu/type'

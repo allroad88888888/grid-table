@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { atom, useAtomValue } from '@einfach/state'
+import { atom, useAtomValue } from '@einfach/react'
 import type { RowId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
 import { useData } from '../core'

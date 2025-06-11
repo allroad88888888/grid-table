@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useBasic } from '@grid-table/basic'
-import { useStore, useSetAtom } from '@einfach/state'
+import { useStore, useSetAtom } from '@einfach/react'
 import { collapsedRowNodesAtom, rowTreeInitAtom } from './state'
 import type { UseTreeProps } from './type'
 import { getRowInfoAtomByRowId } from '@grid-table/view'

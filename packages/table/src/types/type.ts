@@ -3,7 +3,7 @@ import type { UseRowSelectionProps } from '../plugins/select/useRowSelection'
 import type { CSSProperties } from 'react'
 import type { VGridTableProps } from '@grid-table/core'
 import type { CopyProps } from '../plugins'
-import type { Store } from '@einfach/state'
+import type { Store } from '@einfach/react'
 
 export type AntdTableProps = {
   className?: string

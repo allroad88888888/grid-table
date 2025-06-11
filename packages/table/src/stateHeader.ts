@@ -1,4 +1,4 @@
-import { atom } from '@einfach/state'
+import { atom } from '@einfach/react'
 import { dataFamilyAtom } from './stateCore'
 import type { RowId } from '@grid-table/basic'
 import { headerRowIndexListAtom, headerRowSizeMaAtom } from '@grid-table/basic'

@@ -1,4 +1,4 @@
-import { atom, useAtom, useAtomValue, useStore } from '@einfach/state'
+import { atom, useAtom, useAtomValue, useStore } from '@einfach/react'
 import { useEffect } from 'react'
 import clsx from 'clsx'
 import './useExpand.css'

@@ -1,4 +1,4 @@
-import { atom, useAtomValue, useStore } from '@einfach/state'
+import { atom, useAtomValue, useStore } from '@einfach/react'
 import { useEffect } from 'react'
 import { tableClassNameAtom } from '../../hooks'
 import type { ColumnId } from '@grid-table/basic'

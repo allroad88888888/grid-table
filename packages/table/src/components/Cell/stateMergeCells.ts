@@ -1,4 +1,4 @@
-import { atom } from '@einfach/state'
+import { atom } from '@einfach/react'
 import type { CellId } from '@grid-table/basic'
 import type { MergeCellIdItem } from './type'
 import { getCellId, getRowIdAndColIdByCellId } from '../../utils'

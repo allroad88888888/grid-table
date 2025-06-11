@@ -1,5 +1,5 @@
 import { useAutoSizer, VGridTable } from '@grid-table/core'
-import { useAtomValue, useStore } from '@einfach/state'
+import { useAtomValue, useStore } from '@einfach/react'
 import { Fragment, useMemo, useRef } from 'react'
 import type { RowId } from '@grid-table/basic'
 import { headerRowIndexListAtom, useBasic } from '@grid-table/basic'

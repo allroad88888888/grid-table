@@ -1,4 +1,4 @@
-import { atom } from '@einfach/state'
+import { atom } from '@einfach/react'
 import type { ExcelInitProps } from './type'
 import { createEmptyExcel } from '../init/createEmptyExcel'
 import { columnListAtom, dataListAtom } from './coreState'

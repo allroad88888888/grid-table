@@ -1,4 +1,4 @@
-import { incrementAtom, useAtomValue, useStore } from '@einfach/state'
+import { incrementAtom, useAtomValue, useStore } from '@einfach/react'
 
 export const tableClassNameAtom = incrementAtom(new Set<string>())
 

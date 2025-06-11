@@ -1,5 +1,5 @@
-import type { AtomState } from '@einfach/state'
-import { atom, incrementAtom } from '@einfach/state'
+import type { AtomState } from '@einfach/react'
+import { atom, incrementAtom } from '@einfach/react'
 import type { ResizeParam } from '@grid-table/core'
 import type {
   CellId,

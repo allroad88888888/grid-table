@@ -1,5 +1,5 @@
-import type {} from '@einfach/state'
-import { useAtomValue } from '@einfach/state'
+import type {} from '@einfach/react'
+import { useAtomValue } from '@einfach/react'
 
 import { dataBasicAtom } from '../stateCore'
 

@@ -1,4 +1,4 @@
-import { useAtomValue, useStore } from '@einfach/state'
+import { useAtomValue, useStore } from '@einfach/react'
 import type { RowProps } from '@grid-table/core'
 import type { CSSProperties } from 'react'
 import { useBasic } from '@grid-table/basic'
