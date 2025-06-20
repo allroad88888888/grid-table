@@ -8,9 +8,9 @@ export type GridTreeStore = {
 
 export const gridTreeContext = createContext({} as GridTreeStore)
 
-export function GridTreeProvider({ children }: { children: ReactNode }) {
+export function GridTreeProvider({ children, store }: { children: ReactNode; store?: Store }) {
   const [state] = useState(() => {
-    return { store: createStore() }
+    return { store: store ?? createStore() }
   })
 
   return <gridTreeContext.Provider value={state}>{children}</gridTreeContext.Provider>

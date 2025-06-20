@@ -72,7 +72,7 @@ function GridTree(props: GridTreeProps) {
 
 export default (props: GridTreeProps) => {
   return (
-    <GridTreeProvider>
+    <GridTreeProvider store={props.store}>
       <GridTree {...props} />
     </GridTreeProvider>
   )

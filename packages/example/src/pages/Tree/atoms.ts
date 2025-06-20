@@ -1,5 +1,5 @@
 import { atom, createGetFamilyAtomById } from '@einfach/react'
-import mock from './mockBig'
+import mock from './mock'
 // import { createNeverResolvingPromise } from './promise'
 import { createBatchCache, deepEqual } from '../../utils/cacheIds'
 

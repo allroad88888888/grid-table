@@ -2,7 +2,6 @@
   "name": "@grid-table-solidjs/core",
   "version": "0.1.0",
   "description": "grid-table core",
-  "type": "module",
   "main": "./esm/index.js",
   "module": "./esm/index.js",
   "typings": "@types/index.d.ts",

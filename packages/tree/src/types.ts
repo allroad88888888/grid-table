@@ -1,3 +1,4 @@
+import type { Store } from '@einfach/react'
 import type { ComponentType, CSSProperties } from 'react'
 
 export type Id = string
@@ -83,4 +84,5 @@ export interface GridTreeViewOptions {
 export interface GridTreeProps extends DataTodoProps, GridTreeViewOptions, GridTreeItemOptions {
   relation: Relation
   overscanCount?: number
+  store?: Store
 }

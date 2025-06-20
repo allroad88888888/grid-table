@@ -4,10 +4,15 @@ import { useIdByIndex } from './useIdByIndex'
 import { useLevel } from './useLevel'
 import { useIsCollapseAtom } from './useIsCollapse'
 import { viewOptionAtom } from '../views/state'
-import { collapseNodeSetAtom } from '../state'
+import { collapseNodeSetAtom, parentSetIdAtom } from '../state'
 import type { Id } from '../types'
 
 export const onExpandOrCollapseClickAtom = atom(0, (getter, setter, id: Id) => {
+  const parentSet = getter(parentSetIdAtom)
+  if (!parentSet.has(id)) {
+    return
+  }
+
   setter(collapseNodeSetAtom, (prev) => {
     if (prev.has(id)) {
       prev.delete(id)

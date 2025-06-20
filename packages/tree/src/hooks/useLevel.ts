@@ -8,7 +8,7 @@ import { useStore } from './useStore'
 
 export function getLevelById(getter: Getter, id: Id) {
   const idParentIdMap = getter(idParentIdMapAtom)
-  const level = getter(parentIdLevelAtom).get(idParentIdMap.get(id)!)
+  const level = getter(parentIdLevelAtom)[idParentIdMap[id]]
   return level === undefined ? 0 : level + 1
 }
 

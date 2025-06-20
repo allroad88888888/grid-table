@@ -1,14 +1,14 @@
 import { describe, test, expect } from '@jest/globals'
 import { createStore } from '@einfach/react'
 import easy from './mock/easy.mock'
-import { allIdsAtom, iniAtom, parentIdLevelAtom } from './../src/state'
+import { tillingIdsAtom, iniAtom, parentIdLevelAtom } from './../src/state'
 
 describe('tree', () => {
   test('withRoot', () => {
     const store = createStore()
     store.setter(iniAtom, easy.relation, { showRoot: true })
 
-    expect(store.getter(allIdsAtom)).toStrictEqual([
+    expect(store.getter(tillingIdsAtom)).toStrictEqual([
       'ROOT',
       'A',
       'AA',
@@ -28,7 +28,7 @@ describe('tree', () => {
     ])
 
     expect(store.getter(parentIdLevelAtom)).toStrictEqual(
-      new Map([
+      Object.fromEntries([
         ['ROOT', 0],
         ['A', 1],
         ['AC', 2],
@@ -41,7 +41,7 @@ describe('tree', () => {
     const store = createStore()
     store.setter(iniAtom, easy.relation, {})
 
-    expect(store.getter(allIdsAtom)).toStrictEqual([
+    expect(store.getter(tillingIdsAtom)).toStrictEqual([
       'A',
       'AA',
       'AB',
@@ -60,7 +60,7 @@ describe('tree', () => {
     ])
 
     expect(store.getter(parentIdLevelAtom)).toStrictEqual(
-      new Map([
+      Object.fromEntries([
         ['ROOT', -1],
         ['A', 0],
         ['AC', 1],

@@ -48,6 +48,7 @@ export default {
       '39',
     ],
     A: ['AA', 'AB', 'AC', 'AD'],
+    AB: [],
     B: ['BA', 'BB', 'BC'],
     AC: ['ACA', 'ACB'],
     ACB: ['ACBA'],

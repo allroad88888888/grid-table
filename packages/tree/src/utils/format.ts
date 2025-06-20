@@ -1,8 +1,15 @@
-import type { DataTodoProps, Id, Relation } from '../types'
+import type { Id, Relation } from '../types'
 
-export function format(relation: Relation, props: Required<DataTodoProps>) {
-  const { root, expendLevel, minLengthExpandAll, showRoot } = props
+export function format(
+  relation: Relation,
+  props: {
+    root: Id
+    showRoot: Boolean
+  },
+) {
+  const { root, showRoot } = props
 
+  // 使用栈实现深度优先遍历
   const stack: { id: Id; level: number }[] = [
     {
       id: root,
@@ -10,26 +17,27 @@ export function format(relation: Relation, props: Required<DataTodoProps>) {
     },
   ]
   const allIds: Id[] = []
-  const idParentIdMap = new Map<Id, Id>()
-  const parentIdLevel = new Map<Id, number>()
+  const idParentIdMap: Record<Id, Id> = {}
+  const parentIdLevel: Record<Id, number> = {}
 
   while (stack.length > 0) {
-    const next = stack.shift()!
+    const next = stack.pop()!
 
     allIds.push(next.id)
-    const children = relation[next.id] || []
+    const children = relation[next.id]
 
-    if (children.length > 0) {
-      parentIdLevel.set(next.id, next.level)
-      stack.unshift(
-        ...children.map((cId) => {
-          idParentIdMap.set(cId, next.id)
-          return {
-            id: cId,
-            level: next.level + 1,
-          }
-        }),
-      )
+    if (children && children.length > 0) {
+      parentIdLevel[next.id] = next.level
+      const nextLevel = next.level + 1
+      // 逆序添加到栈中，保证深度优先的正确顺序
+      for (let i = children.length - 1; i >= 0; i--) {
+        const cId = children[i]
+        idParentIdMap[cId] = next.id
+        stack.push({
+          id: cId,
+          level: nextLevel,
+        })
+      }
     }
   }
 
@@ -37,55 +45,10 @@ export function format(relation: Relation, props: Required<DataTodoProps>) {
     allIds.shift()
   }
 
-  // 默认展开几个层级 处理
-  const collapseNodeList = new Set<Id>()
-  parentIdLevel.forEach((level, tId) => {
-    if (level >= expendLevel) {
-      collapseNodeList.add(tId)
-    }
-  })
-
-  // 整棵树少于多少个，就全部展开 .这个优先级大于expendLevel
-  if (allIds.length < minLengthExpandAll) {
-    collapseNodeList.clear()
-  }
-
   return {
     root,
     allIds,
     idParentIdMap,
     parentIdLevel,
-    collapseNodeList,
   }
 }
-
-// function format(relation: Record<string, string[]>) {
-//   const allIds = []
-
-//   function it(children: string[]) {
-//     children.forEach((cId) => {
-//       allIds.push(cId)
-//       it(relation[cId] || [])
-//     })
-//   }
-//   it(relation[ROOT])
-// }
-
-// function formatXX(relation: Record<string, string[]>, disabledIds: Set<string>) {
-//   const newRelation: Record<string, string[]> = {}
-//   function it(children: string[]) {
-//     let disabled = true
-//     children.forEach((cId) => {
-//       if (it(relation[cId] || []) === false || !disabledIds.has(cId)) {
-//         disabled = false
-//         if (!(cId in newRelation)) {
-//           newRelation[cId] = []
-//         }
-//         newRelation[cId].push(cId)
-//       }
-//     })
-
-//     return disabled
-//   }
-//   it(relation[ROOT])
-// }

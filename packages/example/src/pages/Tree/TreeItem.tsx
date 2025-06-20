@@ -1,9 +1,9 @@
-import { useExpandAll, useItem } from '@grid-tree/core/src'
+import { addItemAtom, useExpandAll, useItem, useStore } from '@grid-tree/core/src'
 import type { CSSProperties } from 'react'
 import { Suspense } from 'react'
 import clsx from 'clsx'
 import { useCollapseAll } from './useCollapseAll'
-import { useAtomValue } from '@einfach/react'
+import { useAtomValue, useSetAtom } from '@einfach/react'
 import { getInfoAtomById } from './atoms'
 
 interface ItemProps {
@@ -28,6 +28,9 @@ function ExpandAll() {
 function TreeItem(props: ItemProps) {
   const { index, style } = props
 
+  const { store } = useStore()
+
+  const addItem = useSetAtom(addItemAtom, { store })
   const { id, isCollapse, level, levelSize, onExpandOrCollapseClick } = useItem(index)
 
   useAtomValue(getInfoAtomById(id))
@@ -65,7 +68,17 @@ function TreeItem(props: ItemProps) {
         </span>
       ) : null}
       {id}
-
+      <button
+        onClick={() => {
+          addItem({
+            id,
+            newId: `${id}-1`,
+            position: 'child-first',
+          })
+        }}
+      >
+        add
+      </button>
       {id === 'ROOT' ? <ExpandAll /> : null}
     </li>
   )

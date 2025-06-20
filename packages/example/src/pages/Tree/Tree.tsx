@@ -23,7 +23,7 @@ export function TreeDemo() {
       showRoot
       root="_ROOT"
       ItemComponent={TreeItem}
-      // expendLevel={0}
+      expendLevel={1}
       minLengthExpandAll={20}
     />
   )
