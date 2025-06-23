@@ -1,5 +1,12 @@
 # @grid-table/example
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-tree/core@0.5.5
+
 ## 0.0.3
 
 ### Patch Changes

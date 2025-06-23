@@ -1,6 +1,6 @@
 {
   "name": "@grid-tree/core",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "grid-tree tree",
   "main": "./esm/index.js",
   "module": "./esm/index.js",
