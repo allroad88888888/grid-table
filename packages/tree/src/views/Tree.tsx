@@ -8,9 +8,15 @@ import { useAtomValue, useSetAtom } from '@einfach/react'
 import { viewOptionAtom } from './state'
 import { easyMergeOptions } from '../utils/easyMergeOptions'
 import { useStayIndexList } from '../hooks/useStayIndexList'
+import { relationAtom } from '../state/state'
 
 function GridTree(props: GridTreeProps) {
   const { store } = useStore()
+
+  const setRelation = useSetAtom(relationAtom, { store })
+  useEffect(() => {
+    setRelation(props.relation)
+  }, [setRelation, props.relation])
 
   const setViewOptions = useSetAtom(viewOptionAtom, { store })
 
@@ -33,20 +39,13 @@ function GridTree(props: GridTreeProps) {
 
   const init = useSetAtom(iniAtom, { store })
   useEffect(() => {
-    init(props.relation, {
+    init({
       root: props.root,
       expendLevel: props.expendLevel,
       minLengthExpandAll: props.minLengthExpandAll,
       showRoot: props.showRoot,
     })
-  }, [
-    init,
-    props.expendLevel,
-    props.minLengthExpandAll,
-    props.relation,
-    props.root,
-    props.showRoot,
-  ])
+  }, [init, props.expendLevel, props.minLengthExpandAll, props.root, props.showRoot])
 
   const showIds = useAtomValue(showIdsAtom, { store })
 

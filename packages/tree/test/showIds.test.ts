@@ -1,12 +1,13 @@
 import { describe, test, expect } from '@jest/globals'
 import { createStore } from '@einfach/react'
 import easy from './mock/easy.mock'
-import { collapseNodeSetAtom, iniAtom, showIdsAtom } from './../src/state'
+import { collapseNodeSetAtom, iniAtom, relationAtom, showIdsAtom } from './../src/state'
 
 describe('tree-showIds', () => {
   test('collapse-easy', () => {
     const store = createStore()
-    store.setter(iniAtom, easy.relation, { showRoot: true })
+    store.setter(relationAtom, easy.relation)
+    store.setter(iniAtom, { showRoot: true })
 
     store.setter(collapseNodeSetAtom, new Set(['A']))
 
@@ -25,7 +26,8 @@ describe('tree-showIds', () => {
 
   test('collapse', () => {
     const store = createStore()
-    store.setter(iniAtom, easy.relation, { showRoot: true })
+    store.setter(relationAtom, easy.relation)
+    store.setter(iniAtom, { showRoot: true })
 
     store.setter(collapseNodeSetAtom, new Set(['ACB', 'B']))
 

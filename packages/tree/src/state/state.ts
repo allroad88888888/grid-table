@@ -6,16 +6,17 @@ import { easyMergeOptions } from '../utils/easyMergeOptions'
 import { countRelationIds } from '../utils/countRelationIds'
 import { getIdsByLevel } from '../utils/getIdsByLevel'
 
-export const iniAtom = atom(0, (getter, setter, relation: Relation, props: DataTodoProps) => {
+export const iniAtom = atom(0, (getter, setter, props: DataTodoProps) => {
   setter(dataOptionsAtom, (prev) => {
     return easyMergeOptions(prev, props)
   })
 
   const { minLengthExpandAll = 100, expendLevel = 2, root = ROOT } = props
 
+  const relation = getter(relationAtom)
+
   if (expendLevel) {
     const levelIds = new Set(getIdsByLevel(expendLevel, relation, root))
-
     const parentIds = Object.keys(relation).filter((id) => {
       return !levelIds.has(id)
     })
@@ -29,8 +30,6 @@ export const iniAtom = atom(0, (getter, setter, relation: Relation, props: DataT
       setter(collapseNodeSetAtom, new Set())
     }
   }
-
-  setter(relationAtom, relation)
 })
 
 export const dataOptionsAtom = atom<Required<DataTodoProps>>({
