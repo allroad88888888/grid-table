@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import type { ListProps } from './type'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
+import type { ListProps, VGridListRef } from './type'
 import { useAutoSizer } from '../AutoSizer'
 import { useVScroll } from '../Basic/useVScroll'
 
@@ -8,11 +8,64 @@ interface VGridListProps extends Omit<ListProps, 'width' | 'height'> {
   stayIndexList?: number[]
 }
 
-export function VGridList(props: VGridListProps) {
-  const { style, className, tag = 'div' } = props
+export const VGridList = forwardRef<VGridListRef, VGridListProps>((props, gridRef) => {
+  const { style, className, tag = 'div', 'data-testid': dataTestId } = props
   const { baseSize, children } = props
 
   const ref = useRef<HTMLDivElement>(null)
+
+  useImperativeHandle(gridRef, () => {
+    return {
+      scrollTo: (index: number, { behavior, logicalPosition = 'start' } = {}) => {
+        if (!ref.current) return
+
+        const containerHeight = height
+        const elementTop = index * baseSize
+        let scrollTop = elementTop
+
+        switch (logicalPosition) {
+          case 'start':
+            scrollTop = elementTop
+            break
+          case 'center':
+            scrollTop = elementTop - (containerHeight - baseSize) / 2
+            break
+          case 'end':
+            scrollTop = elementTop - (containerHeight - baseSize)
+            break
+          case 'nearest': {
+            const currentScrollTop = ref.current.scrollTop
+            const elementBottom = elementTop + baseSize
+            const viewportTop = currentScrollTop
+            const viewportBottom = currentScrollTop + containerHeight
+
+            // 如果元素已经在视口内，不需要滚动
+            if (elementTop >= viewportTop && elementBottom <= viewportBottom) {
+              return
+            }
+
+            // 计算到上边界和下边界的距离，选择最小的
+            const distanceToTop = Math.abs(elementTop - viewportTop)
+            const distanceToBottom = Math.abs(elementBottom - viewportBottom)
+
+            if (distanceToTop <= distanceToBottom) {
+              scrollTop = elementTop // 对齐到顶部
+            } else {
+              scrollTop = elementTop - (containerHeight - baseSize) // 对齐到底部
+            }
+            break
+          }
+          default:
+            scrollTop = elementTop
+        }
+
+        ref.current.scrollTo({
+          top: Math.max(0, scrollTop), // 确保不会滚动到负值
+          behavior: behavior,
+        })
+      },
+    }
+  })
 
   const { width, height } = useAutoSizer(ref)
 
@@ -47,6 +100,7 @@ export function VGridList(props: VGridListProps) {
         ...style,
       }}
       className={className}
+      data-testid={dataTestId}
     >
       <Tag
         style={{
@@ -73,4 +127,4 @@ export function VGridList(props: VGridListProps) {
       </Tag>
     </div>
   )
-}
+})

@@ -1,5 +1,24 @@
 # @grid-tree/core
 
+## 0.6.1
+
+### Patch Changes
+
+- 修复类型异常
+- Updated dependencies
+  - @grid-table/core@0.6.1
+
+## 0.6.0
+
+### Minor Changes
+
+- 支持scrollTo
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/core@0.6.0
+
 ## 0.5.6
 
 ### Patch Changes

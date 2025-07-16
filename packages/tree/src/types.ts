@@ -86,3 +86,13 @@ export interface GridTreeProps extends DataTodoProps, GridTreeViewOptions, GridT
   overscanCount?: number
   store?: Store
 }
+
+export interface GridTreeRef {
+  scrollTo: (
+    id: Id,
+    options?: {
+      behavior?: ScrollBehavior
+      logicalPosition?: 'start' | 'center' | 'end' | 'nearest'
+    },
+  ) => void
+}

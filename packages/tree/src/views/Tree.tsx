@@ -1,6 +1,6 @@
-import { VGridList } from '@grid-table/core'
-import type { GridTreeProps } from '../types'
-import { useCallback, useEffect } from 'react'
+import { VGridList, VGridListRef } from '@grid-table/core'
+import type { GridTreeProps, GridTreeRef } from '../types'
+import { forwardRef, useCallback, useEffect, useRef } from 'react'
 import TreeItem from './TreeItem'
 import { GridTreeProvider, iniAtom, showIdsAtom } from './../state'
 import { useStore } from '../hooks'
@@ -9,8 +9,9 @@ import { viewOptionAtom } from './state'
 import { easyMergeOptions } from '../utils/easyMergeOptions'
 import { useStayIndexList } from '../hooks/useStayIndexList'
 import { relationAtom } from '../state/state'
+import { useCustomMenthods } from '../hooks/useCustomMenthods'
 
-function GridTree(props: GridTreeProps) {
+const GridTree = forwardRef<GridTreeRef, GridTreeProps>((props, ref) => {
   const { store } = useStore()
 
   const setRelation = useSetAtom(relationAtom, { store })
@@ -53,8 +54,12 @@ function GridTree(props: GridTreeProps) {
 
   const stayIndexList = useStayIndexList(showIds, props.stayIds)
 
+  const gridRef = useRef<VGridListRef>(null)
+  useCustomMenthods(ref, gridRef)
+
   return (
     <VGridList
+      ref={gridRef}
       baseSize={size}
       calcItemSize={calcItemSize}
       itemCount={showIds.length}
@@ -67,12 +72,12 @@ function GridTree(props: GridTreeProps) {
       {Item}
     </VGridList>
   )
-}
+})
 
-export default (props: GridTreeProps) => {
+export default forwardRef<GridTreeRef, GridTreeProps>((props, ref) => {
   return (
     <GridTreeProvider store={props.store}>
-      <GridTree {...props} />
+      <GridTree {...props} ref={ref} />
     </GridTreeProvider>
   )
-}
+})
