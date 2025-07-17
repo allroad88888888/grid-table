@@ -16,9 +16,14 @@ export interface UseDragProps {
    * 是否固定宽度
    */
   fixedWidth?: boolean
+  enableColumnResize?: boolean
 }
 
-export function useDrag({ dragColumnMinSize = 40, fixedWidth = false }: UseDragProps) {
+export function useDrag({
+  dragColumnMinSize = 40,
+  fixedWidth = false,
+  enableColumnResize = true,
+}: UseDragProps) {
   const { columnSizeMapAtom, resizeAtom } = useBasic()
   const store = useStore()
   const selectColumnId = useAtomValue(selectColumnIndexAtom, { store })
@@ -27,7 +32,7 @@ export function useDrag({ dragColumnMinSize = 40, fixedWidth = false }: UseDragP
   const { height } = useAtomValue(resizeAtom, { store })
 
   useEffect(() => {
-    if (selectColumnId === undefined) {
+    if (selectColumnId === undefined || enableColumnResize == false) {
       return
     }
 

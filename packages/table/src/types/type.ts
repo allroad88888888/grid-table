@@ -54,6 +54,11 @@ export type AntdTableProps = {
    */
   enableHeadContextMenu?: boolean
   store?: Store
+  /**
+   * 是否启用表头拖拽调整列宽
+   * @default true
+   */
+  enableColumnResize?: boolean
 } & CopyProps &
   UseDataProps &
   Pick<

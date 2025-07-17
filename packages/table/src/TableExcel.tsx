@@ -126,7 +126,10 @@ export function TableExcel(props: AntdTableProps) {
       ) : (
         <>
           {copy}
-          <DragLine dragColumnMinSize={props.cellDefaultWidth} />
+          <DragLine
+            dragColumnMinSize={props.cellDefaultWidth}
+            enableColumnResize={props.enableColumnResize}
+          />
           <VGridTable
             className={`grid-table grid-table-border ${tableClassName}`}
             renderTbodyCell={renderTBodyCells}
