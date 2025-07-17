@@ -9,7 +9,7 @@ export function columnInit(columns: ColumnType[]) {
   columns.forEach((column) => {
     const columnId = getColumnId(column)
     columnIdList.push(columnId)
-    columnMap.set(columnId, column)
+    columnMap.set(columnId, { ...column })
   })
 
   return {

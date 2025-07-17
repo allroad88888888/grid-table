@@ -7,7 +7,7 @@ const columns: ColumnType[] = [
   {
     title: 'Name',
     dataIndex: 'name',
-
+    width: 100,
     render: (text) => {
       return <a>{text}</a>
     },
@@ -15,14 +15,17 @@ const columns: ColumnType[] = [
   {
     title: 'Age',
     dataIndex: 'age',
+    width: 100,
   },
   {
     title: 'Address',
     dataIndex: 'address',
+    width: 100,
   },
   {
     title: 'Tags',
     dataIndex: 'tags',
+    width: 100,
     render: (_, { tags }) => (
       <>
         {(tags as string[]).map((tag) => {
@@ -42,6 +45,7 @@ const columns: ColumnType[] = [
   },
   {
     title: 'Action',
+    width: 100,
     render: (_, record) => {
       return <>操作列</>
     },
@@ -107,11 +111,28 @@ const rowSelection = {
   width: 20,
 }
 
-export function TreeTableDemo() {
+export function TreeTableSizeDemo() {
   const [stateColumns, setColumnCount] = useState(columns) // 初始显示所有5列
 
   const handleReduceColumns = () => {
-    setColumnCount(columns.slice(0, columns.length - 2)) // 最少保留1列
+    setColumnCount(
+      columns.map((column) => {
+        return {
+          ...column,
+          width: 200,
+        }
+      }),
+    ) // 最少保留1列
+  }
+  const handleReduceColumnsHalf = () => {
+    setColumnCount(
+      columns.map((column) => {
+        return {
+          ...column,
+          width: 50,
+        }
+      }),
+    ) // 最少保留1列
   }
 
   const handleResetColumns = () => {
@@ -126,7 +147,8 @@ export function TreeTableDemo() {
       }}
     >
       <Space style={{ marginBottom: 16 }}>
-        <Button onClick={handleReduceColumns}>减少两列</Button>
+        <Button onClick={handleReduceColumns}>每列200</Button>
+        <Button onClick={handleReduceColumnsHalf}>每列50</Button>
         <Button onClick={handleResetColumns}>重置所有列</Button>
       </Space>
 
@@ -141,4 +163,4 @@ export function TreeTableDemo() {
   )
 }
 
-export default TreeTableDemo
+export default TreeTableSizeDemo

@@ -1,11 +1,11 @@
 {
   "name": "@grid-table/example",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": true,
   "description": "grid-table example",
   "license": "MIT",
   "scripts": {
-    "dev": "vite --force"
+    "dev": "NODE_ENV=development vite --force"
   },
   "devDependencies": {
     "@types/node": "^20.11.30",

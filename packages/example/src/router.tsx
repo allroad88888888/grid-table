@@ -12,9 +12,10 @@ import { GridOverDemo } from './pages/Grid/Over'
 import { ExcelDemo } from './pages/Excel'
 import { LargeTableDemo } from './pages/LargeTable'
 import ModernDebounceThrottle from './pages/ModernDebounceThrottle'
+import TreeTableSizeDemo from './pages/TreeTableSize'
 
 // 设置默认路由为百万表格
-export const currentRouterAtom = atom('/tree')
+export const currentRouterAtom = atom('/tree-table')
 
 export function Empty() {
   return <div>empty</div>
@@ -75,5 +76,9 @@ export const RouterMapping: Record<
   '/modern-debounce': {
     component: ModernDebounceThrottle,
     label: '现代防抖节流',
+  },
+  '/tree-table-size': {
+    component: TreeTableSizeDemo,
+    label: 'tree-table-size',
   },
 }

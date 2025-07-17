@@ -1,5 +1,11 @@
 # @grid-table/core
 
+## 0.6.4
+
+### Patch Changes
+
+- 修复🚢columns 改变宽度
+
 ## 0.6.1
 
 ### Patch Changes
