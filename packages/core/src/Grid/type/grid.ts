@@ -1,5 +1,6 @@
 import type { ComponentType, CSSProperties, ReactNode } from 'react'
 import type { ColumnId, RowId } from './base'
+import type { ScrollLogicalPosition } from './vList'
 
 export interface Position {
   rowIndex: number
@@ -130,4 +131,25 @@ export interface CellsRenderProps {
   rowIndexList: number[]
   columnIndexList: number[]
   getCellStyleByIndex: (rowIndex: number, columnIndex: number) => CSSProperties
+}
+
+export interface VGridTableRef {
+  scrollTo: (
+    rowIndex: number,
+    columnIndex: number,
+    options?: {
+      behavior?: ScrollBehavior
+      rowLogicalPosition?: ScrollLogicalPosition
+      columnLogicalPosition?: ScrollLogicalPosition
+    },
+  ) => void
+  scroll: (
+    left?: number,
+    top?: number,
+    options?: {
+      behavior?: ScrollBehavior
+      leftLogicalPosition?: ScrollLogicalPosition
+      rightLogicalPosition?: ScrollLogicalPosition
+    },
+  ) => void
 }

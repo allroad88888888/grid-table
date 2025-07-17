@@ -23,7 +23,12 @@ export function useCustomMenthods(
     return {
       scrollTo: (id: Id, options = {}) => {
         const index = getIndexById(id)
-        listRef.current?.scrollTo(index, options)
+        setTimeout(() => {
+          listRef.current?.scrollTo(index, options)
+        })
+      },
+      scroll: (left, top, options) => {
+        listRef.current?.scroll(left, top, options)
       },
     }
   })

@@ -22,6 +22,16 @@ export function TreeDemo() {
     })
   }
 
+  const handleScroll = (
+    top: number,
+    rightLogicalPosition: 'start' | 'center' | 'end' | 'nearest' = 'start',
+  ) => {
+    treeRef.current?.scroll(undefined, top, {
+      behavior: 'smooth',
+      rightLogicalPosition,
+    })
+  }
+
   return (
     <>
       <button
@@ -42,6 +52,19 @@ export function TreeDemo() {
       </button>
       <button onClick={() => handleScrollToACBA('nearest')} style={{ marginLeft: '10px' }}>
         滚动到 ACBA (nearest)
+      </button>
+      <br />
+      <button onClick={() => handleScroll(100, 'start')} style={{ margin: '5px' }}>
+        滚动到 100px (start)
+      </button>
+      <button onClick={() => handleScroll(200, 'center')} style={{ margin: '5px' }}>
+        滚动到 200px (center)
+      </button>
+      <button onClick={() => handleScroll(300, 'end')} style={{ margin: '5px' }}>
+        滚动到 300px (end)
+      </button>
+      <button onClick={() => handleScroll(150, 'nearest')} style={{ margin: '5px' }}>
+        滚动到 150px (nearest)
       </button>
       <GridTree
         ref={treeRef}

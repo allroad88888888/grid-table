@@ -1,9 +1,19 @@
-import { Fragment, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import { useAutoSizer } from '../AutoSizer'
 import { useVScroll } from '../Basic/useVScroll'
-import type { VGridTableProps } from './type'
+import { useScrollTo } from './hooks/useScrollTo'
+import type { VGridTableProps, VGridTableRef } from './type'
 
-export function VGridTable(props: VGridTableProps) {
+export const VGridTable = forwardRef<VGridTableRef, VGridTableProps>((props, gridRef) => {
   const { style, className, children, theadChildren, tbodyChildren } = props
   const { rowCalcSize, rowCount, rowBaseSize = 1, overRowCount, rowStayIndexList } = props
   const {
@@ -57,6 +67,20 @@ export function VGridTable(props: VGridTableProps) {
     overscanCount: overColumnCount,
     direction: 'column',
     stayIndexList: columnStayIndexList,
+  })
+
+  const { scrollTo, scroll } = useScrollTo(ref, {
+    containerWidth: width,
+    containerHeight: height,
+    rowSizeList,
+    columnSizeList,
+  })
+
+  useImperativeHandle(gridRef, () => {
+    return {
+      scrollTo,
+      scroll,
+    }
   })
 
   useLayoutEffect(() => {
@@ -180,4 +204,4 @@ export function VGridTable(props: VGridTableProps) {
       )}
     </div>
   )
-}
+})

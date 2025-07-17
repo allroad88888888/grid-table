@@ -95,4 +95,13 @@ export interface GridTreeRef {
       logicalPosition?: 'start' | 'center' | 'end' | 'nearest'
     },
   ) => void
+  scroll: (
+    left?: number,
+    top?: number,
+    options?: {
+      behavior?: ScrollBehavior
+      leftLogicalPosition?: 'start' | 'center' | 'end' | 'nearest'
+      rightLogicalPosition?: 'start' | 'center' | 'end' | 'nearest'
+    },
+  ) => void
 }

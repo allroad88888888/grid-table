@@ -22,6 +22,18 @@ export interface ListItemProps {
 export interface VGridListRef {
   scrollTo: (
     index: number,
-    { behavior }: { behavior?: ScrollBehavior; logicalPosition?: ScrollLogicalPosition },
+    options?: {
+      behavior?: ScrollBehavior
+      logicalPosition?: ScrollLogicalPosition
+    },
+  ) => void
+  scroll: (
+    left?: number,
+    top?: number,
+    options?: {
+      behavior?: ScrollBehavior
+      leftLogicalPosition?: ScrollLogicalPosition
+      rightLogicalPosition?: ScrollLogicalPosition
+    },
   ) => void
 }
