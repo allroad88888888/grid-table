@@ -29,7 +29,6 @@ export function useScrollTo1D(ref: React.RefObject<HTMLElement>, options: UseScr
       if (!ref.current || index < 0 || index >= sizeList.length - 1) return
 
       const { behavior, logicalPosition = 'start' } = scrollOptions
-      debugger
 
       const elementTop = sizeList[index]
       const elementSize = sizeList[index + 1] - sizeList[index]
@@ -58,8 +57,6 @@ export function useScrollTo1D(ref: React.RefObject<HTMLElement>, options: UseScr
   const scroll = useCallback(
     (left?: number, top?: number, scrollOptions: Scroll1DOptions = {}) => {
       if (!ref.current) return
-
-      debugger
 
       const {
         behavior,

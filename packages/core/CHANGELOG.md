@@ -1,5 +1,11 @@
 # @grid-table/core
 
+## 0.6.6
+
+### Patch Changes
+
+- 移除debugger
+
 ## 0.6.5
 
 ### Patch Changes
