@@ -71,4 +71,10 @@ export type AntdTableProps = {
     | 'emptyComponent'
     | 'loadingComponent'
     | 'loading'
+    | 'minColumnWidth'
+    | 'maxColumnWidth'
   >
+
+export interface AntdTableRef {
+  autoColumnsSize: () => void
+}

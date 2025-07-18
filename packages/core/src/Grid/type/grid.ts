@@ -120,6 +120,10 @@ export interface VGridTableProps extends THeaderProps, TBodyRowProps, ColumnProp
   theadChildren?: ReactNode
 
   onResize?: (param: ResizeParam) => void
+
+  minColumnWidth?: number
+  maxColumnWidth?: number
+  columnPadding?: number
 }
 
 export interface ResizeParam {
@@ -152,4 +156,10 @@ export interface VGridTableRef {
       rightLogicalPosition?: ScrollLogicalPosition
     },
   ) => void
+  calculateColumnWidths: () =>
+    | {
+        columnWidths: number[]
+        columnIndexList: number[]
+      }
+    | undefined
 }

@@ -8,10 +8,11 @@ import {
   forwardRef,
   useImperativeHandle,
 } from 'react'
-import { useAutoSizer } from '../AutoSizer'
 import { useVScroll } from '../Basic/useVScroll'
 import { useScrollTo } from './hooks/useScrollTo'
 import type { VGridTableProps, VGridTableRef } from './type'
+import { useAutoSizer } from '../AutoSizer'
+import { useColumnsAutoSize } from './hooks/useColumnsAutoSize'
 
 export const VGridTable = forwardRef<VGridTableRef, VGridTableProps>((props, gridRef) => {
   const { style, className, children, theadChildren, tbodyChildren } = props
@@ -24,6 +25,9 @@ export const VGridTable = forwardRef<VGridTableRef, VGridTableProps>((props, gri
     columnStayIndexList,
     renderTbodyCell,
     tbodyHasRow,
+    minColumnWidth = 20,
+    maxColumnWidth = Number.MAX_SAFE_INTEGER,
+    columnPadding = 8,
   } = props
   const {
     theadRowCount = 1,
@@ -76,10 +80,18 @@ export const VGridTable = forwardRef<VGridTableRef, VGridTableProps>((props, gri
     columnSizeList,
   })
 
+  const calculateColumnWidths = useColumnsAutoSize(ref, {
+    minColumnWidth,
+    maxColumnWidth,
+    columnPadding,
+    columnIndexList: columnIndexList,
+  })
+
   useImperativeHandle(gridRef, () => {
     return {
       scrollTo,
       scroll,
+      calculateColumnWidths,
     }
   })
 

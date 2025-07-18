@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.5.6
+
+### Patch Changes
+
+- 自动调整宽度
+- Updated dependencies
+  - @grid-table/core@0.6.5
+
 ## 0.5.5
 
 ### Patch Changes

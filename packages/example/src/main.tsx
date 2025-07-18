@@ -2,12 +2,40 @@ import { createRoot } from 'react-dom/client'
 import { useAtom } from '@einfach/react'
 import { currentRouterAtom, Empty, RouterMapping } from './router'
 import './index.css'
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 
 function App() {
   const [currentUrl, setUrl] = useAtom(currentRouterAtom)
   const routerInfo = RouterMapping[currentUrl]
   const { component: Component = Empty } = routerInfo || {}
+
+  // 监听浏览器前进后退事件
+  useEffect(() => {
+    const handlePopState = () => {
+      setUrl(location.pathname)
+    }
+
+    // 初始化时同步浏览器URL和路由状态
+    if (location.pathname !== currentUrl) {
+      window.history.replaceState(null, '', currentUrl)
+    }
+
+    window.addEventListener('popstate', handlePopState)
+
+    // 清理事件监听器
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [setUrl, currentUrl])
+
+  // 处理路由切换
+  const handleRouteChange = (newUrl: string) => {
+    // 更新 atom 状态
+    setUrl(newUrl)
+    // 更新浏览器URL
+    window.history.pushState(null, '', newUrl)
+  }
+
   return (
     <div
       style={{
@@ -33,7 +61,7 @@ function App() {
               }}
               key={key}
               onClick={() => {
-                setUrl(key)
+                handleRouteChange(key)
               }}
             >
               {key}

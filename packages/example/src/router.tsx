@@ -13,14 +13,9 @@ import { ExcelDemo } from './pages/Excel'
 import { LargeTableDemo } from './pages/LargeTable'
 import ModernDebounceThrottle from './pages/ModernDebounceThrottle'
 import TreeTableSizeDemo from './pages/TreeTableSize'
+import { AutoSizeDemo } from './pages/AutoSizeDemo'
 
-// 设置默认路由为百万表格
-export const currentRouterAtom = atom('/tree-table')
-
-export function Empty() {
-  return <div>empty</div>
-}
-
+// 路由映射配置
 export const RouterMapping: Record<
   string,
   {
@@ -81,4 +76,21 @@ export const RouterMapping: Record<
     component: TreeTableSizeDemo,
     label: 'tree-table-size',
   },
+  '/auto-size': {
+    component: AutoSizeDemo,
+    label: '自动列宽调整',
+  },
+}
+
+// 获取初始路由：如果当前路径在路由映射中存在则使用，否则使用默认路由
+const getInitialRoute = () => {
+  const currentPath = location.pathname
+  return RouterMapping[currentPath] ? currentPath : '/tree-table'
+}
+
+// 从当前 location.pathname 读取初始路由，如果路径不存在则默认为 /tree-table
+export const currentRouterAtom = atom(getInitialRoute())
+
+export function Empty() {
+  return <div>empty</div>
 }

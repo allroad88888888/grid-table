@@ -1,6 +1,6 @@
-import { useAutoSizer, VGridTable } from '@grid-table/core'
+import { useAutoSizer, VGridTable, VGridTableRef } from '@grid-table/core'
 import { useAtomValue, useStore } from '@einfach/react'
-import { Fragment, useMemo, useRef } from 'react'
+import { forwardRef, Fragment, useImperativeHandle, useMemo, useRef } from 'react'
 import type { RowId } from '@grid-table/basic'
 import { headerRowIndexListAtom, useBasic } from '@grid-table/basic'
 import { useTableEvents } from './hooks/useTableEvents'
@@ -11,7 +11,7 @@ import { useCopy } from './plugins/copy/useCopy'
 import { DragLine } from './plugins/drag'
 import { useRowSelection } from './plugins/select'
 import { useCellSizeByColumn } from './plugins/calcSizeByColumn/useSizeByColumn'
-import type { AntdTableProps } from './types/type'
+import type { AntdTableProps, AntdTableRef } from './types/type'
 import { useDataInit } from './core'
 import clsx from 'clsx'
 import { useHeaderMergeCells, useMergeCells } from './plugins/mergeCells'
@@ -24,7 +24,9 @@ import { useRenderTheadCells } from './components/Cell/renderTheadCells'
 import { useRenderTbodyCells } from './components/Cell/renderTbodyCells'
 import { Provider } from './Provider'
 import './var.css'
-export function TableExcel(props: AntdTableProps) {
+import { useColumnAutoSize } from './hooks/useColumnAutoSize'
+
+export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, tableRef) => {
   const { columns, dataSource } = props
   const { cellDefaultWidth = 80, rowHeight = 36 } = props
   const { enableHeadContextMenu } = props
@@ -32,6 +34,16 @@ export function TableExcel(props: AntdTableProps) {
   const ref = useRef<HTMLDivElement>(null)
   const { width } = useAutoSizer(ref)
   const store = useStore()
+
+  const gridRef = useRef<VGridTableRef>(null)
+
+  const autoColumnsSize = useColumnAutoSize(gridRef)
+
+  useImperativeHandle(tableRef, () => {
+    return {
+      autoColumnsSize,
+    }
+  })
 
   /** 表格事件功能 */
   const tableEvents = useTableEvents()
@@ -131,6 +143,9 @@ export function TableExcel(props: AntdTableProps) {
             enableColumnResize={props.enableColumnResize}
           />
           <VGridTable
+            minColumnWidth={props.minColumnWidth}
+            maxColumnWidth={props.maxColumnWidth}
+            ref={gridRef}
             className={`grid-table grid-table-border ${tableClassName}`}
             renderTbodyCell={renderTBodyCells}
             renderTheadCell={renderTheadCells}
@@ -155,12 +170,14 @@ export function TableExcel(props: AntdTableProps) {
       )}
     </div>
   )
-}
+})
 
-export default (props: AntdTableProps) => {
+const TableExcelWrapper = forwardRef<AntdTableRef, AntdTableProps>((props, tableRef) => {
   return (
     <Provider root={props?.root} store={props.store}>
-      <TableExcel {...props} />
+      <TableExcel {...props} ref={tableRef} />
     </Provider>
   )
-}
+})
+
+export default TableExcelWrapper
