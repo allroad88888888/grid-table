@@ -14,6 +14,8 @@ import { LargeTableDemo } from './pages/LargeTable'
 import ModernDebounceThrottle from './pages/ModernDebounceThrottle'
 import TreeTableSizeDemo from './pages/TreeTableSize'
 import { AutoSizeDemo } from './pages/AutoSizeDemo'
+import { ValueInColsDemo } from './pages/ValueInColsDemo'
+import { FixedColumnsWithMergeCellsDemo } from './pages/FixedColumnsWithMergeCellsDemo'
 
 // 路由映射配置
 export const RouterMapping: Record<
@@ -56,6 +58,10 @@ export const RouterMapping: Record<
     component: PivotDemo,
     label: 'pivot-demo',
   },
+  '/value-in-cols': {
+    component: ValueInColsDemo,
+    label: 'ValueInCols 演示',
+  },
   '/tree': {
     component: TreeDemo,
     label: 'tree-demo',
@@ -79,6 +85,10 @@ export const RouterMapping: Record<
   '/auto-size': {
     component: AutoSizeDemo,
     label: '自动列宽调整',
+  },
+  '/fixed-columns-merge-cells': {
+    component: FixedColumnsWithMergeCellsDemo,
+    label: '固定列与合并单元格',
   },
 }
 

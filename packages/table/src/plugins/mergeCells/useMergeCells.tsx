@@ -5,8 +5,9 @@ import { useAtomValue, useStore } from '@einfach/react'
 import { columnIdShowListAtom, rowIdShowListAtom, useBasic } from '@grid-table/basic'
 import { getCellId, getRowIdAndColIdByCellId } from '../../utils/getCellId'
 import { tbodyMergeCellListAtom } from '../../components'
+import { lastSet } from './utils'
 
-export function useMergeCells() {
+export function useMergeCells({ showBorder = true }: { showBorder?: boolean } = {}) {
   const store = useStore()
   const { getCellStateAtomById, columnSizeMapAtom, rowSizeMapAtom } = useBasic()
 
@@ -15,11 +16,15 @@ export function useMergeCells() {
   const rowSizeMap = useAtomValue(rowSizeMapAtom, { store })
 
   useEffect(() => {
+    if (!showBorder) return
+
     if (!cellList || cellList.length === 0) {
       return
     }
 
     const clearList: (() => void)[] = []
+
+    console.log(`cellList`, cellList)
 
     cellList?.forEach(({ cellId, rowIdList = [], colIdList = [] }) => {
       const [curRowId, curColId] = getRowIdAndColIdByCellId(cellId)
@@ -33,6 +38,7 @@ export function useMergeCells() {
         } else {
           const rowIdSet = new Set(getter(rowIdShowListAtom))
           const columnIdSet = new Set(getter(columnIdShowListAtom))
+
           next = {
             width: [curColId, ...colIdList]
               .filter((colId) => {
@@ -48,6 +54,19 @@ export function useMergeCells() {
               .reduce<number>((prev, rowId) => {
                 return prev + (rowSizeMap.get(rowId) || 0)
               }, 0),
+          }
+          const lastRowId = lastSet(rowIdSet)
+          const lastColumnId = lastSet(columnIdSet)
+
+          const hadColLast = lastRowId ? rowIdList.includes(lastRowId) : false
+          const hadRowLast = lastColumnId ? colIdList.includes(lastColumnId) : false
+
+          if (hadColLast) {
+            next.borderBottomWidth = 0
+          }
+
+          if (hadRowLast) {
+            next.borderRightWidth = 0
           }
 
           if (rowIndex) {
@@ -110,7 +129,7 @@ export function useMergeCells() {
         clear()
       })
     }
-  }, [cellList, columnSizeMap, getCellStateAtomById, rowSizeMap, store])
+  }, [cellList, columnSizeMap, getCellStateAtomById, rowSizeMap, store, showBorder])
 }
 
 export default ''

@@ -97,7 +97,7 @@ export function useSticky(props: UseStickyProps = {}) {
       let tempState = ids
 
       if (isTop === false) {
-        tempState = ids.reverse()
+        tempState = [...ids].reverse()
       }
       const cancelList: (() => void)[] = []
       const positionList: number[] = [startPosition]
@@ -113,6 +113,13 @@ export function useSticky(props: UseStickyProps = {}) {
               ...prevState.style,
               [position]: positionList[index],
             }
+
+            // 为bottom类型的第一个元素添加左边框
+            // if (isTop === false && index === tempState.length - 1) {
+            //   newStyle[isRow ? 'borderTop' : 'borderLeft'] =
+            //     '1px var(--grid-cell-border-style) var(--grid-border-color)'
+            // }
+
             const newClass = [...Array.from(prevState.className), `sticky-${position}`]
 
             return {

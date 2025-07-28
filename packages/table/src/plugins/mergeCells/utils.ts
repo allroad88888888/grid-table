@@ -22,3 +22,14 @@ export function getAffectedCellSet(mergeCellList: MergeCellIdItem[] = []) {
   })
   return cellIdSet
 }
+
+export function lastSet<T>(ids: Set<T>) {
+  let lastValue
+  const iterator = ids.values()
+  let next = iterator.next()
+  while (!next.done) {
+    lastValue = next.value
+    next = iterator.next()
+  }
+  return lastValue
+}

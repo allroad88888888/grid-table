@@ -59,6 +59,8 @@ export type AntdTableProps = {
    * @default true
    */
   enableColumnResize?: boolean
+
+  gpuScroll?: boolean
 } & CopyProps &
   UseDataProps &
   Pick<

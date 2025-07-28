@@ -8,9 +8,7 @@ import type { HeaderRelation } from './type'
 export function formatToTable(dataConfig: DataConfig) {
   const { fields, meta, data } = dataConfig
 
-  const { rows, columns, values } = fields
-
-  // TODO:valueInCols 是个啥
+  const { rows, columns, values, valueInCols = true } = fields
 
   /**
    * meta 字段-desc map
@@ -22,8 +20,9 @@ export function formatToTable(dataConfig: DataConfig) {
 
   /**
    * 最终数据会输出多少列
+   * 当 valueInCols 为 false 时，需要添加一个字段来标识值类型
    */
-  const realColumns = [...rows]
+  const realColumns = valueInCols ? [...rows] : [...rows, 'Values']
 
   /**
    * 缓存数据
@@ -55,6 +54,46 @@ export function formatToTable(dataConfig: DataConfig) {
         return item[rowField]
       })
       .join(JoinKey)
+
+    // 当 valueInCols 为 false 时，values 字段作为行，columns 的值作为列
+    if (!valueInCols) {
+      const columnKey = columns.map((columnKey) => item[columnKey]).join(JoinKey)
+
+      values.forEach((val) => {
+        const extendedRowKey = `${rowKey}${JoinKey}${val}`
+
+        if (!dataMap.has(extendedRowKey)) {
+          const dataItem: Record<string, any> = {}
+          indexId += 1
+
+          // 复制行字段
+          rows.forEach((rowField) => (dataItem[rowField] = item[rowField]))
+          // 使用 'Values' 字段来标识值类型
+          dataItem['Values'] = metaFieldMap.has(val) ? metaFieldMap.get(val)! : val
+
+          dataMap.set(extendedRowKey, dataItem)
+          transformedData.push(dataItem)
+        }
+
+        const dataItem = dataMap.get(extendedRowKey)!
+
+        // 判断是否为整条数据
+        const isFull = columns.every((colField) => colField in item)
+
+        if (isFull) {
+          // 直接使用 columnKey 作为列名（如 Q1, Q2）
+          if (!realColumns.includes(columnKey)) {
+            realColumns.push(columnKey)
+          }
+
+          // 设置该列的值
+          dataItem[columnKey] = item[val]
+        }
+      })
+      return
+    }
+
+    // 原有的 valueInCols: true 逻辑
     const columnKey = columns.map((columnKey) => item[columnKey]).join(JoinKey)
 
     /**

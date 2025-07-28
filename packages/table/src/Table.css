@@ -17,6 +17,15 @@
   flex-grow: 1;
 }
 
+.gpu-scroll {
+  will-change: scroll-position;
+  contain: paint;
+  transform: translateZ(0); /* 启用 GPU 加速 */
+  backface-visibility: hidden;
+  overscroll-behavior: contain; /* 控制滚动行为，防止滚动链发生 */
+  scroll-behavior: smooth;
+}
+
 .grid-table {
   /* TODO: thead没有，导致tbody撑不起高度，原因待查  */
   min-height: 10px;
@@ -25,12 +34,6 @@
   --grid-bg-color:#fff */
   overflow: auto;
   box-sizing: border-box;
-  will-change: scroll-position;
-  contain: paint;
-  transform: translateZ(0); /* 启用 GPU 加速 */
-  backface-visibility: hidden;
-  overscroll-behavior: contain; /* 控制滚动行为，防止滚动链发生 */
-  scroll-behavior: smooth;
 
   /**
   * for useDrag
@@ -50,7 +53,7 @@
   /**
   * 下面的 sticky 会遮挡
   */
-  z-index: var(--sticky-row-zIndex);
+  z-index: var(--grid-sticky-row-zIndex);
 }
 
 .grid-table-border {
@@ -59,7 +62,7 @@
 .grid-table-border .grid-table-cell,
 .thead-cell {
   background-color: var(--grid-bg-color);
-  border-left: 1px var(--grid-cell-border-style) var(--grid-border-color);
+  border-right: 1px var(--grid-cell-border-style) var(--grid-border-color);
   border-bottom: 1px var(--grid-cell-border-style) var(--grid-border-color);
   border-color: var(--grid-border-color);
 }

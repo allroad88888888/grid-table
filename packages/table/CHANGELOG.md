@@ -1,5 +1,17 @@
 # @grid-table/view
 
+## 0.5.11
+
+### Patch Changes
+
+- fixed 样式变更
+
+## 0.5.10
+
+### Patch Changes
+
+- 支持valueInCols 移除border 用css实现，改用 js
+
 ## 0.5.6
 
 ### Patch Changes

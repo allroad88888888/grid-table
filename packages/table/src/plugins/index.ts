@@ -1,4 +1,5 @@
 export * from './areaSelected'
+export * from './border'
 export * from './calcSizeByColumn'
 export * from './copy'
 export * from './filter'

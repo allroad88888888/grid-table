@@ -2,23 +2,6 @@
   position: sticky;
   z-index: var(--grid-sticky-column-zIndex);
 }
-
-/* 完美解决合并列导致的border失效问题 */
-.grid-table .sticky-left:has(+ :not(.sticky-left)) {
-  border-right: 1px var(--grid-cell-border-style) var(--grid-border-color);
-}
-/* 选择前一个元素不是sticky-left的元素 */
-.grid-table :not(.sticky-left) + .sticky-left {
-  border-left-width: 0;
-}
-.grid-table .sticky-left:first-child {
-  border-left-width: 0
-}
-
-.grid-table .sticky-left + :not(.sticky-left) {
-  border-left-width: 0;
-}
-
 .grid-table .sticky-right {
   position: sticky;
   z-index: var(--grid-sticky-column-zIndex);
@@ -32,3 +15,28 @@
   position: sticky;
   z-index: var(--grid-sticky-column-zIndex);
 }
+
+/* .grid-table .grid-table-cell:has(+ :not(.sticky-right)) {
+  border-left: 1px var(--grid-cell-border-style) var(--grid-border-color);
+} */
+
+/**sticky-right */
+
+/* 完美解决合并列导致的border失效问题 */
+/* .grid-table .sticky-left:has(+ :not(.sticky-left)) {
+  border-right: 1px var(--grid-cell-border-style) var(--grid-border-color);
+} */
+
+/* 给紧跟在sticky-left后面的非sticky-left元素设置左边框宽度为0 */
+/* .grid-table .sticky-left + :not(.sticky-left) {
+  border-left-width: 0;
+} */
+
+/* 选择前一个元素不是sticky-left的元素 */
+/* .grid-table :not(.sticky-left) + .sticky-left {
+  border-left-width: 0;
+} */
+
+/* .grid-table .sticky-left:first-child {
+  border-left-width: 0;
+} */

@@ -1,4 +1,4 @@
-import type { ComponentType, CSSProperties } from 'react'
+import type { ComponentType, CSSProperties, RefObject } from 'react'
 import type { UseVScrollProps } from '../../Basic/type'
 
 export type ScrollLogicalPosition = 'start' | 'center' | 'end' | 'nearest'
@@ -12,6 +12,7 @@ export interface ListProps extends UseVScrollProps {
    */
   tag?: 'div' | 'ul'
   'data-testid'?: string
+  scrollRef?: RefObject<HTMLDivElement>
 }
 
 export interface ListItemProps {

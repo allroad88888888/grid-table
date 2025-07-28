@@ -10,8 +10,9 @@ import {
 } from '@grid-table/basic'
 import { getCellId, getRowIdAndColIdByCellId } from '../../utils/getCellId'
 import { theadMergeCellListAtom } from '../../components'
+import { lastSet } from './utils'
 
-export function useHeaderMergeCells() {
+export function useHeaderMergeCells({ showBorder = true }: { showBorder?: boolean } = {}) {
   const store = useStore()
   const { getHeaderCellStateAtomById, columnSizeMapAtom } = useBasic()
 
@@ -20,6 +21,8 @@ export function useHeaderMergeCells() {
   const rowSizeMap = useAtomValue(headerRowSizeMaAtom)
 
   useEffect(() => {
+    if (!showBorder) return
+
     if (!cellList || cellList.length === 0) {
       return
     }
@@ -51,6 +54,19 @@ export function useHeaderMergeCells() {
               .reduce<number>((prev, rowId) => {
                 return prev + (rowSizeMap.get(rowId) || 0)
               }, 0),
+          }
+          const lastRowId = lastSet(rowIdSet)
+          const lastColumnId = lastSet(columnIdSet)
+
+          const hadColLast = lastRowId ? rowIdList.includes(lastRowId) : false
+          const hadRowLast = lastColumnId ? colIdList.includes(lastColumnId) : false
+
+          if (hadColLast) {
+            next.borderBottomWidth = 0
+          }
+
+          if (hadRowLast) {
+            next.borderRightWidth = 0
           }
 
           if (rowIndex) {
@@ -113,5 +129,5 @@ export function useHeaderMergeCells() {
         clear()
       })
     }
-  }, [cellList, columnSizeMap, getHeaderCellStateAtomById, rowSizeMap, store])
+  }, [cellList, columnSizeMap, getHeaderCellStateAtomById, rowSizeMap, store, showBorder])
 }

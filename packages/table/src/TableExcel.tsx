@@ -15,6 +15,7 @@ import type { AntdTableProps, AntdTableRef } from './types/type'
 import { useDataInit } from './core'
 import clsx from 'clsx'
 import { useHeaderMergeCells, useMergeCells } from './plugins/mergeCells'
+import { useBorder } from './plugins/border'
 
 import './Table.css'
 import { getColumnId } from './utils/getColumnId'
@@ -38,6 +39,8 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   const gridRef = useRef<VGridTableRef>(null)
 
   const autoColumnsSize = useColumnAutoSize(gridRef)
+
+  const showBorder = props.bordered !== false
 
   useImperativeHandle(tableRef, () => {
     return {
@@ -67,6 +70,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   const { stickyList } = useMemo(() => {
     const leftFixedColList: RowId[] = []
     const rightFixedColList: RowId[] = []
+
     columns.forEach((column, index) => {
       const columnId = getColumnId(column)
       if (column.fixed === 'left') {
@@ -114,10 +118,17 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   })
 
   /** tbody单元格合并功能 */
-  useMergeCells()
+  useMergeCells({ showBorder })
+
+  /** 边框处理功能 */
+  useBorder({
+    showBorder,
+  })
 
   /** thead单元格合并功能 */
-  useHeaderMergeCells()
+  useHeaderMergeCells({
+    showBorder,
+  })
 
   const { renderTheadCells } = useRenderTheadCells()
   const { renderTBodyCells } = useRenderTbodyCells()
@@ -129,6 +140,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
       style={props.style}
       className={clsx('grid-table-plugin-wrapper', {
         'grid-table-plugin-loading ': loading,
+        'gpu-scroll': props.gpuScroll,
       })}
       ref={ref}
       {...tableEvents}

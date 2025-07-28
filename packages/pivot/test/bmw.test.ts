@@ -32,9 +32,7 @@ describe('pivot', () => {
     })
 
     expect(res.headerColumns).toStrictEqual(['headerColumn0', 'headerColumn1'])
-
     expect(res.headerMergeCellList).toStrictEqual([])
-
     expect(res.bodyMergeCelList).toStrictEqual([])
   })
 })

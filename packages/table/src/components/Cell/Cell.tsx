@@ -60,6 +60,9 @@ export const DataCell = memo(function DataCell(props: CellProps) {
     <div
       style={style}
       className={clsx('grid-table-cell', className, 'grid-table-cell-data-item')}
+      // data-row-index={props.rowIndex}
+      // data-column-index={props.columnIndex}
+
       {...events}
     >
       {expendDom}

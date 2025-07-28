@@ -8,7 +8,7 @@ export function getHeaderInfo(
 ) {
   const { fields, meta } = dataConfig
 
-  const { rows, columns } = fields
+  const { rows, columns, values, valueInCols = true } = fields
 
   /**
    * meta 字段-desc map
@@ -43,39 +43,82 @@ export function getHeaderInfo(
     })
   }
 
-  flattenRelation(headerRelation, {}, 0)
+  // 只有当 valueInCols 为 true 时才展开 headerRelation
+  if (valueInCols) {
+    flattenRelation(headerRelation, {}, 0)
+  }
+
   /**
    * 获取 rows-header头
    */
   const tHeaderColumns = Array.from(headerColumns)
-  rows.forEach((rowKey, index) => {
-    const newObj: Record<string, string> = {}
-    columns.forEach((t, index) => {
-      newObj[tHeaderColumns[index]] = metaFieldMap.has(t) ? metaFieldMap.get(t)! : t
+
+  if (valueInCols) {
+    // 当 valueInCols 为 true 时的原有逻辑
+    rows.forEach((rowKey, index) => {
+      const newObj: Record<string, string> = {}
+      columns.forEach((t, index) => {
+        newObj[tHeaderColumns[index]] = metaFieldMap.has(t) ? metaFieldMap.get(t)! : t
+      })
+      newObj[tHeaderColumns[tHeaderColumns.length - 1]] = metaFieldMap.has(rowKey)
+        ? metaFieldMap.get(rowKey)!
+        : rowKey
+
+      headerData.splice(index, 0, newObj)
     })
-    newObj[tHeaderColumns[tHeaderColumns.length - 1]] = metaFieldMap.has(rowKey)
-      ? metaFieldMap.get(rowKey)!
-      : rowKey
+  } else {
+    // 当 valueInCols 为 false 时：为 realColumns 中的每一列生成表头信息
+    const headerObj: Record<string, string> = {}
 
-    headerData.splice(index, 0, newObj)
-  })
-
-  const realData: Record<string, string>[] = []
-  tHeaderColumns.forEach((key, tIndex) => {
-    realData[tIndex] = {}
-  })
-  headerData.forEach((item, propIndex) => {
-    tHeaderColumns.forEach((key, tIndex) => {
-      if (!realData[tIndex]) {
-        realData[tIndex] = {}
+    realColumns.forEach((columnKey) => {
+      if (metaFieldMap.has(columnKey)) {
+        // 如果在 meta 中有定义，使用 meta 中的名称（针对 rows 字段）
+        headerObj[columnKey] = metaFieldMap.get(columnKey)!
+      } else if (columnKey === 'Values') {
+        // 特殊处理 'Values' 字段，使用第一个 value 的名称
+        const firstValue = values[0]
+        headerObj[columnKey] = metaFieldMap.has(firstValue)
+          ? metaFieldMap.get(firstValue)!
+          : firstValue
+      } else {
+        // 对于其他列（比如 columns 的实际值如 Q1、Q2），直接使用原始值
+        headerObj[columnKey] = columnKey
       }
-      const obj = realData[tIndex]
-      obj[realColumns[propIndex]] = item[key]
     })
-  })
+
+    headerData.push(headerObj)
+
+    // 确保有一个 headerColumn
+    headerColumns.add('headerColumn0')
+  }
+
+  // 当 valueInCols 为 false 时，重新构建 tHeaderColumns
+  const finalHeaderColumns = valueInCols ? tHeaderColumns : Array.from(headerColumns)
+
+  let realData: Record<string, string>[]
+
+  if (valueInCols) {
+    // 原有的 valueInCols: true 逻辑
+    realData = []
+    finalHeaderColumns.forEach((key, tIndex) => {
+      realData[tIndex] = {}
+    })
+    headerData.forEach((item, propIndex) => {
+      finalHeaderColumns.forEach((key, tIndex) => {
+        if (!realData[tIndex]) {
+          realData[tIndex] = {}
+        }
+        const obj = realData[tIndex]
+        obj[realColumns[propIndex]] = item[key]
+      })
+    })
+  } else {
+    // 对于 valueInCols: false，直接使用 headerData，因为结构已经正确
+    realData = headerData
+  }
 
   return {
     headerData: realData,
-    headerColumns: tHeaderColumns,
+    headerColumns: finalHeaderColumns,
   }
 }

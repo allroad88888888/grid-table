@@ -10,10 +10,10 @@ interface VGridListProps extends Omit<ListProps, 'width' | 'height'> {
 }
 
 export const VGridList = forwardRef<VGridListRef, VGridListProps>((props, gridRef) => {
-  const { style, className, tag = 'div', 'data-testid': dataTestId } = props
+  const { style, className, tag = 'div', 'data-testid': dataTestId, scrollRef } = props
   const { baseSize, children } = props
 
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = scrollRef || useRef<HTMLDivElement>(null)
   const { width, height } = useAutoSizer(ref)
 
   const { onScroll, totalLength, sizeList, showIndexList, isPending } = useVScroll({
@@ -43,6 +43,35 @@ export const VGridList = forwardRef<VGridListRef, VGridListProps>((props, gridRe
   }, [])
 
   const Tag = tag
+
+  if (scrollRef) {
+    return (
+      <Tag
+        style={{
+          ...style,
+          display: 'grid',
+          gridTemplateRows: `repeat(auto-fill, ${baseSize}px)`,
+          height: totalLength,
+        }}
+      >
+        {showIndexList.map((index) => {
+          return (
+            <Children
+              key={index}
+              index={index}
+              isPending={isPending}
+              style={{
+                gridColumnStart: 1,
+                gridColumnEnd: 1,
+                gridRowStart: sizeList[index] / baseSize + 1,
+                gridRowEnd: sizeList[index + 1] / baseSize + 1,
+              }}
+            />
+          )
+        })}
+      </Tag>
+    )
+  }
 
   return (
     <div
