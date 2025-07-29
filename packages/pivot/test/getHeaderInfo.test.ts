@@ -165,7 +165,7 @@ describe('getHeaderInfo', () => {
       {
         region: '地区',
         city: '城市',
-        Values: '销售额', // Values 字段使用第一个 value 的名称
+        Values: '数值', // Values 字段使用第一个 value 的名称
         Q1: 'Q1', // columns 的实际值直接作为列名
         Q2: 'Q2',
       },

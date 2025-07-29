@@ -1,5 +1,11 @@
 # @grid-table/pivot
 
+## 0.5.6
+
+### Patch Changes
+
+- 修正描述咧
+
 ## 0.5.5
 
 ### Patch Changes

@@ -1,4 +1,5 @@
 import type { DataConfig } from '../types'
+import { MockFieldName } from './const'
 import type { HeaderRelation } from './type'
 
 export function getHeaderInfo(
@@ -8,7 +9,7 @@ export function getHeaderInfo(
 ) {
   const { fields, meta } = dataConfig
 
-  const { rows, columns, values, valueInCols = true } = fields
+  const { rows, columns, valueInCols = true } = fields
 
   /**
    * meta 字段-desc map
@@ -74,12 +75,13 @@ export function getHeaderInfo(
       if (metaFieldMap.has(columnKey)) {
         // 如果在 meta 中有定义，使用 meta 中的名称（针对 rows 字段）
         headerObj[columnKey] = metaFieldMap.get(columnKey)!
-      } else if (columnKey === 'Values') {
-        // 特殊处理 'Values' 字段，使用第一个 value 的名称
-        const firstValue = values[0]
-        headerObj[columnKey] = metaFieldMap.has(firstValue)
-          ? metaFieldMap.get(firstValue)!
-          : firstValue
+      } else if (columnKey === MockFieldName) {
+        // 特殊处理 'MockFieldName' 字段，使用第一个 value 的名称
+        // const firstValue = values[0]
+        headerObj[columnKey] = '数值'
+        // headerObj[columnKey] = metaFieldMap.has(firstValue)
+        //   ? metaFieldMap.get(firstValue)!
+        //   : firstValue
       } else {
         // 对于其他列（比如 columns 的实际值如 Q1、Q2），直接使用原始值
         headerObj[columnKey] = columnKey

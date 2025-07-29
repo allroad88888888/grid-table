@@ -1,5 +1,5 @@
 import type { DataConfig } from '../types'
-import { JoinKey, ValueJoinKey } from './const'
+import { JoinKey, MockFieldName, ValueJoinKey } from './const'
 import { getHeaderInfo } from './header'
 import { mergeCells } from './mergeCells'
 import { mergeCellsForTree } from './mregeCellsForTree'
@@ -22,7 +22,7 @@ export function formatToTable(dataConfig: DataConfig) {
    * 最终数据会输出多少列
    * 当 valueInCols 为 false 时，需要添加一个字段来标识值类型
    */
-  const realColumns = valueInCols ? [...rows] : [...rows, 'Values']
+  const realColumns = valueInCols ? [...rows] : [...rows, MockFieldName]
 
   /**
    * 缓存数据
@@ -68,8 +68,8 @@ export function formatToTable(dataConfig: DataConfig) {
 
           // 复制行字段
           rows.forEach((rowField) => (dataItem[rowField] = item[rowField]))
-          // 使用 'Values' 字段来标识值类型
-          dataItem['Values'] = metaFieldMap.has(val) ? metaFieldMap.get(val)! : val
+          // 使用 'MockFieldName' 字段来标识值类型
+          dataItem[MockFieldName] = metaFieldMap.has(val) ? metaFieldMap.get(val)! : val
 
           dataMap.set(extendedRowKey, dataItem)
           transformedData.push(dataItem)
