@@ -123,13 +123,7 @@ export function ValueInColsDemo() {
             值字段（销售额、利润、订单数）在列中展开，适合打印或宽屏显示
           </p>
           <div style={{ border: '1px solid #ddd', borderRadius: '4px' }}>
-            <Pivot
-              dataConfig={dataConfigHorizontal}
-              style={{
-                width: '100%',
-                height: 400,
-              }}
-            />
+            <Pivot dataConfig={dataConfigHorizontal} />
           </div>
         </div>
 
@@ -142,13 +136,7 @@ export function ValueInColsDemo() {
             值字段（销售额、利润、订单数）在行中展开，更适合窄屏或移动端显示
           </p>
           <div style={{ border: '1px solid #ddd', borderRadius: '4px' }}>
-            <Pivot
-              dataConfig={dataConfigVertical}
-              style={{
-                width: '100%',
-                height: 400,
-              }}
-            />
+            <Pivot dataConfig={dataConfigVertical} />
           </div>
         </div>
       </div>

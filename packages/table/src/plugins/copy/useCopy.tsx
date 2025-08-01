@@ -40,7 +40,6 @@ export function useCopy({ copyGetDataByCellIds, enableCopy: enable = true }: Cop
   const onCopy = useCallback(
     (e: React.ClipboardEvent<HTMLDivElement>) => {
       const cellIds = store.getter(areaCellIdsAtom)
-
       if (!cellIds || cellIds.length === 0) {
         return
       }

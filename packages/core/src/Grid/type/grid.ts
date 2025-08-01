@@ -109,7 +109,7 @@ export interface VGridTableProps extends THeaderProps, TBodyRowProps, ColumnProp
   /**
    *
    */
-  loadingComponent?: ComponentType
+  loadingComponent?: ComponentType<{ className?: string; style?: React.CSSProperties }>
 
   loading?: boolean
 
@@ -124,6 +124,15 @@ export interface VGridTableProps extends THeaderProps, TBodyRowProps, ColumnProp
   minColumnWidth?: number
   maxColumnWidth?: number
   columnPadding?: number
+
+  onMouseDown?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onMouseUp?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onMouseOver?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onMouseEnter?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onMouseOut?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onContextMenu?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  onCopy?: (e: React.ClipboardEvent<HTMLDivElement>) => void
 }
 
 export interface ResizeParam {

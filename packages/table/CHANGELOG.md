@@ -1,5 +1,11 @@
 # @grid-table/view
 
+## 0.5.13
+
+### Patch Changes
+
+- 移除外层div
+
 ## 0.5.11
 
 ### Patch Changes

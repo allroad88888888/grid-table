@@ -103,7 +103,17 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   /** 固定列攻功能 */
   const { stayIndexList } = useSticky(stickyList)
 
-  const tableClassName = useTableClassNameValue()
+  const tableClassName = useTableClassNameValue(
+    clsx(
+      'grid-table grid-table-border',
+      {
+        'grid-table-plugin-loading ': loading,
+        'gpu-scroll': props.gpuScroll,
+      },
+      'grid-table grid-table-border',
+      props.className,
+    ),
+  )
   /** tbody区域选中功能 */
   useAreaSelected({ enable: props.enableCopy || props.enableSelectArea })
 
@@ -136,29 +146,18 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   const LoadingComponent = props.loadingComponent || Fragment
 
   return (
-    <div
-      style={props.style}
-      className={clsx('grid-table-plugin-wrapper', {
-        'grid-table-plugin-loading ': loading,
-        'gpu-scroll': props.gpuScroll,
-      })}
-      ref={ref}
-      {...tableEvents}
-    >
+    <>
       {loading ? (
-        <LoadingComponent />
+        <LoadingComponent className={tableClassName} style={props.style} />
       ) : (
         <>
-          {copy}
-          <DragLine
-            dragColumnMinSize={props.cellDefaultWidth}
-            enableColumnResize={props.enableColumnResize}
-          />
           <VGridTable
+            {...tableEvents}
+            style={props.style}
             minColumnWidth={props.minColumnWidth}
             maxColumnWidth={props.maxColumnWidth}
             ref={gridRef}
-            className={`grid-table grid-table-border ${tableClassName}`}
+            className={tableClassName}
             renderTbodyCell={renderTBodyCells}
             renderTheadCell={renderTheadCells}
             theadRowCalcSize={calcHeadRowSizeByIndex}
@@ -177,10 +176,18 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
             loadingComponent={props.loadingComponent}
             loading={props.loading}
             theadChildren={<TheadContextMenu enableContextMenu={enableHeadContextMenu} />}
-          />
+          >
+            <>
+              {copy}
+              <DragLine
+                dragColumnMinSize={props.cellDefaultWidth}
+                enableColumnResize={props.enableColumnResize}
+              />
+            </>
+          </VGridTable>
         </>
       )}
-    </div>
+    </>
   )
 })
 

@@ -38,7 +38,17 @@ export const VGridTable = forwardRef<VGridTableRef, VGridTableProps>((props, gri
     theadHasRow,
   } = props
 
-  const { onResize } = props
+  const {
+    onResize,
+    onMouseDown,
+    onMouseUp,
+    onClick,
+    onMouseOver,
+    onMouseEnter,
+    onMouseOut,
+    onContextMenu,
+    onCopy,
+  } = props
 
   const ref = useRef<HTMLDivElement>(null)
   const { width, height } = useAutoSizer(ref)
@@ -167,7 +177,20 @@ export const VGridTable = forwardRef<VGridTableRef, VGridTableProps>((props, gri
   )
 
   return (
-    <div ref={ref} role="table" style={style} className={className}>
+    <div
+      ref={ref}
+      role="table"
+      style={style}
+      className={className}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onClick={onClick}
+      onMouseOver={onMouseOver}
+      onMouseEnter={onMouseEnter}
+      onMouseOut={onMouseOut}
+      onContextMenu={onContextMenu}
+      onCopy={onCopy}
+    >
       {children}
       {theadRowCount > 0 ? (
         <div

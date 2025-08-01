@@ -307,7 +307,17 @@ export function FixedColumnsWithMergeCellsDemo() {
         </div>
       )}
 
-      <Table columns={columns} dataSource={data} idProp="id" bordered />
+      <Table
+        columns={columns}
+        dataSource={data}
+        idProp="id"
+        bordered
+        store={store}
+        enableSelectArea={true}
+        enableHeadContextMenu={true}
+        enableColumnResize={true}
+        enableCopy={true}
+      />
     </div>
   )
 }
