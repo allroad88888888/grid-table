@@ -1,5 +1,13 @@
 # @grid-table/basic
 
+## 0.5.2
+
+### Patch Changes
+
+- fixed 支持双击自适应列宽
+- Updated dependencies
+  - @grid-table/core@0.6.7
+
 ## 0.5.1
 
 ### Patch Changes

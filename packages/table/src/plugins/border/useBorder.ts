@@ -29,9 +29,10 @@ export function useBorder({ showBorder = true }: { showBorder?: boolean } = {}) 
             ...prevState.style,
           }
 
-          // 第一列添加左边框
+          // 第一列添加左边框和阴影
           if (index === 0) {
             newStyle.borderLeft = '1px var(--grid-cell-border-style) var(--grid-border-color)'
+            newStyle.boxShadow = '-2px 0 6px rgba(0, 0, 0, 0.08)'
           }
           if (index === stickyRightIds.length - 1) {
             newStyle.borderRightWidth = '0'

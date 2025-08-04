@@ -1,5 +1,11 @@
 # @grid-table/core
 
+## 0.6.7
+
+### Patch Changes
+
+- fixed 支持双击自适应列宽
+
 ## 0.6.6
 
 ### Patch Changes

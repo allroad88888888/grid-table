@@ -1,7 +1,7 @@
 import { atom, createStore } from '@einfach/react'
 import { VGridTable } from '@grid-table/core'
-import type { CellsRenderProps, VGridTableRef } from '@grid-table/core'
-import { useMemo, useCallback, memo, useState, useRef } from 'react'
+import type { CellsRenderProps } from '@grid-table/core'
+import { useMemo, useCallback, memo, useState } from 'react'
 import './LargeTable.css'
 
 // 创建一个百万+的格子 (1000行 x 1000列 = 1,000,000格子)
@@ -70,33 +70,6 @@ const TbodyCell = memo(
 
 export function LargeTableDemo() {
   const [loading, setLoading] = useState(true)
-  const tableRef = useRef<VGridTableRef>(null)
-
-  const handleScrollToCell = (
-    rowIndex: number,
-    columnIndex: number,
-    rowLogicalPosition: 'start' | 'center' | 'end' | 'nearest' = 'start',
-    columnLogicalPosition: 'start' | 'center' | 'end' | 'nearest' = 'start',
-  ) => {
-    tableRef.current?.scrollTo(rowIndex, columnIndex, {
-      behavior: 'smooth',
-      rowLogicalPosition,
-      columnLogicalPosition,
-    })
-  }
-
-  const handleScroll = (
-    left: number,
-    top: number,
-    leftLogicalPosition: 'start' | 'center' | 'end' | 'nearest' = 'start',
-    rightLogicalPosition: 'start' | 'center' | 'end' | 'nearest' = 'start',
-  ) => {
-    tableRef.current?.scroll(left, top, {
-      behavior: 'smooth',
-      leftLogicalPosition,
-      rightLogicalPosition,
-    })
-  }
 
   // 使用useMemo缓存行高和列宽的计算函数
   const rowCalcSize = useMemo(() => {
@@ -188,50 +161,7 @@ export function LargeTableDemo() {
         <div>列数: {COLUMNS}</div>
         <div>总格子数: {ROWS * COLUMNS}</div>
       </div>
-      <div style={{ marginBottom: '10px' }}>
-        <button
-          onClick={() => handleScrollToCell(500, 500, 'center', 'center')}
-          style={{ margin: '5px' }}
-        >
-          滚动到中心位置 (500, 500)
-        </button>
-        <button
-          onClick={() => handleScrollToCell(0, 0, 'start', 'start')}
-          style={{ margin: '5px' }}
-        >
-          滚动到起始位置 (0, 0)
-        </button>
-        <button
-          onClick={() => handleScrollToCell(999, 999, 'end', 'end')}
-          style={{ margin: '5px' }}
-        >
-          滚动到结束位置 (999, 999)
-        </button>
-        <button
-          onClick={() => handleScrollToCell(200, 300, 'nearest', 'nearest')}
-          style={{ margin: '5px' }}
-        >
-          智能滚动到 (200, 300)
-        </button>
-        <br />
-        <button
-          onClick={() => handleScroll(2000, 1000, 'start', 'start')}
-          style={{ margin: '5px' }}
-        >
-          滚动到像素位置 (left:2000, top:1000)
-        </button>
-        <button
-          onClick={() => handleScroll(8000, 5000, 'center', 'center')}
-          style={{ margin: '5px' }}
-        >
-          居中滚动到 (left:8000, top:5000)
-        </button>
-        <button onClick={() => handleScroll(4000, 3000, 'end', 'end')} style={{ margin: '5px' }}>
-          底部滚动到 (left:4000, top:3000)
-        </button>
-      </div>
       <VGridTable
-        ref={tableRef}
         style={{
           width: '100%',
           height: '600px',

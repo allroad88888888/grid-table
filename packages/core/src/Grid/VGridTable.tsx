@@ -6,15 +6,19 @@ import {
   useMemo,
   useRef,
   forwardRef,
-  useImperativeHandle,
+  MutableRefObject,
 } from 'react'
 import { useVScroll } from '../Basic/useVScroll'
-import { useScrollTo } from './hooks/useScrollTo'
-import type { VGridTableProps, VGridTableRef } from './type'
+import type { VGridTableProps } from './type'
 import { useAutoSizer } from '../AutoSizer'
-import { useColumnsAutoSize } from './hooks/useColumnsAutoSize'
 
-export const VGridTable = forwardRef<VGridTableRef, VGridTableProps>((props, gridRef) => {
+/**
+ *     minColumnWidth = 20,
+    maxColumnWidth = Number.MAX_SAFE_INTEGER,
+    columnPadding = 8,
+ */
+
+export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gridRef) => {
   const { style, className, children, theadChildren, tbodyChildren } = props
   const { rowCalcSize, rowCount, rowBaseSize = 1, overRowCount, rowStayIndexList } = props
   const {
@@ -25,9 +29,6 @@ export const VGridTable = forwardRef<VGridTableRef, VGridTableProps>((props, gri
     columnStayIndexList,
     renderTbodyCell,
     tbodyHasRow,
-    minColumnWidth = 20,
-    maxColumnWidth = Number.MAX_SAFE_INTEGER,
-    columnPadding = 8,
   } = props
   const {
     theadRowCount = 1,
@@ -50,7 +51,9 @@ export const VGridTable = forwardRef<VGridTableRef, VGridTableProps>((props, gri
     onCopy,
   } = props
 
-  const ref = useRef<HTMLDivElement>(null)
+  const internalRef = useRef<HTMLDivElement>(null)
+  const ref = (gridRef as MutableRefObject<HTMLDivElement>) || internalRef
+
   const { width, height } = useAutoSizer(ref)
 
   const {
@@ -81,28 +84,6 @@ export const VGridTable = forwardRef<VGridTableRef, VGridTableProps>((props, gri
     overscanCount: overColumnCount,
     direction: 'column',
     stayIndexList: columnStayIndexList,
-  })
-
-  const { scrollTo, scroll } = useScrollTo(ref, {
-    containerWidth: width,
-    containerHeight: height,
-    rowSizeList,
-    columnSizeList,
-  })
-
-  const calculateColumnWidths = useColumnsAutoSize(ref, {
-    minColumnWidth,
-    maxColumnWidth,
-    columnPadding,
-    columnIndexList: columnIndexList,
-  })
-
-  useImperativeHandle(gridRef, () => {
-    return {
-      scrollTo,
-      scroll,
-      calculateColumnWidths,
-    }
   })
 
   useLayoutEffect(() => {

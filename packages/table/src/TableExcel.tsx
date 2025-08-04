@@ -1,10 +1,10 @@
-import { useAutoSizer, VGridTable, VGridTableRef } from '@grid-table/core'
+import { useAutoSizer, VGridTable } from '@grid-table/core'
 import { useAtomValue, useStore } from '@einfach/react'
 import { forwardRef, Fragment, useImperativeHandle, useMemo, useRef } from 'react'
 import type { RowId } from '@grid-table/basic'
 import { headerRowIndexListAtom, useBasic } from '@grid-table/basic'
 import { useTableEvents } from './hooks/useTableEvents'
-import { useSticky } from './plugins/sticky'
+import { useSticky } from './plugins/sticky/useSticky.optimized'
 import { useTableClassNameValue } from './hooks'
 import { useAreaSelected } from './plugins/areaSelected'
 import { useCopy } from './plugins/copy/useCopy'
@@ -25,7 +25,7 @@ import { useRenderTheadCells } from './components/Cell/renderTheadCells'
 import { useRenderTbodyCells } from './components/Cell/renderTbodyCells'
 import { Provider } from './Provider'
 import './var.css'
-import { useColumnAutoSize } from './hooks/useColumnAutoSize'
+import { useColumnAutoSize } from './plugins/calcSizeByColumn/useColumnAutoSize'
 
 export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, tableRef) => {
   const { columns, dataSource } = props
@@ -36,7 +36,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   const { width } = useAutoSizer(ref)
   const store = useStore()
 
-  const gridRef = useRef<VGridTableRef>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
 
   const autoColumnsSize = useColumnAutoSize(gridRef)
 

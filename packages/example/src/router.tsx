@@ -15,7 +15,7 @@ import ModernDebounceThrottle from './pages/ModernDebounceThrottle'
 import TreeTableSizeDemo from './pages/TreeTableSize'
 import { AutoSizeDemo } from './pages/AutoSizeDemo'
 import { ValueInColsDemo } from './pages/ValueInColsDemo'
-import { FixedColumnsWithMergeCellsDemo } from './pages/FixedColumnsWithMergeCellsDemo'
+import { EditTableDemo } from './pages/EditTable'
 
 // 路由映射配置
 export const RouterMapping: Record<
@@ -87,8 +87,8 @@ export const RouterMapping: Record<
     label: '自动列宽调整',
   },
   '/fixed-columns-merge-cells': {
-    component: FixedColumnsWithMergeCellsDemo,
-    label: '固定列与合并单元格',
+    component: EditTableDemo,
+    label: '编辑表格',
   },
 }
 

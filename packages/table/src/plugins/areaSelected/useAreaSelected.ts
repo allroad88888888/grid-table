@@ -1,10 +1,17 @@
 import { useCallback, useEffect } from 'react'
-import { useAtomValue, atom, useStore } from '@einfach/react'
+import { useAtomValue, atom, useStore, useSetAtom } from '@einfach/react'
 import { tableClassNameAtom } from '../../hooks'
 import './AreaSelected.css'
 import type { PositionId } from '@grid-table/basic'
-import { useBasic } from '@grid-table/basic'
-import { areaCellIdsAtom, areaEndAtom, areaStartAtom, emptyPosition } from './state'
+import { headerLastIdAtom, useBasic } from '@grid-table/basic'
+import {
+  areaCellIdsAtom,
+  areaColumnIdsAtom,
+  areaEndAtom,
+  areaStartAtom,
+  emptyPosition,
+} from './state'
+import { applyHeaderStyleAtom } from './header'
 
 const isTouchAtom = atom<boolean>(false)
 
@@ -114,6 +121,19 @@ export function useAreaSelected({ enable = false }: { enable?: boolean } = {}) {
       return next
     })
   }, [cellEventsAtom, onMouseEnter, onMouseDown, onMouseUp, store, enable])
+
+  const areaColumnIds = useAtomValue(areaColumnIdsAtom, { store })
+  const headerLastId = useAtomValue(headerLastIdAtom, { store })
+  // 监听选择区域变化，更新表头最后一行的边框样式
+  const applyHeaderStyle = useSetAtom(applyHeaderStyleAtom, { store })
+  useEffect(() => {
+    if (!enable) {
+      return
+    }
+
+    // applyHeaderStyleAtom 返回清理函数，确保类型安全
+    return applyHeaderStyle() || undefined
+  }, [applyHeaderStyle, enable, areaColumnIds, headerLastId])
 
   // const onContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
   //   e.preventDefault()

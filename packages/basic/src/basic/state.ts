@@ -1,5 +1,5 @@
 import type { AtomState } from '@einfach/react'
-import { atom, incrementAtom } from '@einfach/react'
+import { atom, incrementAtom, selectAtom } from '@einfach/react'
 import type { ResizeParam } from '@grid-table/core'
 import type {
   CellId,
@@ -25,6 +25,13 @@ export const rowIndexListAtom = atom<RowId[]>([])
  * 头部列 d list
  */
 export const headerRowIndexListAtom = atom<RowId[]>(['0'])
+
+/**
+ * 表头最后一行 id
+ */
+export const headerLastIdAtom = selectAtom(headerRowIndexListAtom, (list) => {
+  return list[list.length - 1]
+})
 
 export const columnSizeMapAtom = atom(new Map<ColumnId, number>())
 

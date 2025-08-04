@@ -37,47 +37,37 @@ function App() {
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <div
-        style={{
-          width: '180px',
-          flexShrink: 0,
-        }}
-      >
-        <div>
-          当前页面链接
-          {currentUrl}
+    <div className="app-container">
+      <div className="sidebar">
+        <div className="sidebar-header">
+          <div className="sidebar-title">当前页面链接</div>
+          <div className="current-url">{currentUrl}</div>
         </div>
-        {Object.keys(RouterMapping).map((key) => {
-          return (
-            <div
-              style={{
-                border: '1px solid red',
-                cursor: 'pointer',
-              }}
-              key={key}
-              onClick={() => {
-                handleRouteChange(key)
-              }}
-            >
-              {key}
-            </div>
-          )
-        })}
+        <div className="nav-list" data-count={Object.keys(RouterMapping).length}>
+          {Object.keys(RouterMapping).map((key) => {
+            const isActive = currentUrl === key
+            const routeInfo = RouterMapping[key]
+            return (
+              <div
+                className={`nav-item ${isActive ? 'active' : ''}`}
+                key={key}
+                onClick={() => {
+                  handleRouteChange(key)
+                }}
+                title={`${routeInfo?.label || key} (${key})`} // 显示标签和路径
+              >
+                {routeInfo?.label || key}
+              </div>
+            )
+          })}
+        </div>
       </div>
-      <div
-        style={{
-          flexGrow: 1,
-          width: 1,
-        }}
-      >
-        <Suspense fallback={<div>loading</div>}>
-          <Component />
-        </Suspense>
+      <div className="main-content">
+        <div className="content-wrapper">
+          <Suspense fallback={<div className="loading">Loading...</div>}>
+            <Component />
+          </Suspense>
+        </div>
       </div>
     </div>
   )
