@@ -6,6 +6,7 @@ import { atom, useAtomValue, useSetAtom, useAtomCallback } from '@einfach/react'
 import { useLayoutEffect } from 'react'
 import { autoColumnsSizeAtom } from '../calcSizeByColumn/useColumnAutoSize'
 import { areaColumnIdsAtom } from '../areaSelected/state'
+import { optionsAtom } from '../../state'
 
 const enableColumnResizeAtom = atom(false)
 
@@ -47,6 +48,7 @@ export function ColumnDragItem({ columnId }: ColumnDragItemProps) {
       e.stopPropagation()
 
       const areaColumnIds = getter(areaColumnIdsAtom)
+      const options = getter(optionsAtom)
 
       let targetColumnIds: ColumnId[]
 
@@ -59,9 +61,12 @@ export function ColumnDragItem({ columnId }: ColumnDragItemProps) {
         // 在就用areaColumnIdsAtom，不在就用columnId
         targetColumnIds = isColumnInArea ? areaColumnIds : [columnId]
       }
-      console.log(`targetColumnIds`, targetColumnIds)
       // 双击时自动调整列的宽度
-      autoColumnsSize(targetColumnIds)
+      autoColumnsSize(targetColumnIds, {
+        minColumnWidth: options?.minColumnWidth,
+        maxColumnWidth: options?.maxColumnWidth,
+        columnPadding: options?.columnPadding,
+      })
     },
     [columnId, autoColumnsSize],
   )

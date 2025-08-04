@@ -1,5 +1,5 @@
 import { useAutoSizer, VGridTable } from '@grid-table/core'
-import { useAtomValue, useStore } from '@einfach/react'
+import { useAtomValue, useSetAtom, useStore } from '@einfach/react'
 import { forwardRef, Fragment, useImperativeHandle, useMemo, useRef } from 'react'
 import type { RowId } from '@grid-table/basic'
 import { headerRowIndexListAtom, useBasic } from '@grid-table/basic'
@@ -26,6 +26,7 @@ import { useRenderTbodyCells } from './components/Cell/renderTbodyCells'
 import { Provider } from './Provider'
 import './var.css'
 import { useColumnAutoSize } from './plugins/calcSizeByColumn/useColumnAutoSize'
+import { optionsAtom } from './state'
 
 export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, tableRef) => {
   const { columns, dataSource } = props
@@ -47,6 +48,9 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
       autoColumnsSize,
     }
   })
+
+  const setOptions = useSetAtom(optionsAtom)
+  setOptions(props)
 
   /** 表格事件功能 */
   const tableEvents = useTableEvents()

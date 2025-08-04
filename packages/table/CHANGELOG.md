@@ -1,5 +1,11 @@
 # @grid-table/view
 
+## 0.5.15
+
+### Patch Changes
+
+- 支持minColumnWidth maxColumnWidth columnPadding
+
 ## 0.5.14
 
 ### Patch Changes

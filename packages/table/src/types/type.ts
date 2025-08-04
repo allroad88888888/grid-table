@@ -4,6 +4,7 @@ import type { CSSProperties } from 'react'
 import type { VGridTableProps } from '@grid-table/core'
 import type { CopyProps } from '../plugins'
 import type { Store } from '@einfach/react'
+import { AutoColumnsSizeOptions } from '../plugins/calcSizeByColumn/measureColumnsWidth'
 
 export type AntdTableProps = {
   className?: string
@@ -75,7 +76,8 @@ export type AntdTableProps = {
     | 'loading'
     | 'minColumnWidth'
     | 'maxColumnWidth'
-  >
+  > &
+  AutoColumnsSizeOptions
 
 export interface AntdTableRef {
   autoColumnsSize: () => void

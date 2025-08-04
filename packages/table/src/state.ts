@@ -1,9 +1,10 @@
-import type { UseDataProps } from './types'
+import type { AntdTableProps, UseDataProps } from './types'
 import { format } from './core/format'
 import { atom } from '@einfach/react'
 import { rowIndexListAtom, rowSizeMapAtom } from '@grid-table/basic'
 import { nodeLevelAtom, relationAtom, rootAtom } from './tree/stateTree'
 import { dataFamilyAtom, loadingAtom } from './stateCore'
+import { easyEqual } from '@einfach/utils'
 
 //  'idProp' | 'parentProp' | 'dataSource' | 'root' | 'rowHeight
 export const dataInitAtom = atom<
@@ -29,3 +30,16 @@ export const dataInitAtom = atom<
 
   setter(loadingAtom, false)
 })
+
+export const optionsAtom = atom(
+  null as AntdTableProps | null,
+  (getter, setter, props: AntdTableProps) => {
+    const prev = getter(optionsAtom)
+    const isEqual = easyEqual(props, prev)
+    if (isEqual) {
+      return
+    }
+
+    setter(optionsAtom, props)
+  },
+)
