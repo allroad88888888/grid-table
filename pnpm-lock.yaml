@@ -147,14 +147,14 @@ importers:
   packages/example:
     dependencies:
       '@einfach/react':
-        specifier: ^0.3.4
-        version: 0.3.4(react@18.3.1)
+        specifier: ^0.3.10
+        version: 0.3.11(react@18.3.1)
       '@einfach/react-utils':
-        specifier: ^0.2.4
-        version: 0.2.4(@einfach/core@0.2.4)(@einfach/react@0.3.4(react@18.3.1))(@einfach/utils@0.2.2(@einfach/core@0.2.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.2.9
+        version: 0.2.9(@einfach/core@0.2.9)(@einfach/react@0.3.11(react@18.3.1))(@einfach/utils@0.2.7(@einfach/core@0.2.9))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@einfach/utils':
-        specifier: ^0.2.2
-        version: 0.2.2(@einfach/core@0.2.4)
+        specifier: ^0.2.7
+        version: 0.2.7(@einfach/core@0.2.9)
       '@grid-table/basic':
         specifier: workspace:*
         version: link:../basic
@@ -711,6 +711,10 @@ packages:
     resolution: {integrity: sha512-i5JKzdYoI7oOTha6+HS444xaOMT5dGV/Yc/JiQhe4+FYq16su1eyJ4mcWd16ZXz4SlGA2nMkjDcKxeXXkDWp8Q==}
     engines: {node: '>=14.18.0'}
 
+  '@einfach/core@0.2.9':
+    resolution: {integrity: sha512-uU3EFBcWeJdIWW7Y4McLYerzj8QBcIkxRCrSqkxqYuSVRRuPfHSbVxlkNXLDAi9eL1ulcaBYHISH7oqcf1Auqw==}
+    engines: {node: '>=14.18.0'}
+
   '@einfach/react-utils@0.2.4':
     resolution: {integrity: sha512-P+AkTEXR+f0SSxFqhSWKFyFF9mdrdu6SZBjN2Of/wMXLdhxCyZWg49BqbeQka6Gc17D9e7WUUUNyAJhhK+uTLA==}
     engines: {node: '>=14.18.0'}
@@ -732,6 +736,33 @@ packages:
       react-dom:
         optional: true
 
+  '@einfach/react-utils@0.2.9':
+    resolution: {integrity: sha512-JEb6SUH8Jf3t0Js09NWInGwtv/0sxEujvCbqixxySh3EJ2wtxP0gHx4gYGk14dPWNOLCbJ9GpP0we7jcFj556Q==}
+    engines: {node: '>=14.18.0'}
+    peerDependencies:
+      '@einfach/core': 0.2.9
+      '@einfach/react': 0.3.11
+      '@einfach/utils': 0.2.7
+      react: '>=16.8 <20'
+      react-dom: '>=16.8 <20'
+    peerDependenciesMeta:
+      '@einfach/core':
+        optional: true
+      '@einfach/react':
+        optional: true
+      '@einfach/utils':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
+  '@einfach/react@0.3.11':
+    resolution: {integrity: sha512-zVltGJoTg2pi7JvG6PBsGI8k6WyZ+9ObuRakcBvhoPnZlKGBIoEd/mCkVByREV+V6VKFPgqmK7LdYpqKB0h2RA==}
+    engines: {node: '>=14.18.0'}
+    peerDependencies:
+      react: '>=16.8 <20'
+
   '@einfach/react@0.3.4':
     resolution: {integrity: sha512-GTkFvYEajwZTmp/o67kLms+erMIj++cdBIO3XE9HRPSbVpY/s+6eiQ+SiD9PARrMMQgHJCzH13OsfOaGdqLDLw==}
     engines: {node: '>=14.18.0'}
@@ -743,6 +774,15 @@ packages:
     engines: {node: '>=14.18.0'}
     peerDependencies:
       '@einfach/core': 0.2.4
+    peerDependenciesMeta:
+      '@einfach/core':
+        optional: true
+
+  '@einfach/utils@0.2.7':
+    resolution: {integrity: sha512-InWPYA9qEbihxUQfu/xuzcOEn4oRlfK7t5vm9bVURz/1xvGW2zaboJw28rRxc99ZB7P0WcFAEghvzAwfIt+cFQ==}
+    engines: {node: '>=14.18.0'}
+    peerDependencies:
+      '@einfach/core': 0.2.9
     peerDependenciesMeta:
       '@einfach/core':
         optional: true
@@ -5135,13 +5175,7 @@ snapshots:
 
   '@einfach/core@0.2.4': {}
 
-  '@einfach/react-utils@0.2.4(@einfach/core@0.2.4)(@einfach/react@0.3.4(react@18.3.1))(@einfach/utils@0.2.2(@einfach/core@0.2.4))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    optionalDependencies:
-      '@einfach/core': 0.2.4
-      '@einfach/react': 0.3.4(react@18.3.1)
-      '@einfach/utils': 0.2.2(@einfach/core@0.2.4)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
+  '@einfach/core@0.2.9': {}
 
   '@einfach/react-utils@0.2.4(@einfach/core@0.2.4)(@einfach/react@0.3.4(react@18.3.1))(@einfach/utils@0.2.2(@einfach/core@0.2.4))(react-dom@19.1.0(react@18.3.1))(react@18.3.1)':
     optionalDependencies:
@@ -5151,6 +5185,19 @@ snapshots:
       react: 18.3.1
       react-dom: 19.1.0(react@18.3.1)
 
+  '@einfach/react-utils@0.2.9(@einfach/core@0.2.9)(@einfach/react@0.3.11(react@18.3.1))(@einfach/utils@0.2.7(@einfach/core@0.2.9))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    optionalDependencies:
+      '@einfach/core': 0.2.9
+      '@einfach/react': 0.3.11(react@18.3.1)
+      '@einfach/utils': 0.2.7(@einfach/core@0.2.9)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  '@einfach/react@0.3.11(react@18.3.1)':
+    dependencies:
+      '@einfach/core': 0.2.9
+      react: 18.3.1
+
   '@einfach/react@0.3.4(react@18.3.1)':
     dependencies:
       '@einfach/core': 0.2.4
@@ -5159,6 +5206,10 @@ snapshots:
   '@einfach/utils@0.2.2(@einfach/core@0.2.4)':
     optionalDependencies:
       '@einfach/core': 0.2.4
+
+  '@einfach/utils@0.2.7(@einfach/core@0.2.9)':
+    optionalDependencies:
+      '@einfach/core': 0.2.9
 
   '@emotion/hash@0.8.0': {}
 
