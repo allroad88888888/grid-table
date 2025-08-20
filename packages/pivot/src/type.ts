@@ -7,4 +7,6 @@ export interface PivotProps {
   style?: CSSProperties
   className?: string
   theme?: Theme
+  rowHeight?: number
+  overRowCount?: number
 }

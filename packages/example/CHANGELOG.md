@@ -1,5 +1,19 @@
 # @grid-table/example
 
+## 0.0.18
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/pivot@0.5.11
+
+## 0.0.17
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/pivot@0.5.10
+
 ## 0.0.16
 
 ### Patch Changes

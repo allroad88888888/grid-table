@@ -18,11 +18,11 @@ function PivotData(props: PivotProps) {
 
   return (
     <TableExcel
-      overRowCount={22}
+      overRowCount={props.overRowCount || 22}
       dataSource={dataList}
       headerDataSource={headerDataList}
       columns={columns}
-      rowHeight={36}
+      rowHeight={props.rowHeight || 32}
       bordered={true}
       className={props.className}
       style={props.style}

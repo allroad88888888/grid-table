@@ -1,5 +1,17 @@
 # @grid-table/pivot
 
+## 0.5.11
+
+### Patch Changes
+
+- type支持rowHeight
+
+## 0.5.10
+
+### Patch Changes
+
+- pivot支持rowHeight
+
 ## 0.5.9
 
 ### Patch Changes
