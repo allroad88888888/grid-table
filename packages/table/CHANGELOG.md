@@ -1,5 +1,11 @@
 # @grid-table/view
 
+## 0.5.16
+
+### Patch Changes
+
+- copy使用json.stringify
+
 ## 0.5.15
 
 ### Patch Changes

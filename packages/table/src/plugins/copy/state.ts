@@ -23,7 +23,7 @@ export const copyAtom = atom(undefined, (getter, setter, cellIds: CellId[][]) =>
 
   // 计算每列的最大宽度
   const columnWidths = data[0].map((_, columnIndex) => {
-    return Math.max(...data.map((row) => String(row[columnIndex]).length))
+    return Math.max(...data.map((row) => JSON.stringify(row[columnIndex]).length))
   })
 
   // 将数据格式化为对齐后的字符串
@@ -32,7 +32,7 @@ export const copyAtom = atom(undefined, (getter, setter, cellIds: CellId[][]) =>
       return row
         .map((cellInfo, index) => {
           // 根据最大宽度填充空格
-          return String(cellInfo).padEnd(columnWidths[index], ' ')
+          return JSON.stringify(cellInfo).padEnd(columnWidths[index], ' ')
         })
         .join('\t')
     })
