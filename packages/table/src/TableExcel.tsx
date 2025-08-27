@@ -1,6 +1,6 @@
-import { useAutoSizer, VGridTable } from '@grid-table/core'
+import { VGridTable } from '@grid-table/core'
 import { useAtomValue, useSetAtom, useStore } from '@einfach/react'
-import { forwardRef, Fragment, useImperativeHandle, useMemo, useRef } from 'react'
+import { forwardRef, Fragment, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import type { RowId } from '@grid-table/basic'
 import { headerRowIndexListAtom, useBasic } from '@grid-table/basic'
 import { useTableEvents } from './hooks/useTableEvents'
@@ -33,11 +33,12 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   const { cellDefaultWidth = 80, rowHeight = 36 } = props
   const { enableHeadContextMenu } = props
 
-  const ref = useRef<HTMLDivElement>(null)
-  const { width } = useAutoSizer(ref)
   const store = useStore()
 
   const gridRef = useRef<HTMLDivElement>(null)
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
+
+  console.log(`width`, containerSize.width)
 
   const autoColumnsSize = useColumnAutoSize(gridRef)
 
@@ -98,7 +99,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
       rowHeight,
       rowCount: dataSource.length,
       columnMinWidth: cellDefaultWidth,
-      wrapWidth: width,
+      wrapWidth: containerSize.width,
       columns,
     },
   )
@@ -179,6 +180,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
             emptyComponent={props.emptyComponent}
             loadingComponent={props.loadingComponent}
             loading={props.loading}
+            onResize={setContainerSize}
             theadChildren={<TheadContextMenu enableContextMenu={enableHeadContextMenu} />}
           >
             <>

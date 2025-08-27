@@ -52,9 +52,11 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
   } = props
 
   const internalRef = useRef<HTMLDivElement>(null)
+
   const ref = (gridRef as MutableRefObject<HTMLDivElement>) || internalRef
 
   const { width, height } = useAutoSizer(ref)
+  console.log(`ckkk :${width}`)
 
   const {
     onScroll: onYScroll,

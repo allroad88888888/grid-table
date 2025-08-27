@@ -32,27 +32,24 @@ const proportionalResizeColumnAtom = atom(false, (getter, setter, wrapWidth: num
     return prev + prevColumns.get(tId)!
   }, 0)
 
-  // 表格宽度大于容器宽度 啥也不做
+  // 表格宽度大于等于容器宽度 啥也不做
   if (currentTotalWidth >= remainingLength) {
     return
   }
 
-  const newWidthList = distributeToNewArray(
-    columnShowIdList.map((tId) => {
-      return prevColumns.get(tId)!
-    }),
-    remainingLength,
-  )
+  // 获取当前列宽数组
+  const currentWidths = columnShowIdList.map((tId) => {
+    return prevColumns.get(tId)!
+  })
 
+  // 使用新的平均分配函数
+  const newWidthList = distributeToNewArray(currentWidths, remainingLength)
+
+  console.log(`newWidthList`, newWidthList)
+  // 更新列宽映射
   const next = new Map(prevColumns)
   columnShowIdList.forEach((tId, index) => {
     next.set(tId, newWidthList[index])
-  })
-
-  let total = 0
-
-  next.forEach((value, key) => {
-    total += value
   })
 
   setter(columnSizeMapAtom, next)
@@ -70,7 +67,7 @@ export function useCellSizeByColumn(props: UseSizeByColumnProps) {
    * 监听columns变动
    */
   useEffect(() => {
-    initColumnsSizeByColumns(columns, { columnMinWidth })
+    initColumnsSizeByColumns(columns, { columnMinWidth, wrapWidth: wrapWidth })
   }, [columns, columnMinWidth, initColumnsSizeByColumns])
 
   /**

@@ -16,6 +16,7 @@ import TreeTableSizeDemo from './pages/TreeTableSize'
 import { AutoSizeDemo } from './pages/AutoSizeDemo'
 import { ValueInColsDemo } from './pages/ValueInColsDemo'
 import { EditTableDemo } from './pages/EditTable'
+import { ResizeWidthDemo } from './pages/ResizeWidthDemo'
 
 // 路由映射配置
 export const RouterMapping: Record<
@@ -86,9 +87,13 @@ export const RouterMapping: Record<
     component: AutoSizeDemo,
     label: '自动列宽调整',
   },
-  '/fixed-columns-merge-cells': {
+  '/edit': {
     component: EditTableDemo,
     label: '编辑表格',
+  },
+  '/resize-width': {
+    component: ResizeWidthDemo,
+    label: '容器宽度自适应',
   },
 }
 

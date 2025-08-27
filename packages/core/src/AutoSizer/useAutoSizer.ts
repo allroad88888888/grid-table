@@ -29,30 +29,13 @@ export function useAutoSizer<T extends HTMLElement>(
       return
     }
 
-    function change(parentNode: HTMLElement) {
-      const rect = parentNode.getBoundingClientRect()
-      // 判断隐藏 nothing todo
-      if (rect.height === 0 && rect.width === 0) {
-        return
-      }
-      // const parentNode = innerRef?.current as HTMLElement;
-      const styleTemp = window.getComputedStyle(parentNode) || {}
-      const paddingLeft = parseFloat(styleTemp.paddingLeft ?? '0')
-      const paddingRight = parseFloat(styleTemp.paddingRight ?? '0')
-      const paddingTop = parseFloat(styleTemp.paddingTop ?? '0')
-      const paddingBottom = parseFloat(styleTemp.paddingBottom ?? '0')
-
-      const borderBottom = parseFloat(styleTemp.borderBottomWidth ?? '0')
-      const borderTop = parseFloat(styleTemp.borderTopWidth ?? '0')
-      const borderLeft = parseFloat(styleTemp.borderLeftWidth ?? '0')
-      const borderRight = parseFloat(styleTemp.borderRightWidth ?? '0')
+    function change2(rec: DOMRectReadOnly) {
       setParam({
-        height: parentNode.offsetHeight - paddingTop - paddingBottom - borderBottom - borderTop,
-        width: parentNode.offsetWidth - paddingLeft - paddingRight - borderLeft - borderRight,
+        height: rec.height + 2,
+        width: rec.width + 2,
       })
     }
-    change(ref.current)
-    const debChange = throttle(change, 300)
+    const debChange = throttle(change2, 300)
 
     let resizeObserver: ResizeObserver
     if (withAnimation) {
@@ -60,7 +43,7 @@ export function useAutoSizer<T extends HTMLElement>(
       resizeObserver = new ResizeObserver((t) => {
         if (!ticking) {
           window.requestAnimationFrame(() => {
-            change(t[0].target as HTMLElement)
+            change2(t[0].contentRect)
             ticking = false
           })
 
@@ -69,7 +52,7 @@ export function useAutoSizer<T extends HTMLElement>(
       })
     } else {
       resizeObserver = new ResizeObserver((t) => {
-        debChange(t[0].target as HTMLElement)
+        debChange(t[0].contentRect)
       })
     }
     resizeObserver.observe(ref?.current)

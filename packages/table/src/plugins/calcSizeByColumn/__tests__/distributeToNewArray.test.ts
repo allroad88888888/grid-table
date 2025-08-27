@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals'
-import { distributeToNewArray } from './utils'
+import { distributeToNewArray } from '../utils'
 
 describe('easyClone', () => {
   it('easyClone', async () => {

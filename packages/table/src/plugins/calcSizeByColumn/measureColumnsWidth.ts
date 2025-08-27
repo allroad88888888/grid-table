@@ -49,8 +49,8 @@ export function measureColumnsWidth(
 
   const gridElement = gridRef.current
 
-  // 查找所有具有 grid-row-start 样式的单元格
-  const allCells = gridElement.querySelectorAll('.grid-table-cell')
+  // 查找所有具有 grid-row-start 样式的单元格（包括表头和数据单元格）
+  const allCells = gridElement.querySelectorAll('.grid-table-cell, .thead-cell')
   debugLog(`🔍 找到 ${allCells.length} 个单元格`)
 
   if (allCells.length === 0) {

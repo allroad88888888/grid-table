@@ -9,7 +9,7 @@ const columns: ColumnType[] = [
   {
     title: '序号根据表头宽度自动计算列宽',
     dataIndex: 'id',
-    width: 200,
+    width: 80,
     fixed: 'left',
     key: 'index',
   },
@@ -22,37 +22,6 @@ const columns: ColumnType[] = [
     render: (text: any) => <a>{text}</a>,
   },
 
-  // 中间普通列
-  {
-    title: '年龄',
-    dataIndex: 'age',
-    width: 80,
-    key: 'age',
-  },
-  {
-    title: '邮箱',
-    dataIndex: 'email',
-    width: 200,
-    key: 'email',
-  },
-  {
-    title: '电话',
-    dataIndex: 'phone',
-    width: 120,
-    key: 'phone',
-  },
-  {
-    title: '部门',
-    dataIndex: 'department',
-    width: 120,
-    key: 'department',
-  },
-  {
-    title: '职位',
-    dataIndex: 'position',
-    width: 150,
-    key: 'position',
-  },
   {
     title: '薪资',
     dataIndex: 'salary',
@@ -196,7 +165,7 @@ const data = [
   },
 ]
 
-export function EditTableDemo() {
+export function ResizeWidthDemo() {
   const store = useStore()
 
   return (
@@ -225,4 +194,4 @@ export function EditTableDemo() {
   )
 }
 
-export default EditTableDemo
+export default ResizeWidthDemo
