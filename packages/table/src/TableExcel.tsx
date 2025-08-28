@@ -38,8 +38,6 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   const gridRef = useRef<HTMLDivElement>(null)
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
 
-  console.log(`width`, containerSize.width)
-
   const autoColumnsSize = useColumnAutoSize(gridRef)
 
   const showBorder = props.bordered !== false

@@ -1,5 +1,17 @@
 # @grid-table/core
 
+## 0.6.9
+
+### Patch Changes
+
+- remove log
+
+## 0.6.8
+
+### Patch Changes
+
+- 优化useAutoSizer 修复父容器 自动列宽
+
 ## 0.6.7
 
 ### Patch Changes
