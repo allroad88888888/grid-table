@@ -216,7 +216,7 @@ export function EditTableDemo() {
           bordered
           store={store}
           enableSelectArea={true}
-          enableHeadContextMenu={true}
+          enableHeadContextMenu={false}
           enableColumnResize={true}
           enableCopy={true}
         />

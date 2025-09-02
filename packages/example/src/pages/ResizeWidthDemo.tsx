@@ -16,7 +16,7 @@ const columns: ColumnType[] = [
   {
     title: '姓名',
     dataIndex: 'name',
-    width: 120,
+
     fixed: 'left',
     key: 'name',
     render: (text: any) => <a>{text}</a>,
@@ -25,7 +25,7 @@ const columns: ColumnType[] = [
   {
     title: '薪资',
     dataIndex: 'salary',
-    width: 100,
+
     key: 'salary',
     render: (salary: any) => `$${salary?.toLocaleString()}`,
   },
@@ -40,7 +40,7 @@ const columns: ColumnType[] = [
   {
     title: '状态',
     dataIndex: 'status',
-    width: 100,
+
     fixed: 'right',
     key: 'status',
     render: (status: any) => {

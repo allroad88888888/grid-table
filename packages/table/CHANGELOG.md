@@ -1,5 +1,11 @@
 # @grid-table/view
 
+## 0.5.19
+
+### Patch Changes
+
+- 复制支持对象
+
 ## 0.5.18
 
 ### Patch Changes
