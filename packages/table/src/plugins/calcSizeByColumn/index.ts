@@ -1,2 +1,5 @@
 export * from './useSizeByColumn'
 export * from './calculateChildrenWidth'
+export * from './useSizeByColumn'
+export * from './useColumnAutoSize'
+export * from './utils'

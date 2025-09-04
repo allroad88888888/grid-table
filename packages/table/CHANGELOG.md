@@ -1,5 +1,37 @@
 # @grid-table/view
 
+## 0.6.13
+
+### Patch Changes
+
+- hooks放开
+  - @grid-table/core@0.6.13
+  - @grid-table/basic@0.6.13
+
+## 0.6.12
+
+### Patch Changes
+
+- 暴露更多api
+  - @grid-table/core@0.6.12
+  - @grid-table/basic@0.6.12
+
+## 0.6.11
+
+### Patch Changes
+
+- 暴露更多的状态
+  - @grid-table/core@0.6.11
+  - @grid-table/basic@0.6.11
+
+## 0.6.10
+
+### Patch Changes
+
+- 暴露更多plugins api
+  - @grid-table/core@0.6.10
+  - @grid-table/basic@0.6.10
+
 ## 0.5.19
 
 ### Patch Changes

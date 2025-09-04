@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/view",
-  "version": "0.5.19",
+  "version": "0.6.13",
   "description": "grid-table table",
   "main": "./esm/index.js",
   "module": "./esm/index.js",
@@ -42,7 +42,6 @@
     }
   },
   "devDependencies": {
-    "@swc/core": "^1.4.11",
     "@types/node": "^20.11.30",
     "@types/react": "^18.3.3",
     "typescript": "^5.4.3"

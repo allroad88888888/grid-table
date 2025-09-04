@@ -6,7 +6,7 @@
   "scripts": {
     "eslint": "npx eslint --config rules/.eslintrc ./ --fix",
     "test": "jest --collect-coverage",
-    "build": "cross-env DISABLE_WATCH=true npx gulp -c ./gulpfile.mjs&&npx tsc --build",
+    "build": "cross-env DISABLE_WATCH=true npx gulp -c ./gulpfile.mjs&&npx tsc --build --verbose --force",
     "tsc": "tsc -build",
     "prepare": "husky"
   },
