@@ -164,7 +164,6 @@ export function AutoSizeDemo() {
   const handleAutoSize = () => {
     tableRef.current?.autoColumnsSize?.()
     setAdjustCount((prev) => prev + 1)
-    console.log('自动调整列宽已执行')
   }
 
   return (

@@ -22,7 +22,6 @@ async function clickTreeNodeByText(page: any, nodeText: string) {
             currentTarget: nodeDiv,
           }
           fiber.memoizedProps.onClick(syntheticEvent)
-          console.log(`Successfully clicked tree node: ${text}`)
         }
       }
     }

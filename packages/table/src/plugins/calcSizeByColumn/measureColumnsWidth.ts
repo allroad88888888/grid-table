@@ -6,6 +6,10 @@ import { calculateColumnsMaxWidth, calculateSuggestedColumnWidth } from './calcu
  * 只有在 window.tpHelp === true 时才输出日志
  */
 const debugLog = (...args: any[]) => {
+  //@ts-ignore
+  if (!window?.tpHelp) {
+    return
+  }
   console.log(...args)
 }
 

@@ -134,8 +134,6 @@ export function TreeSelect(props: TreeSelectProps) {
   // 处理节点选择
   const handleNodeSelect = useCallback(
     (id: string, node: TreeNode) => {
-      console.log('handleNodeSelect called:', { id, node, multiple })
-
       if (multiple && confirmSelect) {
         // 确认模式下，只更新临时状态
         setTempSelectedValue((prev) => {

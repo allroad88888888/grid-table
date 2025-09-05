@@ -53,15 +53,7 @@ export function useSelection(
   // 处理选择
   const handleSelect = useCallback(
     (nodeId: string, node: TreeNode) => {
-      console.log('useSelection handleSelect called:', {
-        nodeId,
-        node,
-        disabled: node.disabled,
-        onChange: !!onChange,
-      })
-
       if (node.disabled) {
-        console.log('Node is disabled, skipping')
         return
       }
 
@@ -86,8 +78,6 @@ export function useSelection(
         newValue = nodeId
         newNodes = node
       }
-
-      console.log('Calling onChange with:', { newValue, newNodes })
 
       // 更新内部状态
       if (value === undefined) {

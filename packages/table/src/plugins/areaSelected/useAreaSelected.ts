@@ -65,7 +65,6 @@ export function useAreaSelected({ enable = false }: { enable?: boolean } = {}) {
     if (cellList.length === 0) {
       return
     }
-    console.log(`cellList`, cellList)
     const cancelList: (() => void)[] = []
     cellList.forEach((cellIdList) => {
       cellIdList.forEach((cellId) => {

@@ -138,7 +138,6 @@ export function TreeList(props: TreeListProps) {
   // 处理节点选择
   const handleNodeSelect = useCallback(
     (id: string, node: TreeNode) => {
-      console.log('TreeList handleNodeSelect called:', { id, node, multiple })
       handleSelect(id, node)
     },
     [handleSelect, multiple],

@@ -54,7 +54,6 @@ function App() {
       value={selectedValue}
       onChange={(value, node) => {
         setSelectedValue(value)
-        console.log('选中:', value, node)
       }}
       placeholder="请选择..."
       style={{ width: 200 }}
