@@ -7,17 +7,23 @@ export function distributeToNewArray(list: number[], total: number) {
 
   const space = remaining / sumA
 
-  // 生成新数组，按比例分配整数部分
+  // 生成新数组，按比例分配，先计算精确值再四舍五入
   const newArray = list.map((num) => {
-    const portion = Math.floor(num * space)
-    remaining -= portion
-    return num + portion
+    const portion = num * space
+    return Math.round(num + portion)
   })
 
-  // 将剩余的部分加到最后一个数字上
-  newArray[newArray.length - 1] += remaining
+  // 计算实际分配的总宽度
+  const actualTotal = newArray.reduce((acc, num) => acc + num, 0)
 
-  return newArray
+  // 如果总宽度不匹配，调整最后一个元素
+  const diff = total - actualTotal
+  if (diff !== 0) {
+    newArray[newArray.length - 1] = Math.max(1, newArray[newArray.length - 1] + diff)
+  }
+
+  // 确保所有值都是正整数
+  return newArray.map((width) => Math.max(1, Math.round(width)))
 }
 
 /**
@@ -66,20 +72,20 @@ export function distributeColumnWidths<T extends { width?: number }>(
   let distributedWidth = columnMinWidth
   if (flexibleColumnCount > 0) {
     const averageWidth = remainingWidth / flexibleColumnCount
-    distributedWidth = Math.max(averageWidth, columnMinWidth)
+    distributedWidth = Math.max(Math.round(averageWidth), columnMinWidth)
   }
 
   // 构建最终的宽度数组
   const result: number[] = new Array(columns.length)
 
-  // 设置固定宽度的列
+  // 设置固定宽度的列，确保为正整数
   fixedWidthColumns.forEach(({ index, width }) => {
-    result[index] = width
+    result[index] = Math.max(1, Math.round(width))
   })
 
-  // 设置灵活宽度的列
+  // 设置灵活宽度的列，确保为正整数
   flexibleColumns.forEach((index) => {
-    result[index] = distributedWidth
+    result[index] = Math.max(1, Math.round(distributedWidth))
   })
 
   return result

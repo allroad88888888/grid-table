@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "outDir": "./esm",
+    "declarationDir": "./@types",
+    "rootDir": "./src",
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "src/types.d.ts"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"],
+  "references": [
+    {
+      "path": "./../tree/tsconfig.json"
+    }
+  ]
+}

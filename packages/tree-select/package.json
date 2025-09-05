@@ -1,0 +1,56 @@
+{
+  "name": "@grid-tree/select",
+  "version": "0.1.0",
+  "description": "树形选择器组件，基于 @grid-tree/core 构建",
+  "main": "./esm/index.js",
+  "module": "./esm/index.js",
+  "typings": "@types/index.d.ts",
+  "license": "MIT",
+  "author": "allroad88888888@vip.qq.com",
+  "files": [
+    "esm",
+    "cjs",
+    "@types",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "react",
+    "tree",
+    "select",
+    "dropdown",
+    "tree-select"
+  ],
+  "peerDependencies": {
+    "@einfach/react": ">=0.3.4",
+    "@einfach/utils": ">=0.2.2",
+    "react": ">=16.8 <20",
+    "react-dom": ">=16.8 <20"
+  },
+  "peerDependenciesMeta": {
+    "@einfach/react": {
+      "optional": true
+    },
+    "@einfach/utils": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@grid-tree/core": "workspace:^*",
+    "clsx": "^2.1.1"
+  }
+}

@@ -1,5 +1,38 @@
 # @grid-table/example
 
+## 0.0.29
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/view@0.6.16
+  - @grid-table/excel@0.5.19
+  - @grid-table/pivot@0.5.22
+  - @grid-table/core@0.6.16
+  - @grid-table/basic@0.6.16
+
+## 0.0.28
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/view@0.6.15
+  - @grid-table/excel@0.5.18
+  - @grid-table/pivot@0.5.21
+  - @grid-table/core@0.6.15
+  - @grid-table/basic@0.6.15
+
+## 0.0.27
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/view@0.6.14
+  - @grid-table/excel@0.5.17
+  - @grid-table/pivot@0.5.20
+  - @grid-table/core@0.6.14
+  - @grid-table/basic@0.6.14
+
 ## 0.0.26
 
 ### Patch Changes

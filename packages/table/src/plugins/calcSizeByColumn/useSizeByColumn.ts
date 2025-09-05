@@ -45,10 +45,10 @@ const proportionalResizeColumnAtom = atom(false, (getter, setter, wrapWidth: num
   // 使用新的平均分配函数
   const newWidthList = distributeToNewArray(currentWidths, remainingLength)
 
-  // 更新列宽映射
+  // 更新列宽映射，确保宽度为正整数
   const next = new Map(prevColumns)
   columnShowIdList.forEach((tId, index) => {
-    next.set(tId, newWidthList[index])
+    next.set(tId, Math.max(1, Math.round(newWidthList[index])))
   })
 
   setter(columnSizeMapAtom, next)

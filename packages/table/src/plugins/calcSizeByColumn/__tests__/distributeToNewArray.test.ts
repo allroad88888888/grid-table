@@ -9,13 +9,13 @@ describe('easyClone', () => {
     //  1/6
     // 40
 
-    let expected = [16, 33, 51]
+    let expected = [17, 33, 50]
     expect(distributeToNewArray(A, B)).toStrictEqual(expected)
 
     // 测试 2：无剩余的分配
     A = [5, 5, 10]
     B = 30
-    expected = [7, 7, 16]
+    expected = [8, 8, 14]
     expect(distributeToNewArray(A, B)).toStrictEqual(expected)
 
     // 测试 3：所有数字相等
@@ -33,7 +33,7 @@ describe('easyClone', () => {
     // 测试 5：B 很大，分配较多
     A = [1, 2, 3]
     B = 1000
-    expected = [166, 333, 501]
+    expected = [167, 333, 500]
     expect(distributeToNewArray(A, B)).toStrictEqual(expected)
   })
 })

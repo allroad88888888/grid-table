@@ -1,6 +1,7 @@
 import { describe, test, expect } from '@jest/globals'
 import { formatToTable } from './../src/format/data/formatToTable'
 import mockData, { dataList } from './mock/single-population-proportion.mock'
+import { connectKey } from '@grid-table/view'
 
 describe('pivot', () => {
   test('easy', () => {
@@ -182,19 +183,19 @@ describe('pivot', () => {
     expect(res.headerColumns).toStrictEqual(['headerColumn0', 'headerColumn1', 'headerColumn2'])
 
     expect(res.headerMergeCellList).toStrictEqual([
-      { cellId: '0||type', colIdList: ['job'], rowIdList: [] },
-      { cellId: '0||column1', colIdList: ['column2'], rowIdList: [] },
-      { cellId: '0||column3', colIdList: ['column4'], rowIdList: [] },
-      { cellId: '0||column5', colIdList: ['column6'], rowIdList: [] },
-      { cellId: '0||column7', colIdList: ['column8'], rowIdList: [] },
-      { cellId: '0||column9', colIdList: ['column10'], rowIdList: [] },
-      { cellId: '1||type', colIdList: ['job'], rowIdList: [] },
+      { cellId: `0${connectKey}type`, colIdList: ['job'], rowIdList: [] },
+      { cellId: `0${connectKey}column1`, colIdList: ['column2'], rowIdList: [] },
+      { cellId: `0${connectKey}column3`, colIdList: ['column4'], rowIdList: [] },
+      { cellId: `0${connectKey}column5`, colIdList: ['column6'], rowIdList: [] },
+      { cellId: `0${connectKey}column7`, colIdList: ['column8'], rowIdList: [] },
+      { cellId: `0${connectKey}column9`, colIdList: ['column10'], rowIdList: [] },
+      { cellId: `1${connectKey}type`, colIdList: ['job'], rowIdList: [] },
     ])
 
     expect(res.bodyMergeCelList).toStrictEqual([
-      { cellId: '0||type', colIdList: [], rowIdList: ['1', '2', '3'] },
-      { cellId: '4||type', colIdList: [], rowIdList: ['5', '6', '7'] },
-      { cellId: '8||type', colIdList: [], rowIdList: ['9', '10', '11'] },
+      { cellId: `0${connectKey}type`, colIdList: [], rowIdList: ['1', '2', '3'] },
+      { cellId: `4${connectKey}type`, colIdList: [], rowIdList: ['5', '6', '7'] },
+      { cellId: `8${connectKey}type`, colIdList: [], rowIdList: ['9', '10', '11'] },
     ])
   })
 })

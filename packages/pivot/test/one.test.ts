@@ -1,6 +1,7 @@
 import { describe, test, expect } from '@jest/globals'
 import { formatToTable } from './../src/format/data/formatToTable'
 import mockData from './mock/one.mock'
+import { connectKey } from '@grid-table/view'
 
 describe('pivot', () => {
   test('easy', () => {
@@ -37,7 +38,7 @@ describe('pivot', () => {
     expect(res.headerColumns).toStrictEqual(['headerColumn0', 'headerColumn1'])
 
     expect(res.headerMergeCellList).toStrictEqual([
-      { cellId: '0||organization', colIdList: ['position'], rowIdList: [] },
+      { cellId: `0${connectKey}organization`, colIdList: ['position'], rowIdList: [] },
     ])
 
     expect(res.bodyMergeCelList).toStrictEqual([])

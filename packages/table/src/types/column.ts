@@ -35,6 +35,12 @@ export interface ColumnType<ItemInfo = Record<string, any>> {
    * 树形展开按钮显示
    */
   enabledExpand?: boolean
+
+  /**
+   * 是否启用区域选中
+   * @default true
+   */
+  enableSelectArea?: boolean
 }
 
 export interface CustomHeaderCellProps {

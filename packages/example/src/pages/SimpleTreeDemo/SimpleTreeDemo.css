@@ -1,0 +1,64 @@
+/* SimpleTreeDemo 的专属样式 - 只包含页面布局相关的样式 */
+.simple-tree-demo {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.simple-tree-demo h2 {
+  margin: 0 0 8px 0;
+  color: #262626;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.simple-tree-demo p {
+  margin: 0 0 20px 0;
+  color: #595959;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.simple-controls {
+  margin-bottom: 20px;
+}
+
+.simple-controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #262626;
+  cursor: pointer;
+}
+
+.simple-controls input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: #1890ff;
+}
+
+/* 可以通过 CSS 变量自定义树形组件样式 */
+.tree-container {
+  /* 
+   * @grid-tree/core 提供了丰富的 CSS 变量支持
+   * 您可以通过覆盖这些变量来自定义样式
+   */
+
+  /* 容器样式自定义示例 */
+  /* --grid-tree-bg: #f9f9f9; */
+  /* --grid-tree-border: 2px solid #1890ff; */
+  /* --grid-tree-border-radius: 12px; */
+  /* --grid-tree-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+
+  /* 树项样式自定义示例 */
+  /* --grid-tree-item-hover-bg: #e6f7ff; */
+  /* --grid-tree-item-selected-bg: #bae7ff; */
+  /* --grid-tree-item-text-color: #333; */
+  /* --grid-tree-item-font-size: 16px; */
+  /* --grid-tree-item-min-height: 40px; */
+
+  /* 箭头样式自定义示例 */
+  /* --grid-tree-arrow-color: #1890ff; */
+  /* --grid-tree-arrow-hover-color: #096dd9; */
+}

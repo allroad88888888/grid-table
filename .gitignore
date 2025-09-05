@@ -11,3 +11,5 @@ coverage
 tsconfig.tsbuildinfo
 cjs
 esm
+playwright-report
+test-results

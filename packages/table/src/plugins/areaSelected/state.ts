@@ -4,6 +4,7 @@ import { columnIdShowListAtom, rowIdShowListAtom } from '@grid-table/basic'
 import { atom, selectAtom } from '@einfach/react'
 import { easyEqual } from '@einfach/utils'
 import { columnsOptionAtom } from '../../stateColumn'
+import { getColumnId } from '../../utils'
 
 export const areaSelectEnableAtom = atom(false)
 
@@ -23,10 +24,10 @@ export const areaDisabledColsAtom = selectAtom(
   (cols) => {
     return cols
       .filter((options) => {
-        return !('dataIndex' in options)
+        return options.enableSelectArea === false
       })
       .map((options) => {
-        return options.key
+        return getColumnId(options)
       })
   },
   easyEqual,

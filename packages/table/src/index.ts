@@ -11,6 +11,7 @@ export * from './Provider'
 export * from './plugins'
 export * from './utils'
 export * from './core'
+export * from './tree'
 
 export { TableExcel } from './TableExcel'
 

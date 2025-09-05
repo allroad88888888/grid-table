@@ -1,0 +1,301 @@
+.tree-select-confirm-demo {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fafafa;
+  min-height: 100vh;
+}
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+
+.demo-header h1 {
+  margin: 0 0 12px;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.demo-header p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.demo-section {
+  background: white;
+  padding: 32px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.demo-section h2 {
+  margin: 0 0 16px;
+  font-size: 24px;
+  color: #1f2937;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.demo-section > p {
+  margin: 0 0 24px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.demo-item {
+  margin-bottom: 24px;
+}
+
+.demo-item label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.demo-result {
+  background: #f9fafb;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  margin-top: 24px;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.result-item:last-child {
+  margin-bottom: 0;
+}
+
+.result-item strong {
+  min-width: 140px;
+  color: #374151;
+}
+
+.result-value {
+  color: #1f2937;
+  font-family: monospace;
+  background: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #d1d5db;
+  font-size: 13px;
+}
+
+/* 对比演示样式 */
+.comparison-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.comparison-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.comparison-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.comparison-header.confirm-mode {
+  background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);
+}
+
+.comparison-header.normal-mode {
+  background: linear-gradient(135deg, #dbeafe 0%, #60a5fa 100%);
+}
+
+.comparison-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.mode-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.mode-badge.confirm {
+  background: #fbbf24;
+  color: #92400e;
+}
+
+.mode-badge.normal {
+  background: #3b82f6;
+  color: white;
+}
+
+.comparison-item .tree-select {
+  margin: 16px;
+}
+
+.feature-list {
+  padding: 16px;
+  background: #f9fafb;
+}
+
+.feature-item {
+  padding: 6px 0;
+  font-size: 13px;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.feature-item:last-child {
+  border-bottom: none;
+}
+
+/* 复杂场景样式 */
+.scenario-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.scenario-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  background: #fafafa;
+}
+
+.scenario-item h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.scenario-item p {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* 操作日志样式 */
+.operation-log {
+  background: #1f2937;
+  border-radius: 8px;
+  padding: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+  font-family: 'Consolas', 'Monaco', monospace;
+  border: 1px solid #374151;
+}
+
+.log-item {
+  color: #d1d5db;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 2px 0;
+  border-bottom: 1px solid #374151;
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.log-empty {
+  color: #9ca3af;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0;
+  font-style: italic;
+}
+
+.clear-log-btn {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+.clear-log-btn:hover {
+  background: #dc2626;
+}
+
+/* 技术说明样式 */
+.tech-explanation {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.tech-item h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.code-block {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 16px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #334155;
+  overflow-x: auto;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .tree-select-confirm-demo {
+    padding: 16px;
+  }
+
+  .demo-section {
+    padding: 20px;
+  }
+
+  .comparison-container {
+    grid-template-columns: 1fr;
+  }
+
+  .scenario-container {
+    grid-template-columns: 1fr;
+  }
+
+  .tech-explanation {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-header {
+    padding: 20px;
+  }
+
+  .demo-header h1 {
+    font-size: 24px;
+  }
+}

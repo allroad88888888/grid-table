@@ -1,20 +1,49 @@
+/* CSS 变量定义 - 支持主题定制 */
+:root {
+  --grid-tree-arrow-size: 8px;
+  --grid-tree-arrow-color: #666;
+  --grid-tree-arrow-hover-color: #333;
+  --grid-tree-arrow-padding: 6px;
+  --grid-tree-arrow-border-width: 1.5px;
+  --grid-tree-item-hover-bg: #f5f5f5;
+  --grid-tree-item-selected-bg: #e6f7ff;
+  --grid-tree-item-border-radius: 4px;
+  --grid-tree-item-transition: all 0.2s ease;
+}
+
 .grid-tree-arrow {
   height: 100%;
-  display: inline-block;
-  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--grid-tree-arrow-padding, 6px);
   cursor: pointer;
+  border-radius: var(--grid-tree-item-border-radius, 4px);
+  transition: var(--grid-tree-item-transition, all 0.2s ease);
+  user-select: none;
+}
+
+.grid-tree-arrow:hover {
+  background-color: var(--grid-tree-item-hover-bg, #f5f5f5);
 }
 
 .grid-tree-arrow > i {
   display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-left: 1px solid black;
-  border-bottom: 1px solid black;
+  width: var(--grid-tree-arrow-size, 8px);
+  height: var(--grid-tree-arrow-size, 8px);
+  border-left: var(--grid-tree-arrow-border-width, 1.5px) solid var(--grid-tree-arrow-color, #666);
+  border-bottom: var(--grid-tree-arrow-border-width, 1.5px) solid var(--grid-tree-arrow-color, #666);
+  transition: var(--grid-tree-item-transition, all 0.2s ease);
 }
+
+.grid-tree-arrow:hover > i {
+  border-color: var(--grid-tree-arrow-hover-color, #333);
+}
+
 .grid-tree-arrow > .grid-tree-arrow-expand {
   transform: rotate(-45deg);
 }
+
 .grid-tree-arrow > .grid-tree-arrow-collapse {
   transform: rotate(-135deg);
 }

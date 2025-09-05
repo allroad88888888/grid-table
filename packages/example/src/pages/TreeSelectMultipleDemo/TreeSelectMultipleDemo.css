@@ -1,0 +1,73 @@
+.tree-select-multiple-demo {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tree-select-multiple-demo h1 {
+  color: #262626;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 12px;
+}
+
+.tree-select-multiple-demo h2 {
+  color: #262626;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  margin-top: 32px;
+}
+
+.tree-select-multiple-demo h2:first-of-type {
+  margin-top: 16px;
+}
+
+.demo-section {
+  margin-bottom: 32px;
+}
+
+.demo-section p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.demo-item {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.demo-item label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.demo-result {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 12px;
+  color: #666;
+  word-break: break-all;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .tree-select-multiple-demo {
+    padding: 16px;
+  }
+
+  .demo-item {
+    margin-bottom: 16px;
+  }
+}

@@ -1,5 +1,23 @@
 # @grid-table/basic
 
+## 0.6.16
+
+### Patch Changes
+
+- @grid-table/core@0.6.16
+
+## 0.6.15
+
+### Patch Changes
+
+- @grid-table/core@0.6.15
+
+## 0.6.14
+
+### Patch Changes
+
+- @grid-table/core@0.6.14
+
 ## 0.6.13
 
 ### Patch Changes

@@ -1,5 +1,29 @@
 # @grid-table/view
 
+## 0.6.16
+
+### Patch Changes
+
+- 修复列不能被选中
+  - @grid-table/core@0.6.16
+  - @grid-table/basic@0.6.16
+
+## 0.6.15
+
+### Patch Changes
+
+- cell id key change
+  - @grid-table/core@0.6.15
+  - @grid-table/basic@0.6.15
+
+## 0.6.14
+
+### Patch Changes
+
+- 列的计算取正整数
+  - @grid-table/core@0.6.14
+  - @grid-table/basic@0.6.14
+
 ## 0.6.13
 
 ### Patch Changes

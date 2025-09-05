@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/example",
-  "version": "0.0.26",
+  "version": "0.0.29",
   "private": true,
   "description": "grid-table example",
   "license": "MIT",
@@ -23,6 +23,7 @@
     "@grid-table/excel": "workspace:*",
     "@grid-table/view": "workspace:*",
     "@grid-tree/core": "workspace:*",
+    "@grid-tree/select": "workspace:*",
     "antd": "^5.20.2",
     "clsx": "^2.1.1",
     "@einfach/react": "^0.3.10",

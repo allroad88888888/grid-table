@@ -29,5 +29,10 @@ const jestConfig = {
    * 单测里面，如需要使用到dom，这里需设置为jsdom
    */
   testEnvironment: 'jsdom',
+
+  /**
+   * 排除 e2e 测试文件夹，e2e 测试由 Playwright 运行
+   */
+  testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
 }
 export default jestConfig

@@ -1,0 +1,65 @@
+---
+globs: *.css,*.tsx
+description: CSS and styling conventions for consistent theming and responsive design
+---
+
+# CSS and Styling Conventions
+
+## CSS Variables for Theming
+
+Use CSS custom properties for all themeable values:
+
+```css
+:root {
+  /* Colors */
+  --tree-select-bg: #fff;
+  --tree-select-border: #d9d9d9;
+  --tree-select-border-hover: #40a9ff;
+  --tree-select-primary-color: #1890ff;
+
+  /* Sizes */
+  --tree-select-height-middle: 32px;
+  --tree-select-border-radius: 6px;
+  --tree-select-padding-horizontal: 11px;
+
+  /* Transitions */
+  --tree-select-transition: all 0.2s ease;
+}
+```
+
+## Class Naming (BEM-like)
+
+- Block: `.tree-select`
+- Element: `.tree-select-selector`, `.tree-select-dropdown`
+- Modifier: `.tree-select-selector-focused`, `.tree-select-node-disabled`
+- State: `.tree-select-node-selected`, `.tree-select-dropdown-footer`
+
+## Component Structure
+
+- Main component CSS in same directory as component
+- Import CSS in component file: `import './Component.css'`
+- Responsive design with mobile-first approach
+- Use `clsx` for conditional class names
+
+## Styling Patterns
+
+```tsx
+// Conditional classes
+className={clsx('tree-select-node', {
+  'tree-select-node-selected': isSelected,
+  'tree-select-node-disabled': disabled,
+})}
+
+// Inline styles for dynamic values
+style={{
+  transform: isSelected ? 'scale(1.02)' : 'scale(1)',
+  transition: 'all 0.3s ease',
+}}
+```
+
+## Performance Considerations
+
+- Use `appearance: none` to remove default browser styles
+- Prefer transforms over changing layout properties
+- Use `will-change` for animations
+- Leverage CSS containment where appropriate

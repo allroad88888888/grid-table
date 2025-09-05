@@ -1,0 +1,205 @@
+/* @grid-tree/core 基础样式文件 */
+/* 提供开箱即用的树形组件样式，支持 CSS 变量定制 */
+
+/* CSS 变量定义 - 支持外部覆盖 */
+:root {
+  /* 容器样式变量 */
+  --grid-tree-bg: #fff;
+  --grid-tree-border: 1px solid #e8e8e8;
+  --grid-tree-border-radius: 6px;
+  --grid-tree-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  /* 树项样式变量 */
+  --grid-tree-item-padding: 0 12px;
+  --grid-tree-item-border-bottom: 1px solid #f5f5f5;
+  --grid-tree-item-hover-bg: #f5f5f5;
+  --grid-tree-item-selected-bg: #e6f7ff;
+  --grid-tree-item-text-color: #262626;
+  --grid-tree-item-font-size: 14px;
+  --grid-tree-item-line-height: 1.4;
+  --grid-tree-item-min-height: 32px;
+
+  /* 箭头样式变量（继承之前的定义） */
+  --grid-tree-arrow-size: 8px;
+  --grid-tree-arrow-color: #666;
+  --grid-tree-arrow-hover-color: #333;
+  --grid-tree-arrow-padding: 6px;
+  --grid-tree-arrow-border-width: 1.5px;
+  --grid-tree-item-border-radius: 4px;
+  --grid-tree-item-transition: all 0.2s ease;
+
+  /* 层级缩进变量 */
+  --grid-tree-level-indent: 20px;
+}
+
+/* 基础容器样式 */
+.grid-tree-container {
+  background: var(--grid-tree-bg);
+  border: var(--grid-tree-border);
+  border-radius: var(--grid-tree-border-radius);
+  box-shadow: var(--grid-tree-box-shadow);
+  overflow: hidden;
+  position: relative;
+}
+
+/* 树形列表基础样式 */
+.grid-tree-container > ul,
+.grid-tree-container ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+/* 树形项基础样式 */
+.grid-tree-item {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  padding: var(--grid-tree-item-padding);
+  border-bottom: var(--grid-tree-item-border-bottom);
+  transition: var(--grid-tree-item-transition);
+  color: var(--grid-tree-item-text-color);
+  font-size: var(--grid-tree-item-font-size);
+  line-height: var(--grid-tree-item-line-height);
+  min-height: var(--grid-tree-item-min-height);
+  position: relative;
+  cursor: default;
+}
+
+/* 悬停效果 */
+.grid-tree-item:hover {
+  background-color: var(--grid-tree-item-hover-bg);
+}
+
+/* 选中效果 */
+.grid-tree-item.selected {
+  background-color: var(--grid-tree-item-selected-bg);
+}
+
+/* 最后一项去除底部边框 */
+.grid-tree-item:last-child {
+  border-bottom: none;
+}
+
+/* 层级缩进样式 */
+.grid-tree-indent {
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* 内容区域 */
+.grid-tree-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* 箭头样式（继承之前优化的样式） */
+.grid-tree-arrow {
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--grid-tree-arrow-padding, 6px);
+  cursor: pointer;
+  border-radius: var(--grid-tree-item-border-radius, 4px);
+  transition: var(--grid-tree-item-transition, all 0.2s ease);
+  user-select: none;
+}
+
+.grid-tree-arrow:hover {
+  background-color: var(--grid-tree-item-hover-bg, #f5f5f5);
+}
+
+.grid-tree-arrow > i {
+  display: inline-block;
+  width: var(--grid-tree-arrow-size, 8px);
+  height: var(--grid-tree-arrow-size, 8px);
+  border-left: var(--grid-tree-arrow-border-width, 1.5px) solid var(--grid-tree-arrow-color, #666);
+  border-bottom: var(--grid-tree-arrow-border-width, 1.5px) solid var(--grid-tree-arrow-color, #666);
+  transition: var(--grid-tree-item-transition, all 0.2s ease);
+}
+
+.grid-tree-arrow:hover > i {
+  border-color: var(--grid-tree-arrow-hover-color, #333);
+}
+
+.grid-tree-arrow > .grid-tree-arrow-expand {
+  transform: rotate(-45deg);
+}
+
+.grid-tree-arrow > .grid-tree-arrow-collapse {
+  transform: rotate(-135deg);
+}
+
+/* 禁用状态 */
+.grid-tree-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.grid-tree-item.disabled:hover {
+  background-color: transparent;
+}
+
+/* 加载状态 */
+.grid-tree-item.loading {
+  opacity: 0.6;
+}
+
+.grid-tree-item.loading::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e8e8e8;
+  border-top: 2px solid #1890ff;
+  border-radius: 50%;
+  animation: grid-tree-spin 1s linear infinite;
+}
+
+@keyframes grid-tree-spin {
+  0% {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+/* 紧凑模式 */
+.grid-tree-container.compact {
+  --grid-tree-item-min-height: 24px;
+  --grid-tree-item-padding: 0 8px;
+  --grid-tree-item-font-size: 12px;
+}
+
+/* 宽松模式 */
+.grid-tree-container.spacious {
+  --grid-tree-item-min-height: 40px;
+  --grid-tree-item-padding: 0 16px;
+  --grid-tree-item-font-size: 16px;
+}
+
+/* 无边框模式 */
+.grid-tree-container.borderless {
+  --grid-tree-border: none;
+  --grid-tree-box-shadow: none;
+}
+
+/* 暗色主题 */
+.grid-tree-container.dark {
+  --grid-tree-bg: #1f1f1f;
+  --grid-tree-border: 1px solid #404040;
+  --grid-tree-item-border-bottom: 1px solid #333;
+  --grid-tree-item-hover-bg: #2a2a2a;
+  --grid-tree-item-selected-bg: #003a52;
+  --grid-tree-item-text-color: #e8e8e8;
+  --grid-tree-arrow-color: #bbb;
+  --grid-tree-arrow-hover-color: #fff;
+}

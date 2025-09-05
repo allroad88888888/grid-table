@@ -1,6 +1,7 @@
 import { describe, test, expect } from '@jest/globals'
 import { formatToTable } from './../src/format/data/formatToTable'
 import mockData, { columns, headerData } from './mock/big.mock'
+import { connectKey } from '@grid-table/view'
 
 describe('pivot', () => {
   test('easy', () => {
@@ -149,12 +150,12 @@ describe('pivot', () => {
 
     expect(res.headerMergeCellList).toStrictEqual([
       {
-        cellId: '0||岗位编号',
+        cellId: `0${connectKey}岗位编号`,
         colIdList: ['岗位名称', '员工编号', '员工姓名', '入职时间', '离职时间'],
         rowIdList: [],
       },
       {
-        cellId: '0||column1',
+        cellId: `0${connectKey}column1`,
         colIdList: [
           'column2',
           'column3',
@@ -171,7 +172,7 @@ describe('pivot', () => {
         rowIdList: [],
       },
       {
-        cellId: '0||column13',
+        cellId: `0${connectKey}column13`,
         colIdList: [
           'column14',
           'column15',
@@ -188,7 +189,7 @@ describe('pivot', () => {
         rowIdList: [],
       },
       {
-        cellId: '1||岗位编号',
+        cellId: `1${connectKey}岗位编号`,
         colIdList: ['岗位名称', '员工编号', '员工姓名', '入职时间', '离职时间'],
         rowIdList: [],
       },

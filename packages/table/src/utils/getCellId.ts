@@ -1,6 +1,6 @@
 import type { ColumnId, RowId } from '@grid-table/basic'
 
-const connectKey = '||'
+export const connectKey = '^^^^$^^^^'
 export function getCellId({ rowId, columnId }: { rowId: RowId; columnId: ColumnId }) {
   return `${rowId}${connectKey}${columnId}`
 }

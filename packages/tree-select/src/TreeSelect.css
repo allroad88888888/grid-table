@@ -1,0 +1,545 @@
+/* TreeSelect 组件样式 */
+/* 支持 CSS 变量定制 */
+
+:root {
+  /* 基础颜色变量 */
+  --tree-select-bg: #fff;
+  --tree-select-border: #d9d9d9;
+  --tree-select-border-hover: #40a9ff;
+  --tree-select-border-focus: #1890ff;
+  --tree-select-text-color: #000000d9;
+  --tree-select-placeholder-color: #bfbfbf;
+  --tree-select-disabled-bg: #f5f5f5;
+  --tree-select-disabled-color: #00000040;
+
+  /* 尺寸变量 */
+  --tree-select-height-small: 24px;
+  --tree-select-height-middle: 32px;
+  --tree-select-height-large: 40px;
+  --tree-select-padding-horizontal: 11px;
+  --tree-select-padding-vertical: 4px;
+  --tree-select-border-radius: 6px;
+
+  /* 动画变量 */
+  --tree-select-transition: all 0.2s ease;
+
+  /* 下拉相关变量 */
+  --tree-select-dropdown-bg: #fff;
+  --tree-select-dropdown-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+    0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  --tree-select-dropdown-border: #d9d9d9;
+
+  /* 选中状态变量 */
+  --tree-select-selected-bg: #e6f7ff;
+  --tree-select-selected-color: #1890ff;
+  --tree-select-hover-bg: #f5f5f5;
+  --tree-select-primary-color: #1890ff;
+
+  /* 标签相关变量 */
+  --tree-select-tag-bg: #f5f5f5;
+  --tree-select-tag-border: #d9d9d9;
+  --tree-select-tag-hover-bg: #e6f7ff;
+  --tree-select-tag-disabled-bg: #fafafa;
+  --tree-select-tag-close-color: #999;
+  --tree-select-tag-close-hover-color: #666;
+  --tree-select-tag-more-bg: #fafafa;
+  --tree-select-tag-more-color: #999;
+}
+
+/* 主容器 */
+.tree-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+/* TreeList 主容器 */
+.tree-list {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--tree-select-border);
+  border-radius: var(--tree-select-border-radius);
+  background: var(--tree-select-bg);
+  overflow: hidden;
+}
+
+/* 确认模式下的TreeList样式 */
+.tree-select-confirm-mode .tree-list {
+  border: none;
+  border-radius: 0;
+}
+
+/* 下拉容器包装器 */
+.tree-select-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.tree-select-dropdown-wrapper-inline {
+  /* 内联模式特殊样式 */
+}
+
+/* 内联模式下拉菜单 */
+.tree-select-dropdown-inline {
+  border: 1px solid var(--tree-select-border);
+  border-top: none;
+  border-radius: 0 0 var(--tree-select-border-radius) var(--tree-select-border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 选择器 */
+.tree-select-selector {
+  position: relative;
+  background: var(--tree-select-bg);
+  border: 1px solid var(--tree-select-border);
+  border-radius: var(--tree-select-border-radius);
+  transition: var(--tree-select-transition);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: var(--tree-select-height-middle);
+  padding: var(--tree-select-padding-vertical) var(--tree-select-padding-horizontal);
+}
+
+.tree-select-selector:hover {
+  border-color: var(--tree-select-border-hover);
+}
+
+.tree-select-selector-focused {
+  border-color: var(--tree-select-border-focus);
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* 尺寸变体 */
+.tree-select-selector-small {
+  min-height: var(--tree-select-height-small);
+  padding: 0 7px;
+}
+
+.tree-select-selector-large {
+  min-height: var(--tree-select-height-large);
+  padding: 6px var(--tree-select-padding-horizontal);
+  font-size: 16px;
+}
+
+/* 禁用状态 */
+.tree-select-selector-disabled {
+  background: var(--tree-select-disabled-bg);
+  color: var(--tree-select-disabled-color);
+  cursor: not-allowed;
+  border-color: var(--tree-select-border);
+}
+
+.tree-select-selector-disabled:hover {
+  border-color: var(--tree-select-border);
+}
+
+/* 只读状态 */
+.tree-select-selector-readonly {
+  cursor: default;
+}
+
+/* 多选模式选择区域 */
+.tree-select-selection-multiple {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  min-height: 22px;
+  padding: 2px 0;
+}
+
+/* 多选标签 */
+.tree-select-tag {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 4px;
+  background: var(--tree-select-tag-bg);
+  border: 1px solid var(--tree-select-tag-border);
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 18px;
+  transition: all 0.2s ease;
+}
+
+.tree-select-tag:hover {
+  background: var(--tree-select-tag-hover-bg);
+}
+
+.tree-select-tag-disabled {
+  color: var(--tree-select-disabled-color);
+  background: var(--tree-select-tag-disabled-bg);
+  cursor: not-allowed;
+}
+
+.tree-select-tag-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
+
+.tree-select-tag-close {
+  margin-left: 4px;
+  color: var(--tree-select-tag-close-color);
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.tree-select-tag-close:hover {
+  color: var(--tree-select-tag-close-hover-color);
+}
+
+.tree-select-tag-more {
+  background: var(--tree-select-tag-more-bg);
+  color: var(--tree-select-tag-more-color);
+  cursor: default;
+}
+
+.tree-select-selection-placeholder {
+  color: var(--tree-select-placeholder-color);
+  flex: 1;
+}
+
+/* 选择区域 */
+.tree-select-selection {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* 选择内容 */
+.tree-select-selection-content {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.5715;
+}
+
+/* 占位符样式 */
+.tree-select-selection-content.placeholder {
+  color: var(--tree-select-placeholder-color);
+}
+
+/* 选中值样式 */
+.tree-select-selection-content.selected {
+  color: var(--tree-select-text-color);
+}
+
+/* 箭头区域 */
+.tree-select-arrow {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+/* 下拉箭头 */
+.tree-select-suffix {
+  color: var(--tree-select-placeholder-color);
+  font-size: 12px;
+  transition: var(--tree-select-transition);
+  user-select: none;
+}
+
+.tree-select-suffix-open {
+  transform: rotate(180deg);
+}
+
+/* 清除按钮 */
+.tree-select-clear {
+  color: var(--tree-select-placeholder-color);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 50%;
+  transition: var(--tree-select-transition);
+  user-select: none;
+}
+
+.tree-select-clear:hover {
+  color: var(--tree-select-text-color);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* 下拉框 */
+.tree-select-dropdown {
+  background: var(--tree-select-dropdown-bg);
+  border: 1px solid var(--tree-select-dropdown-border);
+  border-radius: var(--tree-select-border-radius);
+  box-shadow: var(--tree-select-dropdown-shadow);
+  overflow: hidden;
+  z-index: 1050;
+  max-width: 400px;
+  min-width: 200px;
+}
+
+/* 下拉内容 */
+.tree-select-dropdown-content {
+  background: var(--tree-select-dropdown-bg);
+}
+
+/* 空状态 */
+.tree-select-empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--tree-select-placeholder-color);
+  font-size: 14px;
+}
+
+/* 树形区域 */
+.tree-select-tree {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+/* 重置树形组件的默认样式 */
+.tree-select-tree .grid-tree-item {
+  border-bottom: none !important;
+}
+
+/* 树形节点 */
+.tree-select-node {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: var(--tree-select-transition);
+  border-radius: 4px;
+  margin: 1px 4px;
+  min-height: 32px;
+  width: calc(100% - 8px);
+  box-sizing: border-box;
+}
+
+.tree-select-node:hover {
+  background: var(--tree-select-hover-bg);
+}
+
+.tree-select-node-selected {
+  background: var(--tree-select-selected-bg);
+  color: var(--tree-select-selected-color);
+}
+
+.tree-select-node-disabled {
+  color: var(--tree-select-disabled-color);
+  cursor: not-allowed;
+}
+
+.tree-select-node-disabled:hover {
+  background: transparent;
+}
+
+/* 节点标签 */
+.tree-select-node-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 选中标记 */
+.tree-select-node-checkmark {
+  margin-left: 8px;
+  color: var(--tree-select-selected-color);
+  font-weight: bold;
+}
+
+/* 多选模式样式 */
+.tree-select-node-multiple {
+  padding-left: 8px;
+}
+
+/* 复选框样式 */
+.tree-select-node-checkbox {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  outline: none;
+  vertical-align: middle;
+  transition: all 0.2s ease;
+
+  /* 自定义checkbox样式 */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  background-color: #fff;
+  position: relative;
+}
+
+.tree-select-node-checkbox:hover {
+  border-color: var(--tree-select-border-hover);
+}
+
+.tree-select-node-checkbox:focus {
+  border-color: var(--tree-select-border-focus);
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.tree-select-node-checkbox-checked,
+.tree-select-node-checkbox:checked {
+  background-color: var(--tree-select-primary-color);
+  border-color: var(--tree-select-primary-color);
+}
+
+.tree-select-node-checkbox-checked::after,
+.tree-select-node-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+.tree-select-node-checkbox-disabled,
+.tree-select-node-checkbox:disabled {
+  background-color: var(--tree-select-disabled-bg);
+  border-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.tree-select-node-checkbox-disabled.tree-select-node-checkbox-checked,
+.tree-select-node-checkbox:disabled:checked {
+  background-color: var(--tree-select-disabled-color);
+  border-color: var(--tree-select-disabled-color);
+}
+
+/* 自定义复选框样式 */
+.tree-select-node-custom-checkbox {
+  margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+
+/* 自定义选中图标样式 */
+.tree-select-node-custom-selected-icon {
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+
+/* 自定义节点内容样式 */
+.tree-select-node-custom {
+  display: block;
+  width: 100%;
+  user-select: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .tree-select-dropdown {
+    width: 100% !important;
+    left: 0 !important;
+  }
+
+  .tree-select-dropdown-content {
+    max-height: 250px !important;
+  }
+}
+
+/* 动画效果 */
+@keyframes tree-select-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tree-select-slide-up {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.tree-select-dropdown {
+  animation: tree-select-slide-down 0.2s ease;
+}
+
+/* 主题变体 */
+.tree-select.tree-select-borderless .tree-select-selector {
+  border: none;
+  box-shadow: none;
+}
+
+.tree-select.tree-select-borderless .tree-select-selector:hover {
+  box-shadow: none;
+}
+
+.tree-select.tree-select-borderless .tree-select-selector-focused {
+  box-shadow: none;
+}
+
+/* 下拉框底部确认按钮样式 */
+.tree-select-dropdown-footer {
+  padding: 8px 12px;
+  background: var(--tree-select-dropdown-bg);
+  border-top: 1px solid var(--tree-select-border);
+}
+
+.tree-select-dropdown-footer-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.tree-select-dropdown-footer-button {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid;
+  outline: none;
+}
+
+.tree-select-dropdown-footer-cancel {
+  background: #fff;
+  border-color: var(--tree-select-border);
+  color: var(--tree-select-text-color);
+}
+
+.tree-select-dropdown-footer-cancel:hover {
+  border-color: var(--tree-select-border-hover);
+  color: var(--tree-select-border-hover);
+}
+
+.tree-select-dropdown-footer-confirm {
+  background: var(--tree-select-primary-color);
+  border-color: var(--tree-select-primary-color);
+  color: #fff;
+}
+
+.tree-select-dropdown-footer-confirm:hover {
+  background: #40a9ff;
+  border-color: #40a9ff;
+}
