@@ -1,5 +1,16 @@
 # @grid-table/example
 
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/view@0.6.18
+  - @grid-table/excel@0.5.21
+  - @grid-table/pivot@0.5.24
+  - @grid-table/core@0.6.18
+  - @grid-table/basic@0.6.18
+
 ## 0.0.30
 
 ### Patch Changes

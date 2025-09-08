@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef } from 'react'
-import { atom, useAtom, useAtomValue, useStore, useSetAtom } from '@einfach/react'
+import { atom, useAtom, useAtomValue, useStore, useSetAtom, isPromiseLike } from '@einfach/react'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
 import { areaCellIdsAtom } from '../areaSelected/state'
 import type { CellId } from '@grid-table/basic'
@@ -9,7 +9,7 @@ import { useDocumentClickHandler } from '../../utils/useDocumentClickHandler'
 import { copyAtom } from './state'
 
 export interface CopyProps {
-  copyGetDataByCellIds?: (cellIds: CellId[][]) => string
+  copyGetDataByCellIds?: (cellIds: CellId[][]) => string | Promise<string>
   /**
    * 是否开启复制功能
    * @default false
@@ -46,6 +46,14 @@ export function useCopy({ copyGetDataByCellIds, enableCopy: enable = true }: Cop
 
       showCopyStyle(true)
       const text = copyGetDataByCellIds ? copyGetDataByCellIds(cellIds) : copy(cellIds)
+      if (isPromiseLike(text)) {
+        text.then((text) => {
+          e.clipboardData.setData('text/plain', text)
+          e.stopPropagation()
+          e.preventDefault()
+        })
+        return
+      }
 
       e.clipboardData.setData('text/plain', text)
       e.stopPropagation()

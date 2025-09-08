@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.18
+
+### Patch Changes
+
+- copy支持异步
+  - @grid-table/core@0.6.18
+  - @grid-table/basic@0.6.18
+
 ## 0.6.17
 
 ### Patch Changes

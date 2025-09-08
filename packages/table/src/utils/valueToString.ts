@@ -6,9 +6,9 @@
  */
 export function valueToString(value: unknown): string {
   // 处理 null 和 undefined
-  // if (value === null || value === undefined) {
-  //   return ''
-  // }
+  if (value === null || value === undefined) {
+    return ''
+  }
 
   // 处理字符串，直接返回
   if (typeof value === 'string') {
