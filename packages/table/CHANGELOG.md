@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.17
+
+### Patch Changes
+
+- remove log
+  - @grid-table/core@0.6.17
+  - @grid-table/basic@0.6.17
+
 ## 0.6.16
 
 ### Patch Changes
