@@ -63,7 +63,12 @@ export function DataCellThead(props: CellProps) {
 
   if (!columnOption.title) {
     return (
-      <div style={style} className={clsx('thead-cell', className)} {...events}>
+      <div
+        style={style}
+        className={clsx('thead-cell', className)}
+        {...events}
+        data-cell-id={props.cellId}
+      >
         <div className={clsx('grid-table-cell-data-item')}>{cellVal}</div>
         {props.rowIndex === headerRowCount ? <ColumnDragItem columnId={columnId} /> : null}
       </div>
@@ -71,7 +76,12 @@ export function DataCellThead(props: CellProps) {
   }
 
   return (
-    <div style={style} className={clsx('thead-cell', className)} {...events}>
+    <div
+      style={style}
+      className={clsx('thead-cell', className)}
+      {...events}
+      data-cell-id={props.cellId}
+    >
       <div className={clsx('grid-table-cell-data-item')}>{reactNodeRender(columnOption.title)}</div>
       {props.rowIndex === headerRowCount ? <ColumnDragItem columnId={columnId} /> : null}
     </div>

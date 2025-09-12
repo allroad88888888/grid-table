@@ -19,7 +19,7 @@ import { useBorder } from './plugins/border'
 
 import './Table.css'
 import { getColumnId } from './utils/getColumnId'
-import { useTheadSelected } from './plugins/areaSelected/useTheadSelected'
+import { useTheadLastRowColumnSelect } from './plugins/areaSelected/useTheadSelected'
 import { TheadContextMenu } from './plugins/theadContextMenu/TheadContextMenu'
 import { useRenderTheadCells } from './components/Cell/renderTheadCells'
 import { useRenderTbodyCells } from './components/Cell/renderTbodyCells'
@@ -27,11 +27,18 @@ import { Provider } from './Provider'
 import './var.css'
 import { useColumnAutoSize } from './plugins/calcSizeByColumn/useColumnAutoSize'
 import { optionsAtom } from './state'
+import { useRowNumber } from './plugins/rowNumber'
 
 export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, tableRef) => {
-  const { columns, dataSource } = props
+  const { columns: originalColumns, dataSource, enableRowNumber } = props
   const { cellDefaultWidth = 80, rowHeight = 36 } = props
   const { enableHeadContextMenu } = props
+
+  // 序号列
+  const columns = useRowNumber(originalColumns, {
+    enabled: !!enableRowNumber,
+    ...(typeof enableRowNumber === 'object' ? enableRowNumber : {}),
+  })
 
   const store = useStore()
 
@@ -67,6 +74,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
      * 默认高度
      */
     rowHeight,
+    columns,
   })
 
   /** 固定列功能 */
@@ -117,17 +125,15 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
       props.className,
     ),
   )
-  /** tbody区域选中功能 */
-  useAreaSelected({ enable: props.enableCopy || props.enableSelectArea })
 
-  /** 列选中区域功能 */
-  useTheadSelected({ enable: props.enableSelectArea })
+  /** 列点击选中整列 */
+  useTheadLastRowColumnSelect({ enable: props.enableSelectArea })
   /**
    * 复制功能
    */
   const copy = useCopy({
     enableCopy: props.enableCopy,
-    copyGetDataByCellIds: props.copyGetDataByCellIds,
+    copyTbodyCellInfo: props.copyTbodyCellInfo,
   })
 
   /** tbody单元格合并功能 */
@@ -137,6 +143,9 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   useBorder({
     showBorder,
   })
+
+  /** tbody区域选中功能 */
+  useAreaSelected({ enable: props.enableCopy || props.enableSelectArea })
 
   /** thead单元格合并功能 */
   useHeaderMergeCells({
@@ -151,7 +160,9 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   return (
     <>
       {loading ? (
-        <LoadingComponent className={tableClassName} style={props.style} />
+        props.loadingComponent ? (
+          <LoadingComponent className={tableClassName} style={props.style} />
+        ) : null
       ) : (
         <>
           <VGridTable

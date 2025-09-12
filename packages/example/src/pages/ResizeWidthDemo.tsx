@@ -181,6 +181,7 @@ export function ResizeWidthDemo() {
         <Table
           columns={columns}
           dataSource={data}
+          enableRowNumber
           idProp="id"
           bordered
           store={store}

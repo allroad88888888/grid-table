@@ -8,12 +8,12 @@ import { getCellId } from '../../utils/getCellId'
  * 消费 headerLastRowsCssAtom 的数据，执行样式应用逻辑
  */
 export const applyHeaderStyleAtom = atom(null, (getter, setter) => {
-  const { getHeaderCellStateAtomById } = getter(basicAtom)
+  const { getTheadCellStateAtomById: getTheadCellStateAtomById } = getter(basicAtom)
 
   const selectedColumnIds = getter(areaColumnIdsAtom)
   const lastHeaderRowId = getter(headerLastIdAtom)
 
-  if (selectedColumnIds.length === 0 || !lastHeaderRowId || !getHeaderCellStateAtomById) {
+  if (selectedColumnIds.length === 0 || !lastHeaderRowId || !getTheadCellStateAtomById) {
     return () => {}
   }
 
@@ -26,7 +26,7 @@ export const applyHeaderStyleAtom = atom(null, (getter, setter) => {
       columnId: columnId,
     })
 
-    const cancel = setter(getHeaderCellStateAtomById(cellId), (getter, prev) => {
+    const cancel = setter(getTheadCellStateAtomById(cellId), (getter, prev) => {
       const nextStyle = {
         ...prev.style,
         borderBottomColor: 'var(--grid-area-selected-color,#1890ff)',

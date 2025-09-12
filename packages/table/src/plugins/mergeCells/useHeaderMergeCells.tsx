@@ -14,7 +14,7 @@ import { lastSet } from './utils'
 
 export function useHeaderMergeCells({ showBorder = true }: { showBorder?: boolean } = {}) {
   const store = useStore()
-  const { getHeaderCellStateAtomById, columnSizeMapAtom } = useBasic()
+  const { getTheadCellStateAtomById: getTheadCellStateAtomById, columnSizeMapAtom } = useBasic()
 
   const cellList = useAtomValue(theadMergeCellListAtom)
   const columnSizeMap = useAtomValue(columnSizeMapAtom)
@@ -108,7 +108,7 @@ export function useHeaderMergeCells({ showBorder = true }: { showBorder?: boolea
             columnId: colId,
           })
           clearList.push(
-            store.setter(getHeaderCellStateAtomById(tCellId), (getter, prev) => {
+            store.setter(getTheadCellStateAtomById(tCellId), (getter, prev) => {
               const next = getStyle(getter, rowIndex, columnIndex)
 
               return {
@@ -129,5 +129,5 @@ export function useHeaderMergeCells({ showBorder = true }: { showBorder?: boolea
         clear()
       })
     }
-  }, [cellList, columnSizeMap, getHeaderCellStateAtomById, rowSizeMap, store, showBorder])
+  }, [cellList, columnSizeMap, getTheadCellStateAtomById, rowSizeMap, store, showBorder])
 }

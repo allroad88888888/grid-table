@@ -22,6 +22,7 @@ import { AutoSizeDemo } from './pages/AutoSizeDemo'
 import { ValueInColsDemo } from './pages/ValueInColsDemo'
 import { EditTableDemo } from './pages/EditTable'
 import { ResizeWidthDemo } from './pages/ResizeWidthDemo'
+import { RowNumberDemo } from './pages/RowNumberDemo'
 
 // 路由项目接口定义
 export interface RouteItem {
@@ -72,6 +73,11 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/table/resize-width',
         component: ResizeWidthDemo,
         label: '自适应宽度',
+      },
+      {
+        path: '/table/row-number',
+        component: RowNumberDemo,
+        label: '序号列功能',
       },
     ],
   },

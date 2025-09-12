@@ -1,67 +1,40 @@
-import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef } from 'react'
-import { atom, useAtom, useAtomValue, useStore, useSetAtom, isPromiseLike } from '@einfach/react'
+import { useAtom, useAtomValue, useStore } from '@einfach/react'
 import { tableEventsAtom } from '../../hooks/useTableEvents'
 import { areaCellIdsAtom } from '../areaSelected/state'
-import type { CellId } from '@grid-table/basic'
-import { useBasic } from '@grid-table/basic'
-import { useDocumentClickHandler } from '../../utils/useDocumentClickHandler'
-import { copyAtom } from './state'
+import { useDocumentHandler } from '../../utils/useDocumentClickHandler'
+import { useCopyHandler } from './useCopyHandler'
+import { useCopyStyle } from './useCopyStyle'
+import { getTotalSelectedCells, HIDDEN_TEXTAREA_STYLE } from './copyUtils'
+import type { CopyProps } from './types'
+import { showCopyStyleAtom } from './state'
 
-export interface CopyProps {
-  copyGetDataByCellIds?: (cellIds: CellId[][]) => string | Promise<string>
-  /**
-   * 是否开启复制功能
-   * @default false
-   */
-  enableCopy?: boolean
-}
-
-// function emptyFn() {
-//   // eslint-disable-next-line no-console
-//   console.warn('The table copy method does not pass parameters to the custom copy data method')
-//   return 'The table copy method does not pass parameters to the custom copy data method'
-// }
-
-export const showCopyStyleAtom = atom(false)
 /**
- * 这里逻辑 是弄个隐藏的text 制造能触发copy的事件
- * @returns
+ * 复制功能的主 hook
+ * 这里逻辑是弄个隐藏的 textarea 制造能触发 copy 的事件
  */
-export function useCopy({ copyGetDataByCellIds, enableCopy: enable = true }: CopyProps = {}) {
+export function useCopy({
+  copyTbodyCellInfo: copyGetDataByCellIds,
+  enableCopy: enable = true,
+}: CopyProps = {}) {
   const store = useStore()
-  const { getCellStateAtomById } = useBasic()
-
   const [isShowStyle, showCopyStyle] = useAtom(showCopyStyleAtom, { store })
+  const selectedAreas = useAtomValue(areaCellIdsAtom, { store })
 
-  const cellIds = useAtomValue(areaCellIdsAtom, { store })
-  const copy = useSetAtom(copyAtom)
+  // 使用拆分的复制处理 hook
+  const { handleCopy } = useCopyHandler({
+    copyGetDataByCellIds,
+    showCopyStyle,
+  })
 
-  const onCopy = useCallback(
-    (e: React.ClipboardEvent<HTMLDivElement>) => {
-      const cellIds = store.getter(areaCellIdsAtom)
-      if (!cellIds || cellIds.length === 0) {
-        return
-      }
+  // 使用拆分的样式处理 hook
+  useCopyStyle({
+    selectedAreas,
+    isShowStyle,
+    enable,
+  })
 
-      showCopyStyle(true)
-      const text = copyGetDataByCellIds ? copyGetDataByCellIds(cellIds) : copy(cellIds)
-      if (isPromiseLike(text)) {
-        text.then((text) => {
-          e.clipboardData.setData('text/plain', text)
-          e.stopPropagation()
-          e.preventDefault()
-        })
-        return
-      }
-
-      e.clipboardData.setData('text/plain', text)
-      e.stopPropagation()
-      e.preventDefault()
-    },
-    [copy, copyGetDataByCellIds, showCopyStyle, store],
-  )
-
+  // 注册复制事件
   useEffect(() => {
     if (enable === false) {
       return
@@ -71,100 +44,36 @@ export function useCopy({ copyGetDataByCellIds, enableCopy: enable = true }: Cop
       if (!('onCopy' in prev)) {
         next['onCopy'] = new Set()
       }
-      next['onCopy']!.add(onCopy)
+      next['onCopy']!.add(handleCopy)
       return next
     })
-  }, [enable, onCopy, store])
+  }, [enable, handleCopy, store])
 
   const ref = useRef<HTMLTextAreaElement>(null)
 
+  // 计算总的选中单元格数量
+  const totalSelectedCells = getTotalSelectedCells(selectedAreas)
+
+  // 自动选中隐藏的 textarea 以触发复制
   useEffect(() => {
-    if (!ref.current || cellIds.length === 0) {
+    if (!ref.current || totalSelectedCells === 0) {
       return
     }
-    // 模拟选中 触发onCopy
+    // 模拟选中 触发 onCopy
     ref.current.select()
-  }, [cellIds.length])
+  }, [totalSelectedCells])
 
-  useEffect(() => {
-    if (enable === false || isShowStyle === false) {
-      return
-    }
-
-    const cancelList: (() => void)[] = []
-
-    const rowLength = cellIds.length
-
-    cellIds.forEach((rowCellIds, rowIndex) => {
-      const columnLength = rowCellIds.length
-      rowCellIds.forEach((cellId, columnIndex) => {
-        cancelList.push(
-          store.setter(getCellStateAtomById(cellId), (_getter, prev) => {
-            const nextStyle: CSSProperties = {
-              ...prev.style,
-              borderTop: 'none',
-              borderBottom: 'none',
-              borderLeft: 'none',
-              borderRight: 'none',
-            }
-            const borderStyle = '2px dashed blue'
-            if (rowIndex === 0) {
-              nextStyle.borderTop = borderStyle
-            }
-            if (rowIndex === rowLength - 1) {
-              nextStyle.borderBottom = borderStyle
-            }
-
-            if (columnIndex === 0) {
-              nextStyle.borderLeft = borderStyle
-            }
-            if (columnIndex === columnLength - 1) {
-              nextStyle.borderRight = borderStyle
-            }
-
-            return {
-              ...prev,
-              style: nextStyle,
-            }
-          })!,
-        )
-      })
-    })
-
-    return () => {
-      cancelList.forEach((cancel) => {
-        cancel()
-      })
-    }
-  }, [cellIds, enable, getCellStateAtomById, isShowStyle, store])
-
+  // 取消复制样式显示
   const cancel = useCallback(() => {
     showCopyStyle(false)
   }, [showCopyStyle])
 
-  useDocumentClickHandler(cancel)
+  useDocumentHandler(cancel, 'mousedown')
 
-  if (enable === false || cellIds.length === 0) {
+  // 如果禁用或没有选中的单元格，不渲染隐藏的 textarea
+  if (enable === false || totalSelectedCells === 0) {
     return null
   }
 
-  return (
-    <textarea
-      style={{
-        width: 0,
-        height: 0,
-        zIndex: -1,
-        position: 'absolute',
-        right: -1,
-        bottom: -1,
-        resize: 'none',
-        border: 'none',
-        padding: 0,
-        margin: 0,
-      }}
-      ref={ref}
-      readOnly
-      value="copy error!!!"
-    />
-  )
+  return <textarea style={HIDDEN_TEXTAREA_STYLE} ref={ref} readOnly value="copy error!!!" />
 }

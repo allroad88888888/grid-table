@@ -90,3 +90,73 @@ export function distributeColumnWidths<T extends { width?: number }>(
 
   return result
 }
+
+/**
+ * 根据 flexGrow 参数分配剩余宽度
+ * @param currentWidths 当前各列宽度数组
+ * @param flexGrowList 各列的 flexGrow 值数组
+ * @param totalWidth 目标总宽度
+ * @returns 分配后的宽度数组
+ */
+export function distributeByFlexGrow(
+  currentWidths: number[],
+  flexGrowList: number[],
+  totalWidth: number,
+): number[] {
+  if (currentWidths.length !== flexGrowList.length) {
+    throw new Error('currentWidths 和 flexGrowList 长度必须相同')
+  }
+
+  // 计算当前总宽度
+  const currentTotalWidth = currentWidths.reduce((sum, width) => sum + width, 0)
+
+  // 如果当前总宽度已经大于等于目标宽度，则不进行分配
+  if (currentTotalWidth >= totalWidth) {
+    return currentWidths.slice()
+  }
+
+  // 计算剩余空间
+  const remainingSpace = totalWidth - currentTotalWidth
+
+  // 处理 flexGrow 值，undefined 使用默认值 1，0 表示不参与分配
+  const normalizedFlexGrowList = flexGrowList.map((grow) => {
+    if (grow === undefined || grow === null) return 1 // 默认为 1
+    return Math.max(0, grow) // 确保非负数
+  })
+
+  // 计算有效的 flexGrow 总和（排除 0）
+  const totalFlexGrow = normalizedFlexGrowList.reduce((sum, grow) => sum + grow, 0)
+
+  // 如果没有可分配的 flexGrow，则平均分配剩余空间
+  if (totalFlexGrow === 0) {
+    const averageIncrease = remainingSpace / currentWidths.length
+    return currentWidths.map((width) => Math.max(1, Math.round(width + averageIncrease)))
+  }
+
+  // 根据 flexGrow 比例分配剩余空间
+  const newWidths = currentWidths.map((currentWidth, index) => {
+    const flexGrow = normalizedFlexGrowList[index]
+    const additionalWidth = (flexGrow / totalFlexGrow) * remainingSpace
+    return currentWidth + additionalWidth
+  })
+
+  // 四舍五入并确保最小宽度为 1
+  const roundedWidths = newWidths.map((width) => Math.max(1, Math.round(width)))
+
+  // 计算实际分配的总宽度
+  const actualTotal = roundedWidths.reduce((sum, width) => sum + width, 0)
+
+  // 如果总宽度不匹配，调整最后一个有 flexGrow > 0 的元素
+  const diff = totalWidth - actualTotal
+  if (diff !== 0) {
+    // 找到最后一个有效的 flexGrow 列
+    for (let i = roundedWidths.length - 1; i >= 0; i--) {
+      if (normalizedFlexGrowList[i] > 0) {
+        roundedWidths[i] = Math.max(1, roundedWidths[i] + diff)
+        break
+      }
+    }
+  }
+
+  return roundedWidths
+}

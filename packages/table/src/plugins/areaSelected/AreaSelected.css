@@ -2,6 +2,6 @@
   user-select: none;
 }
 
-.grid-table div.select-cell-item.grid-table-cell {
+.grid-table div.select-cell-item {
   background-color: rgb(169, 169, 169);
 }

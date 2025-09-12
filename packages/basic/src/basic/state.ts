@@ -22,7 +22,7 @@ export const columnIndexListAtom = atom<ColumnId[]>([])
  */
 export const rowIndexListAtom = atom<RowId[]>([])
 /**
- * 头部列 d list
+ * 头部列 id list
  */
 export const headerRowIndexListAtom = atom<RowId[]>(['0'])
 
@@ -48,7 +48,7 @@ export const headerRowSizeMaAtom = atom(new Map<RowId, number>())
 /**
  * cellEvent
  */
-export const cellEventsAtom = incrementAtom({} as EventsCellSet)
+export const tbodyCellEventsAtom = incrementAtom({} as EventsCellSet)
 
 /**
  * header cellEvent
@@ -122,7 +122,7 @@ export const basicAtom = atom(() => {
   /**
    * 表头格子的状态
    */
-  const getHeaderCellStateAtomById = createAtomFamily({
+  const getTheadCellStateAtomById = createAtomFamily({
     debuggerKey: 'header cell state',
     createAtom: (key: CellId) => {
       const atomEntity = incrementAtom<CellState>({
@@ -135,12 +135,12 @@ export const basicAtom = atom(() => {
 
   return {
     createAtomFamily,
-    cellEventsAtom,
+    tbodyCellEventsAtom,
     columnIndexListAtom,
     rowIndexListAtom,
     getColumnStateAtomById,
     getRowStateAtomById,
-    getHeaderCellStateAtomById,
+    getTheadCellStateAtomById,
     getCellStateAtomById,
     headerRowIndexListAtom,
     resizeAtom,

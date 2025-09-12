@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 
-export function useDocumentClickHandler<T extends () => void>(handler: T) {
+export function useDocumentHandler<T extends () => void>(handler: T, event: string = 'click') {
   useEffect(() => {
-    document.addEventListener('click', handler)
+    document.addEventListener(event, handler)
 
     // 清理函数，组件卸载时移除监听器
     return () => {
-      document.removeEventListener('click', handler)
+      document.removeEventListener(event, handler)
     }
-  }, [handler])
+  }, [handler, event])
 }

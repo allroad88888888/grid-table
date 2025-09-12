@@ -1,5 +1,12 @@
 # @grid-table/basic
 
+## 0.6.19
+
+### Patch Changes
+
+- 选中区域支持thead
+  - @grid-table/core@0.6.19
+
 ## 0.6.18
 
 ### Patch Changes

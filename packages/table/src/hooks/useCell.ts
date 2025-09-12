@@ -22,8 +22,8 @@ export function useCell({ cellId, rowId, columnId, style }: CellProps) {
       return {
         style: {
           ...columnStyle,
-          ...selfStyle,
           ...rowStyle,
+          ...selfStyle,
         } as CSSProperties,
         className: [...Array.from(columnCls), ...Array.from(selfCls), ...Array.from(rowCls)].join(
           ' ',

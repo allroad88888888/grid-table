@@ -5,9 +5,9 @@ import { useBasic } from '@grid-table/basic'
 
 export function useCellEvents(position: PositionId) {
   const store = useStore()
-  const { cellEventsAtom } = useBasic()
+  const { tbodyCellEventsAtom } = useBasic()
 
-  const events = useAtomValue(cellEventsAtom, { store })
+  const events = useAtomValue(tbodyCellEventsAtom, { store })
 
   return useMemo(() => {
     const eventObj: Partial<EventsItem> = {}

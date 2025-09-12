@@ -77,7 +77,7 @@ export function createCore(store: Store = createStore()) {
   /**
    * cellEvent
    */
-  const cellEventsAtom = incrementAtom({} as EventsCellSet)
+  const tbodyCellEventsAtom = incrementAtom({} as EventsCellSet)
 
   /**
    * 宽高
@@ -87,7 +87,7 @@ export function createCore(store: Store = createStore()) {
   return {
     createAtomFamily,
     store,
-    cellEventsAtom,
+    tbodyCellEventsAtom,
     columnIndexListAtom,
     rowIndexListAtom,
     getColumnStateAtomById,

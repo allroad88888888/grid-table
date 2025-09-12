@@ -4,7 +4,7 @@ import { type CSSProperties } from 'react'
 import { useBasic } from '@grid-table/basic'
 
 export function useCellThead({ cellId, style, rowId, columnId }: CellProps) {
-  const { getColumnStateAtomById, getHeaderCellStateAtomById } = useBasic()
+  const { getColumnStateAtomById, getTheadCellStateAtomById } = useBasic()
   const store = useStore()
 
   const { style: columnStyle = {}, className: columnCls = [] } = useAtomValue(
@@ -15,7 +15,7 @@ export function useCellThead({ cellId, style, rowId, columnId }: CellProps) {
   )
 
   const { style: selfStyle = {}, className: selfCls = [] } = useAtomValue(
-    getHeaderCellStateAtomById(cellId),
+    getTheadCellStateAtomById(cellId),
   )
 
   return {

@@ -8,8 +8,9 @@ import {
   useBasic,
 } from '@grid-table/basic'
 import type { ColumnType } from '../../types'
-import { distributeToNewArray } from './utils'
+import { distributeByFlexGrow } from './utils'
 import { initColumnsSizeByColumnsAtom } from './state'
+import { getColumnId } from '../../utils/getColumnId'
 
 interface UseSizeByColumnProps {
   /**
@@ -23,36 +24,53 @@ interface UseSizeByColumnProps {
   columns: ColumnType[]
 }
 
-const proportionalResizeColumnAtom = atom(false, (getter, setter, wrapWidth: number) => {
-  const prevColumns = getter(columnSizeMapAtom)
-  const remainingLength = wrapWidth - 2
+const proportionalResizeColumnAtom = atom(
+  false,
+  (getter, setter, props: { wrapWidth: number; columns: ColumnType[] }) => {
+    const { wrapWidth, columns } = props
+    const prevColumns = getter(columnSizeMapAtom)
+    const remainingLength = wrapWidth - 2
 
-  const columnShowIdList = getter(columnIdShowListAtom)
-  const currentTotalWidth = columnShowIdList.reduce<number>((prev, tId) => {
-    return prev + prevColumns.get(tId)!
-  }, 0)
+    const columnShowIdList = getter(columnIdShowListAtom)
+    const currentTotalWidth = columnShowIdList.reduce<number>((prev, tId) => {
+      return prev + prevColumns.get(tId)!
+    }, 0)
 
-  // 表格宽度大于等于容器宽度 啥也不做
-  if (currentTotalWidth >= remainingLength) {
-    return
-  }
+    // 表格宽度大于等于容器宽度 啥也不做
+    if (currentTotalWidth >= remainingLength) {
+      return
+    }
 
-  // 获取当前列宽数组
-  const currentWidths = columnShowIdList.map((tId) => {
-    return prevColumns.get(tId)!
-  })
+    // 获取当前列宽数组
+    const currentWidths = columnShowIdList.map((tId) => {
+      return prevColumns.get(tId)!
+    })
 
-  // 使用新的平均分配函数
-  const newWidthList = distributeToNewArray(currentWidths, remainingLength)
+    // 创建 columnId 到列配置的映射
+    const columnIdToColumnMap = new Map<string, ColumnType>()
+    columns.forEach((column) => {
+      const columnId = getColumnId(column)
+      columnIdToColumnMap.set(columnId, column)
+    })
 
-  // 更新列宽映射，确保宽度为正整数
-  const next = new Map(prevColumns)
-  columnShowIdList.forEach((tId, index) => {
-    next.set(tId, Math.max(1, Math.round(newWidthList[index])))
-  })
+    // 获取各列的 flexGrow 值
+    const flexGrowList = columnShowIdList.map((tId) => {
+      const column = columnIdToColumnMap.get(tId)
+      return column?.flexGrow ?? 1 // 默认为 1
+    })
 
-  setter(columnSizeMapAtom, next)
-})
+    // 使用基于 flexGrow 的分配函数
+    const newWidthList = distributeByFlexGrow(currentWidths, flexGrowList, remainingLength)
+
+    // 更新列宽映射，确保宽度为正整数
+    const next = new Map(prevColumns)
+    columnShowIdList.forEach((tId, index) => {
+      next.set(tId, Math.max(1, Math.round(newWidthList[index])))
+    })
+
+    setter(columnSizeMapAtom, next)
+  },
+)
 
 export function useCellSizeByColumn(props: UseSizeByColumnProps) {
   const { rowHeight, columnMinWidth = 25, wrapWidth, columns } = props
@@ -76,7 +94,7 @@ export function useCellSizeByColumn(props: UseSizeByColumnProps) {
     if (wrapWidth <= 0) {
       return
     }
-    proportionalResizeColumn(wrapWidth)
+    proportionalResizeColumn({ wrapWidth, columns })
   }, [columnIdShowListAtom, columnMinWidth, columnSizeMapAtom, store, wrapWidth, columns])
 
   const columnIdShowList = useAtomValue(columnIdShowListAtom, { store })

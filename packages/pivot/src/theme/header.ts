@@ -18,7 +18,7 @@ export const initHeaderThemeAtom = atom(0, (getter, setter, theme: Theme) => {
 
   const { rowCell = {}, colCell = {}, dataCell = {}, cornerCell = {} } = theme
 
-  const { getHeaderCellStateAtomById, getCellStateAtomById } = getter(basicAtom)
+  const { getTheadCellStateAtomById, getCellStateAtomById } = getter(basicAtom)
   const colCancelList: (() => void)[] = []
   const cornerCancelList: (() => void)[] = []
   const rowCancelList: (() => void)[] = []
@@ -33,7 +33,7 @@ export const initHeaderThemeAtom = atom(0, (getter, setter, theme: Theme) => {
       })
       cornerIds.push(cornerId)
       cornerCancelList.push(
-        setter(getHeaderCellStateAtomById(cornerId), (getter, prev) => {
+        setter(getTheadCellStateAtomById(cornerId), (getter, prev) => {
           const next = {
             ...prev,
             style: mergeStyles([prev.style, cornerCell]),
@@ -53,7 +53,7 @@ export const initHeaderThemeAtom = atom(0, (getter, setter, theme: Theme) => {
       }
       // col.push(cellId)
       colCancelList.push(
-        setter(getHeaderCellStateAtomById(cellId), (getter, prev) => {
+        setter(getTheadCellStateAtomById(cellId), (getter, prev) => {
           const next = {
             ...prev,
             style: mergeStyles([prev.style, colCell]),

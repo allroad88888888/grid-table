@@ -41,6 +41,13 @@ export interface ColumnType<ItemInfo = Record<string, any>> {
    * @default true
    */
   enableSelectArea?: boolean
+
+  /**
+   * 等比宽度放大系数，当有剩余空间时用于计算该列的放大比例
+   * @default 1
+   * 0 表示不参与放大
+   */
+  flexGrow?: number
 }
 
 export interface CustomHeaderCellProps {

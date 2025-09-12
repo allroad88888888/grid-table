@@ -2,7 +2,7 @@ import type { UseDataProps } from './common'
 import type { UseRowSelectionProps } from '../plugins/select/useRowSelection'
 import type { CSSProperties } from 'react'
 import type { VGridTableProps } from '@grid-table/core'
-import type { CopyProps } from '../plugins'
+import type { CopyProps, UseRowNumberProps } from '../plugins'
 import type { Store } from '@einfach/react'
 import { AutoColumnsSizeOptions } from '../plugins/calcSizeByColumn/measureColumnsWidth'
 
@@ -60,6 +60,12 @@ export type AntdTableProps = {
    * @default true
    */
   enableColumnResize?: boolean
+
+  /**
+   * 是否开启序号列
+   * @default false
+   */
+  enableRowNumber?: boolean | UseRowNumberProps
 
   gpuScroll?: boolean
 } & CopyProps &
