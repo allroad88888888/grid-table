@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.22
+
+### Patch Changes
+
+- fixed export checkbox
+  - @grid-table/core@0.6.22
+  - @grid-table/basic@0.6.22
+
 ## 0.6.21
 
 ### Patch Changes
