@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.20
+
+### Patch Changes
+
+- 选中列在最左边
+  - @grid-table/core@0.6.20
+  - @grid-table/basic@0.6.20
+
 ## 0.6.19
 
 ### Patch Changes

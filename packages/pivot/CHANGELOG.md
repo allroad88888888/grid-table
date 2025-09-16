@@ -1,5 +1,14 @@
 # @grid-table/pivot
 
+## 0.5.26
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/view@0.6.20
+  - @grid-table/core@0.6.20
+  - @grid-table/basic@0.6.20
+
 ## 0.5.25
 
 ### Patch Changes

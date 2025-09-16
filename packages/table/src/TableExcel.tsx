@@ -35,10 +35,13 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   const { enableHeadContextMenu } = props
 
   // 序号列
-  const columns = useRowNumber(originalColumns, {
+  const rowNumberColumns = useRowNumber(originalColumns, {
     enabled: !!enableRowNumber,
     ...(typeof enableRowNumber === 'object' ? enableRowNumber : {}),
   })
+
+  /** tbody每行 新加checkbox */
+  const columns = useRowSelection(rowNumberColumns, props.rowSelection)
 
   const store = useStore()
 
@@ -109,8 +112,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
       columns,
     },
   )
-  /** tbody每行 新加checkbox */
-  useRowSelection(props.rowSelection)
+
   /** 固定列攻功能 */
   const { stayIndexList } = useSticky(stickyList)
 
