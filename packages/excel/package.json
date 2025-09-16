@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/excel",
-  "version": "0.5.23",
+  "version": "0.5.24",
   "description": "grid-table excel",
   "main": "./esm/index.js",
   "module": "./esm/index.js",

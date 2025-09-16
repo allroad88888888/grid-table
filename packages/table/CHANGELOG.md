@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.21
+
+### Patch Changes
+
+- fixed nodeSelectionSetAtom export
+  - @grid-table/core@0.6.21
+  - @grid-table/basic@0.6.21
+
 ## 0.6.20
 
 ### Patch Changes
