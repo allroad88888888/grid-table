@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.23
+
+### Patch Changes
+
+- fixed: 自定义copy没有生效
+  - @grid-table/core@0.6.23
+  - @grid-table/basic@0.6.23
+
 ## 0.6.22
 
 ### Patch Changes

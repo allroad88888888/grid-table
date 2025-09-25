@@ -68,6 +68,7 @@ export type AntdTableProps = {
   enableRowNumber?: boolean | UseRowNumberProps
 
   gpuScroll?: boolean
+  children?: React.ReactNode
 } & CopyProps &
   UseDataProps &
   Pick<

@@ -120,6 +120,11 @@
   border-left: var(--grid-tree-arrow-border-width, 1.5px) solid var(--grid-tree-arrow-color, #666);
   border-bottom: var(--grid-tree-arrow-border-width, 1.5px) solid var(--grid-tree-arrow-color, #666);
   transition: var(--grid-tree-item-transition, all 0.2s ease);
+  /* 调整三角形位置，使其在视觉上居中 */
+  transform: translate(
+    calc(var(--grid-tree-arrow-size, 8px) / 4),
+    calc(-1 * var(--grid-tree-arrow-size, 8px) / 4)
+  );
 }
 
 .grid-tree-arrow:hover > i {
@@ -127,7 +132,11 @@
 }
 
 .grid-tree-arrow > .grid-tree-arrow-expand {
-  transform: rotate(-45deg);
+  transform: translate(
+      calc(var(--grid-tree-arrow-size, 8px) / 4),
+      calc(-1 * var(--grid-tree-arrow-size, 8px) / 4)
+    )
+    rotate(-45deg);
 }
 
 .grid-tree-arrow > .grid-tree-arrow-collapse {

@@ -32,7 +32,7 @@ import { useRowNumber } from './plugins/rowNumber'
 export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, tableRef) => {
   const { columns: originalColumns, dataSource, enableRowNumber } = props
   const { cellDefaultWidth = 80, rowHeight = 36 } = props
-  const { enableHeadContextMenu } = props
+  const { enableHeadContextMenu, children } = props
 
   // 序号列
   const rowNumberColumns = useRowNumber(originalColumns, {
@@ -195,6 +195,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
             theadChildren={<TheadContextMenu enableContextMenu={enableHeadContextMenu} />}
           >
             <>
+              {children}
               {copy}
               <DragLine
                 dragColumnMinSize={props.cellDefaultWidth}

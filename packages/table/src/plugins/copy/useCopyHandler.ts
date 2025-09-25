@@ -30,7 +30,10 @@ export function useCopyHandler({ copyGetDataByCellIds, showCopyStyle }: UseCopyH
 
       let text: string | Promise<string>
 
-      text = copyMixed(areas!)
+      text = copyMixed({
+        ...areas,
+        copyTbodyCellInfo: copyGetDataByCellIds,
+      })
 
       // 处理异步文本
       if (isPromiseLike(text)) {
