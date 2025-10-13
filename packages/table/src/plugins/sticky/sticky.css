@@ -40,3 +40,12 @@
 /* .grid-table .sticky-left:first-child {
   border-left-width: 0;
 } */
+
+/* 粘性列阴影效果 */
+.grid-table .sticky-shadow-right {
+  box-shadow: var(--grid-sticky-shadow-right, 2px 0 6px rgba(0, 0, 0, 0.08));
+}
+
+.grid-table .sticky-shadow-left {
+  box-shadow: var(--grid-sticky-shadow-left, -2px 0 6px rgba(0, 0, 0, 0.08));
+}

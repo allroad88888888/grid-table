@@ -1,5 +1,37 @@
 # @grid-table/view
 
+## 0.6.27
+
+### Patch Changes
+
+- fixed:修复表头拖拽宽度实效问题
+  - @grid-table/core@0.6.27
+  - @grid-table/basic@0.6.27
+
+## 0.6.26
+
+### Patch Changes
+
+- feat:左边固定列支持boxshadow
+  - @grid-table/core@0.6.26
+  - @grid-table/basic@0.6.26
+
+## 0.6.25
+
+### Patch Changes
+
+- 修复列头拖拽点击 不触发选中
+  - @grid-table/core@0.6.25
+  - @grid-table/basic@0.6.25
+
+## 0.6.24
+
+### Patch Changes
+
+- 选中样式
+  - @grid-table/core@0.6.24
+  - @grid-table/basic@0.6.24
+
 ## 0.6.23
 
 ### Patch Changes

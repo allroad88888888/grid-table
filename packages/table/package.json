@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/view",
-  "version": "0.6.23",
+  "version": "0.6.27",
   "description": "grid-table table",
   "main": "./esm/index.js",
   "module": "./esm/index.js",

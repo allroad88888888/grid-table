@@ -19,9 +19,16 @@
   --grid-bg-color: #fff;
   --grid-row-hover-bg-color: #fafafa;
 
+  /* 区域选中样式 */
+  --grid-selected-cell-bg-color: rgba(24, 144, 255, 0.15);
+
   /* 单元格边框样式 */
   --grid-cell-border-style: dashed;
 
   /* 表格边框样式 */
   --grid-table-border-style: solid;
+
+  /* 粘性列阴影 */
+  --grid-sticky-shadow-right: 2px 0 6px rgba(0, 0, 0, 0.08);
+  --grid-sticky-shadow-left: -2px 0 6px rgba(0, 0, 0, 0.08);
 }

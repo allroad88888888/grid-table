@@ -64,13 +64,21 @@ const calculatePositions = (
  * 创建sticky样式更新函数
  */
 const createStyleUpdater =
-  (position: string, positionValue: number) => (getter: any, prevState: any) => {
+  (position: string, positionValue: number, shadowType?: 'left' | 'right') =>
+  (getter: any, prevState: any) => {
     const newStyle: CSSProperties = {
       ...prevState.style,
       [position]: positionValue,
     }
 
     const newClass = [...Array.from(prevState.className), `sticky-${position}`]
+
+    // 添加阴影类
+    if (shadowType === 'left') {
+      newClass.push('sticky-shadow-left')
+    } else if (shadowType === 'right') {
+      newClass.push('sticky-shadow-right')
+    }
 
     return {
       ...prevState,
@@ -197,7 +205,21 @@ export function useSticky(props: UseStickyProps = {}) {
           const atomEntity = getStateAtomByIndex(id)
           const positionValue = positions[index]
 
-          return setter(atomEntity, createStyleUpdater(position, positionValue))!
+          // 确定是否需要添加阴影
+          let shadowType: 'left' | 'right' | undefined = undefined
+
+          // 只对列方向的sticky添加阴影，row方向不需要
+          if (!stickyConfig.isRow) {
+            if (position === 'left' && index === idOrder.length - 1) {
+              // 左边最后一列，添加右侧阴影
+              shadowType = 'right'
+            } else if (position === 'right' && index === 0) {
+              // 右边第一列，添加左侧阴影
+              shadowType = 'left'
+            }
+          }
+
+          return setter(atomEntity, createStyleUpdater(position, positionValue, shadowType))!
         })
 
         // 返回批量清理函数

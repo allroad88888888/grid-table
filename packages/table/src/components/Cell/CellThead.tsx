@@ -50,9 +50,9 @@ export function DataCellThead(props: CellProps) {
         position={{
           rowId,
           cellId: props.cellId,
-          // rowIndex: props.rowIndex,
+          rowIndex: props.rowIndex,
           columnId,
-          // columnIndex: props.columnIndex,
+          colIndex: props.columnIndex,
         }}
         {...events}
       >
