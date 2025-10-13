@@ -12,11 +12,11 @@ import {
 import './sticky.css'
 import type { StickyType, UseStickyProps } from './type'
 import {
-  stickyBottomOptionAtom,
+  stickyBottomAtom,
   StickyConfig,
-  stickyLeftOptionAtom,
-  stickyRightOptionAtom,
-  stickyTopOptionAtom,
+  stickyLeftAtom,
+  stickyRightAtom,
+  stickyTopAtom,
 } from './state'
 
 /** 空数组常量，避免重复创建 */
@@ -59,12 +59,12 @@ export function useSticky(props: UseStickyProps = {}) {
   useEffect(() => {
     if (isRow) {
       // 行方向固定：底部ID列表对应底部固定行，顶部ID列表对应顶部固定行
-      setter(stickyBottomOptionAtom, bottomIdList)
-      setter(stickyTopOptionAtom, topIdList)
+      setter(stickyBottomAtom, bottomIdList)
+      setter(stickyTopAtom, topIdList)
     } else {
       // 列方向固定：底部ID列表对应右侧固定列，顶部ID列表对应左侧固定列
-      setter(stickyRightOptionAtom, bottomIdList)
-      setter(stickyLeftOptionAtom, topIdList)
+      setter(stickyRightAtom, bottomIdList)
+      setter(stickyLeftAtom, topIdList)
     }
   }, [bottomIdList, isRow, setter, topIdList])
 

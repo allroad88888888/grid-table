@@ -1,16 +1,37 @@
 .grid-table-thead-context-menu-container {
-  /* padding-inline-start: 0; */
-  padding: 4px;
-  background-color: white;
+  margin: 0;
+  padding: 8px 8px;
+  background-color: #f5f5f5;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
   z-index: var(--grid-thead-context-menu-zIndex);
+  box-shadow:
+    0 3px 6px -4px rgba(0, 0, 0, 0.12),
+    0 6px 16px 0 rgba(0, 0, 0, 0.08),
+    0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
 .grid-table-thead-context-menu-container > li {
   list-style-type: none;
   cursor: pointer;
-  padding: 4px 2px;
-  border-bottom: 1px solid var(--grid-border-color);
+  padding: 3px 10px;
+  margin: 0;
+  transition: background-color 0.2s ease;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.85);
+  user-select: none;
+  border-radius: 4px;
 }
+
 .grid-table-thead-context-menu-container > li:last-child {
   border-bottom-width: 0;
+}
+
+.grid-table-thead-context-menu-container > li:hover {
+  background-color: var(--grid-context-menu-item-hover-bg-color);
+}
+
+.grid-table-thead-context-menu-container > li:active {
+  background-color: var(--grid-context-menu-item-active-bg-color);
 }

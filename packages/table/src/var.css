@@ -19,6 +19,10 @@
   --grid-bg-color: #fff;
   --grid-row-hover-bg-color: #fafafa;
 
+  /* 右键菜单颜色 */
+  --grid-context-menu-item-hover-bg-color: rgba(24, 144, 255, 0.08);
+  --grid-context-menu-item-active-bg-color: rgba(24, 144, 255, 0.15);
+
   /* 区域选中样式 */
   --grid-selected-cell-bg-color: rgba(24, 144, 255, 0.15);
 

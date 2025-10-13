@@ -12,11 +12,11 @@ import {
 import './sticky.css'
 import type { StickyType, UseStickyProps } from './type'
 import {
-  stickyBottomOptionAtom,
+  stickyBottomAtom,
   StickyConfig,
-  stickyLeftOptionAtom,
-  stickyRightOptionAtom,
-  stickyTopOptionAtom,
+  stickyLeftAtom,
+  stickyRightAtom,
+  stickyTopAtom,
 } from './state'
 
 /** 空数组常量，避免重复创建 */
@@ -119,10 +119,10 @@ export function useSticky(props: UseStickyProps = {}) {
       listAtom: isRow ? rowIdShowListAtom : columnIdShowListAtom,
       sizeMapAtom: isRow ? rowSizeMapAtom : columnSizeMapAtom,
       getStateAtomByIndex: isRow ? getRowStateAtomById : getColumnStateAtomById,
-      topAtom: isRow ? stickyTopOptionAtom : stickyLeftOptionAtom,
-      bottomAtom: isRow ? stickyBottomOptionAtom : stickyRightOptionAtom,
+      topAtom: isRow ? stickyTopAtom : stickyLeftAtom,
+      bottomAtom: isRow ? stickyBottomAtom : stickyRightAtom,
     }
-  }, [direction, getColumnStateAtomById, getRowStateAtomById])
+  }, [direction])
 
   /**
    * 设置sticky配置参数 - 优化版
@@ -132,6 +132,16 @@ export function useSticky(props: UseStickyProps = {}) {
     setter(bottomAtom, bottomIdList)
     setter(topAtom, topIdList)
   }, [bottomIdList, topIdList, setter, stickyConfig])
+  /** 获取实际的固定元素ID列表 */
+  const realTopIds = useAtomValue(
+    StickyConfig[stickyConfig.isRow ? 'rowTop' : 'columnTop'].atomEntity,
+    { store },
+  )
+
+  const realBottomIds = useAtomValue(
+    StickyConfig[stickyConfig.isRow ? 'rowBottom' : 'columnBottom'].atomEntity,
+    { store },
+  )
 
   /**
    * 优化的自动排序功能
@@ -142,11 +152,11 @@ export function useSticky(props: UseStickyProps = {}) {
     return setter(stickyConfig.listAtom, (_getter, prev) => {
       // 使用Set提高查找性能
       const existingIds = new Set(prev)
-      const allFixedIds = new Set([...topIdList, ...bottomIdList])
+      const allFixedIds = new Set([...realTopIds, ...realBottomIds])
 
       // 只处理实际存在的固定元素
-      const validTopIds = topIdList.filter((id) => existingIds.has(id))
-      const validBottomIds = bottomIdList.filter((id) => existingIds.has(id))
+      const validTopIds = realTopIds.filter((id) => existingIds.has(id))
+      const validBottomIds = realBottomIds.filter((id) => existingIds.has(id))
 
       // 构建新列表
       const newList: RowId[] = [
@@ -157,21 +167,11 @@ export function useSticky(props: UseStickyProps = {}) {
 
       return newList
     })
-  }, [fixed, stickyConfig.listAtom, setter, topIdList, bottomIdList])
+  }, [fixed, stickyConfig.listAtom, setter, realTopIds])
 
   useEffect(() => {
     return sortFixedElements()
   }, [sortFixedElements])
-
-  /** 获取实际的固定元素ID列表 */
-  const realTopIds = useAtomValue(
-    StickyConfig[stickyConfig.isRow ? 'rowTop' : 'columnTop'].atomEntity,
-    { store },
-  )
-  const realBottomIds = useAtomValue(
-    StickyConfig[stickyConfig.isRow ? 'rowBottom' : 'columnBottom'].atomEntity,
-    { store },
-  )
 
   /** 监听sizeMap的变化 */
   const sizeMap = useAtomValue(stickyConfig.sizeMapAtom, { store })
@@ -256,8 +256,8 @@ export function useSticky(props: UseStickyProps = {}) {
 
       if (fixed) {
         // 优化：减少map调用
-        const topIndexes = topIdList.map((_, index) => index)
-        const bottomIndexes = bottomIdList.map((_, index) => showIds.length - 1 - index)
+        const topIndexes = realTopIds.map((_, index) => index)
+        const bottomIndexes = realBottomIds.map((_, index) => showIds.length - 1 - index)
         return [...topIndexes, ...bottomIndexes]
       }
 
@@ -267,11 +267,11 @@ export function useSticky(props: UseStickyProps = {}) {
         indexMap.set(id, index)
       })
 
-      return [...topIdList, ...bottomIdList]
+      return [...realTopIds, ...realBottomIds]
         .map((id) => indexMap.get(id))
         .filter((index): index is number => index !== undefined)
     })
-  }, [stickyConfig.listAtom, fixed, topIdList, bottomIdList])
+  }, [stickyConfig.listAtom, fixed, realTopIds, realBottomIds])
 
   /** 获取需要保持可见的固定元素索引列表 */
   const stayIndexList = useAtomValue(stayIndexListAtom, { store })

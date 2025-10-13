@@ -20,9 +20,14 @@ export function useTheadContextMenu({ enable = true }: { enable: boolean }) {
         return
       }
 
+      // 获取表格容器和鼠标点击位置
+      // thead-cell 的父容器作为定位参考
+      const tableContainer = e.currentTarget.closest('.thead-cell')?.parentElement?.parentElement
+      const containerRect = tableContainer?.getBoundingClientRect()
+
       setPosition({
-        x: e.currentTarget.offsetLeft,
-        y: e.currentTarget.offsetTop,
+        x: containerRect ? e.clientX - containerRect.left : e.clientX,
+        y: containerRect ? e.clientY - containerRect.top : e.clientY,
         columnId: position.columnId,
       })
     },

@@ -1,4 +1,5 @@
 import { useColumnHide } from '../theadColumnHide/useColumnHide'
+import { useStickyColumn } from '../sticky/useStickyColumn'
 import { columnContextMenuOptionsAtom, columnContextMenuPositionAtom } from './state'
 import { useTheadContextMenu } from './useTheadContextMenu'
 import { useStore, useAtomValue, useAtom } from '@einfach/react'
@@ -19,6 +20,7 @@ export function TheadContextMenu(
   const list = useAtomValue(columnContextMenuOptionsAtom, { store })
 
   useColumnHide(enableContextMenu)
+  useStickyColumn(enableContextMenu)
 
   if (!position) {
     return null

@@ -13,8 +13,6 @@ const enableColumnResizeAtom = atom(false)
 export function DragLine(props: UseDragProps) {
   const { selectIndex, left } = useDrag(props)
 
-  console.log(`selectIndex`, selectIndex)
-
   const setColumnResize = useSetAtom(enableColumnResizeAtom)
 
   useLayoutEffect(() => {

@@ -39,7 +39,6 @@ const columns: ColumnType[] = [
     title: '姓名',
     dataIndex: 'name',
     width: 120,
-    fixed: 'left',
   },
   {
     title: '年龄',
@@ -51,6 +50,7 @@ const columns: ColumnType[] = [
     title: '邮箱',
     dataIndex: 'email',
     width: 200,
+    fixed: 'left',
   },
   {
     title: '部门',

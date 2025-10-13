@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.28
+
+### Patch Changes
+
+- feat:右键新增 固定到左边
+  - @grid-table/core@0.6.28
+  - @grid-table/basic@0.6.28
+
 ## 0.6.27
 
 ### Patch Changes
