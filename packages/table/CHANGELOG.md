@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.30
+
+### Patch Changes
+
+- fixed修复鼠标右键 没计算滚动条偏移量
+  - @grid-table/core@0.6.30
+  - @grid-table/basic@0.6.30
+
 ## 0.6.29
 
 ### Patch Changes
