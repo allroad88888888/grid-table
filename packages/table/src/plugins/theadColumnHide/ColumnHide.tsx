@@ -3,6 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { areaColumnIdsAtom } from '../areaSelected'
 import { hideColumnAtom, hideColumnsAtom } from './state'
 import { columnIndexListAtom } from '@grid-table/basic'
+import { localeAtom } from '../../state'
 
 export function ColumnHide() {
   const store = useStore()
@@ -34,6 +35,7 @@ export function ColumnHide() {
   }, [])
 
   const hideColumns = useAtomValue(currentHideColumnIdAtom, { store })
+  const locale = useAtomValue(localeAtom, { store })
 
   const onHideClick = useSetAtom(hideColumnAtom, { store })
 
@@ -51,11 +53,11 @@ export function ColumnHide() {
   return (
     <>
       <li onClick={onHideClick} key="hide">
-        隐藏当前列
+        {locale.hideColumn}
       </li>
       {hideColumns.length > 0 ? (
         <li onClick={onShowClick} key="show">
-          显示隐藏列
+          {locale.showHiddenColumns}
         </li>
       ) : null}
     </>

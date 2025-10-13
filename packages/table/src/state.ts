@@ -1,6 +1,7 @@
 import type { AntdTableProps, UseDataProps } from './types'
+import { DEFAULT_TABLE_LOCALE } from './types'
 import { format } from './core/format'
-import { atom } from '@einfach/react'
+import { atom, selectAtom } from '@einfach/react'
 import { rowIndexListAtom, rowSizeMapAtom } from '@grid-table/basic'
 import { nodeLevelAtom, relationAtom, rootAtom } from './tree/stateTree'
 import { dataFamilyAtom, loadingAtom } from './stateCore'
@@ -43,3 +44,14 @@ export const optionsAtom = atom(
     setter(optionsAtom, props)
   },
 )
+
+/**
+ * 多语言配置 atom
+ * 合并默认配置和用户自定义配置
+ */
+export const localeAtom = selectAtom(optionsAtom, (options) => {
+  return {
+    ...DEFAULT_TABLE_LOCALE,
+    ...options?.locale,
+  }
+})

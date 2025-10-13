@@ -2,6 +2,7 @@ import { useStore, useAtomValue } from '@einfach/react'
 import { useCallback } from 'react'
 import { stickyLeftAtom, stickyRightAtom } from './state'
 import { columnContextMenuPositionAtom } from '../theadContextMenu/state'
+import { localeAtom } from '../../state'
 
 export function StickyColumn() {
   const store = useStore()
@@ -10,6 +11,7 @@ export function StickyColumn() {
   const position = useAtomValue(columnContextMenuPositionAtom, { store })
   const stickyLeftColumns = useAtomValue(stickyLeftAtom, { store })
   const stickyRightColumns = useAtomValue(stickyRightAtom, { store })
+  const locale = useAtomValue(localeAtom, { store })
 
   if (!position) {
     return null
@@ -70,16 +72,16 @@ export function StickyColumn() {
       {!isLeftFixed && !isRightFixed && (
         <>
           <li onClick={onStickyLeftClick} key="sticky-left">
-            固定到左边
+            {locale.stickyLeft}
           </li>
           <li onClick={onStickyRightClick} key="sticky-right">
-            固定到右边
+            {locale.stickyRight}
           </li>
         </>
       )}
       {(isLeftFixed || isRightFixed) && (
         <li onClick={onUnstickClick} key="unstick">
-          取消固定
+          {locale.unstick}
         </li>
       )}
     </>

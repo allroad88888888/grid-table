@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.29
+
+### Patch Changes
+
+- 支持多语言
+  - @grid-table/core@0.6.29
+  - @grid-table/basic@0.6.29
+
 ## 0.6.28
 
 ### Patch Changes

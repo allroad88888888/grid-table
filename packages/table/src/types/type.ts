@@ -6,6 +6,30 @@ import type { CopyProps, UseRowNumberProps } from '../plugins'
 import type { Store } from '@einfach/react'
 import { AutoColumnsSizeOptions } from '../plugins/calcSizeByColumn/measureColumnsWidth'
 
+/**
+ * 表格多语言配置
+ */
+export type TableLocale = {
+  // 列固定相关
+  stickyLeft: string
+  stickyRight: string
+  unstick: string
+  // 列隐藏相关
+  hideColumn: string
+  showHiddenColumns: string
+}
+
+/**
+ * 默认中文多语言配置
+ */
+export const DEFAULT_TABLE_LOCALE: TableLocale = {
+  stickyLeft: '固定到左边',
+  stickyRight: '固定到右边',
+  unstick: '取消固定',
+  hideColumn: '隐藏当前列',
+  showHiddenColumns: '显示隐藏列',
+}
+
 export type AntdTableProps = {
   className?: string
   style?: CSSProperties
@@ -66,6 +90,15 @@ export type AntdTableProps = {
    * @default false
    */
   enableRowNumber?: boolean | UseRowNumberProps
+
+  /**
+   * 多语言配置，支持部分覆盖
+   * @example
+   * ```tsx
+   * <Table locale={{ hideColumn: 'Hide Column', showHiddenColumns: 'Show Hidden' }} />
+   * ```
+   */
+  locale?: Partial<TableLocale>
 
   gpuScroll?: boolean
   children?: React.ReactNode
