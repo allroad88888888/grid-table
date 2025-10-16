@@ -13,7 +13,7 @@ export function useRow({ rowIndex, style }: RowProps) {
   })
 
   return {
-    rowIndex: gridRowIndex,
+    rowId: gridRowIndex,
     className: className ? Array.from(className).join(' ') : '',
     style: {
       ...style,

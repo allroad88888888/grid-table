@@ -27,11 +27,11 @@ export function useTheadContextMenu({ enable = true }: { enable: boolean }) {
 
       // 计算相对位置时，需要加上滚动条的偏移量
       const scrollLeft = (tableContainer as HTMLElement)?.scrollLeft || 0
-      const scrollTop = (tableContainer as HTMLElement)?.scrollTop || 0
+      // const scrollTop = (tableContainer as HTMLElement)?.scrollTop || 0
 
       setPosition({
         x: (containerRect ? e.clientX - containerRect.left : e.clientX) + scrollLeft,
-        y: (containerRect ? e.clientY - containerRect.top : e.clientY) + scrollTop,
+        y: (containerRect ? e.clientY - containerRect.top : e.clientY) + 0,
         columnId: position.columnId,
       })
     },

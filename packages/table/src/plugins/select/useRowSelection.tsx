@@ -64,6 +64,7 @@ export function useRowSelection<ItemInfo = Record<string, any>>(
       enableSelectArea: false,
       align: align,
       key: ROW_SELECTION_COLUMN_KEY,
+      flexGrow: 0,
     }
 
     return [option, ...originalColumns]

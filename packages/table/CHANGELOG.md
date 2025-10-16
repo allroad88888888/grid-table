@@ -1,5 +1,21 @@
 # @grid-table/view
 
+## 0.6.32
+
+### Patch Changes
+
+- fixed:高度滚动条不用管
+  - @grid-table/core@0.6.32
+  - @grid-table/basic@0.6.32
+
+## 0.6.31
+
+### Patch Changes
+
+- fixed:checkbox flowgrow:0
+  - @grid-table/core@0.6.31
+  - @grid-table/basic@0.6.31
+
 ## 0.6.30
 
 ### Patch Changes
