@@ -183,7 +183,6 @@ export function ResizeWidthDemo() {
           dataSource={data}
           enableRowNumber
           idProp="id"
-          bordered
           store={store}
           enableSelectArea={true}
           enableHeadContextMenu={true}

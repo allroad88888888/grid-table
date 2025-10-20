@@ -2,14 +2,13 @@ import type { ColumnType } from '@grid-table/view'
 import { Table } from '@grid-table/view/src'
 import { Tag, Button, Space } from 'antd'
 import { useStore } from '@einfach/react'
-import { ResizableContainer } from '../components/ResizableContainer'
+import './BorderDemo.css'
 
 const columns: ColumnType[] = [
-  // 左侧固定列
   {
-    title: '序号根据表头宽度自动计算列宽',
+    title: '序号',
     dataIndex: 'id',
-    width: 200,
+    width: 80,
     fixed: 'left',
     key: 'index',
   },
@@ -21,8 +20,6 @@ const columns: ColumnType[] = [
     key: 'name',
     render: (text: any) => <a>{text}</a>,
   },
-
-  // 中间普通列
   {
     title: '年龄',
     dataIndex: 'age',
@@ -38,7 +35,7 @@ const columns: ColumnType[] = [
   {
     title: '电话',
     dataIndex: 'phone',
-    width: 120,
+    width: 150,
     key: 'phone',
   },
   {
@@ -56,7 +53,7 @@ const columns: ColumnType[] = [
   {
     title: '薪资',
     dataIndex: 'salary',
-    width: 100,
+    width: 120,
     key: 'salary',
     render: (salary: any) => `$${salary?.toLocaleString()}`,
   },
@@ -66,8 +63,6 @@ const columns: ColumnType[] = [
     width: 120,
     key: 'startDate',
   },
-
-  // 右侧固定列
   {
     title: '状态',
     dataIndex: 'status',
@@ -81,7 +76,7 @@ const columns: ColumnType[] = [
   },
   {
     title: '操作',
-    width: 120,
+    width: 150,
     fixed: 'right',
     key: 'action',
     render: (_: any, record: any) => (
@@ -196,32 +191,87 @@ const data = [
   },
 ]
 
-export function EditTableDemo() {
+export function BorderDemo() {
   const store = useStore()
 
   return (
-    <div style={{ padding: 16 }}>
-      <ResizableContainer
-        initialWidth={800}
-        initialHeight={400}
-        minWidth={400}
-        minHeight={200}
-        maxWidth={8200}
-        maxHeight={2000}
-      >
+    <div className="border-demo-container">
+      <div className="border-demo-header">
+        <h1>边框控制演示</h1>
+        <p>演示如何独立控制表格的横向和竖向分割线</p>
+      </div>
+
+      {/* <div className="border-demo-section">
+        <h2>基础示例</h2>
+        <div className="demo-description">都显示</div>
         <Table
           columns={columns}
           dataSource={data}
           idProp="id"
           store={store}
-          enableSelectArea={true}
-          enableHeadContextMenu={false}
-          enableColumnResize={true}
-          enableCopy={true}
+          style={{ marginBottom: 24 }}
+          showHorizontalBorder={true}
+          showVerticalBorder={true}
         />
-      </ResizableContainer>
+      </div>
+
+      <div className="border-demo-section">
+        <h2>仅显示横向分割线</h2>
+        <div className="demo-description">适合阅读型表格，突出行与行之间的区分</div>
+        <Table
+          columns={columns}
+          dataSource={data}
+          idProp="id"
+          store={store}
+          showHorizontalBorder={true}
+          showVerticalBorder={false}
+          style={{ marginBottom: 24 }}
+        />
+      </div>
+
+      <div className="border-demo-section">
+        <h2>仅显示竖向分割线</h2>
+        <div className="demo-description">适合列对比型表格，突出列与列之间的区分</div>
+        <Table
+          columns={columns}
+          dataSource={data}
+          idProp="id"
+          store={store}
+          showHorizontalBorder={false}
+          showVerticalBorder={true}
+          style={{ marginBottom: 24 }}
+        />
+      </div>
+
+      <div className="border-demo-section">
+        <h2>无边框</h2>
+        <div className="demo-description">极简风格，适合内容为主的展示场景</div>
+        <Table
+          columns={columns}
+          dataSource={data}
+          idProp="id"
+          store={store}
+          showHorizontalBorder={false}
+          showVerticalBorder={false}
+          style={{ marginBottom: 24 }}
+        />
+      </div> */}
+      <div className="border-demo-section">
+        <h2>斑马</h2>
+        <div className="demo-description">斑马</div>
+        <Table
+          columns={columns}
+          dataSource={data}
+          idProp="id"
+          store={store}
+          showHorizontalBorder={false}
+          showVerticalBorder={false}
+          style={{ marginBottom: 24 }}
+          zebra
+        />
+      </div>
     </div>
   )
 }
 
-export default EditTableDemo
+export default BorderDemo

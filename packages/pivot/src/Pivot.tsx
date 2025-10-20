@@ -23,7 +23,6 @@ function PivotData(props: PivotProps) {
       headerDataSource={headerDataList}
       columns={columns}
       rowHeight={props.rowHeight || 32}
-      bordered={true}
       className={props.className}
       style={props.style}
       enableSelectArea={true}

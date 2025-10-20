@@ -226,7 +226,6 @@ export function RowNumberDemo() {
           enableCopy={true}
           enableHeadContextMenu={true}
           enableSelectArea={true}
-          bordered={true}
           rowHeight={36}
           cellDefaultWidth={120}
         />

@@ -1,10 +1,16 @@
 import type { CSSProperties } from 'react'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useAtomValue, useStore } from '@einfach/react'
 import { columnIdShowListAtom, rowIdShowListAtom, useBasic } from '@grid-table/basic'
 import { stickyRightAtom, stickyBottomAtom } from '../sticky/state'
 
-export function useBorder({ showBorder = true }: { showBorder?: boolean } = {}) {
+export function useBorder({
+  showHorizontalBorder = true,
+  showVerticalBorder = true,
+}: {
+  showHorizontalBorder?: boolean
+  showVerticalBorder?: boolean
+} = {}) {
   const { getColumnStateAtomById, getRowStateAtomById } = useBasic()
   const store = useStore()
   const { setter } = store
@@ -16,7 +22,7 @@ export function useBorder({ showBorder = true }: { showBorder?: boolean } = {}) 
 
   // 处理右侧固定列的边框
   useEffect(() => {
-    if (!showBorder) return
+    if (!showHorizontalBorder) return
 
     const cancelList: (() => void)[] = []
 
@@ -31,8 +37,8 @@ export function useBorder({ showBorder = true }: { showBorder?: boolean } = {}) 
 
           // 第一列添加左边框和阴影
           if (index === 0) {
-            newStyle.borderLeft = '1px var(--grid-cell-border-style) var(--grid-border-color)'
-            newStyle.boxShadow = '-2px 0 6px rgba(0, 0, 0, 0.08)'
+            // newStyle.borderLeft = '1px var(--grid-cell-border-style) var(--grid-border-color)'
+            // newStyle.boxShadow = '-2px 0 6px rgba(0, 0, 0, 0.08)'
           }
           if (index === stickyRightIds.length - 1) {
             newStyle.borderRightWidth = '0'
@@ -49,11 +55,11 @@ export function useBorder({ showBorder = true }: { showBorder?: boolean } = {}) 
     return () => {
       cancelList.forEach((cancel) => cancel())
     }
-  }, [stickyRightIds, getColumnStateAtomById, setter, showBorder])
+  }, [stickyRightIds, getColumnStateAtomById, setter, showHorizontalBorder])
 
   // 处理底部固定行的边框
   useEffect(() => {
-    if (!showBorder) return
+    if (!showVerticalBorder) return
 
     const cancelList: (() => void)[] = []
 
@@ -84,11 +90,11 @@ export function useBorder({ showBorder = true }: { showBorder?: boolean } = {}) 
     return () => {
       cancelList.forEach((cancel) => cancel())
     }
-  }, [stickyBottomIds, getRowStateAtomById, setter, showBorder])
+  }, [stickyBottomIds, getRowStateAtomById, setter, showVerticalBorder])
 
   // 处理普通列表最后一列的边框
   useEffect(() => {
-    if (!showBorder) return
+    if (!showHorizontalBorder) return
 
     if (columnIdShowList.length === 0) return
 
@@ -107,11 +113,11 @@ export function useBorder({ showBorder = true }: { showBorder?: boolean } = {}) 
         style: newStyle,
       }
     })!
-  }, [columnIdShowList, getColumnStateAtomById, setter, showBorder])
+  }, [columnIdShowList, getColumnStateAtomById, setter, showHorizontalBorder])
 
   // 处理普通行列表最后一行的边框
   useEffect(() => {
-    if (!showBorder) return
+    if (!showVerticalBorder) return
 
     if (rowIdShowList.length === 0) return
 
@@ -129,5 +135,19 @@ export function useBorder({ showBorder = true }: { showBorder?: boolean } = {}) 
         style: newStyle,
       }
     })!
-  }, [rowIdShowList, getRowStateAtomById, setter, showBorder])
+  }, [rowIdShowList, getRowStateAtomById, setter, showVerticalBorder])
+
+  const borderClassName = useMemo(() => {
+    const clssName: string[] = []
+    if (showHorizontalBorder) {
+      clssName.push('grid-table-border-horizontal')
+    }
+    if (showVerticalBorder) {
+      clssName.push('grid-table-border-vertical')
+    }
+    return clssName.join(' ')
+  }, [showHorizontalBorder, showVerticalBorder])
+  return {
+    borderClassName,
+  }
 }

@@ -3,7 +3,7 @@ import type { CellProps } from '@grid-table/core'
 import { useMemo, type CSSProperties } from 'react'
 import { useBasic } from '@grid-table/basic'
 
-export function useCell({ cellId, rowId, columnId, style }: CellProps) {
+export function useCell({ cellId, rowId, columnId, style, rowIndex }: CellProps) {
   const { getColumnStateAtomById, getCellStateAtomById, getRowStateAtomById } = useBasic()
   const store = useStore()
 
@@ -32,7 +32,11 @@ export function useCell({ cellId, rowId, columnId, style }: CellProps) {
     })
   }, [cellId, columnId, getCellStateAtomById, getColumnStateAtomById])
 
-  const { style: stateStyle, ...state } = useAtomValue(cellInfoAtom, { store })
+  const {
+    style: stateStyle,
+    className: stateClass,
+    ...state
+  } = useAtomValue(cellInfoAtom, { store })
 
   return {
     cellId,
@@ -42,6 +46,7 @@ export function useCell({ cellId, rowId, columnId, style }: CellProps) {
       ...stateStyle,
       ...style,
     } as CSSProperties,
+    className: `${stateClass} ${rowIndex % 2 !== 0 ? 'gird-table-cell-even' : 'gird-table-cell-odd'}`,
     ...state,
   }
 }

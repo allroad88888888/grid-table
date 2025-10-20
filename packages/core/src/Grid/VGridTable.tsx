@@ -130,6 +130,8 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
         gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
         gridRowStart: theadSizeList[rowIndex] / theadBaseSize + 1,
         gridRowEnd: theadSizeList[rowIndex + 1] / theadBaseSize + 1,
+        '--row': rowIndex,
+        '--column': columnIndex,
       }
       if (theadHasRow) {
         tStyle.gridRowStart = 1
@@ -148,6 +150,8 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
         gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
         gridRowStart: rowSizeList[rowIndex] / rowBaseSize + 1,
         gridRowEnd: rowSizeList[rowIndex + 1] / rowBaseSize + 1,
+        '--row': rowIndex,
+        '--column': columnIndex,
       }
       if (tbodyHasRow) {
         tStyle.gridRowStart = 1

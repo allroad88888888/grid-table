@@ -33,6 +33,6 @@
   --grid-table-border-style: solid;
 
   /* 粘性列阴影 */
-  --grid-sticky-shadow-right: 2px 0 6px rgba(0, 0, 0, 0.08);
-  --grid-sticky-shadow-left: -2px 0 6px rgba(0, 0, 0, 0.08);
+  /* --grid-sticky-shadow-right: 2px 0 6px rgba(0, 0, 0, 0.08);
+  --grid-sticky-shadow-left: -2px 0 6px rgba(0, 0, 0, 0.08); */
 }

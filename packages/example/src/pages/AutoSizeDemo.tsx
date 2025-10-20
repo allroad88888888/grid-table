@@ -238,7 +238,6 @@ export function AutoSizeDemo() {
           dataSource={mockData}
           rowHeight={40}
           cellDefaultWidth={120}
-          bordered={true}
           style={{
             width: '100%',
             height: '500px',

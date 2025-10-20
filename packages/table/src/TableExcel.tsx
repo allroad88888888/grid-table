@@ -32,7 +32,7 @@ import { useRowNumber } from './plugins/rowNumber'
 export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, tableRef) => {
   const { columns: originalColumns, dataSource, enableRowNumber } = props
   const { cellDefaultWidth = 80, rowHeight = 36 } = props
-  const { enableHeadContextMenu, children } = props
+  const { enableHeadContextMenu, children, zebra } = props
 
   // 序号列
   const rowNumberColumns = useRowNumber(originalColumns, {
@@ -49,8 +49,6 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
 
   const autoColumnsSize = useColumnAutoSize(gridRef)
-
-  const showBorder = props.bordered !== false
 
   useImperativeHandle(tableRef, () => {
     return {
@@ -116,14 +114,21 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   /** 固定列攻功能 */
   const { stayIndexList } = useSticky(stickyList)
 
+  /** 边框处理功能 */
+  const { borderClassName } = useBorder({
+    showHorizontalBorder: props.showHorizontalBorder,
+    showVerticalBorder: props.showVerticalBorder,
+  })
+
   const tableClassName = useTableClassNameValue(
     clsx(
-      'grid-table grid-table-border',
+      'grid-table',
+      borderClassName,
       {
         'grid-table-plugin-loading ': loading,
         'gpu-scroll': props.gpuScroll,
+        'grid-table-zebra': zebra,
       },
-      'grid-table grid-table-border',
       props.className,
     ),
   )
@@ -139,19 +144,14 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   })
 
   /** tbody单元格合并功能 */
-  useMergeCells({ showBorder })
-
-  /** 边框处理功能 */
-  useBorder({
-    showBorder,
-  })
+  useMergeCells({ showBorder: true })
 
   /** tbody区域选中功能 */
   useAreaSelected({ enable: props.enableCopy || props.enableSelectArea })
 
   /** thead单元格合并功能 */
   useHeaderMergeCells({
-    showBorder,
+    showBorder: true,
   })
 
   const { renderTheadCells } = useRenderTheadCells()

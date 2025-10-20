@@ -33,19 +33,8 @@ export const DEFAULT_TABLE_LOCALE: TableLocale = {
 export type AntdTableProps = {
   className?: string
   style?: CSSProperties
-  /**
-   * @default true
-   */
-  bordered?:
-    | boolean
-    | 'dotted'
-    | 'dashed'
-    | 'solid'
-    | 'double'
-    | 'groove'
-    | 'ridge'
-    | 'inset'
-    | 'outset'
+  showHorizontalBorder?: boolean
+  showVerticalBorder?: boolean
   /**
    * 行高度
    * @default 36
@@ -90,6 +79,8 @@ export type AntdTableProps = {
    * @default false
    */
   enableRowNumber?: boolean | UseRowNumberProps
+
+  zebra?: boolean
 
   /**
    * 多语言配置，支持部分覆盖

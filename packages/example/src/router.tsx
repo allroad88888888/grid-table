@@ -23,6 +23,7 @@ import { ValueInColsDemo } from './pages/ValueInColsDemo'
 import { EditTableDemo } from './pages/EditTable'
 import { ResizeWidthDemo } from './pages/ResizeWidthDemo'
 import { RowNumberDemo } from './pages/RowNumberDemo'
+import { BorderDemo } from './pages/BorderDemo'
 
 // 路由项目接口定义
 export interface RouteItem {
@@ -78,6 +79,11 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/table/row-number',
         component: RowNumberDemo,
         label: '序号列功能',
+      },
+      {
+        path: '/table/border',
+        component: BorderDemo,
+        label: '边框控制',
       },
     ],
   },

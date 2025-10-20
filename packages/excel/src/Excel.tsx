@@ -29,7 +29,6 @@ export function Excel(props: ExcelProps) {
       dataSource={dataList}
       columns={columns}
       rowHeight={20}
-      bordered={true}
       className={props.className}
       style={props.style}
     />

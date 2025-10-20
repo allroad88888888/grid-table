@@ -36,27 +36,39 @@ const calculatePositions = (
   sizeMap: Map<string, number>,
   startPosition: number,
   isReverse: boolean = false,
-): { positions: number[]; idOrder: string[] } => {
-  const positions: number[] = []
-  let currentPosition = startPosition
-  const processIds = isReverse ? [...ids].reverse() : ids
+): number[] => {
+  if (!isReverse) {
+    // 正常顺序（左侧固定列）：从左往右累加
+    const positions: number[] = []
+    let currentPosition = startPosition
 
-  // 为每个元素计算位置
-  processIds.forEach((id) => {
-    const size = sizeMap.get(id)
-    if (size === undefined) {
-      throw new Error(ERROR_MESSAGES.ELEMENT_NOT_FOUND(id))
+    ids.forEach((id) => {
+      const size = sizeMap.get(id)
+      if (size === undefined) {
+        throw new Error(ERROR_MESSAGES.ELEMENT_NOT_FOUND(id))
+      }
+      positions.push(currentPosition)
+      currentPosition += size
+    })
+
+    return positions
+  } else {
+    // 反向顺序（右侧固定列）：从右往左计算位置
+    // 例如：[A,B,C] 宽度 [100,120,150] -> 位置 [270,150,0]
+    const positions: number[] = new Array(ids.length)
+    let currentPosition = startPosition
+
+    // 从最后一个元素开始往前计算
+    for (let i = ids.length - 1; i >= 0; i--) {
+      const size = sizeMap.get(ids[i])
+      if (size === undefined) {
+        throw new Error(ERROR_MESSAGES.ELEMENT_NOT_FOUND(ids[i]))
+      }
+      positions[i] = currentPosition
+      currentPosition += size
     }
 
-    // 当前位置就是这个元素的定位值
-    // 例如：右侧固定列 [A,B,C] -> 处理顺序 [C,B,A] -> 位置 [0, 120, 270]
-    positions.push(currentPosition)
-    currentPosition += size
-  })
-
-  return {
-    positions,
-    idOrder: processIds, // 返回实际的处理顺序
+    return positions
   }
 }
 
@@ -190,18 +202,11 @@ export function useSticky(props: UseStickyProps = {}) {
       const isTop = !type.includes('Bottom')
 
       try {
-        // 计算位置 - 修复右侧固定列位置计算
-        // 对于右侧固定列：原始顺序 [A,B,C] -> 处理顺序 [C,B,A] -> CSS位置 [0,120,270]
-        const { positions, idOrder } = calculatePositions(
-          ids,
-          sizeMap,
-          isTop ? topSpace : 0,
-          !isTop,
-        )
+        // 计算位置
+        const positions = calculatePositions(ids, sizeMap, isTop ? topSpace : 0, !isTop)
 
-        // 批量应用样式 - 使用正确的id和位置对应关系
-        // idOrder和positions一一对应，确保位置计算正确
-        const cancelFunctions = idOrder.map((id, index) => {
+        // 批量应用样式
+        const cancelFunctions = ids.map((id, index) => {
           const atomEntity = getStateAtomByIndex(id)
           const positionValue = positions[index]
 
@@ -210,7 +215,7 @@ export function useSticky(props: UseStickyProps = {}) {
 
           // 只对列方向的sticky添加阴影，row方向不需要
           if (!stickyConfig.isRow) {
-            if (position === 'left' && index === idOrder.length - 1) {
+            if (position === 'left' && index === ids.length - 1) {
               // 左边最后一列，添加右侧阴影
               shadowType = 'right'
             } else if (position === 'right' && index === 0) {

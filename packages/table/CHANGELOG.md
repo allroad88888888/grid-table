@@ -1,5 +1,14 @@
 # @grid-table/view
 
+## 0.6.33
+
+### Patch Changes
+
+- 支持奇数行 偶数行
+- Updated dependencies
+  - @grid-table/core@0.6.33
+  - @grid-table/basic@0.6.33
+
 ## 0.6.32
 
 ### Patch Changes
