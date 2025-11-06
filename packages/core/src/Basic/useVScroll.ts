@@ -36,7 +36,11 @@ export function useVScroll(props: UseVScrollProps) {
     }
   }, [itemCount, calcItemSize])
   const { startIndex, endIndex } = useMemo(() => {
-    if (!itemCount || length === 0) {
+    /**
+     * 移除length === 0的判断
+     * 0的时候 也要计算 比如loading 切换为false的时候，这里时候length为0 不计算，导致空被渲染
+     */
+    if (!itemCount) {
       return {
         topLength: 0,
         bottomLength: totalLength,

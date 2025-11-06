@@ -30,6 +30,9 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
    * 数据处理
    */
   useEffect(() => {
+    if (props.loading) {
+      return
+    }
     initData({
       dataSource,
       idProp: props.idProp as string,
@@ -46,6 +49,7 @@ export function useDataInit<ItemInfo extends DataItem>(props: UseDataProps<ItemI
     props.relation,
     props.root,
     props.rowHeight,
+    props.loading,
     rowSizeMapAtom,
   ])
 

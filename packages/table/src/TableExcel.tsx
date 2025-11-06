@@ -1,6 +1,6 @@
 import { VGridTable } from '@grid-table/core'
 import { useAtomValue, useSetAtom, useStore } from '@einfach/react'
-import { forwardRef, Fragment, useImperativeHandle, useMemo, useRef, useState } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import type { RowId } from '@grid-table/basic'
 import { headerRowIndexListAtom, useBasic } from '@grid-table/basic'
 import { useTableEvents } from './hooks/useTableEvents'
@@ -157,54 +157,44 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   const { renderTheadCells } = useRenderTheadCells()
   const { renderTBodyCells } = useRenderTbodyCells()
 
-  const LoadingComponent = props.loadingComponent || Fragment
-
   return (
     <>
-      {loading ? (
-        props.loadingComponent ? (
-          <LoadingComponent className={tableClassName} style={props.style} />
-        ) : null
-      ) : (
+      <VGridTable
+        {...tableEvents}
+        style={props.style}
+        minColumnWidth={props.minColumnWidth}
+        maxColumnWidth={props.maxColumnWidth}
+        ref={gridRef}
+        className={tableClassName}
+        renderTbodyCell={renderTBodyCells}
+        renderTheadCell={renderTheadCells}
+        theadRowCalcSize={calcHeadRowSizeByIndex}
+        theadBaseSize={props.theadBaseSize}
+        theadRowCount={headerRowIndexList.length}
+        rowCount={rowIdShowList.length}
+        rowCalcSize={calcRowSizeByIndex}
+        rowBaseSize={props.rowBaseSize || rowHeight}
+        columnCount={columnIdShowList.length}
+        columnCalcSize={calcColumnSizeByIndex}
+        columnBaseSize={props.columnBaseSize}
+        columnStayIndexList={stayIndexList}
+        overColumnCount={props.overColumnCount}
+        overRowCount={props.overRowCount}
+        emptyComponent={props.emptyComponent}
+        loadingComponent={props.loadingComponent}
+        loading={props.loading || loading}
+        onResize={setContainerSize}
+        theadChildren={<TheadContextMenu enableContextMenu={enableHeadContextMenu} />}
+      >
         <>
-          <VGridTable
-            {...tableEvents}
-            style={props.style}
-            minColumnWidth={props.minColumnWidth}
-            maxColumnWidth={props.maxColumnWidth}
-            ref={gridRef}
-            className={tableClassName}
-            renderTbodyCell={renderTBodyCells}
-            renderTheadCell={renderTheadCells}
-            theadRowCalcSize={calcHeadRowSizeByIndex}
-            theadBaseSize={props.theadBaseSize}
-            theadRowCount={headerRowIndexList.length}
-            rowCount={rowIdShowList.length}
-            rowCalcSize={calcRowSizeByIndex}
-            rowBaseSize={props.rowBaseSize || rowHeight}
-            columnCount={columnIdShowList.length}
-            columnCalcSize={calcColumnSizeByIndex}
-            columnBaseSize={props.columnBaseSize}
-            columnStayIndexList={stayIndexList}
-            overColumnCount={props.overColumnCount}
-            overRowCount={props.overRowCount}
-            emptyComponent={props.emptyComponent}
-            loadingComponent={props.loadingComponent}
-            loading={props.loading}
-            onResize={setContainerSize}
-            theadChildren={<TheadContextMenu enableContextMenu={enableHeadContextMenu} />}
-          >
-            <>
-              {children}
-              {copy}
-              <DragLine
-                dragColumnMinSize={props.cellDefaultWidth}
-                enableColumnResize={props.enableColumnResize}
-              />
-            </>
-          </VGridTable>
+          {children}
+          {copy}
+          <DragLine
+            dragColumnMinSize={props.cellDefaultWidth}
+            enableColumnResize={props.enableColumnResize}
+          />
         </>
-      )}
+      </VGridTable>
     </>
   )
 })

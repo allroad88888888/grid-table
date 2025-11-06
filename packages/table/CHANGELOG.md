@@ -1,5 +1,32 @@
 # @grid-table/view
 
+## 0.6.36
+
+### Patch Changes
+
+- 修复0的时候 也要计算 比如loading 切换为false的时候，这里时候length为0 不计算，导致空被渲染
+- Updated dependencies
+  - @grid-table/core@0.6.36
+  - @grid-table/basic@0.6.36
+
+## 0.6.35
+
+### Patch Changes
+
+- 如果数据在laoding 不处理
+- Updated dependencies
+  - @grid-table/core@0.6.35
+  - @grid-table/basic@0.6.35
+
+## 0.6.34
+
+### Patch Changes
+
+- 不做全局loading了
+- Updated dependencies
+  - @grid-table/core@0.6.34
+  - @grid-table/basic@0.6.34
+
 ## 0.6.33
 
 ### Patch Changes

@@ -9,6 +9,7 @@ export type UseDataProps<ItemInfo extends DataItem = DataItem> = {
   root?: string
   rowHeight?: number
   headerDataSource?: ItemInfo[]
+  loading?: boolean
   // parentProp?: keyof ItemInfo
   idProp?: keyof ItemInfo
 } & (

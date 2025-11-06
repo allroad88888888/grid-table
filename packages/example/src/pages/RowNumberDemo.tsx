@@ -1,7 +1,7 @@
 import { Table } from '@grid-table/view'
 import type { ColumnType } from '@grid-table/view'
 import type { UseRowSelectionProps } from '@grid-table/view/src/plugins/select'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './RowNumberDemo.css'
 
 // 模拟数据类型
@@ -14,6 +14,14 @@ type Person = {
   position: string
   salary: number
   joinDate: string
+}
+
+const EmptyComponent = () => {
+  return <div>空...</div>
+}
+
+const LoadingComponent = () => {
+  return <div>Loading...</div>
 }
 
 // 模拟数据
@@ -96,7 +104,14 @@ export function RowNumberDemo() {
   })
 
   // 生成数据
-  const dataSource = generateMockData(dataSize)
+  // const dataSource = generateMockData(dataSize)
+  const [dataSource, setDataSource] = useState<ReturnType<typeof generateMockData>>([])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setDataSource(generateMockData(dataSize))
+    }, 3000)
+  }, [dataSize])
 
   const config = useMemo(() => {
     return {
@@ -228,6 +243,10 @@ export function RowNumberDemo() {
           enableSelectArea={true}
           rowHeight={36}
           cellDefaultWidth={120}
+          enableColumnResize={true}
+          emptyComponent={EmptyComponent}
+          loadingComponent={LoadingComponent}
+          loading={dataSource.length === 0}
         />
       </div>
 
