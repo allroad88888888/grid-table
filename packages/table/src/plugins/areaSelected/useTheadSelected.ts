@@ -1,8 +1,14 @@
 import type { PositionId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
-import { atom, useStore } from '@einfach/react'
-import { useCallback, useEffect } from 'react'
-import { areaStartAtom, areaEndAtom, areaStartTypeAtom, areaEndTypeAtom } from './state'
+import { atom, useAtomCallback, useStore } from '@einfach/react'
+import { useEffect } from 'react'
+import {
+  areaStartAtom,
+  areaEndAtom,
+  areaStartTypeAtom,
+  areaEndTypeAtom,
+  emptyPosition,
+} from './state'
 import { getCellId } from '../../utils'
 
 const selectTheadColumnAreaIdsAtom = atom<PositionId[]>([])
@@ -11,9 +17,9 @@ export function useTheadLastRowColumnSelect({ enable = false }: { enable?: boole
   const { theadCellEventsAtom, rowIdShowListAtom, headerRowIndexListAtom } = useBasic()
   const store = useStore()
 
-  const onClick = useCallback(
-    (position: PositionId, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      const headerRowIds = store.getter(headerRowIndexListAtom)
+  const onClick = useAtomCallback(
+    (getter, setter, position: PositionId, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      const headerRowIds = getter(headerRowIndexListAtom)
 
       /**
        * 只有表头最后一行有这个点击效果
@@ -31,23 +37,23 @@ export function useTheadLastRowColumnSelect({ enable = false }: { enable?: boole
 
       // 处理 Shift 键多选逻辑
       if (e.shiftKey) {
-        store.setter(selectTheadColumnAreaIdsAtom, (prev) => {
+        setter(selectTheadColumnAreaIdsAtom, (prev) => {
           if (prev.length === 0) {
             return [position]
           }
           return [prev[0], position]
         })
 
-        const area = store.getter(selectTheadColumnAreaIdsAtom)
+        const area = getter(selectTheadColumnAreaIdsAtom)
         const startColumnId = area[0].columnId
         const endColumnId = (area[1] || area[0]).columnId
 
         // 设置跨区域选择：从 thead 到 tbody
-        store.setter(areaStartTypeAtom, 'thead')
-        store.setter(areaEndTypeAtom, 'tbody')
+        setter(areaStartTypeAtom, 'thead')
+        setter(areaEndTypeAtom, 'tbody')
 
         // 开始位置：thead 的点击位置
-        store.setter(areaStartAtom, {
+        setter(areaStartAtom, {
           columnId: startColumnId,
           rowId: position.rowId,
           cellId: getCellId({
@@ -57,9 +63,9 @@ export function useTheadLastRowColumnSelect({ enable = false }: { enable?: boole
         })
 
         // 结束位置：tbody 的最后一行
-        const rowIdShowList = store.getter(rowIdShowListAtom)
+        const rowIdShowList = getter(rowIdShowListAtom)
         const lastTbodyRowId = rowIdShowList[rowIdShowList.length - 1]
-        store.setter(areaEndAtom, {
+        setter(areaEndAtom, {
           columnId: endColumnId,
           rowId: lastTbodyRowId,
           cellId: getCellId({
@@ -68,24 +74,36 @@ export function useTheadLastRowColumnSelect({ enable = false }: { enable?: boole
           }),
         })
       } else {
+        const prevPosition = getter(selectTheadColumnAreaIdsAtom)
+
+        if (prevPosition.length === 1 && prevPosition[0].cellId === position.cellId) {
+          setter(selectTheadColumnAreaIdsAtom, [])
+          setter(areaStartTypeAtom, undefined)
+          setter(areaEndTypeAtom, undefined)
+          setter(areaStartAtom, emptyPosition)
+          setter(areaEndAtom, emptyPosition)
+
+          return
+        }
+
         // 普通左键点击：选中整列
-        store.setter(selectTheadColumnAreaIdsAtom, [position])
+        setter(selectTheadColumnAreaIdsAtom, [position])
 
         // 设置跨区域选择：从 thead 到 tbody
-        store.setter(areaStartTypeAtom, 'thead')
-        store.setter(areaEndTypeAtom, 'tbody')
+        setter(areaStartTypeAtom, 'thead')
+        setter(areaEndTypeAtom, 'tbody')
 
         // 开始位置：thead 的点击位置
-        store.setter(areaStartAtom, {
+        setter(areaStartAtom, {
           columnId: position.columnId,
           rowId: position.rowId,
           cellId: position.cellId,
         })
 
         // 结束位置：tbody 的最后一行，同一列
-        const rowIdShowList = store.getter(rowIdShowListAtom)
+        const rowIdShowList = getter(rowIdShowListAtom)
         const lastTbodyRowId = rowIdShowList[rowIdShowList.length - 1]
-        store.setter(areaEndAtom, {
+        setter(areaEndAtom, {
           columnId: position.columnId,
           rowId: lastTbodyRowId,
           cellId: getCellId({
@@ -95,7 +113,8 @@ export function useTheadLastRowColumnSelect({ enable = false }: { enable?: boole
         })
       }
     },
-    [headerRowIndexListAtom, rowIdShowListAtom, store],
+    [headerRowIndexListAtom, rowIdShowListAtom],
+    { store },
   )
 
   useEffect(() => {

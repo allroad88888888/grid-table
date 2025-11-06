@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.37
+
+### Patch Changes
+
+- feat：第二次点击表头，取消选中
+  - @grid-table/core@0.6.37
+  - @grid-table/basic@0.6.37
+
 ## 0.6.36
 
 ### Patch Changes
