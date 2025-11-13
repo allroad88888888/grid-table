@@ -1,5 +1,12 @@
 # @grid-table/basic
 
+## 0.6.38
+
+### Patch Changes
+
+- 修复表头多列，高度没有正确被设置
+  - @grid-table/core@0.6.38
+
 ## 0.6.37
 
 ### Patch Changes

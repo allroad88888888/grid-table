@@ -121,7 +121,7 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
       tempTheadSizeList.push(tempSize)
     }
     return [tempSize, tempTheadSizeList]
-  }, [])
+  }, [theadRowCount, theadRowSize])
 
   const getTheadCellStyle = useCallback(
     (rowIndex: number, columnIndex: number) => {
