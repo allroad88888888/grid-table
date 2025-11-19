@@ -1,7 +1,6 @@
 import type { ColumnType } from '@grid-table/view'
 import { Table } from '@grid-table/view/src'
 import { Tag, Button, Space } from 'antd'
-import { useStore } from '@einfach/react'
 import { ResizableContainer } from '../components/ResizableContainer'
 
 const columns: ColumnType[] = [
@@ -166,31 +165,68 @@ const data = [
 ]
 
 export function ResizeWidthDemo() {
-  const store = useStore()
-
   return (
-    <div style={{ padding: 16 }}>
-      <ResizableContainer
-        initialWidth={800}
-        initialHeight={400}
-        minWidth={400}
-        minHeight={200}
-        maxWidth={8200}
-        maxHeight={2000}
+    <>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
       >
-        <Table
-          columns={columns}
-          dataSource={data}
-          enableRowNumber
-          idProp="id"
-          store={store}
-          enableSelectArea={true}
-          enableHeadContextMenu={true}
-          enableColumnResize={true}
-          enableCopy={true}
-        />
-      </ResizableContainer>
-    </div>
+        <div style={{ padding: 16, height: '450px', width: '2000px', overflow: 'hidden' }}>
+          <div>放大基于当前列宽，缩小基于初始值</div>
+          <ResizableContainer
+            initialWidth={800}
+            initialHeight={400}
+            minWidth={400}
+            minHeight={200}
+            maxWidth={8200}
+            maxHeight={2000}
+            style={{
+              border: '1px solid blue',
+            }}
+          >
+            <Table
+              columns={columns}
+              dataSource={data}
+              enableRowNumber
+              idProp="id"
+              enableSelectArea={true}
+              enableHeadContextMenu={true}
+              enableColumnResize={true}
+              enableCopy={true}
+            />
+          </ResizableContainer>
+        </div>
+        <div style={{ padding: 16, height: '450px', width: '2000px', overflow: 'hidden' }}>
+          <div>放大基于初始值，缩小基于当前列宽</div>
+          <ResizableContainer
+            initialWidth={800}
+            initialHeight={400}
+            minWidth={400}
+            minHeight={200}
+            maxWidth={8200}
+            maxHeight={2000}
+            style={{
+              border: '1px solid red',
+            }}
+          >
+            <Table
+              columns={columns}
+              dataSource={data}
+              enableRowNumber
+              idProp="id"
+              enableSelectArea={true}
+              enableHeadContextMenu={true}
+              enableColumnResize={true}
+              enableCopy={true}
+              shrinkFromCurrent={true}
+              expandFromCurrent={false}
+            />
+          </ResizableContainer>
+        </div>
+      </div>
+    </>
   )
 }
 

@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.39
+
+### Patch Changes
+
+- 添加等比缩小
+  - @grid-table/core@0.6.39
+  - @grid-table/basic@0.6.39
+
 ## 0.6.38
 
 ### Patch Changes

@@ -2,7 +2,7 @@ import type { UseDataProps } from './common'
 import type { UseRowSelectionProps } from '../plugins/select/useRowSelection'
 import type { CSSProperties } from 'react'
 import type { VGridTableProps } from '@grid-table/core'
-import type { CopyProps, UseRowNumberProps } from '../plugins'
+import type { CopyProps, UseRowNumberProps, UseSizeByColumnProps } from '../plugins'
 import type { Store } from '@einfach/react'
 import { AutoColumnsSizeOptions } from '../plugins/calcSizeByColumn/measureColumnsWidth'
 
@@ -108,7 +108,8 @@ export type AntdTableProps = {
     | 'minColumnWidth'
     | 'maxColumnWidth'
   > &
-  AutoColumnsSizeOptions
+  AutoColumnsSizeOptions &
+  Pick<UseSizeByColumnProps, 'shrinkFromCurrent' | 'expandFromCurrent'>
 
 export interface AntdTableRef {
   autoColumnsSize: () => void

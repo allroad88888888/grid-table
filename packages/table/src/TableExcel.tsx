@@ -108,6 +108,8 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
       columnMinWidth: cellDefaultWidth,
       wrapWidth: containerSize.width,
       columns,
+      shrinkFromCurrent: props.shrinkFromCurrent,
+      expandFromCurrent: props.expandFromCurrent,
     },
   )
 
