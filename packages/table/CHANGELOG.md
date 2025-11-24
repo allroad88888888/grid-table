@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.43
+
+### Patch Changes
+
+- 放开useRowSelected
+  - @grid-table/core@0.6.43
+  - @grid-table/basic@0.6.43
+
 ## 0.6.42
 
 ### Patch Changes

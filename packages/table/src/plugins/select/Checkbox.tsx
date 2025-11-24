@@ -1,16 +1,10 @@
 import './checkbox.css'
 import type { PositionId } from '@grid-table/basic'
 import clsx from 'clsx'
-import { useRowChecked } from './useRowSelected'
+import { CheckedEnum, useRowChecked } from './useRowSelected'
 
 export function CheckboxRender(text: string | undefined, rowInfo: any, rowPath: PositionId) {
   return <Checkbox {...rowPath} />
-}
-
-export enum CheckedEnum {
-  checked = 'checked',
-  unChecked = 'unChecked',
-  partiallyChecked = 'partiallyChecked',
 }
 
 export function Checkbox({ rowId }: Partial<PositionId>) {

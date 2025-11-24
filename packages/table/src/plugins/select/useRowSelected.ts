@@ -1,4 +1,4 @@
-import { atom, useAtom, useAtomValue } from '@einfach/react'
+import { atom, Store, useAtom, useAtomValue } from '@einfach/react'
 import './checkbox.css'
 import type { PositionId, RowId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
@@ -11,9 +11,9 @@ export enum CheckedEnum {
   partiallyChecked = 'partiallyChecked',
 }
 
-export function useRowChecked({ rowId }: Partial<PositionId>) {
-  const { rowIdShowListAtom } = useBasic()
-  const nodeDisabledSet = useAtomValue(nodeSelectionDisabledSetAtom)
+export function useRowChecked({ rowId }: Partial<PositionId>, store?: Store) {
+  const { rowIdShowListAtom } = useBasic(store)
+  const nodeDisabledSet = useAtomValue(nodeSelectionDisabledSetAtom, { store })
   const checkedAtom = useMemo(() => {
     if (!rowId) {
       return atom(
@@ -75,7 +75,7 @@ export function useRowChecked({ rowId }: Partial<PositionId>) {
       },
     )
   }, [rowId])
-  const [isChecked, handChecked] = useAtom(checkedAtom)
+  const [isChecked, handChecked] = useAtom(checkedAtom, { store })
 
   return {
     isChecked,
