@@ -1,5 +1,23 @@
 # @grid-table/core
 
+## 0.6.42
+
+### Patch Changes
+
+- selectrows支持禁用ids
+
+## 0.6.41
+
+### Patch Changes
+
+- useSticky 支持store
+
+## 0.6.40
+
+### Patch Changes
+
+- fixed：修复列宽初始值没有监听columns
+
 ## 0.6.39
 
 ## 0.6.38

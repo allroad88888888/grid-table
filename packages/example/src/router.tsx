@@ -24,6 +24,7 @@ import { EditTableDemo } from './pages/EditTable'
 import { ResizeWidthDemo } from './pages/ResizeWidthDemo'
 import { RowNumberDemo } from './pages/RowNumberDemo'
 import { BorderDemo } from './pages/BorderDemo'
+import { FinanceTableDemo } from './pages/FinanceTableDemo'
 
 // 路由项目接口定义
 export interface RouteItem {
@@ -84,6 +85,11 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/table/border',
         component: BorderDemo,
         label: '边框控制',
+      },
+      {
+        path: '/table/finance',
+        component: FinanceTableDemo,
+        label: '财务数据表格',
       },
     ],
   },

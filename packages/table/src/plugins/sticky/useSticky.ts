@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useMemo } from 'react'
-import { atom, useAtomValue, useStore } from '@einfach/react'
+import { atom, Store, useAtomValue, useStore } from '@einfach/react'
 import type { RowId } from '@grid-table/basic'
 import {
   columnIdShowListAtom,
@@ -27,7 +27,14 @@ const EmptyArray: string[] = []
  * @param props 固定功能配置参数
  * @returns 返回固定元素的索引列表
  */
-export function useSticky(props: UseStickyProps = {}) {
+export function useSticky(
+  props: UseStickyProps = {},
+  {
+    store: paramStore,
+  }: {
+    store?: Store
+  } = {},
+) {
   const {
     /** 底部/右侧固定的ID列表 */
     bottomIdList = EmptyArray,
@@ -40,9 +47,9 @@ export function useSticky(props: UseStickyProps = {}) {
     /** 是否启用固定功能并自动排序 */
     fixed = true,
   } = props
+  const store = useStore({ store: paramStore })
+  const { getColumnStateAtomById, getRowStateAtomById } = useBasic(store)
 
-  const { getColumnStateAtomById, getRowStateAtomById } = useBasic()
-  const store = useStore()
   const { setter, getter } = store
 
   /** 是否为行方向的固定（固定行） */

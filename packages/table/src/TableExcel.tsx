@@ -1,7 +1,6 @@
 import { VGridTable } from '@grid-table/core'
 import { useAtomValue, useSetAtom, useStore } from '@einfach/react'
-import { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react'
-import type { RowId } from '@grid-table/basic'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { headerRowIndexListAtom, useBasic } from '@grid-table/basic'
 import { useTableEvents } from './hooks/useTableEvents'
 import { useSticky } from './plugins/sticky/useSticky.optimized'
@@ -18,7 +17,6 @@ import { useHeaderMergeCells, useMergeCells } from './plugins/mergeCells'
 import { useBorder } from './plugins/border'
 
 import './Table.css'
-import { getColumnId } from './utils/getColumnId'
 import { useTheadLastRowColumnSelect } from './plugins/areaSelected/useTheadSelected'
 import { TheadContextMenu } from './plugins/theadContextMenu/TheadContextMenu'
 import { useRenderTheadCells } from './components/Cell/renderTheadCells'
@@ -69,7 +67,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   const headerRowIndexList = useAtomValue(headerRowIndexListAtom)
 
   /** 数据+列功能 */
-  const { loading } = useDataInit({
+  const { loading, stickyList } = useDataInit({
     ...props,
     /**
      * 默认高度
@@ -77,29 +75,6 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
     rowHeight,
     columns,
   })
-
-  /** 固定列功能 */
-  const { stickyList } = useMemo(() => {
-    const leftFixedColList: RowId[] = []
-    const rightFixedColList: RowId[] = []
-
-    columns.forEach((column, index) => {
-      const columnId = getColumnId(column)
-      if (column.fixed === 'left') {
-        leftFixedColList.push(columnId)
-      }
-      if (column.fixed === 'right') {
-        rightFixedColList.push(columnId)
-      }
-    })
-    return {
-      columnCount: columns.length,
-      stickyList: {
-        topIdList: leftFixedColList,
-        bottomIdList: rightFixedColList,
-      },
-    }
-  }, [columns])
 
   const { calcColumnSizeByIndex, calcHeadRowSizeByIndex, calcRowSizeByIndex } = useCellSizeByColumn(
     {
@@ -114,7 +89,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   )
 
   /** 固定列攻功能 */
-  const { stayIndexList } = useSticky(stickyList)
+  const { stayIndexList: columnStayIndexList } = useSticky(stickyList)
 
   /** 边框处理功能 */
   const { borderClassName } = useBorder({
@@ -179,7 +154,8 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
         columnCount={columnIdShowList.length}
         columnCalcSize={calcColumnSizeByIndex}
         columnBaseSize={props.columnBaseSize}
-        columnStayIndexList={stayIndexList}
+        columnStayIndexList={columnStayIndexList}
+        rowStayIndexList={props.rowStayIndexList}
         overColumnCount={props.overColumnCount}
         overRowCount={props.overRowCount}
         emptyComponent={props.emptyComponent}

@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { atom, useAtomValue, useSetAtom, useStore } from '@einfach/react'
 import {
-  ColumnId,
   columnIdShowListAtom,
   columnSizeMapAtom,
   rowIdShowListAtom,
@@ -10,7 +9,7 @@ import {
 } from '@grid-table/basic'
 import type { ColumnType } from '../../types'
 import { distributeByFlexGrow } from './utils'
-import { initColumnsSizeByColumnsAtom } from './state'
+import { initColumnsSizeByColumnsAtom, initSizeAtom } from './state'
 import { getColumnId } from '../../utils/getColumnId'
 
 export interface UseSizeByColumnProps {
@@ -35,7 +34,6 @@ export interface UseSizeByColumnProps {
   expandFromCurrent?: boolean
 }
 
-const initSizeAtom = atom<Map<ColumnId, number> | undefined>(undefined)
 const prevWrapperWidthAtom = atom<number | undefined>(undefined)
 
 const proportionalResizeColumnAtom = atom(
@@ -61,9 +59,6 @@ const proportionalResizeColumnAtom = atom(
 
     // 记录初始值
     const initSizeMap = getter(initSizeAtom) || prevColumns
-    if (!getter(initSizeAtom)) {
-      setter(initSizeAtom, new Map(prevColumns))
-    }
 
     const prevWrapperWidth = getter(prevWrapperWidthAtom) || remainingLength
     if (getter(prevWrapperWidthAtom) !== remainingLength) {

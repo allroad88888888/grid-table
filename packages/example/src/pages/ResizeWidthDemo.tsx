@@ -195,6 +195,7 @@ export function ResizeWidthDemo() {
               enableHeadContextMenu={true}
               enableColumnResize={true}
               enableCopy={true}
+              zebra
             />
           </ResizableContainer>
         </div>

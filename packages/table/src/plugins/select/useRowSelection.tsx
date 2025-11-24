@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react'
-import { useStore } from '@einfach/react'
+import { useSetAtom, useStore } from '@einfach/react'
 import type { RowId } from '@grid-table/basic'
 import { useData } from '../../core'
 import type { ColumnType } from '../../types'
-import { nodeSelectionSetAtom } from './state'
+import { nodeSelectionDisabledSetAtom, nodeSelectionSetAtom } from './state'
 import { Checkbox, CheckboxRender } from './Checkbox'
 
 export const ROW_SELECTION_COLUMN_KEY = '__row_selection_column__'
@@ -15,6 +15,7 @@ export interface UseRowSelectionProps<ItemInfo = Record<string, any>>
   > {
   // selectedRowKeys?: string[]
   onChange?: (selectedRowKeys: RowId[], rowInfoList: ItemInfo[]) => void
+  disabledIds?: RowId[]
 }
 
 /**
@@ -32,15 +33,33 @@ export function useRowSelection<ItemInfo = Record<string, any>>(
     if (!props?.onChange) {
       return
     }
-    store.sub(nodeSelectionSetAtom, () => {
+    function sub() {
       const selectIds = Array.from(store.getter(nodeSelectionSetAtom))
       const rowInfoList = selectIds.map((tRowId) => {
         return store.getter(getRowInfoAtomByRowId(tRowId)) as ItemInfo
       })
-      props?.onChange?.(selectIds, rowInfoList)
-    })
+      const disabledIds = store.getter(nodeSelectionDisabledSetAtom)
+
+      props?.onChange?.(
+        selectIds.filter((tId) => !disabledIds.has(tId)),
+        rowInfoList,
+      )
+    }
+    store.sub(nodeSelectionSetAtom, sub)
+    store.sub(nodeSelectionDisabledSetAtom, sub)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props?.onChange])
+
+  const setNodeSelectionDisabledSet = useSetAtom(nodeSelectionDisabledSetAtom, { store })
+
+  useEffect(() => {
+    if (!props?.disabledIds) {
+      return
+    }
+    setNodeSelectionDisabledSet((prev) => {
+      return new Set([...prev, ...Array.from(props.disabledIds || [])])
+    })
+  }, [props?.disabledIds])
 
   const { width, title, render, fixed, renderComponent, align } = props || {}
 

@@ -858,7 +858,8 @@ const data = [
 ]
 
 const rowSelection = {
-  width: 20,
+  width: 50,
+  disabledIds: ['1'],
 }
 
 export function TreeTableSizeDemo() {

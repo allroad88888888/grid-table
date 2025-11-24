@@ -1,0 +1,93 @@
+.finance-table-container {
+  padding: 24px;
+  background-color: #fafafa;
+  min-height: 100vh;
+}
+
+.finance-table-header {
+  margin-bottom: 20px;
+}
+
+.finance-table-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.finance-table-description {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.finance-table-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.finance-stat-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.finance-stat-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.finance-stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  font-family: 'Courier New', Consolas, monospace;
+}
+
+.finance-stat-debit {
+  color: #cf1322;
+}
+
+.finance-stat-credit {
+  color: #389e0d;
+}
+
+.finance-table {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 金额数字样式 */
+.finance-amount {
+  font-family: 'Courier New', Consolas, monospace;
+  font-weight: 500;
+  color: #262626;
+}
+
+.finance-balance {
+  font-weight: 600;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .finance-table-container {
+    padding: 16px;
+  }
+
+  .finance-table-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .finance-table-header h1 {
+    font-size: 24px;
+  }
+}
+

@@ -5,6 +5,7 @@ import { columnSizeMapAtom } from '@grid-table/basic'
 import { getColumnId } from '../../utils/getColumnId'
 import { distributeColumnWidths } from './utils'
 
+export const initSizeAtom = atom<Map<ColumnId, number> | undefined>(undefined)
 /**
  * 初始化 列 宽度
  */
@@ -43,6 +44,8 @@ export const initColumnsSizeByColumnsAtom = atom(
       const columnId = getColumnId(column)
       nextMap.set(columnId, distributedWidths[index])
     })
+
+    setter(initSizeAtom, nextMap)
 
     setter(columnSizeMapAtom, nextMap)
   },
