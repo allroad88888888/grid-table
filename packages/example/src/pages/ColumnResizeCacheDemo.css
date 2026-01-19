@@ -1,0 +1,145 @@
+.column-resize-cache-demo {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.demo-header {
+  margin-bottom: 24px;
+}
+
+.demo-header h1 {
+  color: #1890ff;
+  margin-bottom: 8px;
+}
+
+.demo-header p {
+  color: #666;
+  font-size: 14px;
+}
+
+.demo-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
+.cache-info {
+  color: #52c41a;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.demo-instructions {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 6px;
+}
+
+.demo-instructions h3 {
+  margin-top: 0;
+  color: #1890ff;
+}
+
+.demo-instructions ul {
+  margin-bottom: 0;
+}
+
+.demo-instructions li {
+  margin-bottom: 4px;
+  color: #666;
+}
+
+.demo-cache-status {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+}
+
+.demo-cache-status h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.cache-display {
+  min-height: 24px;
+}
+
+.no-cache {
+  color: #999;
+  font-style: italic;
+}
+
+.cache-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cache-item {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #666;
+  font-family: 'Courier New', monospace;
+}
+
+.demo-table {
+  margin-bottom: 24px;
+}
+
+.demo-code-example {
+  padding: 16px;
+  background: #fafafa;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+}
+
+.demo-code-example h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.code-block {
+  background: #f6f8fa;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #24292e;
+  overflow-x: auto;
+  margin: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .column-resize-cache-demo {
+    padding: 16px;
+  }
+
+  .demo-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cache-list {
+    flex-direction: column;
+  }
+
+  .code-block {
+    font-size: 12px;
+  }
+}

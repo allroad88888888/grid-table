@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1
+
+### Patch Changes
+
+- ColumnResizeCallBack
+- Updated dependencies
+  - @grid-tree/core@0.6.6
+
 ## [0.1.0] - 2024-01-01
 
 ### Added

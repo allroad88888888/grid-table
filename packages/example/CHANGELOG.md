@@ -1,5 +1,19 @@
 # @grid-table/example
 
+## 0.0.57
+
+### Patch Changes
+
+- ColumnResizeCallBack
+- Updated dependencies
+  - @grid-tree/select@0.1.1
+  - @grid-table/basic@0.6.44
+  - @grid-table/excel@0.5.47
+  - @grid-table/pivot@0.5.50
+  - @grid-table/view@0.6.44
+  - @grid-table/core@0.6.44
+  - @grid-tree/core@0.6.6
+
 ## 0.0.56
 
 ### Patch Changes

@@ -170,6 +170,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
           <DragLine
             dragColumnMinSize={props.cellDefaultWidth}
             enableColumnResize={props.enableColumnResize}
+            onColumnResize={props.onColumnResize}
           />
         </>
       </VGridTable>

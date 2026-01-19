@@ -4,7 +4,8 @@ import type { CSSProperties } from 'react'
 import type { VGridTableProps } from '@grid-table/core'
 import type { CopyProps, UseRowNumberProps, UseSizeByColumnProps } from '../plugins'
 import type { Store } from '@einfach/react'
-import { AutoColumnsSizeOptions } from '../plugins/calcSizeByColumn/measureColumnsWidth'
+import type { AutoColumnsSizeOptions } from '../plugins/calcSizeByColumn/measureColumnsWidth'
+import type { OnColumnResizeCallback } from '../plugins/drag/useDrag'
 
 /**
  * 表格多语言配置
@@ -73,6 +74,14 @@ export type AntdTableProps = {
    * @default true
    */
   enableColumnResize?: boolean
+
+  /**
+   * 列宽调整完成时的回调函数
+   * 可用于缓存列宽到本地存储
+   * @param columnId 被调整的列ID
+   * @param newWidth 调整后的新宽度
+   */
+  onColumnResize?: OnColumnResizeCallback
 
   /**
    * 是否开启序号列

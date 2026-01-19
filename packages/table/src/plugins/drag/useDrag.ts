@@ -15,6 +15,11 @@ const leftAtom = atom<number | undefined>(0)
 const DragIngClassName = 'grid-drag-ing'
 
 /**
+ * 列宽调整回调函数类型
+ */
+export type OnColumnResizeCallback = (columnId: ColumnId, newWidth: number) => void
+
+/**
  * 拖拽功能的配置属性
  */
 export interface UseDragProps {
@@ -26,6 +31,13 @@ export interface UseDragProps {
   fixedWidth?: boolean
   /** 是否启用列宽调整功能，默认为true */
   enableColumnResize?: boolean
+  /**
+   * 列宽调整完成时的回调函数
+   * 可用于缓存列宽到本地存储
+   * @param columnId 被调整的列ID
+   * @param newWidth 调整后的新宽度
+   */
+  onColumnResize?: OnColumnResizeCallback
 }
 
 /**
@@ -38,6 +50,7 @@ export function useDrag({
   dragColumnMinSize = 40,
   fixedWidth = false,
   enableColumnResize = true,
+  onColumnResize,
 }: UseDragProps) {
   const { columnSizeMapAtom, resizeAtom } = useBasic()
   const store = useStore()
@@ -80,6 +93,11 @@ export function useDrag({
       // 保存新的列宽映射
       store.setter(columnSizeMapAtom, nextSizeMap)
 
+      // 调用列宽调整回调函数，让使用方可以缓存到本地
+      if (onColumnResize) {
+        onColumnResize(selectColumnId, nextWidth)
+      }
+
       // 清空拖拽状态
       store.setter(selectColumnIndexAtom, undefined)
       store.setter(firstEventAtom, undefined)
@@ -114,7 +132,14 @@ export function useDrag({
       document.body.removeEventListener('mousemove', mouseMove)
       document.body.removeEventListener('mouseleave', mouseup)
     }
-  }, [selectColumnId])
+  }, [
+    selectColumnId,
+    columnSizeMapAtom,
+    dragColumnMinSize,
+    enableColumnResize,
+    onColumnResize,
+    store,
+  ])
 
   return {
     /** 当前被选中拖拽的列ID */

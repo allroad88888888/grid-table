@@ -1,5 +1,13 @@
 # @grid-tree/core
 
+## 0.6.6
+
+### Patch Changes
+
+- ColumnResizeCallBack
+- Updated dependencies
+  - @grid-table/core@0.6.44
+
 ## 0.6.1
 
 ### Patch Changes

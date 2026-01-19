@@ -1,5 +1,15 @@
 # @grid-table/excel
 
+## 0.5.47
+
+### Patch Changes
+
+- ColumnResizeCallBack
+- Updated dependencies
+  - @grid-table/basic@0.6.44
+  - @grid-table/view@0.6.44
+  - @grid-table/core@0.6.44
+
 ## 0.5.46
 
 ### Patch Changes

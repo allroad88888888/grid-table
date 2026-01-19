@@ -25,6 +25,7 @@ import { ResizeWidthDemo } from './pages/ResizeWidthDemo'
 import { RowNumberDemo } from './pages/RowNumberDemo'
 import { BorderDemo } from './pages/BorderDemo'
 import { FinanceTableDemo } from './pages/FinanceTableDemo'
+import { ColumnResizeCacheDemo } from './pages/ColumnResizeCacheDemo'
 
 // 路由项目接口定义
 export interface RouteItem {
@@ -90,6 +91,11 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/table/finance',
         component: FinanceTableDemo,
         label: '财务数据表格',
+      },
+      {
+        path: '/table/column-resize-cache',
+        component: ColumnResizeCacheDemo,
+        label: '列宽缓存演示',
       },
     ],
   },
