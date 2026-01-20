@@ -157,7 +157,8 @@ export function useSticky(
 
         // 检查元素是否存在尺寸信息
         if (!sizeMap.has(tId)) {
-          throw `can't find index ${tId}`
+          console.error(`can't find index ${tId}`)
+          return
         }
 
         // 为元素设置sticky样式和类名

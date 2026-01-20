@@ -1,5 +1,19 @@
 # @grid-table/example
 
+## 0.0.58
+
+### Patch Changes
+
+- useSticky error
+- Updated dependencies
+  - @grid-tree/select@0.1.2
+  - @grid-table/basic@0.6.45
+  - @grid-table/excel@0.5.48
+  - @grid-table/pivot@0.5.51
+  - @grid-table/view@0.6.45
+  - @grid-table/core@0.6.45
+  - @grid-tree/core@0.6.7
+
 ## 0.0.57
 
 ### Patch Changes

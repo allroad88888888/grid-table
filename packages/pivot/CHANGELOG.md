@@ -1,5 +1,15 @@
 # @grid-table/pivot
 
+## 0.5.51
+
+### Patch Changes
+
+- useSticky error
+- Updated dependencies
+  - @grid-table/basic@0.6.45
+  - @grid-table/view@0.6.45
+  - @grid-table/core@0.6.45
+
 ## 0.5.50
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @grid-table/basic
 
+## 0.6.45
+
+### Patch Changes
+
+- useSticky error
+- Updated dependencies
+  - @grid-table/core@0.6.45
+
 ## 0.6.44
 
 ### Patch Changes

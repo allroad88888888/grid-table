@@ -1,5 +1,15 @@
 # @grid-table/excel
 
+## 0.5.48
+
+### Patch Changes
+
+- useSticky error
+- Updated dependencies
+  - @grid-table/basic@0.6.45
+  - @grid-table/view@0.6.45
+  - @grid-table/core@0.6.45
+
 ## 0.5.47
 
 ### Patch Changes
