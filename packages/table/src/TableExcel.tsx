@@ -123,8 +123,11 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   /** tbody单元格合并功能 */
   useMergeCells({ showBorder: true })
 
-  /** tbody区域选中功能 */
-  useAreaSelected({ enable: props.enableCopy || props.enableSelectArea })
+  /** tbody区域选中功能 + 拖拽边缘自动滚动 */
+  useAreaSelected({
+    enable: props.enableCopy || props.enableSelectArea,
+    containerRef: gridRef,
+  })
 
   /** thead单元格合并功能 */
   useHeaderMergeCells({

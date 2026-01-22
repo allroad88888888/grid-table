@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, type RefObject } from 'react'
 import { useAtomValue, useStore, useSetAtom } from '@einfach/react'
 import { tableClassNameAtom } from '../../hooks'
 import './AreaSelected.css'
@@ -7,8 +7,16 @@ import { areaColumnIdsAtom } from './state'
 import { applyHeaderStyleAtom } from './header'
 import { useTheadAreaSelected } from './useTheadAreaSelected'
 import { useTbodyAreaSelected } from './useTbodyAreaSelected'
+import { useAutoScrollOnDrag } from './useAutoScrollOnDrag'
 
-export function useAreaSelected({ enable = false }: { enable?: boolean } = {}) {
+export interface UseAreaSelectedProps {
+  /** 是否启用区域选择 */
+  enable?: boolean
+  /** 表格容器引用，用于自动滚动 */
+  containerRef?: RefObject<HTMLDivElement>
+}
+
+export function useAreaSelected({ enable = false, containerRef }: UseAreaSelectedProps = {}) {
   const store = useStore()
 
   useEffect(() => {
@@ -34,6 +42,12 @@ export function useAreaSelected({ enable = false }: { enable?: boolean } = {}) {
   }, [applyHeaderStyle, enable, areaColumnIds, headerLastId])
   useTheadAreaSelected({ enable })
   useTbodyAreaSelected({ enable })
+
+  // 拖拽时边缘自动滚动
+  useAutoScrollOnDrag({
+    enable: enable && !!containerRef,
+    containerRef: containerRef!,
+  })
 
   // const onContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
   //   e.preventDefault()
