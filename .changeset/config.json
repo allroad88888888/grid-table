@@ -2,7 +2,17 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.5/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [["@grid-table/core", "@grid-table/view", "@grid-table/basic"]],
+  "fixed": [
+    [
+      "@grid-table/core",
+      "@grid-table/basic",
+      "@grid-table/view"
+    ],
+    [
+      "@grid-tree/core",
+      "@grid-tree/select"
+    ]
+  ],
   "linked": [],
   "access": "restricted",
   "baseBranch": "main",

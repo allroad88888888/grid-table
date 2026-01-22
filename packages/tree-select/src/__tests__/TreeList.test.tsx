@@ -52,11 +52,13 @@ describe('TreeList', () => {
         data={createMockData()}
         maxHeight={200}
         multiple={true}
-        showRoot={true}
-        root="test-root"
-        expendLevel={3}
-        levelSize={25}
-        itemSize={40}
+        treeProps={{
+          showRoot: true,
+          root: 'test-root',
+          expendLevel: 3,
+          levelSize: 25,
+          size: 40,
+        }}
       />,
     )
 
@@ -119,7 +121,7 @@ describe('TreeList', () => {
       folder2: ['file2'],
     }
 
-    rerender(<TreeList relation={relationData} root="_ROOT" showRoot={false} />)
+    rerender(<TreeList relation={relationData} treeProps={{ showRoot: false }} />)
 
     expect(document.querySelector('.tree-list')).toBeInTheDocument()
   })

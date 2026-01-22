@@ -24,8 +24,6 @@ export function useMergeCells({ showBorder = true }: { showBorder?: boolean } = 
 
     const clearList: (() => void)[] = []
 
-    console.log(`cellList`, cellList)
-
     cellList?.forEach(({ cellId, rowIdList = [], colIdList = [] }) => {
       const [curRowId, curColId] = getRowIdAndColIdByCellId(cellId)
 
@@ -107,6 +105,7 @@ export function useMergeCells({ showBorder = true }: { showBorder?: boolean } = 
             rowId,
             columnId: colId,
           })
+
           clearList.push(
             store.setter(getCellStateAtomById(tCellId), (getter, prev) => {
               const next = getStyle(getter, rowIndex, columnIndex)

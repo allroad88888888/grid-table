@@ -210,8 +210,10 @@ export function TreeListDemo() {
           <label>显示根节点：</label>
           <TreeList
             data={fileSystemData}
-            showRoot
-            root="根目录"
+            treeProps={{
+              showRoot: true,
+              root: '根目录',
+            }}
             style={{ width: 400, height: 300 }}
             maxHeight={300}
           />
@@ -220,7 +222,9 @@ export function TreeListDemo() {
           <label>自定义展开层级：</label>
           <TreeList
             data={fileSystemData}
-            expendLevel={1} // 只展开一层
+            treeProps={{
+              expendLevel: 1, // 只展开一层
+            }}
             style={{ width: 400, height: 300 }}
             maxHeight={300}
           />
@@ -229,7 +233,9 @@ export function TreeListDemo() {
           <label>自定义项目高度：</label>
           <TreeList
             data={fileSystemData}
-            itemSize={40} // 更大的行高
+            treeProps={{
+              size: 40, // 更大的行高
+            }}
             style={{ width: 400, height: 300 }}
             maxHeight={300}
           />

@@ -1,5 +1,6 @@
 import { useMemo, useCallback } from 'react'
 import clsx from 'clsx'
+import type { GridTreeProps } from '@grid-tree/core'
 import { DropdownContent } from './components/DropdownContent'
 import { convertRelationToNodes, convertNodesToRelation } from './utils'
 import { useSelection } from './hooks/useSelection'
@@ -33,13 +34,6 @@ export interface TreeListProps {
   /** 最大高度 */
   maxHeight?: number
 
-  // 树形配置（继承自GridTree）
-  showRoot?: boolean
-  root?: string
-  expendLevel?: number
-  levelSize?: number
-  itemSize?: number
-
   // 空数据提示
   notFoundContent?: ReactNode
 
@@ -66,6 +60,10 @@ export interface TreeListProps {
     multiple: boolean
     onSelect: (id: string, node: TreeNode) => void
   }) => ReactNode
+
+  // 树形配置（来自GridTree）
+  /** GridTree 的完整配置对象 */
+  treeProps?: Partial<Omit<GridTreeProps, 'relation'>>
 }
 
 /**
@@ -84,15 +82,11 @@ export function TreeList(props: TreeListProps) {
     className,
     style,
     maxHeight = 300,
-    showRoot = false,
-    root = '_ROOT',
-    expendLevel = 2,
-    levelSize = 20,
-    itemSize = 32,
     notFoundContent = '暂无数据',
     renderCheckbox,
     renderSelectedIcon,
     renderItem,
+    treeProps,
   } = props
 
   // 准备树形数据
@@ -100,10 +94,11 @@ export function TreeList(props: TreeListProps) {
     if (data) {
       return data
     } else if (relation) {
+      const root = treeProps?.root || '_ROOT'
       return convertRelationToNodes(relation, root)
     }
     return []
-  }, [data, relation, root])
+  }, [data, relation, treeProps?.root])
 
   // 构建节点映射
   const nodeMap = useMemo(() => {
@@ -124,8 +119,10 @@ export function TreeList(props: TreeListProps) {
 
   // 转换为relation格式供GridTree使用
   const treeRelation = useMemo(() => {
+    const showRoot = treeProps?.showRoot ?? false
+    const root = treeProps?.root || '_ROOT'
     return convertNodesToRelation(treeNodes, showRoot, root)
-  }, [treeNodes, showRoot, root])
+  }, [treeNodes, treeProps?.showRoot, treeProps?.root])
 
   // 选择状态管理
   const { selectedValue, handleSelect } = useSelection(treeNodes, {
@@ -152,16 +149,12 @@ export function TreeList(props: TreeListProps) {
         selectedValue={selectedValue}
         multiple={multiple}
         dropdownMaxHeight={maxHeight}
-        showRoot={showRoot}
-        root={root}
-        expendLevel={expendLevel}
-        levelSize={levelSize}
-        itemSize={itemSize}
         notFoundContent={notFoundContent}
         onNodeSelect={handleNodeSelect}
         renderCheckbox={renderCheckbox}
         renderSelectedIcon={renderSelectedIcon}
         renderItem={renderItem}
+        treeProps={treeProps}
       />
     </div>
   )

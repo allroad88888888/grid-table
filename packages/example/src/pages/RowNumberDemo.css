@@ -5,10 +5,6 @@
   margin: 0 auto;
 }
 
-.grid-table-cell:hover[style*='--row: 1'] {
-  background: red;
-}
-
 .row-number-demo__header {
   margin-bottom: 24px;
 }

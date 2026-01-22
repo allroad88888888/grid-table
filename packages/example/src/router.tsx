@@ -26,6 +26,7 @@ import { RowNumberDemo } from './pages/RowNumberDemo'
 import { BorderDemo } from './pages/BorderDemo'
 import { FinanceTableDemo } from './pages/FinanceTableDemo'
 import { ColumnResizeCacheDemo } from './pages/ColumnResizeCacheDemo'
+import { CollapseDemo } from './pages/Collapse'
 
 // 路由项目接口定义
 export interface RouteItem {
@@ -96,7 +97,12 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/table/column-resize-cache',
         component: ColumnResizeCacheDemo,
         label: '列宽缓存演示',
-      },
+      
+      },{
+        path: '/table/collapse',
+        component: CollapseDemo,
+        label: '数据展开示例',
+      }
     ],
   },
   tree: {

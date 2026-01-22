@@ -7,6 +7,7 @@
 - useSticky error
 - Updated dependencies
   - @grid-table/core@0.6.45
+- 新增参treeProp
 
 ## 0.6.6
 
@@ -15,6 +16,7 @@
 - ColumnResizeCallBack
 - Updated dependencies
   - @grid-table/core@0.6.44
+- 发布新的版本
 
 ## 0.6.1
 

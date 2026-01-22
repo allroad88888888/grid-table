@@ -110,8 +110,10 @@ export function TreeSelectDemo() {
               }}
               placeholder="请选择节点..."
               style={{ width: 200 }}
-              showRoot={false}
-              root="_ROOT"
+              treeProps={{
+                showRoot: false,
+                root: '_ROOT',
+              }}
               allowClear
             />
             <p className="demo-result">选中值: {selectedValue2 || '未选择'}</p>
@@ -197,18 +199,126 @@ export function TreeSelectDemo() {
 
       <div className="demo-section">
         <h3>配置选项</h3>
-        <div className="demo-item">
-          <h4>自定义下拉高度和展开层级</h4>
-          <TreeSelect
-            data={standardTreeData}
-            placeholder="自定义配置..."
-            style={{ width: 200 }}
-            dropdownMaxHeight={200}
-            expendLevel={1}
-            itemSize={28}
-            levelSize={16}
-            allowClear
-          />
+        <div className="demo-row">
+          <div className="demo-item">
+            <h4>自定义下拉高度和展开层级</h4>
+            <TreeSelect
+              data={standardTreeData}
+              placeholder="自定义配置..."
+              style={{ width: 200 }}
+              dropdownMaxHeight={200}
+              treeProps={{
+                expendLevel: 1,
+                size: 28,
+                levelSize: 16,
+              }}
+              allowClear
+            />
+          </div>
+
+          <div className="demo-item">
+            <h4>自动展开小型树（minLengthExpandAll）</h4>
+            <TreeSelect
+              data={standardTreeData}
+              placeholder="少于10个节点时全部展开..."
+              style={{ width: 200 }}
+              treeProps={{
+                minLengthExpandAll: 10,
+              }}
+              allowClear
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="demo-section">
+        <h3>GridTree 高级参数</h3>
+        <div className="demo-row">
+          <div className="demo-item">
+            <h4>显示已选面板（showSelectedPanel）</h4>
+            <TreeSelect
+              data={standardTreeData}
+              placeholder="选择项目..."
+              style={{ width: 200 }}
+              multiple
+              showSelectedPanel
+              dropdownMaxHeight={300}
+              allowClear
+            />
+          </div>
+
+          <div className="demo-item">
+            <h4>使用 treeProps 统一配置</h4>
+            <TreeSelect
+              data={standardTreeData}
+              placeholder="treeProps 方式..."
+              style={{ width: 200 }}
+              treeProps={{
+                overscanCount: 5,
+                minLengthExpandAll: 10,
+                disabledIds: ['AB', 'BA'],
+              }}
+              allowClear
+            />
+          </div>
+        </div>
+
+        <div className="demo-row">
+          <div className="demo-item">
+            <h4>已选面板 + 确认模式</h4>
+            <TreeSelect
+              data={standardTreeData}
+              placeholder="已选面板 + 确认..."
+              style={{ width: 200 }}
+              multiple
+              confirmSelect
+              showSelectedPanel
+              dropdownMaxHeight={300}
+              allowClear
+            />
+          </div>
+
+          <div className="demo-item">
+            <h4>禁用特定节点</h4>
+            <TreeSelect
+              data={standardTreeData}
+              placeholder="禁用指定节点..."
+              style={{ width: 200 }}
+              treeProps={{
+                disabledIds: ['AB', 'BA'],
+              }}
+              allowClear
+            />
+          </div>
+        </div>
+
+        <div className="demo-row">
+          <div className="demo-item">
+            <h4>自定义容器标签</h4>
+            <TreeSelect
+              data={standardTreeData}
+              placeholder="使用 div 而非 ul..."
+              style={{ width: 200 }}
+              treeProps={{
+                tag: 'div',
+                itemTag: 'div',
+              }}
+              allowClear
+            />
+          </div>
+
+          <div className="demo-item">
+            <h4>固定显示的节点</h4>
+            <TreeSelect
+              data={standardTreeData}
+              placeholder="固定节点..."
+              style={{ width: 200 }}
+              treeProps={{
+                stayIds: ['A', 'B'],
+              }}
+              allowClear
+            />
+          </div>
         </div>
       </div>
 
@@ -223,6 +333,8 @@ export function TreeSelectDemo() {
           <li>✅ 丰富的 CSS 变量支持主题定制</li>
           <li>✅ 基于 @grid-tree/core 的高性能渲染</li>
           <li>✅ 完整的 TypeScript 类型支持</li>
+          <li>⭐ treeProps 统一配置，未来新参数自动支持</li>
+          <li>🆕 已选面板（showSelectedPanel）- 类似穿梭框效果</li>
         </ul>
       </div>
     </div>

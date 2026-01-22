@@ -1,4 +1,5 @@
-import { type ReactNode } from 'react'
+import { type ReactNode, useMemo } from 'react'
+import type { GridTreeProps } from '@grid-tree/core'
 import GridTree from '@grid-tree/core'
 import { TreeContent } from './TreeContent'
 import type { TreeNode, TreeRelation } from '../types'
@@ -19,16 +20,6 @@ export interface DropdownContentProps {
   multiple: boolean
   /** 下拉框最大高度 */
   dropdownMaxHeight: number
-  /** 是否显示根节点 */
-  showRoot: boolean
-  /** 根节点键名 */
-  root: string
-  /** 展开层级 */
-  expendLevel: number
-  /** 层级缩进大小 */
-  levelSize: number
-  /** 项目高度 */
-  itemSize: number
   /** 空数据提示 */
   notFoundContent: ReactNode
   /** 节点选择回调 */
@@ -55,6 +46,8 @@ export interface DropdownContentProps {
     multiple: boolean
     onSelect: (id: string, node: TreeNode) => void
   }) => ReactNode
+  /** GridTree 的完整配置对象 */
+  treeProps?: Partial<Omit<GridTreeProps, 'relation'>>
 }
 
 /**
@@ -68,21 +61,41 @@ export function DropdownContent({
   selectedValue,
   multiple,
   dropdownMaxHeight,
-  showRoot,
-  root,
-  expendLevel,
-  levelSize,
-  itemSize,
   notFoundContent,
   onNodeSelect,
   renderCheckbox,
   renderSelectedIcon,
   renderItem,
+  treeProps,
 }: DropdownContentProps) {
   // 空数据处理
   if (treeNodes.length === 0) {
     return <div className="tree-select-empty">{notFoundContent}</div>
   }
+
+  /**
+   * 合并 GridTree 配置
+   */
+  const gridTreeProps = useMemo((): GridTreeProps => {
+    const defaultProps: GridTreeProps = {
+      relation: treeRelation,
+      className: 'grid-tree-container tree-select-tree',
+      itemClassName: 'grid-tree-item',
+      size: 32,
+      levelSize: 20,
+      showRoot: false,
+      root: '_ROOT',
+      style: { maxHeight: dropdownMaxHeight },
+      expendLevel: 2,
+    }
+
+    // treeProps 覆盖默认配置
+    return {
+      ...defaultProps,
+      ...treeProps,
+      relation: treeRelation, // relation 始终使用组件内部生成的
+    }
+  }, [treeRelation, dropdownMaxHeight, treeProps])
 
   /**
    * 内容组件包装器
@@ -103,18 +116,5 @@ export function DropdownContent({
     )
   }
 
-  return (
-    <GridTree
-      relation={treeRelation}
-      className="grid-tree-container tree-select-tree"
-      itemClassName="grid-tree-item"
-      size={itemSize}
-      levelSize={levelSize}
-      showRoot={showRoot}
-      root={root}
-      style={{ maxHeight: dropdownMaxHeight }}
-      expendLevel={expendLevel}
-      ContentComponent={ContentComponent}
-    />
-  )
+  return <GridTree {...gridTreeProps} ContentComponent={ContentComponent} />
 }

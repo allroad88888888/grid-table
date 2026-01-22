@@ -13,6 +13,9 @@
   - @grid-table/view@0.6.45
   - @grid-table/core@0.6.45
   - @grid-tree/core@0.6.7
+- Updated dependencies
+  - @grid-tree/core@0.6.7
+  - @grid-tree/select@0.6.7
 
 ## 0.0.57
 
@@ -27,6 +30,9 @@
   - @grid-table/view@0.6.44
   - @grid-table/core@0.6.44
   - @grid-tree/core@0.6.6
+- Updated dependencies
+  - @grid-tree/core@0.6.6
+  - @grid-tree/select@0.6.6
 
 ## 0.0.56
 

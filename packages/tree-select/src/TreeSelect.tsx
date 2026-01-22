@@ -1,7 +1,7 @@
 import { useMemo, useCallback, useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { Dropdown } from './Dropdown'
-import { Selector, DropdownContent, DropdownFooter } from './components'
+import { Selector, DropdownContent, DropdownFooter, SelectedPanel } from './components'
 import { TreeList } from './TreeList'
 import { convertRelationToNodes, convertNodesToRelation } from './utils'
 import { useSelection } from './hooks/useSelection'
@@ -23,6 +23,7 @@ export function TreeSelect(props: TreeSelectProps) {
     allowClear = true,
     multiple = false,
     confirmSelect = false,
+    showSelectedPanel = false,
     className,
     style,
     dropdownClassName,
@@ -32,11 +33,7 @@ export function TreeSelect(props: TreeSelectProps) {
     maxTagCount = 3,
     autoMaxTagCount = false,
     renderInline = false,
-    showRoot = false,
-    root = '_ROOT',
-    expendLevel = 2,
-    levelSize = 20,
-    itemSize = 32,
+    treeProps, // GridTree 统一配置
     onDropdownVisibleChange,
     onFocus,
     onBlur,
@@ -53,10 +50,11 @@ export function TreeSelect(props: TreeSelectProps) {
     if (data) {
       return data
     } else if (relation) {
+      const root = treeProps?.root || '_ROOT'
       return convertRelationToNodes(relation, root)
     }
     return []
-  }, [data, relation, root])
+  }, [data, relation, treeProps?.root])
 
   // 构建节点映射
   const nodeMap = useMemo(() => {
@@ -77,8 +75,10 @@ export function TreeSelect(props: TreeSelectProps) {
 
   // 转换为relation格式供GridTree使用
   const treeRelation = useMemo(() => {
+    const showRoot = treeProps?.showRoot ?? false
+    const root = treeProps?.root || '_ROOT'
     return convertNodesToRelation(treeNodes, showRoot, root)
-  }, [treeNodes, showRoot, root])
+  }, [treeNodes, treeProps?.showRoot, treeProps?.root])
 
   // 选择状态管理
   const { selectedValue, selectedNodes, handleSelect, handleClear, getDisplayLabel } = useSelection(
@@ -196,9 +196,9 @@ export function TreeSelect(props: TreeSelectProps) {
   const renderDropdown = () => {
     const currentSelectedValue = multiple && confirmSelect ? tempSelectedValue : selectedValue
 
-    if (multiple && confirmSelect) {
-      // 确认模式使用TreeList + Footer
-      return (
+    const treeContent =
+      multiple && confirmSelect ? (
+        // 确认模式使用TreeList + Footer
         <div className="tree-select-confirm-mode">
           <TreeList
             data={treeNodes}
@@ -209,22 +209,16 @@ export function TreeSelect(props: TreeSelectProps) {
             }}
             multiple={multiple}
             maxHeight={dropdownMaxHeight}
-            showRoot={showRoot}
-            root={root}
-            expendLevel={expendLevel}
-            levelSize={levelSize}
-            itemSize={itemSize}
             notFoundContent={notFoundContent}
             renderCheckbox={renderCheckbox}
             renderSelectedIcon={renderSelectedIcon}
             renderItem={renderItem}
+            treeProps={treeProps}
           />
           <DropdownFooter onConfirm={handleConfirm} onCancel={handleCancel} />
         </div>
-      )
-    } else {
-      // 非确认模式使用原有的DropdownContent
-      return (
+      ) : (
+        // 非确认模式使用原有的DropdownContent
         <DropdownContent
           treeNodes={treeNodes}
           treeRelation={treeRelation}
@@ -232,19 +226,30 @@ export function TreeSelect(props: TreeSelectProps) {
           selectedValue={currentSelectedValue}
           multiple={multiple}
           dropdownMaxHeight={dropdownMaxHeight}
-          showRoot={showRoot}
-          root={root}
-          expendLevel={expendLevel}
-          levelSize={levelSize}
-          itemSize={itemSize}
           notFoundContent={notFoundContent}
           onNodeSelect={handleNodeSelect}
           renderCheckbox={renderCheckbox}
           renderSelectedIcon={renderSelectedIcon}
           renderItem={renderItem}
+          treeProps={treeProps}
         />
       )
+
+    // 如果启用了已选面板，使用双栏布局
+    if (showSelectedPanel && multiple) {
+      return (
+        <div className="tree-select-dual-panel">
+          <div className="tree-select-dual-panel-left">{treeContent}</div>
+          <SelectedPanel
+            selectedNodes={selectedNodes}
+            onRemove={handleTagRemove}
+            onClear={handleClear}
+          />
+        </div>
+      )
     }
+
+    return treeContent
   }
 
   return (
