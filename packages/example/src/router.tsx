@@ -27,6 +27,7 @@ import { BorderDemo } from './pages/BorderDemo'
 import { FinanceTableDemo } from './pages/FinanceTableDemo'
 import { ColumnResizeCacheDemo } from './pages/ColumnResizeCacheDemo'
 import { CollapseDemo } from './pages/Collapse'
+import { PasteDemo } from './pages/PasteDemo'
 
 // 路由项目接口定义
 export interface RouteItem {
@@ -186,6 +187,11 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/other/copy',
         component: Copy,
         label: '复制功能',
+      },
+      {
+        path: '/other/paste',
+        component: PasteDemo,
+        label: '粘贴功能',
       },
       {
         path: '/other/callback',

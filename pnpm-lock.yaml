@@ -173,6 +173,9 @@ importers:
       '@grid-table/excel':
         specifier: workspace:*
         version: link:../excel
+      '@grid-table/paste':
+        specifier: workspace:*
+        version: link:../paste
       '@grid-table/pivot':
         specifier: workspace:*
         version: link:../pivot
@@ -259,6 +262,19 @@ importers:
       typescript:
         specifier: ^5.4.3
         version: 5.7.2
+
+  packages/paste:
+    dependencies:
+      react:
+        specifier: '>=16.8 <20'
+        version: 18.3.1
+    devDependencies:
+      '@types/node':
+        specifier: ^20.11.30
+        version: 20.17.12
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.18
 
   packages/pivot:
     dependencies:
