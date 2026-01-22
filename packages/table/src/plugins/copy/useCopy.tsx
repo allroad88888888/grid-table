@@ -55,13 +55,14 @@ export function useCopy({
   const totalSelectedCells = getTotalSelectedCells(selectedAreas)
 
   // 自动选中隐藏的 textarea 以触发复制
+  // 依赖 selectedAreas 确保切换表格时也能正确获取焦点
   useEffect(() => {
     if (!ref.current || totalSelectedCells === 0) {
       return
     }
     // 模拟选中 触发 onCopy
     ref.current.select()
-  }, [totalSelectedCells])
+  }, [selectedAreas, totalSelectedCells])
 
   // 取消复制样式显示
   const cancel = useCallback(() => {
