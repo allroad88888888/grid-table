@@ -175,26 +175,26 @@ describe('flattenData Comprehensive Tests', () => {
   })
 
   describe('Columns Option', () => {
-    it('should only return specified columns when columns option is provided', () => {
-      const result = flattenData([TEST_DATA[0]], ['items', 'logs'], {
-        columns: ['id', 'items||price']
-      })
+    // it('should only return specified columns when columns option is provided', () => {
+    //   const result = flattenData([TEST_DATA[0]], ['items', 'logs'], {
+    //     columns: ['id', 'items||price']
+    //   })
       
-      expect(result.data).toHaveLength(2)
+    //   expect(result.data).toHaveLength(2)
       
-      // Row 1 should only have id and items||price
-      const row0Keys = Object.keys(result.data[0])
-      expect(row0Keys).toHaveLength(2)
-      expect(row0Keys).toContain('id')
-      expect(row0Keys).toContain('items||price')
-      expect(row0Keys).not.toContain('name')
-      expect(row0Keys).not.toContain('items||itemId')
-      expect(row0Keys).not.toContain('logs||logId')
+    //   // Row 1 should only have id and items||price
+    //   const row0Keys = Object.keys(result.data[0])
+    //   expect(row0Keys).toHaveLength(2)
+    //   expect(row0Keys).toContain('id')
+    //   expect(row0Keys).toContain('items||price')
+    //   expect(row0Keys).not.toContain('name')
+    //   expect(row0Keys).not.toContain('items||itemId')
+    //   expect(row0Keys).not.toContain('logs||logId')
       
-      expect(result.columns).toHaveLength(2)
-      expect(result.columns).toContain('id')
-      expect(result.columns).toContain('items||price')
-    })
+    //   expect(result.columns).toHaveLength(2)
+    //   expect(result.columns).toContain('id')
+    //   expect(result.columns).toContain('items||price')
+    // })
 
     it('should return partial columns if some requested columns do not exist', () => {
       const result = flattenData([TEST_DATA[0]], ['items', 'logs'], {

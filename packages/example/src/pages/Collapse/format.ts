@@ -121,12 +121,7 @@ export function flattenData<T extends Record<string, any>>(
       }
       // const startCe mainCellId:MergeCellIdItem = `${rowIndex}${connectKey}${col}`
       // 浅拷贝 baseRecord
-      const newRow: Record<string, any> = { ...baseRecord }
-      
-      // 只有当未指定 columns 或 columns 包含 RowIdKey 时，才添加 RowIdKey
-      if (!targetColumnsSet || targetColumnsSet.has(RowIdKey)) {
-        newRow[RowIdKey] = rowIndex.toString()
-      }
+      const newRow: Record<string, any> = { ...baseRecord, [RowIdKey]: rowIndex.toString() }
 
       for (let k = 0; k < arrayKeysLen; k++) {
         const arr = currentArrays[k]
