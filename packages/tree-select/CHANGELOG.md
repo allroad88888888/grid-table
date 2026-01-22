@@ -1,6 +1,5 @@
 # Changelog
 
-<<<<<<< HEAD
 ## 0.1.2
 
 ### Patch Changes
@@ -14,7 +13,6 @@
 ### Patch Changes
 
 - ColumnResizeCallBack
-=======
 ## 0.6.7
 
 ### Patch Changes
@@ -26,7 +24,6 @@
 
 ### Patch Changes
 
->>>>>>> c4eb680 (feat:树形属性调整)
 - Updated dependencies
   - @grid-tree/core@0.6.6
 
