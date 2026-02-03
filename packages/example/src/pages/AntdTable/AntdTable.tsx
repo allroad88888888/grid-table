@@ -47,6 +47,8 @@ export function AntdTableDemo() {
     })
   }, [])
 
+
+
   return (
     <Table
       style={{
@@ -60,6 +62,7 @@ export function AntdTableDemo() {
       rowSelection={rowSelection}
       store={store}
       rowBaseSize={36}
+  
     />
   )
 }

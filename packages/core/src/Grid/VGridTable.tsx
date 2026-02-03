@@ -123,8 +123,25 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     return [tempSize, tempTheadSizeList]
   }, [theadRowCount, theadRowSize])
 
+  const theadCellStyleCache = useRef(new Map<string, any>())
+  const tbodyCellStyleCache = useRef(new Map<string, any>())
+
+  useEffect(() => {
+    theadCellStyleCache.current.clear()
+  }, [columnBaseSize, columnSizeList, theadBaseSize, theadHasRow, theadSizeList])
+
+  useEffect(() => {
+    tbodyCellStyleCache.current.clear()
+  }, [columnBaseSize, columnSizeList, rowBaseSize, rowSizeList, tbodyHasRow])
+
   const getTheadCellStyle = useCallback(
     (rowIndex: number, columnIndex: number) => {
+      const cacheKey = `${rowIndex}-${columnIndex}`
+      const cached = theadCellStyleCache.current.get(cacheKey)
+      if (cached) {
+        return cached
+      }
+
       const tStyle = {
         gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
         gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
@@ -138,6 +155,8 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
         tStyle.gridRowEnd =
           (theadSizeList[rowIndex + 1] - theadSizeList[rowIndex]) / theadBaseSize + 1
       }
+
+      theadCellStyleCache.current.set(cacheKey, tStyle)
       return tStyle
     },
     [columnBaseSize, columnSizeList, theadBaseSize, theadHasRow, theadSizeList],
@@ -145,6 +164,12 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
 
   const getTbodyCellStyle = useCallback(
     (rowIndex: number, columnIndex: number) => {
+      const cacheKey = `${rowIndex}-${columnIndex}`
+      const cached = tbodyCellStyleCache.current.get(cacheKey)
+      if (cached) {
+        return cached
+      }
+
       const tStyle = {
         gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
         gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
@@ -157,6 +182,8 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
         tStyle.gridRowStart = 1
         tStyle.gridRowEnd = (rowSizeList[rowIndex + 1] - rowSizeList[rowIndex]) / rowBaseSize + 1
       }
+
+      tbodyCellStyleCache.current.set(cacheKey, tStyle)
       return tStyle
     },
     [columnBaseSize, columnSizeList, rowBaseSize, rowSizeList, tbodyHasRow],
@@ -201,7 +228,7 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
       ) : null}
       {props.loading ? (
         <Loading />
-      ) : rowIndexList.length === 0 ? (
+      ) : rowIndexList.length === 0 || columnIndexList.length === 0 ? (
         <Empty />
       ) : (
         <div

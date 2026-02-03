@@ -33,7 +33,7 @@ export function useTablePaste(onPaste: OnPasteCallback) {
 
       // 解析为二维数组
       let data: string[][] | null = null
-      if (rawHtml) {
+      if (rawHtml) { 
         data = parseHtmlTable(rawHtml)
       }
       if (!data && tsv) {

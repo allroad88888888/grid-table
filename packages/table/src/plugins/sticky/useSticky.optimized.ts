@@ -161,6 +161,10 @@ export function useSticky(props: UseStickyProps = {}) {
   const sortFixedElements = useCallback(() => {
     if (!fixed) return
 
+    if (realTopIds.length === 0 && realBottomIds.length === 0) {
+      return
+    }
+
     return setter(stickyConfig.listAtom, (_getter, prev) => {
       // 使用Set提高查找性能
       const existingIds = new Set(prev)
@@ -176,7 +180,14 @@ export function useSticky(props: UseStickyProps = {}) {
         ...prev.filter((id) => !allFixedIds.has(id)),
         ...validBottomIds,
       ]
-
+      if (newList.length === prev.length) {
+        for (let i = 0; i < prev.length; i++) {
+          if (newList[i] !== prev[i]) {
+            return newList
+          }
+        }
+        return prev
+      }
       return newList
     })
   }, [fixed, stickyConfig.listAtom, setter, realTopIds])

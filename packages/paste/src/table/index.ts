@@ -13,3 +13,9 @@ export {
   useTablePasteData,
   type TablePasteResult,
 } from './useTablePaste'
+
+export {
+  useTablePasteWithFormatter,
+  type ColumnFormatter,
+  type UseTablePasteWithFormatterResult,
+} from './useTablePasteWithFormatter'

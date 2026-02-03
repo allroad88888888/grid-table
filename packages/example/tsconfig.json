@@ -24,6 +24,9 @@
       "path": "./../tree/tsconfig.json"
     },
     {
+      "path": "./../paste/tsconfig.json"
+    },
+    {
       "path": "./../tree-select/tsconfig.json"
     },
     {

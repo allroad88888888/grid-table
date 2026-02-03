@@ -9,6 +9,7 @@ import { useRowInfo } from '../../hooks/useRowInfo'
 import './Cell.css'
 
 export const DataCell = memo(function DataCell(props: CellProps) {
+  // console.count('cell count ❤️❤️❤️❤️❤️❤️❤️')
   const { rowId, columnId, style, className, cellId } = useCell(props)
   const events = useCellEvents({
     rowId,

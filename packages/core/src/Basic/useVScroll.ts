@@ -13,7 +13,7 @@ export function useVScroll(props: UseVScrollProps) {
 
   const { stateProp } = Options[direction]
 
-  const [realOverCount, setRealOverCount] = useState(overscanCount)
+  const [realOverCount] = useState(overscanCount)
 
   const doRender = useDoRender()
   const { current: stateCurrent } = useRef({
@@ -29,25 +29,20 @@ export function useVScroll(props: UseVScrollProps) {
       tempTotalHeight += tempCurrentHeight
       tempListSize.push(tempTotalHeight)
     }
-
     return {
       totalLength: tempTotalHeight,
       sizeList: tempListSize,
     }
   }, [itemCount, calcItemSize])
   const { startIndex, endIndex } = useMemo(() => {
-    /**
-     * 移除length === 0的判断
-     * 0的时候 也要计算 比如loading 切换为false的时候，这里时候length为0 不计算，导致空被渲染
-     */
-    if (!itemCount) {
+
+    if (!itemCount||length===0) {
       return {
-        topLength: 0,
-        bottomLength: totalLength,
         startIndex: -1,
         endIndex: -1,
       }
     }
+    
     const visibleStartIndex = sizeList.findIndex((index) => {
       return index >= stateCurrent[stateProp]
     })
@@ -78,12 +73,6 @@ export function useVScroll(props: UseVScrollProps) {
       })
     }
   })
-
-  useEffect(() => {
-    setTimeout(() => {
-      setRealOverCount(overscanCount * 2)
-    }, props.overCountIncrementTime || 1000)
-  }, [])
 
   const tickingRef = useRef(false)
 

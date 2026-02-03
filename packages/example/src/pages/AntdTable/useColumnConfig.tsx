@@ -16,6 +16,7 @@ export function useColumnConfig() {
         title: `序号`,
         width: 90,
         align: 'center',
+        fixed: 'left',
         renderComponent: ColumnIndex,
       },
       {
