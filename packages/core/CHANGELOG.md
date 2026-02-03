@@ -1,5 +1,11 @@
 # @grid-table/core
 
+## 0.6.46
+
+### Patch Changes
+
+- fixed:移除vscroll 自身的一些延迟加载
+
 ## 0.6.45
 
 ### Patch Changes
