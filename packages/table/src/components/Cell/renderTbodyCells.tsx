@@ -1,5 +1,5 @@
 import type { CellsRenderProps, Position } from '@grid-table/core'
-import { Fragment, useCallback } from 'react'
+import { useCallback, useMemo, memo } from 'react'
 import { useAtomValue, useStore } from '@einfach/react'
 import { mergeCellBodyMapAtom } from './stateMergeCells'
 import type { CellId } from '@grid-table/basic'
@@ -7,11 +7,13 @@ import { columnIdShowListAtom, rowIdShowListAtom } from '@grid-table/basic'
 import { getCellId, getRowIdAndColIdByCellId } from '../../utils'
 import { DataCell } from './Cell'
 
-export function useRenderTbodyCells() {
+export const TbodyCells = memo(function TbodyCells({
+  columnIndexList,
+  rowIndexList,
+  getCellStyleByIndex,
+}: CellsRenderProps) {
   const store = useStore()
-
   const mergeCellMap = useAtomValue(mergeCellBodyMapAtom)
-
   const columnList = useAtomValue(columnIdShowListAtom, { store })
   const rowList = useAtomValue(rowIdShowListAtom, { store })
 
@@ -40,46 +42,43 @@ export function useRenderTbodyCells() {
     [columnList, mergeCellMap, rowList],
   )
 
-  const renderTBodyCells = useCallback(
-    ({ columnIndexList, rowIndexList, getCellStyleByIndex }: CellsRenderProps) => {
-      const renderCellIds = new Set<CellId>()
-      // console.log(`🌟🌟🌟🌟🌟🌟🌟🌟🌟🌟renderTBodyCells`)
-      return (
-        <>
-          {rowIndexList.map((rowIndex) => {
-            return (
-              <Fragment key={rowIndex}>
-                {columnIndexList.map((columnIndex) => {
-                  const { cellId, columnId, rowId } = getCellIdByPosition({
-                    rowIndex,
-                    columnIndex,
-                  })
-                  if (renderCellIds.has(cellId)) {
-                    return null
-                  }
-                  renderCellIds.add(cellId)
-                  return (
-                    <DataCell
-                      key={`${cellId}`}
-                      columnIndex={columnIndex}
-                      rowIndex={rowIndex}
-                      style={getCellStyleByIndex(rowIndex, columnIndex)}
-                      cellId={cellId}
-                      columnId={columnId}
-                      rowId={rowId}
-                    />
-                  )
-                })}
-              </Fragment>
-            )
-          })}
-        </>
-      )
-    },
-    [getCellIdByPosition],
-  )
+  const cellsToRender = useMemo(() => {
+    const result: Array<{
+      cellId: string
+      columnId: string
+      rowId: string
+      rowIndex: number
+      columnIndex: number
+    }> = []
+    const seen = new Set<CellId>()
+    for (const rowIndex of rowIndexList) {
+      for (const columnIndex of columnIndexList) {
+        const { cellId, columnId, rowId } = getCellIdByPosition({
+          rowIndex,
+          columnIndex,
+        })
+        if (seen.has(cellId)) continue
+        seen.add(cellId)
+        result.push({ cellId, columnId, rowId, rowIndex, columnIndex })
+      }
+    }
+    return result
+  }, [rowIndexList, columnIndexList, getCellIdByPosition])
 
-  return {
-    renderTBodyCells,
-  }
-}
+
+  return (
+    <>
+      {cellsToRender.map(({ cellId, columnId, rowId, rowIndex, columnIndex }) => (
+        <DataCell
+          key={cellId}
+          columnIndex={columnIndex}
+          rowIndex={rowIndex}
+          style={getCellStyleByIndex(rowIndex, columnIndex)}
+          cellId={cellId}
+          columnId={columnId}
+          rowId={rowId}
+        />
+      ))}
+    </>
+  )
+})

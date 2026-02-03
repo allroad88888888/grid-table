@@ -33,7 +33,7 @@ export function useVScroll(props: UseVScrollProps) {
       totalLength: tempTotalHeight,
       sizeList: tempListSize,
     }
-  }, [itemCount, calcItemSize])
+  }, [itemCount, calcItemSize,length])
   const { startIndex, endIndex } = useMemo(() => {
 
     if (!itemCount||length===0) {

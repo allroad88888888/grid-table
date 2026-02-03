@@ -19,8 +19,8 @@ import { useBorder } from './plugins/border'
 import './Table.css'
 import { useTheadLastRowColumnSelect } from './plugins/areaSelected/useTheadSelected'
 import { TheadContextMenu } from './plugins/theadContextMenu/TheadContextMenu'
-import { useRenderTheadCells } from './components/Cell/renderTheadCells'
-import { useRenderTbodyCells } from './components/Cell/renderTbodyCells'
+import { TheadCells } from './components/Cell/renderTheadCells'
+import { TbodyCells } from './components/Cell/renderTbodyCells'
 import { Provider } from './Provider'
 import './var.css'
 import { useColumnAutoSize } from './plugins/calcSizeByColumn/useColumnAutoSize'
@@ -134,9 +134,6 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
     showBorder: true,
   })
 
-  const { renderTheadCells } = useRenderTheadCells()
-  const { renderTBodyCells } = useRenderTbodyCells()
-
   return (
     <>
       <VGridTable
@@ -146,8 +143,8 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
         maxColumnWidth={props.maxColumnWidth}
         ref={gridRef}
         className={tableClassName}
-        renderTbodyCell={renderTBodyCells}
-        renderTheadCell={renderTheadCells}
+        renderTbodyCell={TbodyCells}
+        renderTheadCell={TheadCells}
         theadRowCalcSize={calcHeadRowSizeByIndex}
         theadBaseSize={props.theadBaseSize}
         theadRowCount={headerRowIndexList.length}

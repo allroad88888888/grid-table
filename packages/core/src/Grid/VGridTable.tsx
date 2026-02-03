@@ -30,6 +30,7 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     renderTbodyCell,
     tbodyHasRow,
   } = props
+
   const {
     theadRowCount = 1,
     renderTheadCell,
@@ -50,6 +51,7 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     onContextMenu,
     onCopy,
   } = props
+
 
   const internalRef = useRef<HTMLDivElement>(null)
 
@@ -189,6 +191,14 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     [columnBaseSize, columnSizeList, rowBaseSize, rowSizeList, tbodyHasRow],
   )
 
+  const RenderTbodyCell = renderTbodyCell
+  const RenderTheadCell = renderTheadCell
+
+  const theadRowIndexList = useMemo(
+    () => Array.from({ length: theadRowCount }, (_, index) => index),
+    [theadRowCount],
+  )
+
   return (
     <div
       ref={ref}
@@ -218,11 +228,7 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
             height: theadHeight,
           }}
         >
-          {renderTheadCell({
-            rowIndexList: Array.from({ length: theadRowCount }, (_, index) => index),
-            columnIndexList,
-            getCellStyleByIndex: getTheadCellStyle,
-          })}
+          <RenderTheadCell rowIndexList={theadRowIndexList} columnIndexList={columnIndexList} getCellStyleByIndex={getTheadCellStyle} />
           {theadChildren}
         </div>
       ) : null}
@@ -243,11 +249,7 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
           key="tbody"
         >
           {tbodyChildren}
-          {renderTbodyCell({
-            rowIndexList,
-            columnIndexList,
-            getCellStyleByIndex: getTbodyCellStyle,
-          })}
+          <RenderTbodyCell rowIndexList={rowIndexList} columnIndexList={columnIndexList} getCellStyleByIndex={getTbodyCellStyle} />
         </div>
       )}
     </div>

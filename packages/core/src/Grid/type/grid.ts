@@ -44,7 +44,7 @@ export interface THeaderProps {
   theadClassName?: string
   theadHasRow?: boolean
 
-  renderTheadCell: (props: CellsRenderProps) => ReactNode
+  renderTheadCell: ComponentType<CellsRenderProps>
 }
 
 export interface TBodyRowProps {
@@ -54,7 +54,7 @@ export interface TBodyRowProps {
    */
   overRowCount?: number
   tbodyHasRow?: boolean
-  renderTbodyCell: (props: CellsRenderProps) => ReactNode
+  renderTbodyCell: ComponentType<CellsRenderProps>
   /**
    * @default 1
    * grid布局 row base length
