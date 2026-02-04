@@ -164,6 +164,7 @@ export function useCellSizeByColumn(props: UseSizeByColumnProps) {
     },
     [columnIdShowList, columnMinWidth, columnSizeMap],
   )
+  // console.log(`columnSizeMap:`,columnSizeMap)
 
   const rowSizeMap = useAtomValue(rowSizeMapAtom, { store })
   const rowIdShowList = useAtomValue(rowIdShowListAtom, { store })

@@ -3,8 +3,11 @@ import { Options } from './option'
 import { useDoRender } from '../utils/useDoRender'
 import type { UseVScrollProps } from './type'
 import { useTransition } from './useTransition'
+import { useSpeedAwareCallback, type UseSpeedAwareCallbackOptions } from './useSpeedAwareCallback'
 
-export function useVScroll(props: UseVScrollProps) {
+export type UseVDelayScrollOptions = UseSpeedAwareCallbackOptions
+
+export function useVDelayScroll(props: UseVScrollProps, options: UseVDelayScrollOptions = {}) {
   const { itemCount, overscanCount = 10, calcItemSize, onItemsRendered, direction = 'row' } = props
 
   const length = direction === 'row' ? props.height : props.width
@@ -76,22 +79,24 @@ export function useVScroll(props: UseVScrollProps) {
     }
   })
 
-  const tickingRef = useRef(false)
-
   const scrollHandler = useCallback(() => {
-    tickingRef.current = false
-
     startTransition(doRender)
-  }, [])
-  const onScroll = useCallback((event: Event) => {
-    const { scrollTop, scrollLeft } = event.currentTarget as Element
-    stateCurrent.stateScrollTop = Math.max(scrollTop, 0)
-    stateCurrent.stateScrollLeft = Math.max(scrollLeft, 0)
-    if (tickingRef.current === false) {
-      requestAnimationFrame(scrollHandler)
-      tickingRef.current = true
-    }
-  }, [])
+  }, [doRender, startTransition])
+
+  // 使用速度感知回调包装 scrollHandler
+  const speedAwareScrollHandler = useSpeedAwareCallback(scrollHandler, { ...options, direction })
+
+  const onScroll = useCallback(
+    (event: Event) => {
+      const { scrollTop, scrollLeft } = event.currentTarget as Element
+      stateCurrent.stateScrollTop = Math.max(scrollTop, 0)
+      stateCurrent.stateScrollLeft = Math.max(scrollLeft, 0)
+
+      // 调用速度感知回调
+      speedAwareScrollHandler(event)
+    },
+    [speedAwareScrollHandler]
+  )
 
   const showIndexList = useMemo(() => {
     if (!props.stayIndexList) {

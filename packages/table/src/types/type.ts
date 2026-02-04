@@ -104,6 +104,33 @@ export type AntdTableProps = {
   children?: React.ReactNode
 
   rowStayIndexList?: number[]
+
+  /**
+   * 是否启用 IntersectionObserver 延迟渲染（针对 RenderComponent）
+   * @default true
+   */
+  enableIntersectionRender?: boolean
+  /**
+   * IntersectionObserver rootMargin，用于提前触发 cell 渲染
+   * @default '1px'
+   */
+  intersectionRootMargin?: string
+  /**
+   * IntersectionObserver 交叉阈值
+   * @default 0
+   */
+  intersectionThreshold?: number | number[]
+
+  /**
+   * 滚动速度阈值（px/s），超过此速度时延迟渲染
+   * @default 800
+   */
+  speedThreshold?: number
+  /**
+   * 滚动停止/减速后的等待时间（ms）
+   * @default 150
+   */
+  idleDelay?: number
 } & CopyProps &
   UseDataProps &
   Pick<

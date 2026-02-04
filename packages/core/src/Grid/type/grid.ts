@@ -133,6 +133,17 @@ export interface VGridTableProps extends THeaderProps, TBodyRowProps, ColumnProp
   onMouseOut?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onContextMenu?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
   onCopy?: (e: React.ClipboardEvent<HTMLDivElement>) => void
+
+  /**
+   * 滚动速度阈值（px/s），超过此速度时延迟渲染
+   * @default 800
+   */
+  speedThreshold?: number
+  /**
+   * 滚动停止/减速后的等待时间（ms）
+   * @default 150
+   */
+  idleDelay?: number
 }
 
 export interface ResizeParam {

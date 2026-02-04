@@ -8,15 +8,14 @@ import {
   forwardRef,
   MutableRefObject,
 } from 'react'
-import { useVScroll } from '../Basic/useVScroll'
+import {  useMemoCallback, useVDelayScroll } from '../Basic'
 import type { VGridTableProps } from './type'
 import { useAutoSizer } from '../AutoSizer'
 
-/**
- *     minColumnWidth = 20,
-    maxColumnWidth = Number.MAX_SAFE_INTEGER,
-    columnPadding = 8,
- */
+function getCellStyleKey(rowIndex: number, columnIndex: number) {
+  return `${rowIndex}-${columnIndex}`
+}
+
 
 export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gridRef) => {
   const { style, className, children, theadChildren, tbodyChildren } = props
@@ -64,7 +63,7 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     showIndexList: rowIndexList,
     totalLength: totalHeight,
     sizeList: rowSizeList,
-  } = useVScroll({
+  } = useVDelayScroll({
     width,
     height,
     calcItemSize: rowCalcSize!,
@@ -79,7 +78,7 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     showIndexList: columnIndexList,
     totalLength: totalWidth,
     sizeList: columnSizeList,
-  } = useVScroll({
+  } = useVDelayScroll({
     width,
     height,
     calcItemSize: columnCalcSize!,
@@ -125,26 +124,11 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     return [tempSize, tempTheadSizeList]
   }, [theadRowCount, theadRowSize])
 
-  const theadCellStyleCache = useRef(new Map<string, any>())
-  const tbodyCellStyleCache = useRef(new Map<string, any>())
 
-  useEffect(() => {
-    theadCellStyleCache.current.clear()
-  }, [columnBaseSize, columnSizeList, theadBaseSize, theadHasRow, theadSizeList])
 
-  useEffect(() => {
-    tbodyCellStyleCache.current.clear()
-  }, [columnBaseSize, columnSizeList, rowBaseSize, rowSizeList, tbodyHasRow])
-
-  const getTheadCellStyle = useCallback(
+  const computeTheadCellStyle = useCallback(
     (rowIndex: number, columnIndex: number) => {
-      const cacheKey = `${rowIndex}-${columnIndex}`
-      const cached = theadCellStyleCache.current.get(cacheKey)
-      if (cached) {
-        return cached
-      }
-
-      const tStyle = {
+      const tStyle: Record<string, number | string> = {
         gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
         gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
         gridRowStart: theadSizeList[rowIndex] / theadBaseSize + 1,
@@ -157,22 +141,14 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
         tStyle.gridRowEnd =
           (theadSizeList[rowIndex + 1] - theadSizeList[rowIndex]) / theadBaseSize + 1
       }
-
-      theadCellStyleCache.current.set(cacheKey, tStyle)
       return tStyle
     },
     [columnBaseSize, columnSizeList, theadBaseSize, theadHasRow, theadSizeList],
   )
 
-  const getTbodyCellStyle = useCallback(
+  const computeTbodyCellStyle = useCallback(
     (rowIndex: number, columnIndex: number) => {
-      const cacheKey = `${rowIndex}-${columnIndex}`
-      const cached = tbodyCellStyleCache.current.get(cacheKey)
-      if (cached) {
-        return cached
-      }
-
-      const tStyle = {
+      const tStyle: Record<string, number | string> = {
         gridColumnStart: columnSizeList[columnIndex] / columnBaseSize + 1,
         gridColumnEnd: columnSizeList[columnIndex + 1] / columnBaseSize + 1,
         gridRowStart: rowSizeList[rowIndex] / rowBaseSize + 1,
@@ -184,12 +160,14 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
         tStyle.gridRowStart = 1
         tStyle.gridRowEnd = (rowSizeList[rowIndex + 1] - rowSizeList[rowIndex]) / rowBaseSize + 1
       }
-
-      tbodyCellStyleCache.current.set(cacheKey, tStyle)
       return tStyle
     },
     [columnBaseSize, columnSizeList, rowBaseSize, rowSizeList, tbodyHasRow],
   )
+
+  const getTheadCellStyle = useMemoCallback(computeTheadCellStyle, getCellStyleKey)
+
+  const getTbodyCellStyle = useMemoCallback(computeTbodyCellStyle, getCellStyleKey)
 
   const RenderTbodyCell = renderTbodyCell
   const RenderTheadCell = renderTheadCell

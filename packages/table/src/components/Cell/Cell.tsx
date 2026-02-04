@@ -6,10 +6,10 @@ import { easyGet } from '@einfach/utils'
 import { useExpandItem } from '../../tree'
 import { useColumnOption } from '../../hooks/useColumnOption'
 import { useRowInfo } from '../../hooks/useRowInfo'
+import { useIntersectionRender } from '@grid-table/core'
 import './Cell.css'
 
 export const DataCell = memo(function DataCell(props: CellProps) {
-  // console.count('cell count ❤️❤️❤️❤️❤️❤️❤️')
   const { rowId, columnId, style, className, cellId } = useCell(props)
   const events = useCellEvents({
     rowId,
@@ -57,8 +57,16 @@ export const DataCell = memo(function DataCell(props: CellProps) {
 
   const RenderComponent = renderComponent
 
+  // 使用 IntersectionObserver + startTransition 延迟渲染 RenderComponent 
+  const intersectionResult = useIntersectionRender<HTMLDivElement>()
+
+  // 只在有 RenderComponent 时才使用 IntersectionObserver
+  const cellRef = RenderComponent ? intersectionResult.ref : undefined
+  const shouldRender = RenderComponent ? intersectionResult.shouldRender : true
+
   return (
     <div
+      ref={cellRef}
       style={style}
       className={clsx('grid-table-cell', className, 'grid-table-cell-data-item')}
       // data-row-index={props.rowIndex}
@@ -68,17 +76,19 @@ export const DataCell = memo(function DataCell(props: CellProps) {
     >
       {expendDom}
       {RenderComponent ? (
-        <RenderComponent
-          text={cellVal}
-          rowInfo={rowInfo!}
-          position={{
-            rowId,
-            columnId,
-            colIndex: props.columnIndex,
-            rowIndex: props.rowIndex,
-            cellId,
-          }}
-        />
+        shouldRender ? (
+          <RenderComponent
+            text={cellVal}
+            rowInfo={rowInfo!}
+            position={{
+              rowId,
+              columnId,
+              colIndex: props.columnIndex,
+              rowIndex: props.rowIndex,
+              cellId,
+            }}
+          />
+        ) : null
       ) : (
         children
       )}

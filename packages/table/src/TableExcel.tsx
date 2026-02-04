@@ -1,4 +1,4 @@
-import { VGridTable } from '@grid-table/core'
+import { VGridTable, IntersectionObserverProvider } from '@grid-table/core'
 import { useAtomValue, useSetAtom, useStore } from '@einfach/react'
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { headerRowIndexListAtom, useBasic } from '@grid-table/basic'
@@ -136,44 +136,52 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
 
   return (
     <>
-      <VGridTable
-        {...tableEvents}
-        style={props.style}
-        minColumnWidth={props.minColumnWidth}
-        maxColumnWidth={props.maxColumnWidth}
-        ref={gridRef}
-        className={tableClassName}
-        renderTbodyCell={TbodyCells}
-        renderTheadCell={TheadCells}
-        theadRowCalcSize={calcHeadRowSizeByIndex}
-        theadBaseSize={props.theadBaseSize}
-        theadRowCount={headerRowIndexList.length}
-        rowCount={rowIdShowList.length}
-        rowCalcSize={calcRowSizeByIndex}
-        rowBaseSize={props.rowBaseSize || rowHeight}
-        columnCount={columnIdShowList.length}
-        columnCalcSize={calcColumnSizeByIndex}
-        columnBaseSize={props.columnBaseSize}
-        columnStayIndexList={columnStayIndexList}
-        rowStayIndexList={props.rowStayIndexList}
-        overColumnCount={props.overColumnCount}
-        overRowCount={props.overRowCount}
-        emptyComponent={props.emptyComponent}
-        loadingComponent={props.loadingComponent}
-        loading={props.loading || loading}
-        onResize={setContainerSize}
-        theadChildren={<TheadContextMenu enableContextMenu={enableHeadContextMenu} />}
+      <IntersectionObserverProvider
+        enabled={props.enableIntersectionRender}
+        rootMargin={props.intersectionRootMargin}
+        threshold={props.intersectionThreshold}
       >
-        <>
-          {children}
-          {copy}
-          <DragLine
-            dragColumnMinSize={props.cellDefaultWidth}
-            enableColumnResize={props.enableColumnResize}
-            onColumnResize={props.onColumnResize}
-          />
-        </>
-      </VGridTable>
+        <VGridTable
+          {...tableEvents}
+          style={props.style}
+          minColumnWidth={props.minColumnWidth}
+          maxColumnWidth={props.maxColumnWidth}
+          ref={gridRef}
+          className={tableClassName}
+          renderTbodyCell={TbodyCells}
+          renderTheadCell={TheadCells}
+          theadRowCalcSize={calcHeadRowSizeByIndex}
+          theadBaseSize={props.theadBaseSize}
+          theadRowCount={headerRowIndexList.length}
+          rowCount={rowIdShowList.length}
+          rowCalcSize={calcRowSizeByIndex}
+          rowBaseSize={props.rowBaseSize || rowHeight}
+          columnCount={columnIdShowList.length}
+          columnCalcSize={calcColumnSizeByIndex}
+          columnBaseSize={props.columnBaseSize}
+          columnStayIndexList={columnStayIndexList}
+          rowStayIndexList={props.rowStayIndexList}
+          overColumnCount={props.overColumnCount}
+          overRowCount={props.overRowCount}
+          emptyComponent={props.emptyComponent}
+          loadingComponent={props.loadingComponent}
+          loading={props.loading || loading}
+          onResize={setContainerSize}
+          speedThreshold={props.speedThreshold}
+          idleDelay={props.idleDelay}
+          theadChildren={<TheadContextMenu enableContextMenu={enableHeadContextMenu} />}
+        >
+          <>
+            {children}
+            {copy}
+            <DragLine
+              dragColumnMinSize={props.cellDefaultWidth}
+              enableColumnResize={props.enableColumnResize}
+              onColumnResize={props.onColumnResize}
+            />
+          </>
+        </VGridTable>
+      </IntersectionObserverProvider>
     </>
   )
 })

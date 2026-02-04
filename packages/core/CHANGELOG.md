@@ -1,5 +1,23 @@
 # @grid-table/core
 
+## 0.6.49
+
+### Patch Changes
+
+- feat:添加cell 延迟渲染
+
+## 0.6.48
+
+### Patch Changes
+
+- fixed:切换为setTimput
+
+## 0.6.47
+
+### Patch Changes
+
+- fixed:调整滚动方案
+
 ## 0.6.46
 
 ### Patch Changes
