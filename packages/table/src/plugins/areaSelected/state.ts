@@ -47,12 +47,35 @@ export const areaDisabledColsAtom = selectAtom(
   easyEqual,
 )
 
+/**
+ * 比较两个二维数组是否相等
+ */
+function equal2DArray(arr1: CellId[][], arr2: CellId[][]): boolean {
+  if (arr1.length !== arr2.length) {
+    return false
+  }
+  for (let i = 0; i < arr1.length; i += 1) {
+    const row1 = arr1[i]
+    const row2 = arr2[i]
+    if (row1.length !== row2.length) {
+      return false
+    }
+    for (let j = 0; j < row1.length; j += 1) {
+      if (row1[j] !== row2[j]) {
+        return false
+      }
+    }
+  }
+  return true
+}
+
 const Empty: CellId[][] = []
 
-export const areaCellIdsAtom = atom<{
-  cellTbodyList: CellId[][]
-  cellTheadList: CellId[][]
-}>((getter) => {
+export const areaCellIdsAtom = selectAtom(
+  atom<{
+    cellTbodyList: CellId[][]
+    cellTheadList: CellId[][]
+  }>((getter) => {
   const areaStart = getter(areaStartAtom)
   let areaEnd = getter(areaEndAtom)
   const areaStartType = getter(areaStartTypeAtom)
@@ -161,7 +184,12 @@ export const areaCellIdsAtom = atom<{
   }
 
   return { cellTbodyList, cellTheadList }
-})
+  }),
+  (prev) => prev,
+  (prev, next) =>
+    equal2DArray(prev.cellTbodyList, next.cellTbodyList) &&
+    equal2DArray(prev.cellTheadList, next.cellTheadList),
+)
 
 export const areaColumnIdsAtom = atom<ColumnId[]>((getter) => {
   const areaStart = getter(areaStartAtom)

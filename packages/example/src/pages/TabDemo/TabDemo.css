@@ -1,0 +1,38 @@
+.tab-demo {
+  padding: 16px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #e8e8e8;
+  margin-bottom: 16px;
+}
+
+.tab-item {
+  padding: 8px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #595959;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tab-item:hover {
+  color: #1677ff;
+}
+
+.tab-item--active {
+  color: #1677ff;
+  border-bottom-color: #1677ff;
+  font-weight: 500;
+}
+
+.tab-content {
+  flex: 1;
+}

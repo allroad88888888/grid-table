@@ -1,5 +1,17 @@
 # @grid-table/core
 
+## 0.6.54
+
+### Patch Changes
+
+- fixed:scroll
+
+## 0.6.53
+
+### Patch Changes
+
+- 修复父div display none 高度宽度变为0，导致列宽被重置
+
 ## 0.6.49
 
 ### Patch Changes

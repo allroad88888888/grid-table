@@ -1,5 +1,21 @@
 # @grid-table/view
 
+## 0.6.54
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/core@0.6.54
+  - @grid-table/basic@0.6.54
+
+## 0.6.53
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/core@0.6.53
+  - @grid-table/basic@0.6.53
+
 ## 0.6.49
 
 ### Patch Changes

@@ -7,7 +7,10 @@ import { getCellId, getRowIdAndColIdByCellId } from '../../utils/getCellId'
 import { tbodyMergeCellListAtom } from '../../components'
 import { lastSet } from './utils'
 
-export function useMergeCells({ showBorder = true }: { showBorder?: boolean } = {}) {
+export function useMergeCells({
+  showBorder = true,
+  containerSize,
+}: { showBorder?: boolean; containerSize?: { width: number; height: number } } = {}) {
   const store = useStore()
   const { getCellStateAtomById, columnSizeMapAtom, rowSizeMapAtom } = useBasic()
 
@@ -37,22 +40,50 @@ export function useMergeCells({ showBorder = true }: { showBorder?: boolean } = 
           const rowIdSet = new Set(getter(rowIdShowListAtom))
           const columnIdSet = new Set(getter(columnIdShowListAtom))
 
+          const calculatedWidth = [curColId, ...colIdList]
+            .filter((colId) => {
+              return columnIdSet.has(colId)
+            })
+            .reduce<number>((prev, colId) => {
+              return prev + (columnSizeMap.get(colId) || 0)
+            }, 0)
+
+          const calculatedHeight = [curRowId, ...rowIdList]
+            .filter((rowId) => {
+              return rowIdSet.has(rowId)
+            })
+            .reduce<number>((prev, rowId) => {
+              return prev + (rowSizeMap.get(rowId) || 0)
+            }, 0)
+
+          // 限制最大尺寸为容器尺寸
+          const maxWidth = containerSize?.width || Infinity
+          const maxHeight = containerSize?.height || Infinity
+          const finalWidth = Math.min(calculatedWidth, maxWidth)
+          const finalHeight = Math.min(calculatedHeight, maxHeight)
+
+          // 判断是否超出容器
+          const isWidthOverflow = calculatedWidth > maxWidth
+          const isHeightOverflow = calculatedHeight > maxHeight
+
           next = {
-            width: [curColId, ...colIdList]
-              .filter((colId) => {
-                return columnIdSet.has(colId)
-              })
-              .reduce<number>((prev, colId) => {
-                return prev + (columnSizeMap.get(colId) || 0)
-              }, 0),
-            height: [curRowId, ...rowIdList]
-              .filter((rowId) => {
-                return rowIdSet.has(rowId)
-              })
-              .reduce<number>((prev, rowId) => {
-                return prev + (rowSizeMap.get(rowId) || 0)
-              }, 0),
+            width: finalWidth,
+            height: finalHeight,
           }
+
+          // 超出容器时使用 sticky 定位
+          if (isHeightOverflow || isWidthOverflow) {
+            next.position = 'sticky'
+            if (isHeightOverflow) {
+              next.top = 0
+              next.borderTop = '1px var(--grid-cell-border-style) var(--grid-border-color)'
+            }
+            if (isWidthOverflow) {
+              next.left = 0
+              next.borderLeft = '1px var(--grid-cell-border-style) var(--grid-border-color)'
+            }
+          }
+
           const lastRowId = lastSet(rowIdSet)
           const lastColumnId = lastSet(columnIdSet)
 
@@ -128,7 +159,7 @@ export function useMergeCells({ showBorder = true }: { showBorder?: boolean } = 
         clear()
       })
     }
-  }, [cellList, columnSizeMap, getCellStateAtomById, rowSizeMap, store, showBorder])
+  }, [cellList, columnSizeMap, getCellStateAtomById, rowSizeMap, store, showBorder, containerSize])
 }
 
 export default ''

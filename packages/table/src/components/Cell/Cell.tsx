@@ -57,26 +57,19 @@ export const DataCell = memo(function DataCell(props: CellProps) {
 
   const RenderComponent = renderComponent
 
-  // 使用 IntersectionObserver + startTransition 延迟渲染 RenderComponent 
-  const intersectionResult = useIntersectionRender<HTMLDivElement>()
-
-  // 只在有 RenderComponent 时才使用 IntersectionObserver
-  const cellRef = RenderComponent ? intersectionResult.ref : undefined
-  const shouldRender = RenderComponent ? intersectionResult.shouldRender : true
+  // 使用 IntersectionObserver + startTransition 延迟渲染 RenderComponent
+  const { ref: cellRef, shouldRender } = useIntersectionRender<HTMLDivElement>()
 
   return (
     <div
       ref={cellRef}
       style={style}
       className={clsx('grid-table-cell', className, 'grid-table-cell-data-item')}
-      // data-row-index={props.rowIndex}
-      // data-column-index={props.columnIndex}
-
       {...events}
     >
       {expendDom}
-      {RenderComponent ? (
-        shouldRender ? (
+      {shouldRender ? (
+        RenderComponent ? (
           <RenderComponent
             text={cellVal}
             rowInfo={rowInfo!}
@@ -88,10 +81,10 @@ export const DataCell = memo(function DataCell(props: CellProps) {
               cellId,
             }}
           />
-        ) : null
-      ) : (
-        children
-      )}
+        ) : (
+          children
+        )
+      ) : null}
     </div>
   )
 })

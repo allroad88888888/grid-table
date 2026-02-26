@@ -52,6 +52,8 @@ export function useSpeedAwareCallback(
   const currentSpeedRef = useRef(0)
   // 延迟执行的定时器
   const pendingTimerRef = useRef<NodeJS.Timeout | null>(null)
+  // requestAnimationFrame ID
+  const rafIdRef = useRef<number | null>(null)
 
   const speedAwareCallback = useCallback(
     (event: Event) => {
@@ -79,24 +81,31 @@ export function useSpeedAwareCallback(
       const speed = currentSpeedRef.current
       const isFastScrolling = speed > speedThreshold
 
-      if (isFastScrolling) {
-        // 快速滚动：取消之前的定时器，延迟执行
-        if (pendingTimerRef.current) {
-          clearTimeout(pendingTimerRef.current)
-        }
+      // 取消之前的任务
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current)
+        rafIdRef.current = null
+      }
+      if (pendingTimerRef.current) {
+        clearTimeout(pendingTimerRef.current)
+        pendingTimerRef.current = null
+      }
 
+      if (isFastScrolling) {
+        // 快速滚动：延迟后在下一帧执行
         pendingTimerRef.current = setTimeout(() => {
           pendingTimerRef.current = null
-          callback()
+          rafIdRef.current = requestAnimationFrame(() => {
+            rafIdRef.current = null
+            callback()
+          })
         }, idleDelay)
       } else {
-        // 慢速滚动：取消可能存在的延迟任务，立即执行
-        if (pendingTimerRef.current) {
-          clearTimeout(pendingTimerRef.current)
-          pendingTimerRef.current = null
-        }
-
-        callback()
+        // 慢速滚动：在下一帧立即执行
+        rafIdRef.current = requestAnimationFrame(() => {
+          rafIdRef.current = null
+          callback()
+        })
       }
     },
     [callback, direction, speedThreshold, idleDelay]

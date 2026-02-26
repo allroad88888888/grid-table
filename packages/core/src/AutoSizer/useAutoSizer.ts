@@ -30,6 +30,10 @@ export function useAutoSizer<T extends HTMLElement>(
     }
 
     function change2(rec: DOMRectReadOnly) {
+      // 当父元素 display:none 时，宽高均为 0，跳过更新以保留上次有效尺寸
+      if (rec.height === 0 && rec.width === 0) {
+        return
+      }
       setParam({
         height: rec.height + 2,
         width: rec.width + 2,

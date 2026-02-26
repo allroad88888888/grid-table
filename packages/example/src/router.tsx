@@ -28,6 +28,7 @@ import { FinanceTableDemo } from './pages/FinanceTableDemo'
 import { ColumnResizeCacheDemo } from './pages/ColumnResizeCacheDemo'
 import { CollapseDemo } from './pages/Collapse'
 import { PasteDemo } from './pages/PasteDemo'
+import TabDemo from './pages/TabDemo'
 
 // 路由项目接口定义
 export interface RouteItem {
@@ -103,6 +104,10 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/table/collapse',
         component: CollapseDemo,
         label: '数据展开示例',
+      },{
+        path: '/table/tab-demo',
+        component: TabDemo,
+        label: 'Tab切换表格',
       }
     ],
   },
