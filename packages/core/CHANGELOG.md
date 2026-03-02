@@ -1,5 +1,11 @@
 # @grid-table/core
 
+## 0.6.55
+
+### Patch Changes
+
+- onColumnResize
+
 ## 0.6.54
 
 ### Patch Changes

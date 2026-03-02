@@ -1,5 +1,15 @@
 # @grid-table/pivot
 
+## 0.5.58
+
+### Patch Changes
+
+- onColumnResize
+- Updated dependencies
+  - @grid-table/basic@0.6.55
+  - @grid-table/view@0.6.55
+  - @grid-table/core@0.6.55
+
 ## 0.5.57
 
 ### Patch Changes

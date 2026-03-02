@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.8
+
+### Patch Changes
+
+- onColumnResize
+- Updated dependencies
+  - @grid-tree/core@0.6.8
+
 ## 0.1.2
 
 ### Patch Changes
@@ -13,6 +21,7 @@
 ### Patch Changes
 
 - ColumnResizeCallBack
+
 ## 0.6.7
 
 ### Patch Changes

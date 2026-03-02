@@ -1,4 +1,5 @@
 import type { ColumnId } from '@grid-table/basic'
+import { columnSizeMapAtom } from '@grid-table/basic'
 import './Drag.css'
 import type { UseDragProps } from './useDrag'
 import { useDrag, useDrayItem } from './useDrag'
@@ -61,12 +62,21 @@ export function ColumnDragItem({ columnId }: ColumnDragItemProps) {
         // 在就用areaColumnIdsAtom，不在就用columnId
         targetColumnIds = isColumnInArea ? areaColumnIds : [columnId]
       }
-      // 双击时自动调整列的宽度
       autoColumnsSize(targetColumnIds, {
         minColumnWidth: options?.minColumnWidth,
         maxColumnWidth: options?.maxColumnWidth,
         columnPadding: options?.columnPadding,
       })
+
+      if (options?.onColumnResize) {
+        const sizeMap = getter(columnSizeMapAtom)
+        targetColumnIds.forEach((id) => {
+          const newWidth = sizeMap.get(id)
+          if (newWidth !== undefined) {
+            options.onColumnResize!(id, newWidth)
+          }
+        })
+      }
     },
     [columnId, autoColumnsSize],
   )
