@@ -48,6 +48,11 @@ export interface ColumnType<ItemInfo = Record<string, any>> {
    * 0 表示不参与放大
    */
   flexGrow?: number
+
+  /**
+   * 自定义列className
+   */
+  className?: string
 }
 
 export interface CustomHeaderCellProps {

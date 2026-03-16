@@ -25,7 +25,10 @@ export const columnInitAtom = atom(0, (getter, setter, columns: ColumnType[]) =>
     columnOption.key = columnId
     setter(getColumnOptionAtomByColumnId(columnId), columnOption)
     setter(getColumnStateAtomById(columnId), {
-      className: new Set([`gird-table-text-${columnOption.align || 'left'}`]),
+      className: new Set([
+        `gird-table-text-${columnOption.align || 'left'}`,
+        ...(columnOption.className ? [columnOption.className] : []),
+      ]),
       style: {},
     })
   }
@@ -41,7 +44,10 @@ export const columnAddAtom = atom(
     const { getColumnOptionAtomByColumnId } = getter(dataFamilyAtom)
     const { getColumnStateAtomById } = getter(basicAtom)
     setter(getColumnStateAtomById(columnId), {
-      className: new Set([`gird-table-text-${column.align || 'left'}`]),
+      className: new Set([
+        `gird-table-text-${column.align || 'left'}`,
+        ...(column.className ? [column.className] : []),
+      ]),
       style: {},
     })
     setter(getColumnOptionAtomByColumnId(columnId), column)
