@@ -147,25 +147,21 @@ describe('calculateChildrenWidth', () => {
   })
 
   test('measureColumnsWidth集成测试', () => {
-    // 测试 measureColumnsWidth 是否能正确调用 calculateColumnsMaxWidth
-
-    // 模拟DOM结构
     const gridContainer = document.createElement('div')
     gridContainer.className = 'grid-container'
 
-    // 创建一些单元格
     const cells = [
-      { text: '短文本', gridColumn: 1, gridRow: 1 },
-      { text: '很长的文本内容', gridColumn: 2, gridRow: 1 },
-      { text: '中等文本', gridColumn: 1, gridRow: 2 },
-      { text: '另一个长文本', gridColumn: 2, gridRow: 2 },
+      { text: '短文本', columnIndex: 0, gridRow: 1 },
+      { text: '很长的文本内容', columnIndex: 1, gridRow: 1 },
+      { text: '中等文本', columnIndex: 0, gridRow: 2 },
+      { text: '另一个长文本', columnIndex: 1, gridRow: 2 },
     ]
 
-    cells.forEach(({ text, gridColumn, gridRow }) => {
+    cells.forEach(({ text, columnIndex, gridRow }) => {
       const cell = document.createElement('div')
       cell.className = 'grid-table-cell'
       cell.textContent = text
-      cell.style.gridColumnStart = `${gridColumn}`
+      cell.style.setProperty('--column', `${columnIndex}`)
       cell.style.gridRowStart = `${gridRow}`
       cell.style.fontSize = '14px'
       cell.style.padding = '8px'
@@ -174,39 +170,62 @@ describe('calculateChildrenWidth', () => {
 
     document.body.appendChild(gridContainer)
 
-    // 从实际调用改造后的 measureColumnsWidth 函数
     const gridRef = { current: gridContainer }
-    const columnIndexList = [0, 1] // 测试两列
+    const columnIndexList = [0, 1]
     const options = {
       minColumnWidth: 60,
       maxColumnWidth: 250,
       columnPadding: 16,
     }
 
-    // 这里会调用我们改造后的函数
-    // 注意：在Jest环境中，DOM测量会返回0，但至少可以验证函数不会报错
-    const result = (() => {
-      try {
-        // 动态导入需要注意模块路径
+    const result = measureColumnsWidth(gridRef, columnIndexList, options)
 
-        return measureColumnsWidth(gridRef, columnIndexList, options)
-      } catch (error) {
-        console.log('导入错误:', error)
-        return []
-      }
-    })()
-
-    // 清理DOM
     document.body.removeChild(gridContainer)
 
-    // 基本验证：函数应该返回数组，且长度正确
     expect(Array.isArray(result)).toBe(true)
     expect(result.length).toBe(columnIndexList.length)
 
-    // 在Jest环境中，由于DOM测量限制，宽度可能为最小值
     result.forEach((width) => {
       expect(typeof width).toBe('number')
       expect(width).toBeGreaterThanOrEqual(0)
     })
+  })
+
+  test('measureColumnsWidth虚拟滚动场景-后几列自适应', () => {
+    const gridContainer = document.createElement('div')
+    gridContainer.className = 'grid-container'
+
+    // 模拟滚动到后几列的场景：DOM 中只有列索引 20、21、22 的单元格
+    const cells = [
+      { text: '列20数据', columnIndex: 20, gridRow: 1 },
+      { text: '列21数据很长很长', columnIndex: 21, gridRow: 1 },
+      { text: '列22', columnIndex: 22, gridRow: 1 },
+      { text: '列20行2', columnIndex: 20, gridRow: 2 },
+      { text: '列21行2', columnIndex: 21, gridRow: 2 },
+      { text: '列22行2数据', columnIndex: 22, gridRow: 2 },
+    ]
+
+    cells.forEach(({ text, columnIndex, gridRow }) => {
+      const cell = document.createElement('div')
+      cell.className = 'grid-table-cell'
+      cell.textContent = text
+      cell.style.setProperty('--column', `${columnIndex}`)
+      cell.style.gridRowStart = `${gridRow}`
+      gridContainer.appendChild(cell)
+    })
+
+    document.body.appendChild(gridContainer)
+
+    const gridRef = { current: gridContainer }
+    // 只对列 21 做自适应
+    const columnIndexList = [21]
+    const options = { minColumnWidth: 60, maxColumnWidth: 250, columnPadding: 16 }
+
+    const result = measureColumnsWidth(gridRef, columnIndexList, options)
+
+    document.body.removeChild(gridContainer)
+
+    expect(result.length).toBe(1)
+    expect(result[0]).toBeGreaterThanOrEqual(60)
   })
 })

@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.58
+
+### Patch Changes
+
+- Fix column auto-size measurement under virtual scrolling by using the `--column` CSS custom property instead of discontinuous grid column indices.
+  - @grid-table/core@0.6.58
+  - @grid-table/basic@0.6.58
+
 ## 0.6.55
 
 ### Patch Changes

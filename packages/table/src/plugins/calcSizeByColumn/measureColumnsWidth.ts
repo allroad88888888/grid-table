@@ -62,27 +62,6 @@ export function measureColumnsWidth(
     return []
   }
 
-  // 第一遍：收集所有不同的列位置值
-  const columnPositions = new Set<number>()
-  allCells.forEach((cell) => {
-    const element = cell as HTMLElement
-    const computedStyle = window.getComputedStyle(element)
-    const gridColumnStart = parseInt(computedStyle.gridColumnStart) || 1
-    columnPositions.add(gridColumnStart)
-  })
-
-  // 按大小排序，创建位置到逻辑索引的映射
-  const sortedColumnPositions = Array.from(columnPositions).sort((a, b) => a - b)
-  const columnPositionToLogicalIndex = new Map<number, number>()
-  sortedColumnPositions.forEach((position, logicalIndex) => {
-    columnPositionToLogicalIndex.set(position, logicalIndex)
-  })
-
-  debugLog('📋 列位置映射:', {
-    原始位置: sortedColumnPositions,
-    位置到索引: Array.from(columnPositionToLogicalIndex.entries()),
-  })
-
   // 按列分组收集DOM元素
   const columnElements: Element[][] = []
 
@@ -91,33 +70,25 @@ export function measureColumnsWidth(
     columnElements.push([])
   })
 
-  // 第二遍：按列分组收集单元格DOM元素
+
+  // 通过 CSS 自定义属性 --column 直接读取列索引，避免虚拟滚动时 gridColumnStart 不连续导致的映射错误
   allCells.forEach((cell, index) => {
     const element = cell as HTMLElement
     const computedStyle = window.getComputedStyle(element)
 
-    // 解析 grid-column-start，然后根据排序位置确定逻辑列索引
-    const gridColumnStart = parseInt(computedStyle.gridColumnStart) || 1
-    const logicalColumnIndex = columnPositionToLogicalIndex.get(gridColumnStart)
-
-    // 如果找不到对应的列索引，跳过这个单元格
-    if (logicalColumnIndex === undefined) {
-      debugLog(`⚠️ 跳过未知列位置的单元格: gridColumnStart=${gridColumnStart}`)
+    const columnIndex = parseInt(computedStyle.getPropertyValue('--column').trim())
+    if (isNaN(columnIndex)) {
       return
     }
 
-    // 检查逻辑列索引是否在我们需要计算的列索引列表中
-    const arrayIndex = columnIndexList.indexOf(logicalColumnIndex)
+    const arrayIndex = columnIndexList.indexOf(columnIndex)
     if (arrayIndex !== -1) {
       columnElements[arrayIndex].push(element)
     }
 
     // 调试前几个单元格的解析过程
     if (index < 5) {
-      const rowIndex = (parseInt(computedStyle.gridRowStart) || 1) - 1
-      debugLog(
-        `  🔎 单元格${index}: 行${rowIndex}, CSS列位置${gridColumnStart} -> 逻辑列${logicalColumnIndex}`,
-      )
+      debugLog(`  🔎 单元格${index}: --column=${columnIndex}`)
     }
   })
 
