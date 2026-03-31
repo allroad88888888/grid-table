@@ -16,9 +16,22 @@
   "scripts": {
     "build": "tsc"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/allroad88888888/grid-table.git",
+    "directory": "packages/table"
+  },
+  "homepage": "https://github.com/allroad88888888/grid-table#readme",
+  "bugs": "https://github.com/allroad88888888/grid-table/issues",
   "keywords": [
     "react",
-    "atom"
+    "table",
+    "virtual-scroll",
+    "css-grid",
+    "datagrid",
+    "virtualized",
+    "spreadsheet",
+    "typescript"
   ],
   "peerDependencies": {
     "@einfach/react": ">=0.3.4",

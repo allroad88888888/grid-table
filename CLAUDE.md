@@ -4,118 +4,120 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-Grid-table 是一个基于 React 构建的虚拟滚动表格库，使用 CSS Grid 实现高性能渲染。项目采用 monorepo 架构，包含多个实现不同功能的包。
+Grid-table 是一个基于 React 构建的虚拟滚动表格库，使用 CSS Grid 实现高性能渲染。项目采用 monorepo 架构（pnpm workspace），包含 `packages/*` 和 `solidjs/*` 两个工作空间。
 
-### 核心包架构
+## 常用命令
 
-- **@grid-table/basic**: 基础包，提供基本的状态管理和核心工具，使用 `@einfach/react` atoms
-- **@grid-table/core**: 核心虚拟滚动组件，包括 `VGridTable`、`VGridList`、自动调整大小和网格定位 hooks
-- **@grid-table/view**: 主要表格视图组件，包含完整功能集，支持拖拽、固定列、区域选择、复制、过滤等插件
-- **@grid-table/excel**: Excel 类似功能，支持单元格编辑
-- **@grid-table/pivot**: 透视表实现，包含数据转换和树结构
-- **@grid-tree/core**: 树数据结构工具和组件
-- **@grid-table/example**: 开发示例和演示
-
-### 关键技术
-
-- **状态管理**: `@einfach/react` (基于 atom 的状态管理，类似 Jotai)
-- **UI 框架**: React 18+ + TypeScript
-- **构建系统**: 自定义 Gulp 管道，使用 SWC 进行 TypeScript 编译
-- **测试**: Jest + React Testing Library + SWC 转换
-- **包管理**: pnpm workspace
-
-## 常用开发命令
-
-### 根目录命令
 ```bash
-# 安装依赖
-pnpm install
+pnpm install                  # 安装依赖
+pnpm run build                # 构建所有包（Gulp SWC 转译 + tsc 类型生成）
+pnpm run test                 # Jest 单元测试（含覆盖率）
+pnpm run eslint               # ESLint 检查（自动修复）
+pnpm run tsc                  # TypeScript 类型检查
 
-# 构建所有包
-pnpm run build
+# 运行单个测试文件
+npx jest packages/table/src/__tests__/someFile.test.ts
 
-# 运行测试并生成覆盖率报告
-pnpm run test
+# E2E 测试（Playwright，需先安装浏览器）
+pnpm run test:e2e:install     # 安装浏览器
+pnpm run test:e2e             # 运行 E2E 测试（自动启动 dev server）
+pnpm run test:e2e:headed      # 有界面模式
+pnpm run test:e2e:ui          # Playwright UI 模式
 
-# 代码检查
-pnpm run eslint
+# 开发示例
+cd packages/example && pnpm run dev   # Vite dev server，http://localhost:5173
 
-# 类型检查
-pnpm run tsc
-```
-
-### 示例开发
-```bash
-# 运行开发服务器 (从根目录或 packages/example)
-cd packages/example && pnpm run dev
-```
-
-### 单个包命令
-每个包都支持:
-```bash
-# 构建特定包
+# 构建单个包
 cd packages/[包名] && pnpm run build
 ```
 
-## 状态管理模式
+## 包层级架构
 
-项目使用 `@einfach/react` atoms 进行状态管理。关键模式:
+```
+Layer 0 - 无依赖:
+  @grid-table/core    (packages/core)     虚拟滚动引擎：VGridTable, VGridList, useAutoSizer
+  @grid-table/paste   (packages/paste)    剪贴板处理：TSV/CSV/HTML/JSON 解析
 
-- 使用 `atom()` 管理基础状态
-- 使用 `atomFamily()` 管理相关状态集合
-- 计算值通过选择器从 atoms 派生
-- 状态通常在专门的状态文件中组织 (如 `state.ts`、`stateCore.ts`)
+Layer 1 - 基础状态:
+  @grid-table/basic   (packages/basic)    atom 状态管理、createCore()、行列索引/尺寸 atoms
+  @grid-tree/core     (packages/tree)     树结构 hooks 和状态
 
-## 架构模式
+Layer 2 - 视图层:
+  @grid-table/view    (packages/table)    完整表格组件 + 插件系统（依赖 basic + core）
+  @grid-tree/select   (packages/tree-select)  树选择器组件（依赖 tree）
 
-### 插件系统
-表格视图 (`@grid-table/view`) 使用插件架构:
-- 插件位于 `packages/table/src/plugins/`，实现拖拽、固定、复制等功能
-- 每个插件提供 hooks 和组件
-- 插件通过共享状态 atoms 集成
+Layer 3 - 领域功能:
+  @grid-table/excel   (packages/excel)    Excel 编辑功能（依赖 view + basic + core）
+  @grid-table/pivot   (packages/pivot)    透视表（依赖 view + basic + core）
 
-### 虚拟滚动
-- 基于 CSS Grid 的网格布局
-- 行列虚拟化以提升性能
-- 滚动定位 hooks (`useScrollLogicalPosition`、`useScrollTo`)
-- 自动调整大小功能 (`useColumnsAutoSize`)
+Solid.js 移植:
+  @grid-table-solidjs/core  (solidjs/core)  core 包的 Solid.js 版本，独立于 React
+```
 
-### 组件结构
-- 逻辑 (hooks) 和表现 (components) 分离
-- 大量使用 React.memo 优化性能
-- 自定义 hooks 命名约定: `use[功能]`
+所有 `@grid-table/*` 包的 peer dependency 为 `@einfach/react` 和 `@einfach/utils`。
 
-## 测试策略
+## 核心架构
 
-- 使用 Jest + SWC 转换进行单元测试
-- React Testing Library 用于组件测试
-- 测试文件位于源文件旁边或 `__tests__` 目录
-- 在 `coverage/` 目录生成覆盖率报告
+### 状态管理（@einfach/react）
+
+类似 Jotai 的 atom 模式，三种创建方式：
+
+- **`atom(initialValue)`** — 基础状态（如 `columnIndexListAtom = atom<ColumnId[]>([])`）
+- **`incrementAtom(getter)`** — 可变集合的计算状态（如合并后的列列表）
+- **`createAtomFamily()`** — 按 ID 动态创建 atom（如每列/每行独立状态）
+
+使用方式：`Store` + `Provider` 包裹组件树，组件内通过 `useAtom()` 订阅。状态通常组织在 `state.ts`、`stateCore.ts`、`stateColumn.ts` 等文件中。
+
+### 虚拟滚动（@grid-table/core）
+
+核心逻辑在 `useVScroll.ts`：
+1. 预计算所有行/列的累积尺寸数组（sizeList）
+2. 滚动时用 `findIndex()` 定位可见区域的 startIndex/endIndex
+3. 默认 overscan=10 缓冲渲染
+4. 支持 `stayIndexList` 保持特定行/列始终可见
+5. 使用 `useTransition()` 节流批量更新
+
+### 插件系统（@grid-table/view）
+
+插件位于 `packages/table/src/plugins/`，每个插件提供 hooks + 组件：
+
+| 插件 | 功能 |
+|------|------|
+| sticky | 固定列/表头 |
+| drag | 列/行拖拽 |
+| areaSelected | 区域选择 |
+| copy | 复制到剪贴板 |
+| select | 单元格/行选择 |
+| filter | 数据过滤 |
+| mergeCells | 单元格合并 |
+| calcSizeByColumn | 列宽自动计算 |
+| border | 单元格边框/冲突处理 |
+| rowNumber | 行号显示 |
+| theadColumnHide | 列隐藏切换 |
+| theadContextMenu | 表头右键菜单 |
+
+主组件 `TableExcel`（别名 `Table`），通过 `Provider` 注入 store。`@grid-table/view` 会 re-export `@grid-table/basic` 和 `@grid-table/core` 的所有导出。
 
 ## 构建流程
 
-构建使用自定义 Gulp 管道:
-- 通过 SWC 编译 TypeScript (比 tsc 更快)
-- 输出到各包的 `esm/` 目录
-- CSS/资源文件直接复制
-- 生产构建时禁用 watch 模式
+- **Gulp + SWC**：将 `src/**/*.{ts,tsx}` 编译为 `esm/` 目录下的 `.js`，CSS/图片直接复制
+- **tsc --build**：生成 `@types/` 类型定义
+- `.swcrc` 配置：TypeScript + TSX，React automatic runtime，ESNext target，ES6 模块
+- 开发模式下 Gulp 启用 watch，`DISABLE_WATCH=true` 或 `NODE_ENV=production` 禁用
 
 ## 开发规范
 
-基于 `.cursor/rules/always.mdc`:
-- 所有状态管理必须使用 `@einfach/react`
+- 状态管理必须使用 `@einfach/react`，不使用其他状态库
 - 组件 props 优先使用 `type` 而非 `interface`
-- 使用函数组件和 hooks
-- 实现正确的 TypeScript 类型 (避免 `any`)
-- CSS 类名遵循 BEM 命名规范
-- 使用 CSS Grid 实现表格布局
-- 实现适当的错误边界和错误处理
-- 针对虚拟滚动性能进行优化
+- 使用函数组件 + hooks，hooks 命名 `use[功能]`
+- 避免 `any` 类型，使用 `import type` 导入类型
+- CSS 类名遵循 BEM 命名，表格布局使用 CSS Grid
+- 大量使用 `React.memo` 优化虚拟滚动性能
 
-## 关键文件位置
+## 测试
 
-- 构建配置: `gulpfile.mjs`
-- Jest 配置: `jest.config.mjs`
-- TypeScript 配置: `tsconfig*.json` 文件
-- 工作空间配置: `pnpm-workspace.yaml`
-- Cursor AI 规则: `.cursor/rules/always.mdc`
+- 单元测试统一在根目录运行，各包无独立 test 脚本
+- Jest + `@swc/jest` 转译，jsdom 环境
+- CSS 导入映射到 `rules/empty.ts`（空模块）
+- `@testing-library/jest-dom` 在 `rules/setup-jest.ts` 中配置
+- E2E 测试用 Playwright，测试文件在 `e2e/` 目录，dev server 自动启动

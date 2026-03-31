@@ -17,8 +17,11 @@ export function Navigation({ className }: NavigationProps) {
 
   const handleRouteClick = (path: string) => {
     setCurrentRoute(path)
-    // 更新浏览器地址栏
-    window.history.pushState({}, '', path)
+    // 更新浏览器地址栏（拼接 base path 以支持 GitHub Pages 部署）
+    const baseTag = document.querySelector('base')
+    const base = baseTag ? baseTag.getAttribute('href') || '/' : '/'
+    const url = base !== '/' ? base.replace(/\/$/, '') + path : path
+    window.history.pushState({}, '', url)
   }
 
   const toggleGroup = (groupKey: string) => {

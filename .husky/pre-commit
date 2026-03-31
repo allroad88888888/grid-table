@@ -1,2 +1,2 @@
-npm run tsc
-npm test
+pnpm run tsc
+pnpm test

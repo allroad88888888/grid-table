@@ -14,9 +14,15 @@
     "tsc": "tsc -build",
     "prepare": "husky"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/allroad88888888/grid-table.git"
+  },
+  "homepage": "https://github.com/allroad88888888/grid-table#readme",
+  "bugs": "https://github.com/allroad88888888/grid-table/issues",
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "workspaces": [
     "packages/*"
   ],

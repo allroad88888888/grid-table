@@ -325,7 +325,13 @@ export const RouterMapping: Record<
 
 // 获取初始路由：如果当前路径在路由映射中存在则使用，否则使用默认路由
 const getInitialRoute = () => {
-  const currentPath = location.pathname
+  let currentPath = location.pathname
+  // GitHub Pages 部署时需要去掉 base path 前缀（如 /grid-table/）
+  const baseTag = document.querySelector('base')
+  const base = baseTag ? baseTag.getAttribute('href') || '/' : '/'
+  if (base !== '/' && currentPath.startsWith(base)) {
+    currentPath = '/' + currentPath.slice(base.length)
+  }
   return RouterMapping[currentPath] ? currentPath : '/table/tree-table'
 }
 
