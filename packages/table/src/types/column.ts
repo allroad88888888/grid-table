@@ -1,6 +1,7 @@
 import type { PositionId } from '@grid-table/basic'
 import type { ComponentType, CSSProperties, ReactNode } from 'react'
 import type { SortCompareFn, SortDirection, SortIconProps } from '../plugins/sort/types'
+import type { FilterFn, FilterOption, FilterValue } from '../plugins/filter/types'
 
 export type Align = 'left' | 'right' | 'center'
 
@@ -72,6 +73,26 @@ export interface ColumnType<ItemInfo = Record<string, any>> {
    * 自定义排序图标
    */
   sortIcon?: ComponentType<SortIconProps>
+
+  /**
+   * 过滤类型
+   */
+  filterType?: 'text' | 'number' | 'select'
+
+  /**
+   * 自定义过滤函数
+   */
+  filterFn?: FilterFn<ItemInfo>
+
+  /**
+   * 选择过滤的选项列表
+   */
+  filterOptions?: FilterOption[]
+
+  /**
+   * 默认过滤值
+   */
+  defaultFilterValue?: FilterValue
 }
 
 export interface CustomHeaderCellProps {
