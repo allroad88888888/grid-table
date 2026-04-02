@@ -1,5 +1,16 @@
 # @grid-table/view
 
+## 0.6.63
+
+### Patch Changes
+
+- perf: replace per-row atomFamily setter with single rowInfoMapAtom in dataInitAtom
+- perf: add useRowInfoById hook with selectAtom for efficient per-row data access
+- perf: replace findIndexList O(n) with Map O(1) lookup in areaSelected plugin
+- perf: optimize useMergeCells — pre-built Sets and offset Maps
+  - @grid-table/core@0.6.63
+  - @grid-table/basic@0.6.63
+
 ## 0.6.62
 
 ### Patch Changes

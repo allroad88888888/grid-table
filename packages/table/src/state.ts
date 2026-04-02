@@ -4,7 +4,7 @@ import { format } from './core/format'
 import { atom, selectAtom } from '@einfach/react'
 import { rowIndexListAtom, rowSizeMapAtom } from '@grid-table/basic'
 import { nodeLevelAtom, relationAtom, rootAtom } from './tree/stateTree'
-import { dataFamilyAtom, loadingAtom } from './stateCore'
+import { loadingAtom, rowInfoMapAtom } from './stateCore'
 import { easyEqual } from '@einfach/utils'
 
 //  'idProp' | 'parentProp' | 'dataSource' | 'root' | 'rowHeight
@@ -14,12 +14,13 @@ export const dataInitAtom = atom<
   void
 >([], (getter, setter, props) => {
   setter(loadingAtom, true)
-  const { getRowInfoAtomByRowId } = getter(dataFamilyAtom)
+  const infoMap = new Map<string, Record<string, any> | null>()
   const { showPathList, relation, levelMap, rowSizeMap } = format(props as UseDataProps, {
     iteratorFn: (rowId, rowInfo) => {
-      setter(getRowInfoAtomByRowId(rowId), rowInfo!)
+      infoMap.set(rowId, rowInfo ?? null)
     },
   })
+  setter(rowInfoMapAtom, infoMap)
 
   setter(relationAtom, relation)
   setter(rowIndexListAtom, showPathList)
