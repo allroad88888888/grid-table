@@ -33,7 +33,7 @@ const columns: ColumnType[] = [
     dataIndex: 'score',
     width: 80,
     align: 'right',
-    sorter: (a: Person, b: Person) => a.score - b.score,
+    sorter: (a: Record<string, any>, b: Record<string, any>) => (a.score as number) - (b.score as number),
   },
   { title: '部门', dataIndex: 'department', width: 120, sorter: true },
   { title: '入职日期', dataIndex: 'joinDate', width: 120, sorter: true },
