@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.64
+
+### Patch Changes
+
+- perf: replace per-cell store.setter in useMergeCells with single mergeCellStyleMapAtom — setter calls from 2.19M to 1
+  - @grid-table/core@0.6.64
+  - @grid-table/basic@0.6.64
+
 ## 0.6.63
 
 ### Patch Changes

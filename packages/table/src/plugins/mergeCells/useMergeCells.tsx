@@ -2,8 +2,10 @@ import type { CSSProperties } from 'react'
 import { useEffect } from 'react'
 import { useAtomValue, useStore } from '@einfach/react'
 import { columnIdShowListAtom, rowIdShowListAtom, useBasic } from '@grid-table/basic'
+import type { CellId } from '@grid-table/basic'
 import { getCellId, getRowIdAndColIdByCellId } from '../../utils/getCellId'
 import { tbodyMergeCellListAtom } from '../../components'
+import { mergeCellStyleMapAtom } from './state'
 
 export function useMergeCells({
   showBorder = true,
@@ -11,7 +13,7 @@ export function useMergeCells({
   stickyMergeCell = true,
 }: { showBorder?: boolean; containerSize?: { width: number; height: number }; stickyMergeCell?: boolean } = {}) {
   const store = useStore()
-  const { getCellStateAtomById, columnSizeMapAtom, rowSizeMapAtom } = useBasic()
+  const { columnSizeMapAtom, rowSizeMapAtom } = useBasic()
 
   const cellList = useAtomValue(tbodyMergeCellListAtom, { store })
   const columnSizeMap = useAtomValue(columnSizeMapAtom, { store })
@@ -25,23 +27,21 @@ export function useMergeCells({
 
     const maxHeight = containerSize?.height || Infinity
 
-    // 预构建 Set，整个 effect 只算一次，避免每个 setter 回调重复创建
     const visibleRowSet = new Set(rowIdShowList)
     const visibleColSet = new Set(columnIdShowList)
     const lastVisibleRowId = rowIdShowList[rowIdShowList.length - 1]
     const lastVisibleColId = columnIdShowList[columnIdShowList.length - 1]
 
-    const clearList: (() => void)[] = []
+    // 收集所有合并 cell 的样式到 Map，一次性 set
+    const styleMap = new Map<CellId, CSSProperties>()
 
     cellList.forEach(({ cellId, rowIdList = [], colIdList = [] }) => {
       const [curRowId, curColId] = getRowIdAndColIdByCellId(cellId)
 
-      // 只保留可见行列，跳过完全不在可视范围的合并区域
       const mergedRowIds = [curRowId, ...rowIdList].filter((id) => visibleRowSet.has(id))
       const mergedColIds = [curColId, ...colIdList].filter((id) => visibleColSet.has(id))
       if (mergedRowIds.length === 0 || mergedColIds.length === 0) return
 
-      // 预计算合并区域宽高（每个合并只算一次）
       const calculatedWidth = mergedColIds.reduce<number>(
         (prev, colId) => prev + (columnSizeMap.get(colId) || 0),
         0,
@@ -55,7 +55,6 @@ export function useMergeCells({
       const hadColLast = lastVisibleRowId ? rowIdList.includes(lastVisibleRowId) : false
       const hadRowLast = lastVisibleColId ? colIdList.includes(lastVisibleColId) : false
 
-      // 预计算行列偏移量（用于 translateY/X）
       let rowOffsetAcc = 0
       const rowOffsetMap = new Map<string, number>()
       mergedRowIds.forEach((rowId) => {
@@ -69,7 +68,6 @@ export function useMergeCells({
         colOffsetAcc += columnSizeMap.get(colId) || 0
       })
 
-      // 只遍历可见行列，不再遍历全量
       mergedRowIds.forEach((rowId, rowIndex) => {
         mergedColIds.forEach((colId, colIndex) => {
           const tCellId = getCellId({ rowId, columnId: colId })
@@ -105,28 +103,19 @@ export function useMergeCells({
             if (transforms.length) next.transform = transforms.join(' ')
           }
 
-          clearList.push(
-            store.setter(getCellStateAtomById(tCellId), (_getter, prev) => {
-              return {
-                ...prev,
-                style: {
-                  ...prev.style,
-                  ...next,
-                },
-              }
-            })!,
-          )
+          styleMap.set(tCellId as CellId, next)
         })
       })
     })
 
+    store.setter(mergeCellStyleMapAtom, styleMap)
+
     return () => {
-      clearList.forEach((clear) => clear())
+      store.setter(mergeCellStyleMapAtom, new Map())
     }
   }, [
     cellList,
     columnSizeMap,
-    getCellStateAtomById,
     rowSizeMap,
     store,
     showBorder,
