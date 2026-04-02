@@ -18,7 +18,7 @@ import { useBorder } from './plugins/border'
 import { useSort } from './plugins/sort'
 import { useFilter } from './plugins/filter/useFilter'
 import { useRowExpand } from './plugins/rowExpand'
-import { useKeyboard } from './plugins/keyboard'
+import { useKeyboard } from './plugins/keyboard/useKeyboard'
 
 import './Table.css'
 import { useTheadLastRowColumnSelect } from './plugins/areaSelected/useTheadSelected'
@@ -81,14 +81,14 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   })
 
   /** 过滤功能（先过滤，减少排序数据量） */
-  const { setColumnFilter, clearFilter } = useFilter({
+  useFilter({
     filterState: props.filter?.state,
     onFilterChange: props.filter?.onChange,
     remoteFilter: props.filter?.remote,
   })
 
   /** 排序功能（在过滤后的数据上排序） */
-  const { toggleSort } = useSort({
+  useSort({
     sortState: props.sort?.state,
     onSortChange: props.sort?.onChange,
     remoteSort: props.sort?.remote,
@@ -97,7 +97,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   })
 
   /** 行展开功能（在排序后的数据上展开） */
-  const { toggleExpand } = useRowExpand(props.rowExpand || {})
+  useRowExpand(props.rowExpand || {})
 
   const { calcColumnSizeByIndex, calcHeadRowSizeByIndex, calcRowSizeByIndex } = useCellSizeByColumn(
     {
@@ -158,7 +158,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   })
 
   /** 键盘导航 + ARIA */
-  const { gridAriaProps, onKeyDown } = useKeyboard({
+  useKeyboard({
     enableKeyboard: props.enableKeyboard,
     enableAria: props.enableAria,
     ariaLabel: props.ariaLabel,
@@ -173,8 +173,6 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
       >
         <VGridTable
           {...tableEvents}
-          {...gridAriaProps}
-          onKeyDown={onKeyDown}
           style={props.style}
           minColumnWidth={props.minColumnWidth}
           maxColumnWidth={props.maxColumnWidth}
