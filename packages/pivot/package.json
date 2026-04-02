@@ -1,6 +1,6 @@
 {
   "name": "@grid-table/pivot",
-  "version": "0.5.62",
+  "version": "0.5.63",
   "description": "grid-table pivot",
   "main": "./esm/index.js",
   "module": "./esm/index.js",
@@ -34,7 +34,7 @@
   "peerDependencies": {
     "@einfach/react": ">=0.3.4",
     "@einfach/utils": ">=0.2.2",
-    "@grid-table/view": ">=0.6.61",
+    "@grid-table/view": ">=0.6.62",
     "react": ">=16.8 <20"
   },
   "peerDependenciesMeta": {
