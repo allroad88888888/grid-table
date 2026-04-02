@@ -15,6 +15,7 @@ import { useDataInit } from './core'
 import clsx from 'clsx'
 import { useHeaderMergeCells, useMergeCells } from './plugins/mergeCells'
 import { useBorder } from './plugins/border'
+import { useSort } from './plugins/sort'
 
 import './Table.css'
 import { useTheadLastRowColumnSelect } from './plugins/areaSelected/useTheadSelected'
@@ -74,6 +75,15 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
      */
     rowHeight,
     columns,
+  })
+
+  /** 排序功能 */
+  useSort({
+    sortState: props.sortState,
+    onSortChange: props.onSortChange,
+    remoteSort: props.remoteSort,
+    enableMultiSort: props.enableMultiSort,
+    sortCycle: props.sortCycle,
   })
 
   const { calcColumnSizeByIndex, calcHeadRowSizeByIndex, calcRowSizeByIndex } = useCellSizeByColumn(

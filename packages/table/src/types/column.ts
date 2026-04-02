@@ -1,5 +1,6 @@
 import type { PositionId } from '@grid-table/basic'
 import type { ComponentType, CSSProperties, ReactNode } from 'react'
+import type { SortCompareFn, SortDirection, SortIconProps } from '../plugins/sort/types'
 
 export type Align = 'left' | 'right' | 'center'
 
@@ -53,6 +54,24 @@ export interface ColumnType<ItemInfo = Record<string, any>> {
    * 自定义列className
    */
   className?: string
+
+  /**
+   * 排序配置
+   * - true: 使用默认比较（数字优先，fallback localeCompare）
+   * - function: 自定义比较函数
+   * - false | undefined: 不可排序
+   */
+  sorter?: boolean | SortCompareFn<ItemInfo>
+
+  /**
+   * 默认排序方向
+   */
+  defaultSortDirection?: SortDirection
+
+  /**
+   * 自定义排序图标
+   */
+  sortIcon?: ComponentType<SortIconProps>
 }
 
 export interface CustomHeaderCellProps {

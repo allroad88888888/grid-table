@@ -1,0 +1,40 @@
+.grid-table-sort-icon {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-inline-start: 4px;
+  vertical-align: middle;
+  cursor: pointer;
+  gap: 1px;
+}
+
+.grid-table-sort-arrow-up,
+.grid-table-sort-arrow-down {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+}
+
+.grid-table-sort-arrow-up {
+  border-bottom: 5px solid #bfbfbf;
+}
+
+.grid-table-sort-arrow-down {
+  border-top: 5px solid #bfbfbf;
+}
+
+.grid-table-sort-arrow-up.grid-table-sort-active {
+  border-bottom-color: var(--grid-sort-active-color, #1677ff);
+}
+
+.grid-table-sort-arrow-down.grid-table-sort-active {
+  border-top-color: var(--grid-sort-active-color, #1677ff);
+}
+
+.grid-table-sort-priority {
+  font-size: 10px;
+  color: var(--grid-sort-active-color, #1677ff);
+  line-height: 1;
+}
