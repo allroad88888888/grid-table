@@ -16,7 +16,7 @@ export function useKeyboard(props: UseKeyboardProps = {}) {
   } = props
 
   const store = useStore()
-  const { rowIdShowListAtom: rowListAtom, columnIdShowListAtom: colListAtom } = useBasic()
+  useBasic() // ensure basic atoms are initialized
 
   const rowIdShowList = useAtomValue(rowIdShowListAtom, { store })
   const columnIdShowList = useAtomValue(columnIdShowListAtom, { store })

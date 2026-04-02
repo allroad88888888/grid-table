@@ -1,11 +1,5 @@
 import { describe, test, expect } from '@jest/globals'
 import { createStore, atom } from '@einfach/react'
-import {
-  columnIndexListAtom,
-  rowIndexListAtom,
-  headerRowIndexListAtom,
-  basicAtom,
-} from '@grid-table/basic'
 import { getCellId } from '../../../utils/getCellId'
 import type { FocusPosition } from '../types'
 import { getCellDomId } from '../state'
@@ -13,14 +7,15 @@ import { getCellDomId } from '../state'
 // 内联 atoms 避免 TS6305 构建依赖
 const focusPositionAtom = atom<FocusPosition | null>(null)
 
-function setupStore() {
-  const store = createStore()
-  store.setter(columnIndexListAtom, ['col_0', 'col_1', 'col_2'])
-  store.setter(rowIndexListAtom, ['row_0', 'row_1', 'row_2', 'row_3'])
-  store.setter(headerRowIndexListAtom, ['head_0'])
-  store.getter(basicAtom)
-  return store
-}
+// setupStore available for future integration tests
+// function setupStore() {
+//   const store = createStore()
+//   store.setter(columnIndexListAtom, ['col_0', 'col_1', 'col_2'])
+//   store.setter(rowIndexListAtom, ['row_0', 'row_1', 'row_2', 'row_3'])
+//   store.setter(headerRowIndexListAtom, ['head_0'])
+//   store.getter(basicAtom)
+//   return store
+// }
 
 describe('focusPositionAtom', () => {
   test('initial state is null', () => {
@@ -127,7 +122,6 @@ describe('navigation logic', () => {
 
   test('cross-region navigation: tbody to thead', () => {
     const headerRowList = ['head_0']
-    const bodyRowList = ['row_0', 'row_1']
 
     // At row_0 (body index 0), move up → go to thead last row
     const bodyRowIndex = 0
