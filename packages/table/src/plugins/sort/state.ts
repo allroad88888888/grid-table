@@ -17,3 +17,9 @@ export const columnSortInfoAtom = atom((getter) => {
   })
   return map
 })
+
+/**
+ * 排序切换函数的 atom
+ * useSort 写入 toggleSort 回调，CellThead 读取并调用
+ */
+export const sortToggleAtom = atom<((columnId: ColumnId, multiSort: boolean) => void) | null>(null)

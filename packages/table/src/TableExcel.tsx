@@ -18,6 +18,7 @@ import { useBorder } from './plugins/border'
 import { useSort } from './plugins/sort'
 import { useFilter } from './plugins/filter/useFilter'
 import { useRowExpand } from './plugins/rowExpand'
+import { useKeyboard } from './plugins/keyboard'
 
 import './Table.css'
 import { useTheadLastRowColumnSelect } from './plugins/areaSelected/useTheadSelected'
@@ -79,35 +80,24 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
     columns,
   })
 
-  /** 排序功能 */
-  useSort({
-    sortState: props.sortState,
-    onSortChange: props.onSortChange,
-    remoteSort: props.remoteSort,
-    enableMultiSort: props.enableMultiSort,
-    sortCycle: props.sortCycle,
+  /** 过滤功能（先过滤，减少排序数据量） */
+  const { setColumnFilter, clearFilter } = useFilter({
+    filterState: props.filter?.state,
+    onFilterChange: props.filter?.onChange,
+    remoteFilter: props.filter?.remote,
   })
 
-  /** 过滤功能 */
-  useFilter({
-    filterState: props.filterState,
-    onFilterChange: props.onFilterChange,
-    remoteFilter: props.remoteFilter,
+  /** 排序功能（在过滤后的数据上排序） */
+  const { toggleSort } = useSort({
+    sortState: props.sort?.state,
+    onSortChange: props.sort?.onChange,
+    remoteSort: props.sort?.remote,
+    enableMultiSort: props.sort?.enableMultiSort,
+    sortCycle: props.sort?.cycle,
   })
 
-  /** 行展开功能 */
-  useRowExpand({
-    expandedRowRender: props.expandedRowRender,
-    expandedRowKeys: props.expandedRowKeys,
-    defaultExpandedRowKeys: props.defaultExpandedRowKeys,
-    onExpand: props.onExpand,
-    onExpandedRowsChange: props.onExpandedRowsChange,
-    rowExpandable: props.rowExpandable,
-    accordion: props.accordion,
-    expandedRowHeight: props.expandedRowHeight,
-    expandColumnWidth: props.expandColumnWidth,
-    expandColumnFixed: props.expandColumnFixed,
-  })
+  /** 行展开功能（在排序后的数据上展开） */
+  const { toggleExpand } = useRowExpand(props.rowExpand || {})
 
   const { calcColumnSizeByIndex, calcHeadRowSizeByIndex, calcRowSizeByIndex } = useCellSizeByColumn(
     {
@@ -167,6 +157,13 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
     showBorder: true,
   })
 
+  /** 键盘导航 + ARIA */
+  const { gridAriaProps, onKeyDown } = useKeyboard({
+    enableKeyboard: props.enableKeyboard,
+    enableAria: props.enableAria,
+    ariaLabel: props.ariaLabel,
+  })
+
   return (
     <>
       <IntersectionObserverProvider
@@ -176,6 +173,8 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
       >
         <VGridTable
           {...tableEvents}
+          {...gridAriaProps}
+          onKeyDown={onKeyDown}
           style={props.style}
           minColumnWidth={props.minColumnWidth}
           maxColumnWidth={props.maxColumnWidth}

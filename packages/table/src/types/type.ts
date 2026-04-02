@@ -6,8 +6,8 @@ import type { CopyProps, UseRowNumberProps, UseSizeByColumnProps } from '../plug
 import type { Store } from '@einfach/react'
 import type { AutoColumnsSizeOptions } from '../plugins/calcSizeByColumn/measureColumnsWidth'
 import type { OnColumnResizeCallback } from '../plugins/drag/useDrag'
-import type { UseSortProps } from '../plugins/sort/types'
-import type { UseFilterProps } from '../plugins/filter/types'
+import type { SortDirection, SortState } from '../plugins/sort/types'
+import type { FilterState } from '../plugins/filter/types'
 import type { UseRowExpandProps } from '../plugins/rowExpand/types'
 
 /**
@@ -141,10 +141,58 @@ export type AntdTableProps = {
    * @default 150
    */
   idleDelay?: number
+
+  /**
+   * 启用键盘导航
+   * @default true
+   */
+  enableKeyboard?: boolean
+
+  /**
+   * 启用 ARIA 属性
+   * @default true
+   */
+  enableAria?: boolean
+
+  /**
+   * 表格 aria-label
+   */
+  ariaLabel?: string
+
+  /**
+   * 排序配置
+   * @example
+   * ```tsx
+   * <Table sort={{ state: [...], onChange: fn, remote: true }} />
+   * ```
+   */
+  sort?: {
+    state?: SortState
+    onChange?: (sortState: SortState, prevState: SortState) => void
+    remote?: boolean
+    enableMultiSort?: boolean
+    cycle?: (SortDirection | null)[]
+  }
+
+  /**
+   * 过滤配置
+   * @example
+   * ```tsx
+   * <Table filter={{ state: new Map(), onChange: fn }} />
+   * ```
+   */
+  filter?: {
+    state?: FilterState
+    onChange?: (filterState: FilterState) => void
+    remote?: boolean
+  }
+
+  /**
+   * 行展开配置
+   */
+  rowExpand?: UseRowExpandProps
+
 } & CopyProps &
-  UseSortProps &
-  UseFilterProps &
-  UseRowExpandProps &
   UseDataProps &
   Pick<
     VGridTableProps,
