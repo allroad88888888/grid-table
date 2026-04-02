@@ -1,7 +1,9 @@
+import type { CSSProperties } from 'react'
 import { useEffect } from 'react'
 import { useStore } from '@einfach/react'
-import { useBasic } from '@grid-table/basic'
+import type { CellId } from '@grid-table/basic'
 import { createCopyBorderStyle } from './copyUtils'
+import { copyCellTbodyStyleMapAtom, copyCellTheadStyleMapAtom } from './state'
 import type { CopyAreas } from './types'
 
 export interface UseCopyStyleProps {
@@ -12,74 +14,60 @@ export interface UseCopyStyleProps {
 
 /**
  * 复制样式处理的 hook
+ * 批量计算所有 cell 的边框样式写入 Map atom，替代逐 cell setter
  */
 export function useCopyStyle({ selectedAreas, isShowStyle, enable }: UseCopyStyleProps) {
   const store = useStore()
-  const { getCellStateAtomById, getTheadCellStateAtomById } = useBasic()
 
   useEffect(() => {
     if (enable === false || isShowStyle === false) {
       return
     }
 
-    const cancelList: (() => void)[] = []
-
-    // 计算总的行数（用于边框计算）
     const totalRowLength = selectedAreas.cellTheadList.length + selectedAreas.cellTbodyList.length
     let currentRowIndex = 0
 
-    // 处理 thead 单元格样式
-    selectedAreas.cellTheadList.forEach((rowCellIds, theadRowIndex) => {
+    // 批量计算 thead 样式
+    const theadMap = new Map<CellId, CSSProperties>()
+    selectedAreas.cellTheadList.forEach((rowCellIds) => {
       const columnLength = rowCellIds.length
       rowCellIds.forEach((cellId, columnIndex) => {
-        cancelList.push(
-          store.setter(getTheadCellStateAtomById(cellId), (_getter, prev) => {
-            const nextStyle = createCopyBorderStyle({
-              currentRowIndex,
-              totalRowLength,
-              columnIndex,
-              columnLength,
-              prevStyle: prev.style || {},
-            })
-
-            return {
-              ...prev,
-              style: nextStyle,
-            }
-          })!,
-        )
+        const style = createCopyBorderStyle({
+          currentRowIndex,
+          totalRowLength,
+          columnIndex,
+          columnLength,
+          prevStyle: {},
+        })
+        theadMap.set(cellId, style)
       })
       currentRowIndex++
     })
 
-    // 处理 tbody 单元格样式
-    selectedAreas.cellTbodyList.forEach((rowCellIds, tbodyRowIndex) => {
+    // 批量计算 tbody 样式
+    const tbodyMap = new Map<CellId, CSSProperties>()
+    selectedAreas.cellTbodyList.forEach((rowCellIds) => {
       const columnLength = rowCellIds.length
       rowCellIds.forEach((cellId, columnIndex) => {
-        cancelList.push(
-          store.setter(getCellStateAtomById(cellId), (_getter, prev) => {
-            const nextStyle = createCopyBorderStyle({
-              currentRowIndex,
-              totalRowLength,
-              columnIndex,
-              columnLength,
-              prevStyle: prev.style || {},
-            })
-
-            return {
-              ...prev,
-              style: nextStyle,
-            }
-          })!,
-        )
+        const style = createCopyBorderStyle({
+          currentRowIndex,
+          totalRowLength,
+          columnIndex,
+          columnLength,
+          prevStyle: {},
+        })
+        tbodyMap.set(cellId, style)
       })
       currentRowIndex++
     })
+
+    // 一次性写入
+    store.setter(copyCellTheadStyleMapAtom, theadMap)
+    store.setter(copyCellTbodyStyleMapAtom, tbodyMap)
 
     return () => {
-      cancelList.forEach((cancel) => {
-        cancel()
-      })
+      store.setter(copyCellTheadStyleMapAtom, new Map())
+      store.setter(copyCellTbodyStyleMapAtom, new Map())
     }
-  }, [selectedAreas, enable, getCellStateAtomById, getTheadCellStateAtomById, isShowStyle, store])
+  }, [selectedAreas, enable, isShowStyle, store])
 }

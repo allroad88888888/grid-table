@@ -44,37 +44,37 @@
 
 ---
 
-## P2 — 用户触发操作
+## P2 — 已完成
 
-### 5. copyStyle 逐 cell setter → 同上 Map atom 思路
+### ~~5. copyStyle 逐 cell setter → Map atom~~
 
-- **文件**: `packages/table/src/plugins/copy/useCopyStyle.ts:32-77`
+- **文件**: `packages/table/src/plugins/copy/useCopyStyle.ts`, `state.ts`, `hooks/useCell.ts`, `hooks/useCellThead.ts`
 - **问题**: 与 areaSelected 相同的嵌套 setter 模式
 - **数据**: 2500 cells = 5ms，setter 占 96%
-- **思路**: 与 #3 类似，新增 `copyCellStyleMapAtom = atom(new Map<CellId, CSSProperties>())`，一次性计算所有 cell 的 border style 写入 Map，cell 端 selectAtom 读取
+- **方案**: 新增 `copyCellTbodyStyleMapAtom` / `copyCellTheadStyleMapAtom`，批量计算所有 cell 的 border style 写入 Map，cell 端通过 `Map.get(cellId)` 读取合并样式
+- **状态**: ✅ 已完成
 
-### 6. useHeaderMergeCells 移植 body 版优化
+### ~~6. useHeaderMergeCells 移植 body 版优化~~
 
-- **文件**: `packages/table/src/plugins/mergeCells/useHeaderMergeCells.tsx`
+- **文件**: `packages/table/src/plugins/mergeCells/useHeaderMergeCells.tsx`, `state.ts`, `hooks/useCellThead.ts`
 - **问题**:
   - 每次 setter 回调内 `new Set(getter(rowIdShowListAtom))` — 重复创建 Set
   - `.slice(0, rowIndex).filter().reduce()` — O(n²) 偏移量计算
 - **数据**: `new Set()` 500 次 = 140ms vs 预构建 0.35ms (**404x**)；header/body 比 = 2.6x
-- **思路**: 直接照搬 `useMergeCells.tsx` 的优化：
-  1. 预构建 `visibleRowSet` / `visibleColSet`（只做一次）
-  2. 预计算 `rowOffsetMap` / `colOffsetMap`（只做一次）
-  3. 内层循环只查 Map
+- **方案**: 照搬 `useMergeCells.tsx` 的优化：预构建 `visibleRowSet` / `visibleColSet`，预计算 `rowOffsetMap` / `colOffsetMap`，收集样式到 `mergeHeaderCellStyleMapAtom` 一次性 set，`useCellThead` 通过 `Map.get(cellId)` 读取
+- **状态**: ✅ 已完成
 
 ---
 
-## P3 — 低优先级
+## P3 — 已完成
 
-### 7. border 插件 Array.includes → Set.has
+### ~~7. border 插件 Array.includes → Set.has~~
 
-- **文件**: `packages/table/src/plugins/border/useBorder.ts:101,124`
+- **文件**: `packages/table/src/plugins/border/useBorder.ts`
 - **问题**: `columnIdShowList.filter(id => !stickyRightIds.includes(id))` — includes O(n)
 - **数据**: 500 列 + 20 sticky 时 2.5x 差距，绝对值很小 (1.9ms vs 0.8ms)
-- **思路**: `const stickySet = new Set(stickyRightIds)` 然后 `!stickySet.has(id)`
+- **方案**: `const stickySet = new Set(stickyRightIds)` 然后 `!stickySet.has(id)`
+- **状态**: ✅ 已完成
 
 ### 8. headerDataInitAtom 逐行 setter → Map 方案
 
@@ -87,19 +87,7 @@
 
 ## 通用优化思路：消除逐 cell setter
 
-当前 areaSelected / copyStyle / mergeCells / border 都用了同一个模式：
-
-```ts
-// 当前：O(n) 次 setter，每次创建订阅
-cells.forEach(cellId => {
-  store.setter(getCellStateAtomById(cellId), (getter, prev) => ({
-    ...prev,
-    style: { ...prev.style, ...newStyle },
-  }))
-})
-```
-
-统一的优化方向是**数据下沉到一个 Map atom + 消费端 selectAtom**：
+所有插件（areaSelected / copyStyle / mergeCells / border）已完成统一优化，采用**数据下沉到 Map/Set atom + 消费端 getter 读取**模式：
 
 ```ts
 // 生产端：一次 setter
@@ -109,13 +97,13 @@ store.setter(featureStyleMapAtom, new Map([
   ...
 ]))
 
-// 消费端（useCell 内）：selectAtom 自动精准更新
-const featureStyle = selectAtom(featureStyleMapAtom, map => map.get(cellId))
+// 消费端（useCell / useCellThead 内）：getter 读取 Map
+const featureStyle = getter(featureStyleMapAtom).get(cellId) || {}
 ```
 
 好处：
 - 生产端从 N 次 setter → 1 次
-- 消费端 selectAtom 做引用比较，只有该 cell 的值变了才触发重渲染
+- 消费端通过 getter 读取 Map，只有 Map 引用变了才触发重渲染
 - 清除时直接 set 空 Map，一次操作
 
-可以考虑在 `useCell.ts` 中合并读取多个 feature Map atom（areaSelected / copy / mergeCell），统一输出 style + className。
+`useCell.ts` 和 `useCellThead.ts` 已合并读取多个 feature Map atom（areaSelected / copy / mergeCell），统一输出 style + className。

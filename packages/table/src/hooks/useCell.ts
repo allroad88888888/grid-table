@@ -4,6 +4,7 @@ import { useMemo, type CSSProperties } from 'react'
 import { useBasic } from '@grid-table/basic'
 import { mergeCellStyleMapAtom } from '../plugins/mergeCells/state'
 import { areaSelectedTbodyCellSetAtom } from '../plugins/areaSelected/state'
+import { copyCellTbodyStyleMapAtom } from '../plugins/copy/state'
 
 export function useCell({ cellId, rowId, columnId, style, rowIndex }: CellProps) {
   const { getColumnStateAtomById, getCellStateAtomById, getRowStateAtomById } = useBasic()
@@ -26,8 +27,9 @@ export function useCell({ cellId, rowId, columnId, style, rowIndex }: CellProps)
 
       const { style: rowStyle = {}, className: rowCls = [] } = getter(getRowStateAtomById(rowId))
 
-      // 从 mergeCellStyleMap 读取合并样式（一次 Map.get，无逐 cell setter）
+      // 从 Map atom 读取样式（一次 Map.get，无逐 cell setter）
       const mergeStyle = getter(mergeCellStyleMapAtom).get(cellId) || {}
+      const copyStyle = getter(copyCellTbodyStyleMapAtom).get(cellId) || {}
 
       // 从 areaSelectedTbodyCellSetAtom 读取选中状态（一次 Set.has，无逐 cell setter）
       const isAreaSelected = getter(areaSelectedAtom)
@@ -43,6 +45,7 @@ export function useCell({ cellId, rowId, columnId, style, rowIndex }: CellProps)
           ...rowStyle,
           ...selfStyle,
           ...mergeStyle,
+          ...copyStyle,
         } as CSSProperties,
         className: clsList.join(' '),
       }

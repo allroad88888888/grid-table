@@ -1,6 +1,5 @@
 import type { CSSProperties } from 'react'
 import { useEffect } from 'react'
-import type { Getter } from '@einfach/react'
 import { useAtomValue, useStore } from '@einfach/react'
 import {
   columnIdShowListAtom,
@@ -8,126 +7,112 @@ import {
   rowIdShowListAtom,
   useBasic,
 } from '@grid-table/basic'
+import type { CellId } from '@grid-table/basic'
 import { getCellId, getRowIdAndColIdByCellId } from '../../utils/getCellId'
 import { theadMergeCellListAtom } from '../../components'
-import { lastSet } from './utils'
+import { mergeHeaderCellStyleMapAtom } from './state'
 
 export function useHeaderMergeCells({ showBorder = true }: { showBorder?: boolean } = {}) {
   const store = useStore()
-  const { getTheadCellStateAtomById: getTheadCellStateAtomById, columnSizeMapAtom } = useBasic()
+  const { columnSizeMapAtom } = useBasic()
 
   const cellList = useAtomValue(theadMergeCellListAtom)
   const columnSizeMap = useAtomValue(columnSizeMapAtom)
   const rowSizeMap = useAtomValue(headerRowSizeMaAtom)
+  const rowIdShowList = useAtomValue(rowIdShowListAtom, { store })
+  const columnIdShowList = useAtomValue(columnIdShowListAtom, { store })
 
   useEffect(() => {
     if (!showBorder) return
+    if (!cellList || cellList.length === 0) return
 
-    if (!cellList || cellList.length === 0) {
-      return
-    }
-    const clearList: (() => void)[] = []
-    cellList?.forEach(({ cellId, rowIdList = [], colIdList = [] }) => {
+    // 预构建 Set，避免内层循环重复创建
+    const visibleRowSet = new Set(rowIdShowList)
+    const visibleColSet = new Set(columnIdShowList)
+    const lastVisibleRowId = rowIdShowList[rowIdShowList.length - 1]
+    const lastVisibleColId = columnIdShowList[columnIdShowList.length - 1]
+
+    // 收集所有合并 cell 的样式到 Map，一次性 set
+    const styleMap = new Map<CellId, CSSProperties>()
+
+    cellList.forEach(({ cellId, rowIdList = [], colIdList = [] }) => {
       const [curRowId, curColId] = getRowIdAndColIdByCellId(cellId)
 
-      function getStyle(getter: Getter, rowIndex: number, colIndex: number) {
-        let next: CSSProperties = {}
-        if (rowIdList.length === 0 && colIdList.length === 0) {
-          next = {
-            display: 'none',
-          }
-        } else {
-          const rowIdSet = new Set(getter(rowIdShowListAtom))
-          const columnIdSet = new Set(getter(columnIdShowListAtom))
-          next = {
-            width: [curColId, ...colIdList]
-              .filter((colId) => {
-                return columnIdSet.has(colId)
-              })
-              .reduce<number>((prev, colId) => {
-                return prev + (columnSizeMap.get(colId) || 0)
-              }, 0),
-            height: [curRowId, ...rowIdList]
-              .filter((rowId) => {
-                return rowIdSet.has(rowId)
-              })
-              .reduce<number>((prev, rowId) => {
-                return prev + (rowSizeMap.get(rowId) || 0)
-              }, 0),
-          }
-          const lastRowId = lastSet(rowIdSet)
-          const lastColumnId = lastSet(columnIdSet)
+      const mergedRowIds = [curRowId, ...rowIdList].filter((id) => visibleRowSet.has(id))
+      const mergedColIds = [curColId, ...colIdList].filter((id) => visibleColSet.has(id))
+      if (mergedRowIds.length === 0 || mergedColIds.length === 0) return
 
-          const hadColLast = lastRowId ? rowIdList.includes(lastRowId) : false
-          const hadRowLast = lastColumnId ? colIdList.includes(lastColumnId) : false
+      const calculatedWidth = mergedColIds.reduce<number>(
+        (prev, colId) => prev + (columnSizeMap.get(colId) || 0),
+        0,
+      )
+      const calculatedHeight = mergedRowIds.reduce<number>(
+        (prev, rowId) => prev + (rowSizeMap.get(rowId) || 0),
+        0,
+      )
 
-          if (hadColLast) {
-            next.borderBottomWidth = 0
-          }
+      const hadColLast = lastVisibleRowId ? rowIdList.includes(lastVisibleRowId) : false
+      const hadRowLast = lastVisibleColId ? colIdList.includes(lastVisibleColId) : false
 
-          if (hadRowLast) {
-            next.borderRightWidth = 0
-          }
+      // 预计算偏移 Map，替代 O(n²) 的 slice+filter+reduce
+      let rowOffsetAcc = 0
+      const rowOffsetMap = new Map<string, number>()
+      mergedRowIds.forEach((rowId) => {
+        rowOffsetMap.set(rowId, rowOffsetAcc)
+        rowOffsetAcc += rowSizeMap.get(rowId) || 0
+      })
+      let colOffsetAcc = 0
+      const colOffsetMap = new Map<string, number>()
+      mergedColIds.forEach((colId) => {
+        colOffsetMap.set(colId, colOffsetAcc)
+        colOffsetAcc += columnSizeMap.get(colId) || 0
+      })
 
-          if (rowIndex) {
+      mergedRowIds.forEach((rowId, rowIndex) => {
+        mergedColIds.forEach((colId, colIndex) => {
+          const tCellId = getCellId({ rowId, columnId: colId })
+
+          let next: CSSProperties
+          if (rowIdList.length === 0 && colIdList.length === 0) {
+            next = { display: 'none' }
+          } else {
             next = {
-              ...next,
-              transform: `translateY(${-[curRowId, ...rowIdList]
-                .slice(0, rowIndex)
-                .filter((rowId) => {
-                  return rowIdSet.has(rowId)
-                })
-                .reduce<number>((prev, rowId) => {
-                  return prev + (rowSizeMap.get(rowId) || 0)
-                }, 0)}px)`,
+              width: calculatedWidth,
+              height: calculatedHeight,
             }
-          }
-          if (colIndex) {
-            next = {
-              ...next,
 
-              transform: `translateX(${-[curColId, ...colIdList]
-                .slice(0, colIndex)
-                .filter((colId) => {
-                  return columnIdSet.has(colId)
-                })
-                .reduce<number>((prev, colId) => {
-                  return prev + (columnSizeMap.get(colId) || 0)
-                }, 0)}px)`,
+            if (hadColLast) next.borderBottomWidth = 0
+            if (hadRowLast) next.borderRightWidth = 0
+
+            const transforms: string[] = []
+            if (rowIndex) {
+              const offset = rowOffsetMap.get(rowId) || 0
+              if (offset > 0) transforms.push(`translateY(${-offset}px)`)
             }
+            if (colIndex) {
+              const offset = colOffsetMap.get(colId) || 0
+              if (offset > 0) transforms.push(`translateX(${-offset}px)`)
+            }
+            if (transforms.length) next.transform = transforms.join(' ')
           }
-        }
 
-        return next
-      }
-
-      ;[curRowId, ...rowIdList].forEach((rowId, rowIndex) => {
-        ;[curColId, ...colIdList].forEach((colId, columnIndex) => {
-          const tCellId = getCellId({
-            rowId,
-            columnId: colId,
-          })
-          clearList.push(
-            store.setter(getTheadCellStateAtomById(tCellId), (getter, prev) => {
-              const next = getStyle(getter, rowIndex, columnIndex)
-
-              return {
-                ...prev,
-                style: {
-                  ...prev.style,
-                  ...next,
-                },
-              }
-            })!,
-          )
+          styleMap.set(tCellId as CellId, next)
         })
       })
     })
 
+    store.setter(mergeHeaderCellStyleMapAtom, styleMap)
+
     return () => {
-      clearList.forEach((clear) => {
-        clear()
-      })
+      store.setter(mergeHeaderCellStyleMapAtom, new Map())
     }
-  }, [cellList, columnSizeMap, getTheadCellStateAtomById, rowSizeMap, store, showBorder])
+  }, [
+    cellList,
+    columnSizeMap,
+    rowSizeMap,
+    store,
+    showBorder,
+    rowIdShowList,
+    columnIdShowList,
+  ])
 }
