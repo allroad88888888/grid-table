@@ -1,9 +1,8 @@
 import { useCallback, useEffect } from 'react'
-import { useAtomValue, useStore } from '@einfach/react'
+import { useStore } from '@einfach/react'
 import type { PositionId } from '@grid-table/basic'
 import { theadCellEventsAtom, useBasic } from '@grid-table/basic'
 import {
-  areaCellIdsAtom,
   emptyPosition,
   areaStartAtom,
   areaEndAtom,
@@ -13,7 +12,7 @@ import {
 } from './state'
 
 export function useTheadAreaSelected({ enable = false }: { enable?: boolean } = {}) {
-  const { tbodyCellEventsAtom, getTheadCellStateAtomById } = useBasic()
+  const { tbodyCellEventsAtom } = useBasic()
   const store = useStore()
 
   const onMouseDown = useCallback(
@@ -55,38 +54,6 @@ export function useTheadAreaSelected({ enable = false }: { enable?: boolean } = 
     },
     [store],
   )
-
-  const { cellTheadList } = useAtomValue(areaCellIdsAtom, { store })
-
-  useEffect(() => {
-    if (!enable) {
-      return
-    }
-    if (cellTheadList.length === 0) {
-      return
-    }
-    const cancelList: (() => void)[] = []
-    cellTheadList.forEach((cellIdList) => {
-      cellIdList.forEach((cellId) => {
-        cancelList.push(
-          store.setter(getTheadCellStateAtomById(cellId), (_getter, prev) => {
-            const nextClsx = new Set(prev.className)
-            nextClsx.add('select-cell-item')
-            return {
-              ...prev,
-              className: nextClsx,
-            }
-          })!,
-        )
-      })
-    })
-
-    return () => {
-      cancelList.forEach((cancel) => {
-        cancel()
-      })
-    }
-  }, [cellTheadList, store, getTheadCellStateAtomById, enable])
 
   useEffect(() => {
     if (!enable) {

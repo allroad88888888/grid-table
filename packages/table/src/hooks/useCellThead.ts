@@ -1,7 +1,8 @@
-import { useAtomValue, useStore } from '@einfach/react'
+import { useAtomValue, useStore, selectAtom } from '@einfach/react'
 import type { CellProps } from '@grid-table/core'
-import { type CSSProperties } from 'react'
+import { useMemo, type CSSProperties } from 'react'
 import { useBasic } from '@grid-table/basic'
+import { areaSelectedTheadCellSetAtom } from '../plugins/areaSelected/state'
 
 export function useCellThead({ cellId, style, rowId, columnId }: CellProps) {
   const { getColumnStateAtomById, getTheadCellStateAtomById } = useBasic()
@@ -18,6 +19,17 @@ export function useCellThead({ cellId, style, rowId, columnId }: CellProps) {
     getTheadCellStateAtomById(cellId),
   )
 
+  const areaSelectedAtom = useMemo(
+    () => selectAtom(areaSelectedTheadCellSetAtom, (set) => set.has(cellId)),
+    [cellId],
+  )
+  const isAreaSelected = useAtomValue(areaSelectedAtom, { store })
+
+  const clsList = [...Array.from(columnCls), ...Array.from(selfCls)]
+  if (isAreaSelected) {
+    clsList.push('select-cell-item')
+  }
+
   return {
     rowId,
     columnId,
@@ -26,6 +38,6 @@ export function useCellThead({ cellId, style, rowId, columnId }: CellProps) {
       ...columnStyle,
       ...selfStyle,
     } as CSSProperties,
-    className: [...Array.from(columnCls), ...Array.from(selfCls)].join(' '),
+    className: clsList.join(' '),
   }
 }
