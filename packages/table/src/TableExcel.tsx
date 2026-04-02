@@ -16,6 +16,8 @@ import clsx from 'clsx'
 import { useHeaderMergeCells, useMergeCells } from './plugins/mergeCells'
 import { useBorder } from './plugins/border'
 import { useSort } from './plugins/sort'
+import { useFilter } from './plugins/filter/useFilter'
+import { useRowExpand } from './plugins/rowExpand'
 
 import './Table.css'
 import { useTheadLastRowColumnSelect } from './plugins/areaSelected/useTheadSelected'
@@ -84,6 +86,27 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
     remoteSort: props.remoteSort,
     enableMultiSort: props.enableMultiSort,
     sortCycle: props.sortCycle,
+  })
+
+  /** 过滤功能 */
+  useFilter({
+    filterState: props.filterState,
+    onFilterChange: props.onFilterChange,
+    remoteFilter: props.remoteFilter,
+  })
+
+  /** 行展开功能 */
+  useRowExpand({
+    expandedRowRender: props.expandedRowRender,
+    expandedRowKeys: props.expandedRowKeys,
+    defaultExpandedRowKeys: props.defaultExpandedRowKeys,
+    onExpand: props.onExpand,
+    onExpandedRowsChange: props.onExpandedRowsChange,
+    rowExpandable: props.rowExpandable,
+    accordion: props.accordion,
+    expandedRowHeight: props.expandedRowHeight,
+    expandColumnWidth: props.expandColumnWidth,
+    expandColumnFixed: props.expandColumnFixed,
   })
 
   const { calcColumnSizeByIndex, calcHeadRowSizeByIndex, calcRowSizeByIndex } = useCellSizeByColumn(

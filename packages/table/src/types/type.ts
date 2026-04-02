@@ -7,6 +7,8 @@ import type { Store } from '@einfach/react'
 import type { AutoColumnsSizeOptions } from '../plugins/calcSizeByColumn/measureColumnsWidth'
 import type { OnColumnResizeCallback } from '../plugins/drag/useDrag'
 import type { UseSortProps } from '../plugins/sort/types'
+import type { UseFilterProps } from '../plugins/filter/types'
+import type { UseRowExpandProps } from '../plugins/rowExpand/types'
 
 /**
  * 表格多语言配置
@@ -141,6 +143,8 @@ export type AntdTableProps = {
   idleDelay?: number
 } & CopyProps &
   UseSortProps &
+  UseFilterProps &
+  UseRowExpandProps &
   UseDataProps &
   Pick<
     VGridTableProps,
