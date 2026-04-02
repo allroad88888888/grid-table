@@ -233,6 +233,49 @@ export const areaCellIdsAtom = selectAtom(
     equal2DArray(prev.cellTheadList, next.cellTheadList),
 )
 
+/**
+ * 选中区域的 tbody cell 集合 —— 一次 setter 替代逐 cell setter
+ * useCell 通过 selectAtom 读取，判断 cellId 是否在 Set 中
+ */
+export const areaSelectedTbodyCellSetAtom = selectAtom(
+  areaCellIdsAtom,
+  ({ cellTbodyList }) => {
+    const set = new Set<CellId>()
+    cellTbodyList.forEach((row) => {
+      row.forEach((cellId) => set.add(cellId))
+    })
+    return set
+  },
+  (prev, next) => {
+    if (prev.size !== next.size) return false
+    for (const id of prev) {
+      if (!next.has(id)) return false
+    }
+    return true
+  },
+)
+
+/**
+ * 选中区域的 thead cell 集合
+ */
+export const areaSelectedTheadCellSetAtom = selectAtom(
+  areaCellIdsAtom,
+  ({ cellTheadList }) => {
+    const set = new Set<CellId>()
+    cellTheadList.forEach((row) => {
+      row.forEach((cellId) => set.add(cellId))
+    })
+    return set
+  },
+  (prev, next) => {
+    if (prev.size !== next.size) return false
+    for (const id of prev) {
+      if (!next.has(id)) return false
+    }
+    return true
+  },
+)
+
 export const areaColumnIdsAtom = atom<ColumnId[]>((getter) => {
   const areaStart = getter(areaStartAtom)
   const areaEnd = getter(areaEndAtom)

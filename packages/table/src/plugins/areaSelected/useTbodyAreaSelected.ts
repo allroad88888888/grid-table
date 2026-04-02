@@ -1,9 +1,8 @@
 import { useCallback, useEffect } from 'react'
-import { useAtomValue, useStore } from '@einfach/react'
+import { useStore } from '@einfach/react'
 import type { PositionId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'
 import {
-  areaCellIdsAtom,
   areaStartAtom,
   areaEndAtom,
   areaStartTypeAtom,
@@ -13,7 +12,7 @@ import {
 } from './state'
 
 export function useTbodyAreaSelected({ enable = false }: { enable?: boolean } = {}) {
-  const { tbodyCellEventsAtom, getCellStateAtomById } = useBasic()
+  const { tbodyCellEventsAtom } = useBasic()
   const store = useStore()
 
   const onMouseDown = useCallback(
@@ -55,38 +54,6 @@ export function useTbodyAreaSelected({ enable = false }: { enable?: boolean } = 
     },
     [store],
   )
-
-  const { cellTbodyList } = useAtomValue(areaCellIdsAtom, { store })
-
-  useEffect(() => {
-    if (!enable) {
-      return
-    }
-    if (cellTbodyList.length === 0) {
-      return
-    }
-    const cancelList: (() => void)[] = []
-    cellTbodyList.forEach((cellIdList) => {
-      cellIdList.forEach((cellId) => {
-        cancelList.push(
-          store.setter(getCellStateAtomById(cellId), (_getter, prev) => {
-            const nextClsx = new Set(prev.className)
-            nextClsx.add('select-cell-item')
-            return {
-              ...prev,
-              className: nextClsx,
-            }
-          })!,
-        )
-      })
-    })
-
-    return () => {
-      cancelList.forEach((cancel) => {
-        cancel()
-      })
-    }
-  }, [cellTbodyList, store, getCellStateAtomById, enable])
 
   useEffect(() => {
     if (!enable) {

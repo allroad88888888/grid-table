@@ -24,27 +24,23 @@
 
 ---
 
-## P1 — 交互操作，建议优先处理
+## P1 — 已完成
 
-### 3. areaSelected 逐 cell setter → Map atom 方案
+### ~~3. areaSelected 逐 cell setter → Set atom 方案~~
 
-- **文件**: `packages/table/src/plugins/areaSelected/useTbodyAreaSelected.ts:69-82`
+- **文件**: `packages/table/src/plugins/areaSelected/state.ts`, `useTbodyAreaSelected.ts`, `useTheadAreaSelected.ts`, `hooks/useCell.ts`, `hooks/useCellThead.ts`
 - **问题**: 嵌套 `cellTbodyList.forEach` 对每个 cell 调用 `store.setter(getCellStateAtomById(cellId), ...)`
 - **数据**: 100×100 选区 = 10k 次 setter = 24ms，setter 占总开销 **98%**
-- **思路**:
-  1. 新增 `areaSelectedCellSetAtom = atom(new Set<CellId>())`，一次 setter 设置整个选中集合
-  2. 在 `useCell.ts` 的 `cellInfoAtom` 中用 selectAtom 读取 `areaSelectedCellSetAtom`，判断当前 cellId 是否在 Set 中来决定 className
-  3. 这样选区变化只触发一次 atom set，每个 cell 通过 selectAtom 自行判断是否被选中
-  4. 清除选区同理：直接 set 空 Set
+- **方案**: 新增 `areaSelectedTbodyCellSetAtom` / `areaSelectedTheadCellSetAtom`（selectAtom 从 areaCellIdsAtom 派生 Set），cell 端通过 selectAtom + `set.has(cellId)` 判断是否选中，移除逐 cell setter 循环
+- **状态**: ✅ 已完成
 
-### 4. areaCellIdsAtom 中的 findIndexList 线性搜索
+### ~~4. areaCellIdsAtom 中的 findIndexList 线性搜索~~
 
-- **文件**: `packages/table/src/plugins/areaSelected/state.ts:222-234`
+- **文件**: `packages/table/src/plugins/areaSelected/state.ts`
 - **问题**: `findIndexList` 遍历整个 rowIdShowList 数组找 start/end 的 index
 - **数据**: 100k 行尾部查找 7.5ms
-- **思路**:
-  1. 维护一个 `rowIdToIndexMap = atom(new Map<RowId, number>())`，在 rowIdShowList 变化时构建
-  2. `findIndexList` 直接 Map.get() = O(1)
+- **方案**: 新增 `columnIdIndexMapAtom` / `rowTbodyIdIndexMapAtom` / `rowTheadIdIndexMapAtom`，`lookupIndices()` 直接 Map.get() = O(1)
+- **状态**: ✅ 已完成
 
 ---
 
