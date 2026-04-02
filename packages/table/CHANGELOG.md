@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.61
+
+### Patch Changes
+
+- fix: simplify sticky merge cells — remove scroll/resize listeners, use native sticky positioning with z-index layering
+  - @grid-table/core@0.6.61
+  - @grid-table/basic@0.6.61
+
 ## 0.6.60
 
 ### Patch Changes
