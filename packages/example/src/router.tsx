@@ -29,6 +29,10 @@ import { ColumnResizeCacheDemo } from './pages/ColumnResizeCacheDemo'
 import { CollapseDemo } from './pages/Collapse'
 import { PasteDemo } from './pages/PasteDemo'
 import TabDemo from './pages/TabDemo'
+import { SortDemo } from './pages/SortDemo'
+import { FilterDemo } from './pages/FilterDemo'
+import { RowExpandDemo } from './pages/RowExpandDemo'
+import { KeyboardDemo } from './pages/KeyboardDemo'
 
 // 路由项目接口定义
 export interface RouteItem {
@@ -181,6 +185,32 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/table-higher/excel',
         component: ExcelDemo,
         label: 'Excel 演示',
+      },
+    ],
+  },
+  plugins: {
+    label: '插件功能',
+    icon: '🔌',
+    routes: [
+      {
+        path: '/plugins/sort',
+        component: SortDemo,
+        label: '排序',
+      },
+      {
+        path: '/plugins/filter',
+        component: FilterDemo,
+        label: '过滤',
+      },
+      {
+        path: '/plugins/row-expand',
+        component: RowExpandDemo,
+        label: '行展开',
+      },
+      {
+        path: '/plugins/keyboard',
+        component: KeyboardDemo,
+        label: '键盘导航',
       },
     ],
   },
