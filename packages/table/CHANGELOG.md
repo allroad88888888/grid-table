@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.60
+
+### Patch Changes
+
+- fix: sticky positioning for merge cells that exceed viewport height
+  - @grid-table/core@0.6.60
+  - @grid-table/basic@0.6.60
+
 ## 0.6.59
 
 ### Patch Changes
