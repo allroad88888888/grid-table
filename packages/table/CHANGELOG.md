@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.59
+
+### Patch Changes
+
+- fix: disable scroll anchoring (`overflow-anchor: none`) to prevent content jump during virtual scroll
+  - @grid-table/core@0.6.59
+  - @grid-table/basic@0.6.59
+
 ## 0.6.58
 
 ### Patch Changes
