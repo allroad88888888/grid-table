@@ -10,7 +10,8 @@ import { lastSet } from './utils'
 export function useMergeCells({
   showBorder = true,
   containerSize,
-}: { showBorder?: boolean; containerSize?: { width: number; height: number } } = {}) {
+  stickyMergeCell = true,
+}: { showBorder?: boolean; containerSize?: { width: number; height: number }; stickyMergeCell?: boolean } = {}) {
   const store = useStore()
   const { getCellStateAtomById, columnSizeMapAtom, rowSizeMapAtom } = useBasic()
 
@@ -51,7 +52,7 @@ export function useMergeCells({
             .filter((rowId) => rowIdSet.has(rowId))
             .reduce<number>((prev, rowId) => prev + (rowSizeMap.get(rowId) || 0), 0)
 
-          const isHeightOverflow = calculatedHeight > maxHeight
+          const isHeightOverflow = stickyMergeCell && calculatedHeight > maxHeight
 
           next = {
             width: calculatedWidth,

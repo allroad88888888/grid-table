@@ -121,7 +121,7 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
   })
 
   /** tbody单元格合并功能 */
-  useMergeCells({ showBorder: true, containerSize })
+  useMergeCells({ showBorder: true, containerSize, stickyMergeCell: props.stickyMergeCell })
 
   /** tbody区域选中功能 + 拖拽边缘自动滚动 */
   useAreaSelected({
