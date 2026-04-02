@@ -4,7 +4,7 @@ import { useBasic } from '@grid-table/basic'
 import type { ColumnId } from '@grid-table/basic'
 import { easyGet } from '@einfach/utils'
 import { getColumnOptionAtomByColumnId, getRowInfoAtomByRowId } from '../../stateCore'
-import { sortStateAtom } from './state'
+import { sortStateAtom, sortToggleAtom } from './state'
 import type { SortDirection, SortState, UseSortProps } from './types'
 
 const DEFAULT_SORT_CYCLE: (SortDirection | null)[] = ['asc', 'desc', null]
@@ -136,6 +136,14 @@ export function useSort<ItemInfo = Record<string, any>>(
     },
     [store, sortCycle, enableMultiSort, controlledSortState, onSortChange],
   )
+
+  // 写入 atom 供 CellThead 读取
+  useEffect(() => {
+    store.setter(sortToggleAtom, () => toggleSort)
+    return () => {
+      store.setter(sortToggleAtom, null)
+    }
+  }, [store, toggleSort])
 
   return { toggleSort }
 }
