@@ -1,4 +1,4 @@
-import type { ColumnId, RowId } from '@grid-table/basic'
+import type { ColumnId } from '@grid-table/basic'
 import type { ComponentType } from 'react'
 
 export type GroupByConfig = {
