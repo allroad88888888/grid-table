@@ -1,5 +1,14 @@
 # @grid-table/excel
 
+## 0.5.58
+
+### Patch Changes
+
+- Updated dependencies
+  - @grid-table/view@0.6.60
+  - @grid-table/core@0.6.60
+  - @grid-table/basic@0.6.60
+
 ## 0.5.57
 
 ### Patch Changes
