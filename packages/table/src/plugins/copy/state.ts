@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { atom } from '@einfach/react'
 import type { CellId } from '@grid-table/basic'
 import { getRowIdAndColIdByCellId, valueToString } from '../../utils'
@@ -6,6 +7,13 @@ import { easyGet } from '@einfach/utils'
 import { CopyProps } from './types'
 
 export const showCopyStyleAtom = atom(false)
+
+/**
+ * 复制边框样式 Map —— 一次 setter 替代逐 cell setter
+ * useCell / useCellThead 通过 getter 读取 Map.get(cellId)
+ */
+export const copyCellTbodyStyleMapAtom = atom(new Map<CellId, CSSProperties>())
+export const copyCellTheadStyleMapAtom = atom(new Map<CellId, CSSProperties>())
 
 /**
  * 通过 DOM 获取表头单元格的文本内容

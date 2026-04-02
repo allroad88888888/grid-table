@@ -98,7 +98,8 @@ export function useBorder({
 
     if (columnIdShowList.length === 0) return
 
-    const normalColumnIds = columnIdShowList.filter((id) => !stickyRightIds.includes(id))
+    const stickyRightSet = new Set(stickyRightIds)
+    const normalColumnIds = columnIdShowList.filter((id) => !stickyRightSet.has(id))
 
     const atomEntity = getColumnStateAtomById(normalColumnIds[normalColumnIds.length - 1])
 
@@ -121,7 +122,8 @@ export function useBorder({
 
     if (rowIdShowList.length === 0) return
 
-    const normalRowIds = rowIdShowList.filter((id) => !stickyBottomIds.includes(id))
+    const stickyBottomSet = new Set(stickyBottomIds)
+    const normalRowIds = rowIdShowList.filter((id) => !stickyBottomSet.has(id))
     const atomEntity = getRowStateAtomById(normalRowIds[normalRowIds.length - 1])
 
     return setter(atomEntity, (getter, prevState) => {
