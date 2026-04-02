@@ -122,6 +122,13 @@ export type AntdTableProps = {
   intersectionThreshold?: number | number[]
 
   /**
+   * 合并单元格高度超过容器时是否启用 sticky 定位
+   * 开启后大跨度合并单元格会固定在可视区域内，防止溢出导致滚动抖动
+   * @default true
+   */
+  stickyMergeCell?: boolean
+
+  /**
    * 滚动速度阈值（px/s），超过此速度时延迟渲染
    * @default 800
    */
