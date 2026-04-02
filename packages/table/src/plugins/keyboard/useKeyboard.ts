@@ -1,22 +1,19 @@
 import { useCallback, useEffect } from 'react'
 import { useAtomValue, useStore } from '@einfach/react'
-import { columnIdShowListAtom, rowIdShowListAtom, headerRowIndexListAtom, useBasic } from '@grid-table/basic'
+import { columnIdShowListAtom, rowIdShowListAtom, headerRowIndexListAtom } from '@grid-table/basic'
 import { getCellId } from '../../utils/getCellId'
 import { focusPositionAtom, selectionAnchorAtom, getCellDomId } from './state'
-import type { FocusPosition, GridAriaProps, NavigationDirection, UseKeyboardProps } from './types'
+import type { FocusPosition, NavigationDirection, UseKeyboardProps } from './types'
 
 export function useKeyboard(props: UseKeyboardProps = {}) {
   const {
     enableKeyboard = true,
-    enableAria = true,
     keyboardHandler,
-    ariaLabel,
     onFocusChange,
     scrollToFocus = true,
   } = props
 
   const store = useStore()
-  useBasic() // ensure basic atoms are initialized
 
   const rowIdShowList = useAtomValue(rowIdShowListAtom, { store })
   const columnIdShowList = useAtomValue(columnIdShowListAtom, { store })
@@ -216,6 +213,21 @@ export function useKeyboard(props: UseKeyboardProps = {}) {
     [enableKeyboard, store, keyboardHandler, navigate, onFocusChange],
   )
 
+  // 注入 onKeyDown — 通过 DOM 事件监听（VGridTable 的容器 div 带 tabIndex）
+  useEffect(() => {
+    if (!enableKeyboard) return
+
+    const handler = (e: KeyboardEvent) => {
+      onKeyDown(e as unknown as React.KeyboardEvent)
+    }
+
+    // 监听 document 的 keydown，表格容器 focus 时才处理
+    document.addEventListener('keydown', handler)
+    return () => {
+      document.removeEventListener('keydown', handler)
+    }
+  }, [enableKeyboard, onKeyDown])
+
   // 清理焦点在组件卸载时
   useEffect(() => {
     return () => {
@@ -224,23 +236,5 @@ export function useKeyboard(props: UseKeyboardProps = {}) {
     }
   }, [store])
 
-  // 构建 ARIA 属性
-  const focus = useAtomValue(focusPositionAtom, { store })
-
-  const gridAriaProps: GridAriaProps | Record<string, never> = enableAria
-    ? {
-        role: 'grid' as const,
-        'aria-rowcount': rowIdShowList.length + headerRowList.length,
-        'aria-colcount': columnIdShowList.length,
-        'aria-multiselectable': true,
-        'aria-activedescendant': focus ? getCellDomId(focus.cellId) : undefined,
-        'aria-label': ariaLabel,
-      }
-    : {}
-
-  return {
-    gridAriaProps,
-    onKeyDown,
-    navigate,
-  }
+  return { navigate }
 }
