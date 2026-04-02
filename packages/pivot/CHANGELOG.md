@@ -1,5 +1,7 @@
 # @grid-table/pivot
 
+## 0.5.65
+
 ## 0.5.64
 
 ### Patch Changes

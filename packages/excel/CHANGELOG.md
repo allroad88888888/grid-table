@@ -1,5 +1,7 @@
 # @grid-table/excel
 
+## 0.5.62
+
 ## 0.5.61
 
 ### Patch Changes
