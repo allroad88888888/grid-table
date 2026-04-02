@@ -1,5 +1,11 @@
 # @grid-table/core
 
+## 0.6.63
+
+### Patch Changes
+
+- perf: replace findIndex O(n) with binarySearchGte O(log n) in useVScroll/useDelayScroll virtual scroll — 3745x speedup at 100k items
+
 ## 0.6.62
 
 ## 0.6.61

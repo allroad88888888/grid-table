@@ -71,6 +71,45 @@ function equal2DArray(arr1: CellId[][], arr2: CellId[][]): boolean {
 
 const Empty: CellId[][] = []
 
+/**
+ * id → index 索引 Map，避免 findIndexList 的 O(n) 线性遍历
+ * 只在对应 list 变化时重建
+ */
+const columnIdIndexMapAtom = atom((getter) => {
+  const list = getter(columnIdShowListAtom)
+  const map = new Map<string, number>()
+  list.forEach((id, i) => map.set(id, i))
+  return map
+})
+
+const rowTbodyIdIndexMapAtom = atom((getter) => {
+  const list = getter(rowIdShowListAtom)
+  const map = new Map<string, number>()
+  list.forEach((id, i) => map.set(id, i))
+  return map
+})
+
+const rowTheadIdIndexMapAtom = atom((getter) => {
+  const list = getter(headerRowIndexListAtom)
+  const map = new Map<string, number>()
+  list.forEach((id, i) => map.set(id, i))
+  return map
+})
+
+/**
+ * 通过 id→index Map 直接 O(1) 查找，替代旧的线性遍历 findIndexList
+ */
+function lookupIndices(indexMap: Map<string, number>, ids: Set<string>): Set<number> {
+  const res = new Set<number>()
+  ids.forEach((id) => {
+    const index = indexMap.get(id)
+    if (index !== undefined) {
+      res.add(index)
+    }
+  })
+  return res
+}
+
 export const areaCellIdsAtom = selectAtom(
   atom<{
     cellTbodyList: CellId[][]
@@ -96,9 +135,12 @@ export const areaCellIdsAtom = selectAtom(
   const rowTbodyIdList = getter(rowIdShowListAtom)
   const columnIdList = getter(columnIdShowListAtom)
 
+  const colIndexMap = getter(columnIdIndexMapAtom)
+  const tbodyIndexMap = getter(rowTbodyIdIndexMapAtom)
+  const theadIndexMap = getter(rowTheadIdIndexMapAtom)
+
   // 计算列范围
-  const allColumnIds = new Set<string>([areaStart.columnId, areaEnd.columnId])
-  const columnList = findIndexList(columnIdList, allColumnIds)
+  const columnList = lookupIndices(colIndexMap, new Set([areaStart.columnId, areaEnd.columnId]))
   const columnStartIndex = Math.min(...columnList)
   const columnEndIndex = Math.max(...columnList)
 
@@ -115,34 +157,34 @@ export const areaCellIdsAtom = selectAtom(
   if (areaStartType === finalEndType) {
     // 同区域内的选择
     if (areaStartType === 'thead') {
-      const theadRowList = findIndexList(rowTheadIdList, new Set([areaStart.rowId, areaEnd.rowId]))
+      const theadRowList = lookupIndices(theadIndexMap, new Set([areaStart.rowId, areaEnd.rowId]))
       theadStartIndex = Math.min(...theadRowList)
       theadEndIndex = Math.max(...theadRowList)
     } else if (areaStartType === 'tbody') {
-      const tbodyRowList = findIndexList(rowTbodyIdList, new Set([areaStart.rowId, areaEnd.rowId]))
+      const tbodyRowList = lookupIndices(tbodyIndexMap, new Set([areaStart.rowId, areaEnd.rowId]))
       tbodyStartIndex = Math.min(...tbodyRowList)
       tbodyEndIndex = Math.max(...tbodyRowList)
     }
   } else if (areaStartType === 'thead' && finalEndType === 'tbody') {
     // 从 thead 到 tbody
-    const theadStartRowList = findIndexList(rowTheadIdList, new Set([areaStart.rowId]))
-    const tbodyEndRowList = findIndexList(rowTbodyIdList, new Set([areaEnd.rowId]))
+    const theadStartRowList = lookupIndices(theadIndexMap, new Set([areaStart.rowId]))
+    const tbodyEndRowList = lookupIndices(tbodyIndexMap, new Set([areaEnd.rowId]))
 
     theadStartIndex = Math.min(...theadStartRowList)
-    theadEndIndex = rowTheadIdList.length - 1 // thead 最后一行
+    theadEndIndex = rowTheadIdList.length - 1
 
-    tbodyStartIndex = 0 // tbody 第一行
+    tbodyStartIndex = 0
     tbodyEndIndex = Math.max(...tbodyEndRowList)
   } else if (areaStartType === 'tbody' && finalEndType === 'thead') {
     // 从 tbody 到 thead（从下往上拖拽）
-    const tbodyStartRowList = findIndexList(rowTbodyIdList, new Set([areaStart.rowId]))
-    const theadEndRowList = findIndexList(rowTheadIdList, new Set([areaEnd.rowId]))
+    const tbodyStartRowList = lookupIndices(tbodyIndexMap, new Set([areaStart.rowId]))
+    const theadEndRowList = lookupIndices(theadIndexMap, new Set([areaEnd.rowId]))
 
-    tbodyStartIndex = 0 // tbody 第一行 (row_0)
-    tbodyEndIndex = Math.max(...tbodyStartRowList) // 开始行
+    tbodyStartIndex = 0
+    tbodyEndIndex = Math.max(...tbodyStartRowList)
 
-    theadStartIndex = Math.min(...theadEndRowList) // 结束行
-    theadEndIndex = rowTheadIdList.length - 1 // thead 最后一行 (head_row_1)
+    theadStartIndex = Math.min(...theadEndRowList)
+    theadEndIndex = rowTheadIdList.length - 1
   }
 
   // 生成 thead 区域的 cellIds
@@ -200,10 +242,11 @@ export const areaColumnIdsAtom = atom<ColumnId[]>((getter) => {
   }
 
   const columnIdList = getter(columnIdShowListAtom)
+  const colIndexMap = getter(columnIdIndexMapAtom)
   const endPosition = areaEnd.cellId === '-1' ? areaStart : areaEnd
 
-  const columnAreaList = findIndexList(
-    columnIdList,
+  const columnAreaList = lookupIndices(
+    colIndexMap,
     new Set([areaStart.columnId, endPosition.columnId]),
   )
   const columnStartIndex = Math.min(...columnAreaList)
@@ -218,18 +261,3 @@ export const areaColumnIdsAtom = atom<ColumnId[]>((getter) => {
 
   return columnList.filter((columnId) => !disabledCols.has(columnId))
 })
-
-function findIndexList(ids: string[], matchIds: Set<string>) {
-  const res = new Set<number>()
-  ids.some((id, index) => {
-    if (matchIds.has(id)) {
-      res.add(index)
-    }
-    if (matchIds.size === res.size) {
-      return true
-    }
-    return false
-  })
-
-  return res
-}

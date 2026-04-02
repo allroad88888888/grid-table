@@ -3,6 +3,7 @@ import { Options } from './option'
 import { useDoRender } from '../utils/useDoRender'
 import type { UseVScrollProps } from './type'
 import { useTransition } from './useTransition'
+import { binarySearchGte } from '../utils/binarySearch'
 
 export function useVScroll(props: UseVScrollProps) {
   const { itemCount, overscanCount = 10, calcItemSize, onItemsRendered, direction = 'row' } = props
@@ -44,18 +45,13 @@ export function useVScroll(props: UseVScrollProps) {
       }
     }
     
-    const visibleStartIndex = sizeList.findIndex((index) => {
-      return index >= stateCurrent[stateProp]
-    })
+    const visibleStartIndex = binarySearchGte(sizeList, stateCurrent[stateProp])
 
     let visibleEndIndex: number
     if (stateCurrent[stateProp] + length >= totalLength) {
       visibleEndIndex = sizeList.length
     } else {
-      visibleEndIndex =
-        sizeList.slice(visibleStartIndex).findIndex((index) => {
-          return index >= stateCurrent[stateProp] + length
-        }) + visibleStartIndex
+      visibleEndIndex = binarySearchGte(sizeList, stateCurrent[stateProp] + length)
     }
 
     const res = {
