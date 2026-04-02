@@ -8,8 +8,8 @@ import type { SummaryRowConfig, UseSummaryProps } from './types'
  * 当前版本：状态管理 + 配置同步
  * 汇总行的渲染由 VGridTable 的 footer 区域处理（待实现渲染层）
  */
-export function useSummary<ItemInfo = Record<string, any>>(
-  props: UseSummaryProps<ItemInfo> = {},
+export function useSummary(
+  props: UseSummaryProps = {},
 ) {
   const { summary } = props
   const store = useStore()

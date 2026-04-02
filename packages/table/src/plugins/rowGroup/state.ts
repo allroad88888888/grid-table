@@ -1,6 +1,6 @@
 import { atom } from '@einfach/react'
 
-export const expandedGroupKeysAtom = atom<Set<string>>(new Set())
+export const expandedGroupKeysAtom = atom<Set<string>>(new Set<string>())
 export const GROUP_ROW_PREFIX = '__group_'
 
 export function getGroupRowId(depth: number, groupValue: string): string {
