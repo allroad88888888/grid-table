@@ -7,6 +7,7 @@
     "declarationMap": true
   },
   "include": ["./src/**/*", "./../vite.config.mts", "./*.mjs"],
+  "exclude": ["./src/**/__tests__/**", "./src/**/*.test.ts", "./src/**/*.test.tsx"],
   "references": [
     {
       "path": "./../core/tsconfig.json"
