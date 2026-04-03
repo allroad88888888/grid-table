@@ -225,6 +225,28 @@ describe('Sort plugin render tests', () => {
     })
   })
 
+  test('sortable header click calls stopPropagation to prevent area selection conflict', async () => {
+    const spy = jest.fn()
+    render(<SortControlledApp onSortChangeSpy={spy} />)
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('[data-sortable="true"]').length).toBe(2)
+    })
+
+    const nameHeader = document.querySelector('[data-testid="thead-cell-name"]')!
+
+    // 验证 click 事件的 stopPropagation 被调用
+    const clickEvent = new MouseEvent('click', { bubbles: true, cancelable: true })
+    const stopPropSpy = jest.spyOn(clickEvent, 'stopPropagation')
+
+    act(() => { nameHeader.dispatchEvent(clickEvent) })
+
+    await waitFor(() => {
+      expect(spy).toHaveBeenCalled()
+      expect(stopPropSpy).toHaveBeenCalled()
+    })
+  })
+
   test('non-sortable column click does not trigger sort', async () => {
     const spy = jest.fn()
     render(<SortControlledApp onSortChangeSpy={spy} />)
