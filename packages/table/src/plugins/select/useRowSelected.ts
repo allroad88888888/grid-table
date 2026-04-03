@@ -1,4 +1,5 @@
-import { atom, Store, useAtom, useAtomValue } from '@einfach/react'
+import type { Store} from '@einfach/react';
+import { atom, useAtom, useAtomValue } from '@einfach/react'
 import './checkbox.css'
 import type { PositionId, RowId } from '@grid-table/basic'
 import { useBasic } from '@grid-table/basic'

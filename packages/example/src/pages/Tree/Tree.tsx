@@ -1,4 +1,5 @@
-import GridTree, { GridTreeRef } from '@grid-tree/core/src'
+import type { GridTreeRef } from '@grid-tree/core/src';
+import GridTree from '@grid-tree/core/src'
 import './Tree.css'
 import TreeItem from './TreeItem'
 import { useAtomValue } from '@einfach/react'

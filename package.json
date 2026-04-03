@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "eslint": "npx eslint --config rules/.eslintrc ./ --fix",
+    "eslint": "npx eslint --config rules/.eslintrc --ext .ts,.tsx packages/ --fix",
     "test": "jest --collect-coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",

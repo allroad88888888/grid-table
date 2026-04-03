@@ -1,3 +1,5 @@
+import type {
+  MutableRefObject} from 'react';
 import {
   Fragment,
   useCallback,
@@ -5,8 +7,7 @@ import {
   useLayoutEffect,
   useMemo,
   useRef,
-  forwardRef,
-  MutableRefObject,
+  forwardRef
 } from 'react'
 import {  useMemoCallback, useVDelayScroll } from '../Basic'
 import type { VGridTableProps } from './type'

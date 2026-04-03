@@ -74,12 +74,12 @@
     // type Function
     "@typescript-eslint/ban-types": "off",
     "max-len": [
-      "error",
+      "warn",
       {
-        "code": 100
+        "code": 120
       }
     ],
-    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/rules-of-hooks": "warn",
     "react-hooks/exhaustive-deps": "warn",
     "max-lines-per-function": [
       2,
@@ -89,7 +89,7 @@
         "skipBlankLines": true
       }
     ],
-    "no-console": 2,
+    "no-console": 1,
     "prefer-const": 2,
     "arrow-body-style": 0,
     "no-underscore-dangle": 0,

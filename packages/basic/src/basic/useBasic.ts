@@ -1,5 +1,5 @@
-import { useAtomValue, Store } from '@einfach/react'
-import type {} from '@einfach/react'
+import { useAtomValue } from '@einfach/react'
+import type { Store } from '@einfach/react'
 import type { Core } from './state'
 import { basicAtom } from './state'
 

@@ -1,4 +1,5 @@
-import { CellId, getCellId, MergeCellIdItem } from '@grid-table/view'
+import type { CellId, MergeCellIdItem } from '@grid-table/view';
+import { getCellId } from '@grid-table/view'
 
 export const RowIdKey = 'gird_table_row_id'
 /**

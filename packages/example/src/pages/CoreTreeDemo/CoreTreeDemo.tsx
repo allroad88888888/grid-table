@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { useAtomValue } from '@einfach/react'
-import GridTree, { GridTreeRef } from '@grid-tree/core/src'
+import type { GridTreeRef } from '@grid-tree/core/src';
+import GridTree from '@grid-tree/core/src'
 import { relationAsyncAtom } from '../Tree/atoms'
 import { BasicContent, RichContent } from './ContentComponent'
 import './CoreTreeDemo.css'

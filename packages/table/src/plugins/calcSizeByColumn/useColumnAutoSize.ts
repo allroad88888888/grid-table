@@ -1,7 +1,9 @@
-import { RefObject, useEffect } from 'react'
+import type { RefObject} from 'react';
+import { useEffect } from 'react'
 import { useSetAtom, atom } from '@einfach/react'
 import { columnSizeMapAtom, columnIdShowListAtom } from '@grid-table/basic'
-import { AutoColumnsSizeOptions, measureColumnsWidth } from './measureColumnsWidth'
+import type { AutoColumnsSizeOptions} from './measureColumnsWidth';
+import { measureColumnsWidth } from './measureColumnsWidth'
 
 const gridRefAtom = atom<{
   ref: RefObject<HTMLDivElement>

@@ -1,4 +1,4 @@
-import { TreeNode } from '../../types'
+import type { TreeNode } from '../../types'
 import { calculateAdaptiveTags, type AdaptiveTagsConfig } from '../adaptiveTags'
 
 describe('adaptiveTags', () => {

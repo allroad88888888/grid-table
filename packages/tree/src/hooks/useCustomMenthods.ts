@@ -1,6 +1,7 @@
-import { ForwardedRef, useImperativeHandle } from 'react'
-import { GridTreeRef, Id } from '../types'
-import { VGridListRef } from '@grid-table/core'
+import type { ForwardedRef} from 'react';
+import { useImperativeHandle } from 'react'
+import type { GridTreeRef, Id } from '../types'
+import type { VGridListRef } from '@grid-table/core'
 import { atom, useSetAtom } from '@einfach/react'
 import { expandParentNodesAtom } from '../state/others'
 import { showIdsAtom } from '../state'

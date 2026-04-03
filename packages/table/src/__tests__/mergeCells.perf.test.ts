@@ -182,7 +182,7 @@ function simulateBodyMerge(
       mergedColIds.forEach((colId, colIndex) => {
         const tCellId = getCellId({ rowId, columnId: colId })
 
-        let next: CSSProperties = {
+        const next: CSSProperties = {
           width: calculatedWidth,
           height: calculatedHeight,
         }

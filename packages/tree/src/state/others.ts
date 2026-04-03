@@ -1,5 +1,5 @@
 import { atom } from '@einfach/react'
-import { Id } from '../types'
+import type { Id } from '../types'
 import { collapseNodeSetAtom, idParentIdMapAtom } from './state'
 
 export const expandParentNodesAtom = atom(null, (getter, setter, id: Id) => {

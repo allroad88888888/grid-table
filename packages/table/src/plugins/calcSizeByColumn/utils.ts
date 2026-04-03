@@ -3,7 +3,7 @@ export function distributeToNewArray(list: number[], total: number) {
   const sumA = list.reduce((acc, num) => acc + num, 0)
 
   // 计算需要分配的差值
-  let remaining = total - sumA
+  const remaining = total - sumA
 
   const space = remaining / sumA
 

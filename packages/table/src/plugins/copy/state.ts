@@ -4,7 +4,7 @@ import type { CellId } from '@grid-table/basic'
 import { getRowIdAndColIdByCellId, valueToString } from '../../utils'
 import { getColumnOptionAtomByColumnId, getRowInfoAtomByRowId } from '../../stateCore'
 import { easyGet } from '@einfach/utils'
-import { CopyProps } from './types'
+import type { CopyProps } from './types'
 
 export const showCopyStyleAtom = atom(false)
 

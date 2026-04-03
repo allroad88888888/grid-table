@@ -28,9 +28,7 @@ export function useCopyHandler({ copyGetDataByCellIds, showCopyStyle }: UseCopyH
 
       showCopyStyle(true)
 
-      let text: string | Promise<string>
-
-      text = copyMixed({
+      const text: string | Promise<string> = copyMixed({
         ...areas,
         copyTbodyCellInfo: copyGetDataByCellIds,
       })

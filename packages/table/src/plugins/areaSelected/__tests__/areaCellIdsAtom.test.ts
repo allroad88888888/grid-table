@@ -1,5 +1,6 @@
 import { describe, test, expect } from '@jest/globals'
-import { createStore, Store } from '@einfach/react'
+import type { Store } from '@einfach/react';
+import { createStore } from '@einfach/react'
 import { columnIndexListAtom, headerRowIndexListAtom, rowIndexListAtom } from '@grid-table/basic'
 import {
   areaCellIdsAtom,

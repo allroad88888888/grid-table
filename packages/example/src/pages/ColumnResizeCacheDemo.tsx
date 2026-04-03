@@ -1,9 +1,8 @@
-import type { ColumnType } from '@grid-table/view'
+import type { ColumnType , OnColumnResizeCallback } from '@grid-table/view'
 import { Table } from '@grid-table/view'
 import { Tag, Button, Space, message } from 'antd'
 import { ResizableContainer } from '../components/ResizableContainer'
 import { useCallback, useEffect, useState } from 'react'
-import type { OnColumnResizeCallback } from '@grid-table/view'
 import './ColumnResizeCacheDemo.css'
 
 // 本地存储的键名
