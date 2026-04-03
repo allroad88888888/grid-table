@@ -141,6 +141,9 @@ export const areaCellIdsAtom = selectAtom(
 
   // 计算列范围
   const columnList = lookupIndices(colIndexMap, new Set([areaStart.columnId, areaEnd.columnId]))
+  if (columnList.size === 0) {
+    return { cellTbodyList: Empty, cellTheadList: Empty }
+  }
   const columnStartIndex = Math.min(...columnList)
   const columnEndIndex = Math.max(...columnList)
 
@@ -158,10 +161,16 @@ export const areaCellIdsAtom = selectAtom(
     // 同区域内的选择
     if (areaStartType === 'thead') {
       const theadRowList = lookupIndices(theadIndexMap, new Set([areaStart.rowId, areaEnd.rowId]))
+      if (theadRowList.size === 0) {
+        return { cellTbodyList: Empty, cellTheadList: Empty }
+      }
       theadStartIndex = Math.min(...theadRowList)
       theadEndIndex = Math.max(...theadRowList)
     } else if (areaStartType === 'tbody') {
       const tbodyRowList = lookupIndices(tbodyIndexMap, new Set([areaStart.rowId, areaEnd.rowId]))
+      if (tbodyRowList.size === 0) {
+        return { cellTbodyList: Empty, cellTheadList: Empty }
+      }
       tbodyStartIndex = Math.min(...tbodyRowList)
       tbodyEndIndex = Math.max(...tbodyRowList)
     }
@@ -170,21 +179,29 @@ export const areaCellIdsAtom = selectAtom(
     const theadStartRowList = lookupIndices(theadIndexMap, new Set([areaStart.rowId]))
     const tbodyEndRowList = lookupIndices(tbodyIndexMap, new Set([areaEnd.rowId]))
 
-    theadStartIndex = Math.min(...theadStartRowList)
-    theadEndIndex = rowTheadIdList.length - 1
+    if (theadStartRowList.size > 0) {
+      theadStartIndex = Math.min(...theadStartRowList)
+      theadEndIndex = rowTheadIdList.length - 1
+    }
 
-    tbodyStartIndex = 0
-    tbodyEndIndex = Math.max(...tbodyEndRowList)
+    if (tbodyEndRowList.size > 0) {
+      tbodyStartIndex = 0
+      tbodyEndIndex = Math.max(...tbodyEndRowList)
+    }
   } else if (areaStartType === 'tbody' && finalEndType === 'thead') {
     // 从 tbody 到 thead（从下往上拖拽）
     const tbodyStartRowList = lookupIndices(tbodyIndexMap, new Set([areaStart.rowId]))
     const theadEndRowList = lookupIndices(theadIndexMap, new Set([areaEnd.rowId]))
 
-    tbodyStartIndex = 0
-    tbodyEndIndex = Math.max(...tbodyStartRowList)
+    if (tbodyStartRowList.size > 0) {
+      tbodyStartIndex = 0
+      tbodyEndIndex = Math.max(...tbodyStartRowList)
+    }
 
-    theadStartIndex = Math.min(...theadEndRowList)
-    theadEndIndex = rowTheadIdList.length - 1
+    if (theadEndRowList.size > 0) {
+      theadStartIndex = Math.min(...theadEndRowList)
+      theadEndIndex = rowTheadIdList.length - 1
+    }
   }
 
   // 生成 thead 区域的 cellIds
@@ -292,6 +309,9 @@ export const areaColumnIdsAtom = atom<ColumnId[]>((getter) => {
     colIndexMap,
     new Set([areaStart.columnId, endPosition.columnId]),
   )
+  if (columnAreaList.size === 0) {
+    return []
+  }
   const columnStartIndex = Math.min(...columnAreaList)
   const columnEndIndex = Math.max(...columnAreaList)
 

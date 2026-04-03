@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import { useStore } from '@einfach/react'
 import type { PositionId } from '@grid-table/basic'
-import { theadCellEventsAtom, useBasic } from '@grid-table/basic'
+import { theadCellEventsAtom } from '@grid-table/basic'
 import {
   emptyPosition,
   areaStartAtom,
@@ -12,7 +12,6 @@ import {
 } from './state'
 
 export function useTheadAreaSelected({ enable = false }: { enable?: boolean } = {}) {
-  const { tbodyCellEventsAtom } = useBasic()
   const store = useStore()
 
   const onMouseDown = useCallback(
@@ -78,5 +77,5 @@ export function useTheadAreaSelected({ enable = false }: { enable?: boolean } = 
 
       return next
     })
-  }, [tbodyCellEventsAtom, onMouseEnter, onMouseDown, onMouseUp, store, enable])
+  }, [theadCellEventsAtom, onMouseEnter, onMouseDown, onMouseUp, store, enable])
 }
