@@ -57,21 +57,29 @@ export function DataCellThead(props: CellProps) {
       if (!isSortable) return
       const toggle = store.getter(sortToggleAtom)
       toggle?.(columnId, e.shiftKey)
+      // 排序列点击后阻止冒泡，避免与区域选中等插件冲突
+      e.stopPropagation()
     },
     [store, columnId, isSortable],
   )
 
   // 合并排序点击和 thead 通用事件的 onClick，避免 spread 覆盖
+  // 排序列点击时跳过其他 onClick 处理器（如区域选中），避免行为冲突
   const mergedOnClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      onSortClick(e)
+      if (isSortable) {
+        onSortClick(e)
+        return
+      }
       events.onClick?.(e)
     },
-    [onSortClick, events],
+    [onSortClick, events, isSortable],
   )
 
   // 剔除 events 中的 onClick，用合并后的版本替代
-  const { onClick: _eventsOnClick, ...eventsWithoutClick } = events
+  // 可排序列同时剔除 onMouseDown，避免触发区域选中
+  const { onClick: _eventsOnClick, onMouseDown: _eventsOnMouseDown, ...eventsBase } = events
+  const eventsWithoutClick = isSortable ? eventsBase : { ...eventsBase, onMouseDown: _eventsOnMouseDown }
 
   const SortIconComponent = columnOption.sortIcon || SortIcon
   const sortIconElement = isSortable ? (
