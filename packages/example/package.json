@@ -28,9 +28,9 @@
     "@grid-tree/select": "workspace:*",
     "antd": "^5.20.2",
     "clsx": "^2.1.1",
-    "@einfach/react": "^0.3.10",
-    "@einfach/utils": "^0.2.7",
-    "@einfach/react-utils": "^0.2.9",
+    "@einfach/react": "^0.3.24",
+    "@einfach/utils": "^0.2.16",
+    "@einfach/react-utils": "^0.3.24",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   }

@@ -32,8 +32,8 @@
     "typescript"
   ],
   "peerDependencies": {
-    "@einfach/react": ">=0.3.4",
-    "@einfach/utils": ">=0.2.2",
+    "@einfach/react": ">=0.3.24",
+    "@einfach/utils": ">=0.2.16",
     "react": ">=16.8 <20"
   },
   "peerDependenciesMeta": {
