@@ -44,9 +44,12 @@ export function matchNumberFilter(cellValue: unknown, filter: NumberFilterValue)
     case 'lte':
       return num <= (filterValue as number)
     case 'between': {
-      if (!Array.isArray(filterValue)) return false
+      if (!Array.isArray(filterValue) || filterValue.length < 2) return false
       const [min, max] = filterValue
-      return num >= min && num <= max
+      if (min == null || max == null) return false
+      const lo = Math.min(min, max)
+      const hi = Math.max(min, max)
+      return num >= lo && num <= hi
     }
     default:
       return true

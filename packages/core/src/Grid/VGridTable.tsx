@@ -182,6 +182,8 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     <div
       ref={ref}
       role="table"
+      data-grid-table=""
+      tabIndex={0}
       style={style}
       className={className}
       onMouseDown={onMouseDown}

@@ -59,7 +59,8 @@ export function useRowExpand<ItemInfo = Record<string, any>>(
     (rowId: RowId) => {
       const currentKeys = store.getter(expandedRowKeysAtom)
       const isExpanded = currentKeys.has(rowId)
-      const rowData = store.getter(getRowInfoAtomByRowId(rowId)) as ItemInfo
+      const rowData = store.getter(getRowInfoAtomByRowId(rowId))
+      if (!rowData) return
 
       let nextKeys: Set<RowId>
 
@@ -82,7 +83,7 @@ export function useRowExpand<ItemInfo = Record<string, any>>(
         store.setter(expandedRowKeysAtom, nextKeys)
       }
 
-      onExpand?.(!isExpanded, rowId, rowData)
+      onExpand?.(!isExpanded, rowId, rowData as ItemInfo)
       onExpandedRowsChange?.([...nextKeys])
     },
     [store, accordion, controlledKeys, onExpand, onExpandedRowsChange],

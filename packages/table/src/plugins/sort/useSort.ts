@@ -73,10 +73,10 @@ export function useSort<ItemInfo = Record<string, any>>(
           let cmp: number
 
           if (typeof columnOption.sorter === 'function') {
-            const rowInfoA = getter(getRowInfoAtomByRowId(rowIdA)) as ItemInfo
-            const rowInfoB = getter(getRowInfoAtomByRowId(rowIdB)) as ItemInfo
+            const rowInfoA = getter(getRowInfoAtomByRowId(rowIdA))
+            const rowInfoB = getter(getRowInfoAtomByRowId(rowIdB))
             if (!rowInfoA || !rowInfoB) continue
-            cmp = columnOption.sorter(rowInfoA, rowInfoB)
+            cmp = (columnOption.sorter as (a: unknown, b: unknown) => number)(rowInfoA, rowInfoB)
           } else {
             const valA = dataIndex
               ? easyGet(getter(getRowInfoAtomByRowId(rowIdA)), dataIndex)

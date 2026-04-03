@@ -40,8 +40,16 @@ export function useKeyboard(props: UseKeyboardProps = {}) {
       }
 
       const rowList = current.region === 'thead' ? headerRowList : rowIdShowList
-      const rowIndex = rowList.indexOf(current.rowId)
+      let rowIndex = rowList.indexOf(current.rowId)
       const colIndex = columnIdShowList.indexOf(current.columnId)
+
+      // 聚焦行已被删除/过滤，重置到最近的有效位置
+      if (rowIndex === -1) {
+        rowIndex = 0
+      }
+      if (colIndex === -1) {
+        return
+      }
 
       let nextRowIndex = rowIndex
       let nextColIndex = colIndex
@@ -113,10 +121,14 @@ export function useKeyboard(props: UseKeyboardProps = {}) {
       store.setter(focusPositionAtom, nextPos)
       onFocusChange?.(nextPos)
 
-      // 滚动到焦点位置
+      // 滚动到焦点位置（虚拟滚动时 cell 可能不在 DOM 中，延迟重试一次）
       if (scrollToFocus) {
-        const cellEl = document.getElementById(getCellDomId(nextPos.cellId))
-        cellEl?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+        const tryScroll = () => {
+          const cellEl = document.getElementById(getCellDomId(nextPos.cellId))
+          cellEl?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+        }
+        tryScroll()
+        requestAnimationFrame(tryScroll)
       }
     },
     [store, rowIdShowList, columnIdShowList, headerRowList, onFocusChange, scrollToFocus],
@@ -213,15 +225,18 @@ export function useKeyboard(props: UseKeyboardProps = {}) {
     [enableKeyboard, store, keyboardHandler, navigate, onFocusChange],
   )
 
-  // 注入 onKeyDown — 通过 DOM 事件监听（VGridTable 的容器 div 带 tabIndex）
+  // 注入 onKeyDown — 通过 DOM 事件监听，仅当表格容器或其子元素拥有焦点时处理
   useEffect(() => {
     if (!enableKeyboard) return
 
     const handler = (e: KeyboardEvent) => {
+      // 仅当焦点在 grid-table 容器内时处理，避免多表格互相干扰
+      const active = document.activeElement
+      if (!active || !active.closest('[data-grid-table]')) return
+
       onKeyDown(e as unknown as React.KeyboardEvent)
     }
 
-    // 监听 document 的 keydown，表格容器 focus 时才处理
     document.addEventListener('keydown', handler)
     return () => {
       document.removeEventListener('keydown', handler)

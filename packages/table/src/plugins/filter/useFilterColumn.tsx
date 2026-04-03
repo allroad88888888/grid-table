@@ -11,8 +11,8 @@ export function useFilterColumn(columnId: ColumnId) {
 
   const getSelectOption = useCallback(() => {
     const columnInfo = store.getter(getColumnOptionAtomByColumnId(columnId))
-    if (!('dataIndex' in columnInfo)) {
-      return
+    if (!columnInfo || !('dataIndex' in columnInfo)) {
+      return []
     }
 
     const rowIdList = store.getter(rowIndexListAtom)
@@ -29,7 +29,7 @@ export function useFilterColumn(columnId: ColumnId) {
         label: value,
       }
     })
-  }, [])
+  }, [columnId, store, rowIndexListAtom, getRowInfoAtomByRowId, getColumnOptionAtomByColumnId])
 
   return {
     getSelectOption,
