@@ -139,6 +139,87 @@ describe('Keyboard plugin render tests', () => {
     })
   })
 
+  test('clicking a tbody cell sets keyboard focus', async () => {
+    const { getByTestId } = render(<KeyboardApp />)
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('.grid-table-cell').length).toBeGreaterThan(0)
+    })
+
+    // 初始无焦点
+    expect(getByTestId('focus-display').textContent).toBe('none')
+
+    // 点击第一个 tbody 单元格
+    const firstCell = document.querySelector('.grid-table-cell') as HTMLElement
+    act(() => { fireEvent.mouseDown(firstCell, { button: 0 }) })
+
+    await waitFor(() => {
+      const text = getByTestId('focus-display').textContent!
+      expect(text).not.toBe('none')
+      expect(text).toContain('tbody')
+    })
+  })
+
+  test('clicking a thead cell sets keyboard focus to thead', async () => {
+    const { getByTestId } = render(<KeyboardApp />)
+
+    await waitFor(() => {
+      expect(document.querySelector('[data-testid="thead-cell-a"]')).toBeTruthy()
+    })
+
+    const theadCell = document.querySelector('[data-testid="thead-cell-a"]') as HTMLElement
+    act(() => { fireEvent.mouseDown(theadCell, { button: 0 }) })
+
+    await waitFor(() => {
+      const text = getByTestId('focus-display').textContent!
+      expect(text).not.toBe('none')
+      expect(text).toContain('thead')
+      expect(text).toContain('a')
+    })
+  })
+
+  test('click then ArrowDown navigates from clicked cell', async () => {
+    const { getByTestId } = render(<KeyboardApp />)
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('.grid-table-cell').length).toBeGreaterThan(0)
+    })
+
+    // 点击 tbody 单元格设置焦点
+    const firstCell = document.querySelector('.grid-table-cell') as HTMLElement
+    act(() => { fireEvent.mouseDown(firstCell, { button: 0 }) })
+
+    await waitFor(() => {
+      expect(getByTestId('focus-display').textContent).not.toBe('none')
+    })
+
+    const focusAfterClick = getByTestId('focus-display').textContent!
+
+    // 让表格获得焦点后按 ArrowDown
+    const table = document.querySelector('[data-grid-table]') as HTMLElement
+    act(() => { table.focus() })
+    act(() => { fireEvent.keyDown(document, { key: 'ArrowDown' }) })
+
+    await waitFor(() => {
+      const focusAfterNav = getByTestId('focus-display').textContent!
+      expect(focusAfterNav).not.toBe('none')
+      expect(focusAfterNav).not.toBe(focusAfterClick)
+    })
+  })
+
+  test('right-click does not set focus', async () => {
+    const { getByTestId } = render(<KeyboardApp />)
+
+    await waitFor(() => {
+      expect(document.querySelectorAll('.grid-table-cell').length).toBeGreaterThan(0)
+    })
+
+    const firstCell = document.querySelector('.grid-table-cell') as HTMLElement
+    act(() => { fireEvent.mouseDown(firstCell, { button: 2 }) })
+
+    expect(getByTestId('focus-display').textContent).toBe('none')
+  })
+
   test('ArrowRight changes column', async () => {
     const { getByTestId } = render(<KeyboardApp />)
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import { useAtomValue, useStore } from '@einfach/react'
-import { columnIdShowListAtom, rowIdShowListAtom, headerRowIndexListAtom } from '@grid-table/basic'
+import { columnIdShowListAtom, rowIdShowListAtom, headerRowIndexListAtom, useBasic } from '@grid-table/basic'
+import type { PositionId } from '@grid-table/basic'
 import { getCellId } from '../../utils/getCellId'
 import { focusPositionAtom, selectionAnchorAtom, getCellDomId } from './state'
 import type { FocusPosition, NavigationDirection, UseKeyboardProps } from './types'
@@ -14,6 +15,7 @@ export function useKeyboard(props: UseKeyboardProps = {}) {
   } = props
 
   const store = useStore()
+  const { tbodyCellEventsAtom, theadCellEventsAtom } = useBasic()
 
   const rowIdShowList = useAtomValue(rowIdShowListAtom, { store })
   const columnIdShowList = useAtomValue(columnIdShowListAtom, { store })
@@ -224,6 +226,65 @@ export function useKeyboard(props: UseKeyboardProps = {}) {
     },
     [enableKeyboard, store, keyboardHandler, navigate, onFocusChange],
   )
+
+  // 点击单元格设置键盘焦点
+  const onTbodyMouseDown = useCallback(
+    (position: PositionId, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (e.button !== 0) return
+      const pos: FocusPosition = {
+        rowId: position.rowId,
+        columnId: position.columnId,
+        cellId: getCellId({ rowId: position.rowId, columnId: position.columnId }),
+        region: 'tbody',
+      }
+      store.setter(focusPositionAtom, pos)
+      store.setter(selectionAnchorAtom, null)
+      onFocusChange?.(pos)
+    },
+    [store, onFocusChange],
+  )
+
+  const onTheadMouseDown = useCallback(
+    (position: PositionId, e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      if (e.button !== 0) return
+      const pos: FocusPosition = {
+        rowId: position.rowId,
+        columnId: position.columnId,
+        cellId: getCellId({ rowId: position.rowId, columnId: position.columnId }),
+        region: 'thead',
+      }
+      store.setter(focusPositionAtom, pos)
+      store.setter(selectionAnchorAtom, null)
+      onFocusChange?.(pos)
+    },
+    [store, onFocusChange],
+  )
+
+  // 注册 tbody 点击焦点
+  useEffect(() => {
+    if (!enableKeyboard) return
+    return store.setter(tbodyCellEventsAtom, (getter, prev) => {
+      const next = { ...prev }
+      if (!('onMouseDown' in prev)) {
+        next['onMouseDown'] = new Set()
+      }
+      next['onMouseDown']!.add(onTbodyMouseDown)
+      return next
+    })
+  }, [tbodyCellEventsAtom, onTbodyMouseDown, store, enableKeyboard])
+
+  // 注册 thead 点击焦点
+  useEffect(() => {
+    if (!enableKeyboard) return
+    return store.setter(theadCellEventsAtom, (getter, prev) => {
+      const next = { ...prev }
+      if (!('onMouseDown' in prev)) {
+        next['onMouseDown'] = new Set()
+      }
+      next['onMouseDown']!.add(onTheadMouseDown)
+      return next
+    })
+  }, [theadCellEventsAtom, onTheadMouseDown, store, enableKeyboard])
 
   // 注入 onKeyDown — 通过 DOM 事件监听，仅当表格容器或其子元素拥有焦点时处理
   useEffect(() => {
