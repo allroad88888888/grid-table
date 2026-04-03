@@ -88,6 +88,7 @@ export function FilterDemo() {
             onChange={(e) => setNameFilter(e.target.value)}
             placeholder="输入关键字"
             style={{ width: 120, padding: '4px 8px' }}
+            data-testid="filter-name-input"
           />
         </div>
 
@@ -126,11 +127,11 @@ export function FilterDemo() {
           </div>
         </div>
 
-        <button onClick={applyFilters} style={{ padding: '4px 12px' }}>应用过滤</button>
-        <button onClick={clearFilters} style={{ padding: '4px 12px' }}>清除</button>
+        <button onClick={applyFilters} style={{ padding: '4px 12px' }} data-testid="filter-apply-btn">应用过滤</button>
+        <button onClick={clearFilters} style={{ padding: '4px 12px' }} data-testid="filter-clear-btn">清除</button>
       </div>
 
-      <div style={{ marginBottom: 16, padding: 8, background: '#f5f5f5', borderRadius: 4, fontSize: 13 }}>
+      <div data-testid="filter-status" style={{ marginBottom: 16, padding: 8, background: '#f5f5f5', borderRadius: 4, fontSize: 13 }}>
         <strong>过滤条件数：</strong> {filterState.size}
         {filterState.size > 0 && (
           <span style={{ marginLeft: 8 }}>

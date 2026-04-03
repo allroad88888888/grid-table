@@ -4,7 +4,7 @@ import './sort.css'
 
 export const SortIcon = memo(function SortIcon({ direction, priority }: SortIconProps) {
   return (
-    <span className="grid-table-sort-icon">
+    <span className="grid-table-sort-icon" data-testid="sort-icon" data-direction={direction}>
       <span
         className={`grid-table-sort-arrow-up${direction === 'asc' ? ' grid-table-sort-active' : ''}`}
       />

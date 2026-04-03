@@ -52,7 +52,7 @@ export function RowExpandDemo() {
         </label>
       </div>
 
-      <div style={{ marginBottom: 16, padding: 8, background: '#f5f5f5', borderRadius: 4, fontSize: 13 }}>
+      <div data-testid="expand-status" style={{ marginBottom: 16, padding: 8, background: '#f5f5f5', borderRadius: 4, fontSize: 13 }}>
         <strong>已展开行：</strong>
         {expandedKeys.length === 0 ? ' 无' : ` [${expandedKeys.join(', ')}]`}
       </div>
