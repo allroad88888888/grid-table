@@ -61,6 +61,18 @@ export function DataCellThead(props: CellProps) {
     [store, columnId, isSortable],
   )
 
+  // 合并排序点击和 thead 通用事件的 onClick，避免 spread 覆盖
+  const mergedOnClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      onSortClick(e)
+      events.onClick?.(e)
+    },
+    [onSortClick, events],
+  )
+
+  // 剔除 events 中的 onClick，用合并后的版本替代
+  const { onClick: _eventsOnClick, ...eventsWithoutClick } = events
+
   const SortIconComponent = columnOption.sortIcon || SortIcon
   const sortIconElement = isSortable ? (
     <SortIconComponent
@@ -90,17 +102,18 @@ export function DataCellThead(props: CellProps) {
     )
   }
 
-  const sortableProps = isSortable
-    ? { onClick: onSortClick, style: { ...style, cursor: 'pointer' } }
-    : { style }
+  const sortableStyle = isSortable ? { ...style, cursor: 'pointer' } : style
 
   if (!columnOption.title) {
     return (
       <div
-        {...sortableProps}
+        style={sortableStyle}
         className={clsx('thead-cell', isSortable && 'thead-cell-sortable', className)}
-        {...events}
+        {...eventsWithoutClick}
+        onClick={mergedOnClick}
         data-cell-id={props.cellId}
+        data-testid={`thead-cell-${columnId}`}
+        data-sortable={isSortable || undefined}
       >
         <div className={clsx('grid-table-cell-data-item')}>{cellVal}{sortIconElement}</div>
         {props.rowIndex === headerRowCount ? <ColumnDragItem columnId={columnId} /> : null}
@@ -110,10 +123,13 @@ export function DataCellThead(props: CellProps) {
 
   return (
     <div
-      {...sortableProps}
+      style={sortableStyle}
       className={clsx('thead-cell', isSortable && 'thead-cell-sortable', className)}
-      {...events}
+      {...eventsWithoutClick}
+      onClick={mergedOnClick}
       data-cell-id={props.cellId}
+      data-testid={`thead-cell-${columnId}`}
+      data-sortable={isSortable || undefined}
     >
       <div className={clsx('grid-table-cell-data-item')}>{reactNodeRender(columnOption.title)}{sortIconElement}</div>
       {props.rowIndex === headerRowCount ? <ColumnDragItem columnId={columnId} /> : null}

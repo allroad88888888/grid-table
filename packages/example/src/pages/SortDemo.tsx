@@ -64,7 +64,7 @@ export function SortDemo() {
         <button onClick={() => setSortState([])}>清除排序</button>
       </div>
 
-      <div style={{ marginBottom: 16, padding: 8, background: '#f5f5f5', borderRadius: 4, fontSize: 13 }}>
+      <div data-testid="sort-status" style={{ marginBottom: 16, padding: 8, background: '#f5f5f5', borderRadius: 4, fontSize: 13 }}>
         <strong>当前排序状态：</strong>
         {sortState.length === 0
           ? ' 无'

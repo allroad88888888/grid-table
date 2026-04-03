@@ -1,7 +1,6 @@
-import { Table } from '@grid-table/view'
+import { Table, focusPositionAtom } from '@grid-table/view'
 import type { ColumnType } from '@grid-table/view'
-import { focusPositionAtom } from '@grid-table/view/src/plugins/keyboard/state'
-import { useAtomValue, useStore } from '@einfach/react'
+import { useAtomValue, createStore } from '@einfach/react'
 
 type DataItem = {
   id: number
@@ -29,12 +28,13 @@ const columns: ColumnType[] = [
   { title: '列 E', dataIndex: 'col5', width: 100 },
 ]
 
+const sharedStore = createStore()
+
 function FocusDisplay() {
-  const store = useStore()
-  const focus = useAtomValue(focusPositionAtom, { store })
+  const focus = useAtomValue(focusPositionAtom, { store: sharedStore })
 
   return (
-    <div style={{ marginBottom: 16, padding: 8, background: '#f5f5f5', borderRadius: 4, fontSize: 13 }}>
+    <div data-testid="focus-display" style={{ marginBottom: 16, padding: 8, background: '#f5f5f5', borderRadius: 4, fontSize: 13 }}>
       <strong>当前焦点：</strong>
       {focus
         ? `行=${focus.rowId}, 列=${focus.columnId}, 区域=${focus.region}`
@@ -64,6 +64,7 @@ export function KeyboardDemo() {
         columns={columns}
         dataSource={dataSource}
         idProp="id"
+        store={sharedStore}
         enableKeyboard
         enableAria
         ariaLabel="键盘导航演示表格"
