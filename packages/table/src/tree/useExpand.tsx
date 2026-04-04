@@ -58,7 +58,11 @@ export function useExpandItem({
           ></span>
           {hasChildren ? (
             <i
-              onClick={() => {
+              onMouseDown={(e) => {
+                e.stopPropagation()
+              }}
+              onClick={(e) => {
+                e.stopPropagation()
                 if (!hasChildren) {
                   return
                 }

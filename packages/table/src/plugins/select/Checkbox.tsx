@@ -19,6 +19,9 @@ export function Checkbox({ rowId }: Partial<PositionId>) {
         className={clsx('grid-table-row-selection-item', {
           'grid-table-row-selection-partially': isChecked === CheckedEnum.partiallyChecked,
         })}
+        onMouseDown={(e) => {
+          e.stopPropagation()
+        }}
         onChange={() => {
           handChecked(rowId)
         }}
