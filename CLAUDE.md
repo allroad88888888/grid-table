@@ -121,3 +121,9 @@ Solid.js 移植:
 - CSS 导入映射到 `rules/empty.ts`（空模块）
 - `@testing-library/jest-dom` 在 `rules/setup-jest.ts` 中配置
 - E2E 测试用 Playwright，测试文件在 `e2e/` 目录，dev server 自动启动
+
+## Git 提交规范
+
+- commit message 和 commit body 中**禁止**出现任何 AI 相关文字，包括但不限于：claude、anthropic、ai、gpt、copilot、session 链接等
+- commit author 使用仓库默认配置，不要使用 AI 相关的 author/email
+- commit message 使用 conventional commits 格式（feat/fix/test/style/refactor/ci/docs）
