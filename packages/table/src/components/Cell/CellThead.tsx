@@ -9,8 +9,7 @@ import { ColumnDragItem } from '../../plugins/drag'
 import { useMemo, useCallback } from 'react'
 import { headerRowIndexListAtom } from '@grid-table/basic'
 import { useTheadCellEvents } from '../../hooks/useTheadCellEvents'
-import { columnSortInfoAtom } from '../../plugins/sort/state'
-import { sortToggleAtom } from '../../plugins/sort/state'
+import { columnSortInfoAtom , sortToggleAtom } from '../../plugins/sort/state'
 import { SortIcon } from '../../plugins/sort/SortIcon'
 
 export function DataCellThead(props: CellProps) {
