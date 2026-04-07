@@ -54,7 +54,7 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
-    "@antv/s2": "^2.0.0",
+    "@antv/s2": "^2.7.0",
     "@formulajs/formulajs": "^4.4.9",
     "@grid-table/basic": "workspace:*",
     "@grid-table/core": "workspace:^*",
