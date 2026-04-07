@@ -24,10 +24,10 @@ const generateData = (count: number): Person[] =>
 const dataSource = generateData(50)
 
 const columns: ColumnType[] = [
-  { title: '姓名', dataIndex: 'name', width: 120, sorter: true, filterType: 'text' },
-  { title: '年龄', dataIndex: 'age', width: 80, align: 'center', sorter: true, filterType: 'number' },
-  { title: '得分', dataIndex: 'score', width: 80, align: 'right', filterType: 'number' },
-  { title: '部门', dataIndex: 'department', width: 120, filterType: 'select' },
+  { key: 'name', title: '姓名', dataIndex: 'name', width: 120, sorter: true, filterType: 'text' },
+  { key: 'age', title: '年龄', dataIndex: 'age', width: 80, align: 'center', sorter: true, filterType: 'number' },
+  { key: 'score', title: '得分', dataIndex: 'score', width: 80, align: 'right', filterType: 'number' },
+  { key: 'department', title: '部门', dataIndex: 'department', width: 120, filterType: 'select' },
 ]
 
 export function FilterDemo() {

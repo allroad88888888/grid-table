@@ -32,13 +32,15 @@ import TabDemo from './pages/TabDemo'
 import { SortDemo } from './pages/SortDemo'
 import { FilterDemo } from './pages/FilterDemo'
 import { RowExpandDemo } from './pages/RowExpandDemo'
-import { KeyboardDemo } from './pages/KeyboardDemo'
+import { MergeCellsDemo } from './pages/MergeCellsDemo'
 
 // 路由项目接口定义
 export interface RouteItem {
   component: ComponentType
   label: string
   path: string
+  /** 标记功能状态，如 'wip' 表示开发中 */
+  status?: 'wip'
 }
 
 // 路由分组接口定义
@@ -206,11 +208,12 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/plugins/row-expand',
         component: RowExpandDemo,
         label: '行展开',
+        status: 'wip',
       },
       {
-        path: '/plugins/keyboard',
-        component: KeyboardDemo,
-        label: '键盘导航',
+        path: '/plugins/merge-cells',
+        component: MergeCellsDemo,
+        label: '合并单元格',
       },
     ],
   },
