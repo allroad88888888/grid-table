@@ -3,5 +3,5 @@
 }
 
 .grid-table div.select-cell-item {
-  background-color: var(--grid-selected-cell-bg-color, rgba(24, 144, 255, 0.15));
+  background-color: var(--grid-selected-cell-bg-color, #e7f1fd);
 }

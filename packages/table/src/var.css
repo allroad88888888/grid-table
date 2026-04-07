@@ -24,7 +24,7 @@
   --grid-context-menu-item-active-bg-color: rgba(24, 144, 255, 0.15);
 
   /* 区域选中样式 */
-  --grid-selected-cell-bg-color: rgba(24, 144, 255, 0.15);
+  --grid-selected-cell-bg-color: #e7f1fd;
 
   /* 单元格边框样式 */
   --grid-cell-border-style: dashed;
