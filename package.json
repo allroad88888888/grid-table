@@ -27,7 +27,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "@changesets/cli": "^2.27.1",
+    "@changesets/cli": "^2.30.0",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "eslint": "^8.56.0",
     "eslint-plugin-import": "^2.29.1",
