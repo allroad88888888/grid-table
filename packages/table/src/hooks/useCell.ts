@@ -28,7 +28,7 @@ export function useCell({ cellId, rowId, columnId, style, rowIndex }: CellProps)
       const { style: rowStyle = {}, className: rowCls = [] } = getter(getRowStateAtomById(rowId))
 
       // 从 Map atom 读取样式（一次 Map.get，无逐 cell setter）
-      const mergeStyle = getter(mergeCellStyleMapAtom).get(cellId) || {}
+      const { className: mergeCls, ...mergeStyle } = getter(mergeCellStyleMapAtom).get(cellId) || {}
       const copyStyle = getter(copyCellTbodyStyleMapAtom).get(cellId) || {}
 
       // 从 areaSelectedTbodyCellSetAtom 读取选中状态（一次 Set.has，无逐 cell setter）
@@ -37,6 +37,9 @@ export function useCell({ cellId, rowId, columnId, style, rowIndex }: CellProps)
       const clsList = [...Array.from(columnCls), ...Array.from(selfCls), ...Array.from(rowCls)]
       if (isAreaSelected) {
         clsList.push('select-cell-item')
+      }
+      if (mergeCls) {
+        clsList.push(mergeCls)
       }
 
       return {

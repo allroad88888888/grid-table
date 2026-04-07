@@ -1,0 +1,1062 @@
+{
+
+        "data": [
+            {
+                "date": "2026-03-05T00:00:00",
+                "test0730B_test_0730": [],
+                "dyy": {
+                    "zh-cn": "2222"
+                },
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "te-st520",
+                "int": 33,
+                "_allow_data_update": true,
+                "status1": "2",
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0002"
+                    },
+                    {
+                        "gs_id": "gs_0003"
+                    }
+                ],
+                "text": "我来测试了",
+                "company_0730": {
+                    "jc": "华南",
+                    "gs": "gs0009"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2028-07-14T22:00:00",
+                "test0730B_test_0730": [
+                    {
+                        "boole": true,
+                        "dyy": {
+                            "en": "多语言1english",
+                            "zh-cn": "多语言1"
+                        },
+                        "idd": "test_0001",
+                        "description": {
+                            "en": "描述1english",
+                            "zh-cn": "描述1"
+                        },
+                        "text": "文本1",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "__company_0730_gs": "gs0001"
+                    }
+                ],
+                "dyy": {
+                    "en": "多语言3english",
+                    "zh-cn": "多语言3"
+                },
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "test_0003",
+                "int": -33003,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0005"
+                    },
+                    {
+                        "gs_id": "gs_0006"
+                    },
+                    {
+                        "gs_id": "gs_0011"
+                    }
+                ],
+                "text": "文本3",
+                "company_0730": {
+                    "jc": "中国",
+                    "gs": "gs0001"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2026-02-02T11:16:20",
+                "test0730B_test_0730": [],
+                "dyy": {},
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "test_0007",
+                "int": -444555,
+                "_allow_data_update": true,
+                "company_gs": [],
+                "text": "文本7",
+                "company_0730": {
+                    "jc": "中国",
+                    "gs": "gs0001"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2025-10-10T23:00:00",
+                "test0730B_test_0730": [],
+                "dyy": {},
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "test_0004",
+                "int": 4,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0010"
+                    }
+                ],
+                "text": "文本4",
+                "company_0730": {
+                    "jc": "中国",
+                    "gs": "gs0001"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "1933-10-10T23:01:33",
+                "test0730B_test_0730": [],
+                "dyy": {},
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "test_0014",
+                "int": 14,
+                "_allow_data_update": true,
+                "company_gs": [],
+                "text": "文本14",
+                "company_0730": {
+                    "jc": "中国",
+                    "gs": "gs0001"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2026-07-11T10:11:11",
+                "test0730B_test_0730": [
+                    {
+                        "dyy": {
+                            "en": "多语言8english",
+                            "zh-cn": "多语言8"
+                        },
+                        "idd": "test_0008",
+                        "description": {
+                            "en": "描述8english",
+                            "zh-cn": "描述8"
+                        },
+                        "text": "文本8",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "__company_0730_gs": "gs0001"
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言1english",
+                            "zh-cn": "多语言13333"
+                        },
+                        "idd": "test_0009",
+                        "description": {
+                            "en": "描述1english",
+                            "zh-cn": "描述1"
+                        },
+                        "text": "文本9",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "__company_0730_gs": "gs0001"
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言1english",
+                            "zh-cn": "多语言13333"
+                        },
+                        "idd": "test_0010",
+                        "description": {
+                            "en": "描述1english",
+                            "zh-cn": "描述1"
+                        },
+                        "text": "文本10",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "__company_0730_gs": "gs0001"
+                    }
+                ],
+                "dyy": {
+                    "en": "多语言8english",
+                    "zh-cn": "多语言8"
+                },
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "test_0008",
+                "int": 20000,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0003"
+                    }
+                ],
+                "text": "文本8",
+                "company_0730": {
+                    "jc": "中国",
+                    "gs": "gs0001"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2026-07-09T10:11:11",
+                "test0730B_test_0730": [],
+                "dyy": {
+                    "en": "多语言1english",
+                    "zh-cn": "多语言13333"
+                },
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "test_0009",
+                "int": 44444,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0004"
+                    }
+                ],
+                "text": "文本9",
+                "company_0730": {
+                    "jc": "中国",
+                    "gs": "gs0001"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2026-07-09T10:11:11",
+                "test0730B_test_0730": [],
+                "dyy": {},
+                "test0730A_test_0730": [
+                    {
+                        "boole": true,
+                        "dyy": {
+                            "en": "多语言6english",
+                            "zh-cn": "多语言6"
+                        },
+                        "idd": "jp_35",
+                        "text": "文本6",
+                        "company_0730": {
+                            "jc": "龙玺",
+                            "gs": "gs0002"
+                        },
+                        "int": 6,
+                        "__company_0730_gs": "gs0002",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言5english",
+                            "zh-cn": "多语言5"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0013"
+                        },
+                        "idd": "jp_34",
+                        "text": "文本5",
+                        "company_0730": {
+                            "jc": "龙玺",
+                            "gs": "gs0002"
+                        },
+                        "int": 5,
+                        "__company_0730_gs": "gs0002",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言1english",
+                            "zh-cn": "多语言13333"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0004"
+                        },
+                        "idd": "jp_38",
+                        "text": "文本9",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 9,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "dyy": {
+                            "en": "多语言8english",
+                            "zh-cn": "多语言8"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0003"
+                        },
+                        "idd": "jp_39",
+                        "text": "文本8",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 8,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "dyy": {
+                            "en": "多语言8english",
+                            "zh-cn": "多语言8"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0003"
+                        },
+                        "idd": "jp_37",
+                        "text": "文本8",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 8,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "dyy": {},
+                        "idd": "jp_36",
+                        "text": "文本7",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 7,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {
+                            "en": "多语言4english",
+                            "zh-cn": "多语言4"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0010"
+                        },
+                        "idd": "jp_33",
+                        "text": "文本4",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 4,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "dyy": {
+                            "en": "多语言3english",
+                            "zh-cn": "多语言3"
+                        },
+                        "idd": "jp_32",
+                        "text": "文本3",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 3,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言2english",
+                            "zh-cn": "多语言2"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0011"
+                        },
+                        "idd": "jp_31",
+                        "text": "文本2",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 2,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {
+                            "en": "多语言1english",
+                            "zh-cn": "多语言1"
+                        },
+                        "idd": "jp_30",
+                        "text": "文本1",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 1,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "dyy": {},
+                        "idd": "jp_29",
+                        "text": "44444",
+                        "test0730A_1_test_0730_a": []
+                    }
+                ],
+                "_allow_data_delete": true,
+                "idd": "test_0010",
+                "int": 10,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0012"
+                    }
+                ],
+                "text": "文本10",
+                "company_0730": {
+                    "jc": "中国",
+                    "gs": "gs0001"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2025-07-02T18:00:00",
+                "test0730B_test_0730": [
+                    {
+                        "boole": true,
+                        "dyy": {
+                            "en": "多语言6english",
+                            "zh-cn": "多语言6"
+                        },
+                        "idd": "test_0006",
+                        "description": {
+                            "en": "描述6english",
+                            "zh-cn": "描述6"
+                        },
+                        "text": "文本6",
+                        "company_0730": {
+                            "jc": "龙玺",
+                            "gs": "gs0002"
+                        },
+                        "__company_0730_gs": "gs0002"
+                    },
+                    {
+                        "dyy": {},
+                        "idd": "test_0007",
+                        "description": {},
+                        "text": "文本7",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "__company_0730_gs": "gs0001"
+                    }
+                ],
+                "dyy": {},
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "test_0001",
+                "int": 1,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0005"
+                    },
+                    {
+                        "gs_id": "gs_0006"
+                    },
+                    {
+                        "gs_id": "gs_0011"
+                    }
+                ],
+                "text": "文本1",
+                "company_0730": {
+                    "jc": "中国",
+                    "gs": "gs0001"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2025-07-02T18:00:00",
+                "test0730B_test_0730": [],
+                "dyy": {},
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "te-st518",
+                "int": 1,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0005"
+                    },
+                    {
+                        "gs_id": "gs_0006"
+                    },
+                    {
+                        "gs_id": "gs_0011"
+                    }
+                ],
+                "text": "文本1",
+                "company_0730": {
+                    "jc": "中国",
+                    "gs": "gs0001"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2024-07-10T21:00:00",
+                "test0730B_test_0730": [],
+                "dyy": {},
+                "test0730A_test_0730": [
+                    {
+                        "boole": true,
+                        "dyy": {
+                            "en": "多语言6english",
+                            "zh-cn": "多语言6"
+                        },
+                        "idd": "test_0006",
+                        "text": "文本6",
+                        "company_0730": {
+                            "jc": "龙玺",
+                            "gs": "gs0002"
+                        },
+                        "int": 6,
+                        "__company_0730_gs": "gs0002",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言5english",
+                            "zh-cn": "多语言5"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0013"
+                        },
+                        "idd": "test_0005",
+                        "text": "文本5",
+                        "company_0730": {
+                            "jc": "龙玺",
+                            "gs": "gs0002"
+                        },
+                        "int": 5,
+                        "__company_0730_gs": "gs0002",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {
+                            "en": "多语言8english",
+                            "zh-cn": "多语言8"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0003"
+                        },
+                        "idd": "test_0008",
+                        "text": "文本8",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 8,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {},
+                        "idd": "test_0007",
+                        "text": "文本7",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 7,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {
+                            "en": "多语言4english",
+                            "zh-cn": "多语言4"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0010"
+                        },
+                        "idd": "test_0004",
+                        "text": "文本4",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 4,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言3english",
+                            "zh-cn": "多语言3"
+                        },
+                        "idd": "test_0003",
+                        "text": "文本3",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 3,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言2english",
+                            "zh-cn": "多语言2"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0011"
+                        },
+                        "idd": "test_0002",
+                        "text": "文本2",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 2,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {
+                            "en": "多语言1english",
+                            "zh-cn": "多语言1"
+                        },
+                        "idd": "test_0001",
+                        "text": "文本1",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 1,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {},
+                        "idd": "jp_12",
+                        "text": "44444",
+                        "company_0730": {
+                            "jc": "华东9999999",
+                            "gs": "gs0008"
+                        },
+                        "int": 55,
+                        "__company_0730_gs": "gs0008",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {},
+                        "idd": "jp_27",
+                        "text": "我生效了美誉",
+                        "company_0730": {
+                            "jc": "华东9999999",
+                            "gs": "gs0008"
+                        },
+                        "__company_0730_gs": "gs0008",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {},
+                        "idd": "jp_25",
+                        "text": "我生效了美誉",
+                        "company_0730": {
+                            "jc": "华东9999999",
+                            "gs": "gs0008"
+                        },
+                        "__company_0730_gs": "gs0008",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {},
+                        "idd": "jp_26",
+                        "text": "我生效了美誉",
+                        "company_0730": {
+                            "jc": "华东9999999",
+                            "gs": "gs0008"
+                        },
+                        "__company_0730_gs": "gs0008",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {},
+                        "idd": "jp_24",
+                        "text": "我生效了美誉",
+                        "company_0730": {
+                            "jc": "华东9999999",
+                            "gs": "gs0008"
+                        },
+                        "__company_0730_gs": "gs0008",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {},
+                        "idd": "jp_28",
+                        "text": "我生效了美誉",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {},
+                        "idd": "jp_23",
+                        "text": "我生效了美誉",
+                        "test0730A_1_test_0730_a": []
+                    }
+                ],
+                "_allow_data_delete": true,
+                "idd": "test_0002",
+                "int": 2,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0011"
+                    }
+                ],
+                "text": "文本2",
+                "company_0730": {
+                    "jc": "中国",
+                    "gs": "gs0001"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2022-07-07T22:11:00",
+                "test0730B_test_0730": [
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言2english",
+                            "zh-cn": "多语言2"
+                        },
+                        "idd": "test_0002",
+                        "description": {
+                            "en": "描述2english",
+                            "zh-cn": "描述2"
+                        },
+                        "text": "文本2",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "__company_0730_gs": "gs0001"
+                    }
+                ],
+                "dyy": {
+                    "en": "多语言5english",
+                    "zh-cn": "多语言5"
+                },
+                "test0730A_test_0730": [
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言1english",
+                            "zh-cn": "多语言13333"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0012"
+                        },
+                        "idd": "test_0010",
+                        "text": "文本10",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 10,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言1english",
+                            "zh-cn": "多语言13333"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0004"
+                        },
+                        "idd": "test_0009",
+                        "text": "文本9",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 9,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言1english",
+                            "zh-cn": "多语言13333"
+                        },
+                        "company_gs": {
+                            "gs_id": "gs_0004"
+                        },
+                        "idd": "jp_40",
+                        "text": "文本9",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "int": 9,
+                        "__company_0730_gs": "gs0001",
+                        "test0730A_1_test_0730_a": []
+                    }
+                ],
+                "_allow_data_delete": true,
+                "idd": "test_0005",
+                "int": 5,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0013"
+                    }
+                ],
+                "text": "文本5",
+                "company_0730": {
+                    "jc": "龙玺",
+                    "gs": "gs0002"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "1920-07-14T22:11:22",
+                "test0730B_test_0730": [],
+                "dyy": {},
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "test_0015",
+                "int": 15,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0013"
+                    }
+                ],
+                "text": "文本15",
+                "company_0730": {
+                    "jc": "龙玺",
+                    "gs": "gs0002"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "1920-07-14T22:11:22",
+                "test0730B_test_0730": [],
+                "dyy": {},
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "test_0018",
+                "int": 18,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0003"
+                    }
+                ],
+                "text": "文本18",
+                "company_0730": {
+                    "jc": "龙玺",
+                    "gs": "gs0002"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "2025-04-15T10:00:00",
+                "test0730B_test_0730": [
+                    {
+                        "dyy": {
+                            "en": "多语言3english",
+                            "zh-cn": "多语言3"
+                        },
+                        "idd": "test_0003",
+                        "description": {
+                            "en": "描述3english",
+                            "zh-cn": "描述333333"
+                        },
+                        "text": "文本3",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "__company_0730_gs": "gs0001"
+                    },
+                    {
+                        "boole": true,
+                        "dyy": {
+                            "en": "多语言4english",
+                            "zh-cn": "多语言4"
+                        },
+                        "idd": "test_0004",
+                        "description": {
+                            "en": "描述4english",
+                            "zh-cn": "描述4"
+                        },
+                        "text": "文本4",
+                        "company_0730": {
+                            "jc": "中国",
+                            "gs": "gs0001"
+                        },
+                        "__company_0730_gs": "gs0001"
+                    },
+                    {
+                        "boole": false,
+                        "dyy": {
+                            "en": "多语言5english",
+                            "zh-cn": "多语言5"
+                        },
+                        "idd": "test_0005",
+                        "description": {
+                            "en": "描述5english",
+                            "zh-cn": "描述5"
+                        },
+                        "text": "文本5",
+                        "company_0730": {
+                            "jc": "龙玺",
+                            "gs": "gs0002"
+                        },
+                        "__company_0730_gs": "gs0002"
+                    }
+                ],
+                "dyy": {
+                    "en": "多语言6english",
+                    "zh-cn": "多语言6"
+                },
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "company_gs": [],
+                "idd": "test_0006",
+                "text": "文本6",
+                "company_0730": {
+                    "jc": "龙玺",
+                    "gs": "gs0002"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_update": true,
+                "_allow_data_read": true
+            },
+            {
+                "date": "1920-07-14T22:11:22",
+                "test0730B_test_0730": [],
+                "dyy": {},
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "idd": "test_0016",
+                "int": 16,
+                "_allow_data_update": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0008"
+                    }
+                ],
+                "text": "文本16",
+                "company_0730": {
+                    "jc": "龙玺",
+                    "gs": "gs0002"
+                },
+                "test0730C_test_0730": [],
+                "_allow_data_read": true
+            },
+            {
+                "date": "1920-07-14T22:11:22",
+                "test0730B_test_0730": [],
+                "dyy": {},
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "company_gs": [
+                    {
+                        "gs_id": "gs_0005"
+                    }
+                ],
+                "idd": "test_0013",
+                "text": "文本13",
+                "test0730C_test_0730": [],
+                "int": 13,
+                "_allow_data_update": true,
+                "_allow_data_read": true
+            },
+            {
+                "date": "2026-03-05T00:00:00",
+                "test0730B_test_0730": [],
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "company_gs": [],
+                "idd": "te-st521",
+                "test0730C_test_0730": [],
+                "_allow_data_update": true,
+                "_allow_data_read": true
+            },
+            {
+                "date": "2026-02-26T00:00:00",
+                "test0730B_test_0730": [],
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "company_gs": [],
+                "idd": "te-st523",
+                "test0730C_test_0730": [],
+                "_allow_data_update": true,
+                "_allow_data_read": true
+            },
+            {
+                "date": "2026-01-29T00:00:00",
+                "test0730B_test_0730": [],
+                "test0730A_test_0730": [],
+                "_allow_data_delete": true,
+                "company_gs": [],
+                "idd": "te-st522",
+                "text": "测试默认值是否生效",
+                "test0730C_test_0730": [],
+                "int": 100,
+                "_allow_data_update": true,
+                "_allow_data_read": true
+            }
+        ]
+   
+}

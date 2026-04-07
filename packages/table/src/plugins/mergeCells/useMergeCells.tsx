@@ -6,6 +6,7 @@ import type { CellId } from '@grid-table/basic'
 import { getCellId, getRowIdAndColIdByCellId } from '../../utils/getCellId'
 import { tbodyMergeCellListAtom } from '../../components'
 import { mergeCellStyleMapAtom } from './state'
+import type { MergeCellStyleItem } from './state'
 
 export function useMergeCells({
   showBorder = true,
@@ -72,7 +73,7 @@ export function useMergeCells({
         mergedColIds.forEach((colId, colIndex) => {
           const tCellId = getCellId({ rowId, columnId: colId })
 
-          let next: CSSProperties
+          let next: MergeCellStyleItem
           if (rowIdList.length === 0 && colIdList.length === 0) {
             next = { display: 'none' }
           } else {
@@ -86,6 +87,7 @@ export function useMergeCells({
               next.top = 0
               next.height = containerSize.height
               next.zIndex = 0
+              next.className = 'grid-table-cell--sticky-merge'
             }
 
             if (hadColLast) next.borderBottomWidth = 0

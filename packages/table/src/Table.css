@@ -80,9 +80,10 @@
   align-items: center;
   padding: 2px 4px;
   white-space: nowrap;
-  overflow: auto;
-  position: relative;
-  z-index: 1;
+  /* overflow: auto; */
+  /* position: relative; */
+  /* z-index: 1; */
+  background-color: var(--grid-bg-color);
 }
 
 .grid-table [role='row']:hover > * {

@@ -1,0 +1,40 @@
+.merge-cells-demo {
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.merge-cells-demo__header {
+  margin-bottom: 16px;
+}
+
+.merge-cells-demo__header h2 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  color: #1a1a1a;
+}
+
+.merge-cells-demo__desc {
+  margin: 0 0 12px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.merge-cells-demo__info {
+  display: flex;
+  gap: 20px;
+  padding: 10px 16px;
+  background: #f0f7ff;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #444;
+}
+
+.merge-cells-demo__info strong {
+  color: #1677ff;
+}
+
+.merge-cells-demo__table {
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  overflow: hidden;
+}

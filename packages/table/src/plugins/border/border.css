@@ -53,3 +53,17 @@
 .grid-table-border-vertical [role='tbody'] > :last-child > * {
   border-bottom-width: 0;
 }
+
+/* sticky 合并单元格底部分隔线 */
+/* 默认用 ::before；当 sticky-shadow-left 占了 ::before 时，切到 ::after */
+.grid-table-cell--sticky-merge:not(.sticky-shadow-left)::before,
+.grid-table-cell--sticky-merge.sticky-shadow-left::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-top: 1px var(--grid-cell-border-style) var(--grid-border-color);
+  pointer-events: none;
+  z-index: 1;
+}

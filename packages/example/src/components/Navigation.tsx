@@ -43,6 +43,7 @@ export function Navigation({ className }: NavigationProps) {
         title={route.label}
       >
         <span className="nav-route-label">{route.label}</span>
+        {route.status === 'wip' && <span className="nav-route-wip">WIP</span>}
       </button>
     </li>
   )
