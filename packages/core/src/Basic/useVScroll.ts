@@ -81,13 +81,15 @@ export function useVScroll(props: UseVScrollProps) {
   }, [])
   const onScroll = useCallback((event: Event) => {
     const { scrollTop, scrollLeft } = event.currentTarget as Element
+    const prevValue = stateCurrent[stateProp]
     stateCurrent.stateScrollTop = Math.max(scrollTop, 0)
     stateCurrent.stateScrollLeft = Math.max(scrollLeft, 0)
-    if (tickingRef.current === false) {
+    // 仅当本方向的偏移量实际变化时才触发渲染
+    if (stateCurrent[stateProp] !== prevValue && tickingRef.current === false) {
       requestAnimationFrame(scrollHandler)
       tickingRef.current = true
     }
-  }, [])
+  }, [scrollHandler, stateProp])
 
   const showIndexList = useMemo(() => {
     if (!props.stayIndexList) {

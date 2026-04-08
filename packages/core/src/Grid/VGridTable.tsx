@@ -103,12 +103,17 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     [onXScroll, onYScroll],
   )
 
+  const onScrollRef = useRef(onScroll)
+  onScrollRef.current = onScroll
+
   useEffect(() => {
-    if (!ref.current) {
+    const el = ref.current
+    if (!el) {
       return
     }
-
-    ref.current.addEventListener('scroll', onScroll, { passive: true })
+    const handler = (event: Event) => onScrollRef.current(event)
+    el.addEventListener('scroll', handler, { passive: true })
+    return () => el.removeEventListener('scroll', handler)
   }, [])
 
   const Empty = props.emptyComponent || Fragment

@@ -1,5 +1,11 @@
 # @grid-table/core
 
+## 0.6.66
+
+### Patch Changes
+
+- fix: scroll direction switch causing render freeze on Windows
+
 ## 0.6.65
 
 ## 0.6.64
