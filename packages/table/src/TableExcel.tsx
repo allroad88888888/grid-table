@@ -17,7 +17,6 @@ import { useHeaderMergeCells, useMergeCells } from './plugins/mergeCells'
 import { useBorder } from './plugins/border'
 import { useSort } from './plugins/sort'
 import { useFilter } from './plugins/filter/useFilter'
-import { useRowExpand } from './plugins/rowExpand'
 import { useKeyboard } from './plugins/keyboard/useKeyboard'
 
 import './Table.css'
@@ -95,9 +94,6 @@ export const TableExcel = forwardRef<AntdTableRef, AntdTableProps>((props, table
     enableMultiSort: props.sort?.enableMultiSort,
     sortCycle: props.sort?.cycle,
   })
-
-  /** 行展开功能（在排序后的数据上展开） */
-  useRowExpand(props.rowExpand || {})
 
   const { calcColumnSizeByIndex, calcHeadRowSizeByIndex, calcRowSizeByIndex } = useCellSizeByColumn(
     {

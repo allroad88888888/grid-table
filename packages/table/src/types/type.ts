@@ -8,7 +8,6 @@ import type { AutoColumnsSizeOptions } from '../plugins/calcSizeByColumn/measure
 import type { OnColumnResizeCallback } from '../plugins/drag/useDrag'
 import type { SortDirection, SortState } from '../plugins/sort/types'
 import type { FilterState } from '../plugins/filter/types'
-import type { UseRowExpandProps } from '../plugins/rowExpand/types'
 
 /**
  * 表格多语言配置
@@ -186,11 +185,6 @@ export type AntdTableProps = {
     onChange?: (filterState: FilterState) => void
     remote?: boolean
   }
-
-  /**
-   * 行展开配置
-   */
-  rowExpand?: UseRowExpandProps
 
 } & CopyProps &
   UseDataProps &

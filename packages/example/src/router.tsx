@@ -31,7 +31,6 @@ import { PasteDemo } from './pages/PasteDemo'
 import TabDemo from './pages/TabDemo'
 import { SortDemo } from './pages/SortDemo'
 import { FilterDemo } from './pages/FilterDemo'
-import { RowExpandDemo } from './pages/RowExpandDemo'
 import { MergeCellsDemo } from './pages/MergeCellsDemo'
 
 // 路由项目接口定义
@@ -203,12 +202,6 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/plugins/filter',
         component: FilterDemo,
         label: '过滤',
-      },
-      {
-        path: '/plugins/row-expand',
-        component: RowExpandDemo,
-        label: '行展开',
-        status: 'wip',
       },
       {
         path: '/plugins/merge-cells',
