@@ -1,5 +1,11 @@
 # @grid-table/basic
 
+## 0.6.65
+
+### Patch Changes
+
+- @grid-table/core@0.6.65
+
 ## 0.6.64
 
 ## 0.6.63
