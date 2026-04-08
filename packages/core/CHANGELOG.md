@@ -1,5 +1,7 @@
 # @grid-table/core
 
+## 0.6.67
+
 ## 0.6.66
 
 ### Patch Changes

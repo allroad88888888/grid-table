@@ -1,5 +1,13 @@
 # @grid-table/view
 
+## 0.6.67
+
+### Patch Changes
+
+- fix: 移除合并单元格 sticky 模式下的 zIndex 重置
+  - @grid-table/core@0.6.67
+  - @grid-table/basic@0.6.67
+
 ## 0.6.66
 
 ### Patch Changes
