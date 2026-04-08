@@ -26,7 +26,7 @@
     "@grid-table/view": "workspace:*",
     "@grid-tree/core": "workspace:*",
     "@grid-tree/select": "workspace:*",
-    "antd": "^5.20.2",
+    "antd": "^6.3.5",
     "clsx": "^2.1.1",
     "@einfach/react": "^0.3.24",
     "@einfach/utils": "^0.2.16",
