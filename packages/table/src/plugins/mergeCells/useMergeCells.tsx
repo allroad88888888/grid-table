@@ -86,7 +86,7 @@ export function useMergeCells({
               next.position = 'sticky'
               next.top = 0
               next.height = containerSize.height
-              next.zIndex = 0
+              // next.zIndex = 0
               next.className = 'grid-table-cell--sticky-merge'
             }
 
