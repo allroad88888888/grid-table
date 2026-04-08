@@ -43,7 +43,7 @@
     }
   },
   "devDependencies": {
-    "@types/node": "^20.11.30",
+    "@types/node": "^25.5.2",
     "@types/react": "^18.3.3"
   },
   "dependencies": {
