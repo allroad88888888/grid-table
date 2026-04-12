@@ -16,6 +16,10 @@ export const headerDataInitAtom = atom(
       headerRowSizeMap.set(t, size)
       setter(getHeaderRowInfoAtomByRowId(t), info)
     })
+
+    if (headerRowIndexList.length === 0) {
+      headerRowSizeMap.set('0', size)
+    }
     /**
      * ['0'] 默认有一列
      */

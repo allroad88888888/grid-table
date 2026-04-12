@@ -1,0 +1,120 @@
+.merge-sticky-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+.merge-sticky-demo__header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 24px;
+  border: 1px solid #d9e4ec;
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(231, 245, 255, 0.9), rgba(255, 255, 255, 0.98)),
+    #fff;
+}
+
+.merge-sticky-demo__header h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+  color: #16324f;
+}
+
+.merge-sticky-demo__header p {
+  margin: 0;
+  max-width: 960px;
+  line-height: 1.6;
+  color: #486278;
+}
+
+.merge-sticky-demo__checklist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.merge-sticky-demo__checklist span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(14, 116, 144, 0.08);
+  color: #0f5d73;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.merge-sticky-demo__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.merge-sticky-demo__panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.merge-sticky-demo__panel-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #183153;
+}
+
+.merge-sticky-demo__panel-header p {
+  margin: 0;
+  color: #5b6f82;
+  line-height: 1.5;
+}
+
+.merge-sticky-demo__table {
+  border: 1px solid #d9e4ec;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 16px 48px rgba(18, 38, 63, 0.06);
+}
+
+.merge-sticky-demo__cell-title {
+  white-space: normal;
+  line-height: 1.4;
+  font-weight: 700;
+  color: #15314b;
+}
+
+.merge-sticky-demo__cell-subtitle {
+  white-space: normal;
+  line-height: 1.4;
+  color: #31556d;
+  font-weight: 600;
+}
+
+.merge-sticky-demo__chain {
+  white-space: normal;
+  line-height: 1.45;
+  color: #5a3a0f;
+  font-weight: 700;
+}
+
+.merge-sticky-demo__note {
+  white-space: normal;
+  line-height: 1.5;
+  color: #516477;
+}
+
+@media (max-width: 768px) {
+  .merge-sticky-demo {
+    padding: 16px;
+  }
+
+  .merge-sticky-demo__header {
+    padding: 16px;
+  }
+
+  .merge-sticky-demo__header h1 {
+    font-size: 24px;
+  }
+}

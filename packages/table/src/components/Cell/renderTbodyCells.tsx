@@ -1,10 +1,13 @@
-import type { CellsRenderProps, Position } from '@grid-table/core'
-import { useCallback, useMemo, memo } from 'react'
+import type { CellsRenderProps } from '@grid-table/core'
+import { useMemo, memo } from 'react'
 import { useAtomValue, useStore } from '@einfach/react'
-import { mergeCellBodyMapAtom } from './stateMergeCells'
-import type { CellId } from '@grid-table/basic'
+import {
+  mergeCellBodyAnchorSetAtom,
+  mergeCellBodyMapAtom,
+  tbodyMergeCellListAtom,
+} from './stateMergeCells'
 import { columnIdShowListAtom, rowIdShowListAtom } from '@grid-table/basic'
-import { getCellId, getRowIdAndColIdByCellId } from '../../utils'
+import { getCellId, getRowIdAndColIdByCellId } from '../../utils/getCellId'
 import { DataCell } from './Cell'
 
 export const TbodyCells = memo(function TbodyCells({
@@ -14,35 +17,18 @@ export const TbodyCells = memo(function TbodyCells({
 }: CellsRenderProps) {
   const store = useStore()
   const mergeCellMap = useAtomValue(mergeCellBodyMapAtom)
+  const mergeCellAnchorSet = useAtomValue(mergeCellBodyAnchorSetAtom)
+  const mergeCellList = useAtomValue(tbodyMergeCellListAtom)
   const columnList = useAtomValue(columnIdShowListAtom, { store })
   const rowList = useAtomValue(rowIdShowListAtom, { store })
+  const rowIndexMap = useMemo(() => {
+    return new Map(rowList.map((rowId, index) => [rowId, index]))
+  }, [rowList])
+  const columnIndexMap = useMemo(() => {
+    return new Map(columnList.map((columnId, index) => [columnId, index]))
+  }, [columnList])
 
-  const getCellIdByPosition = useCallback(
-    (position: Position) => {
-      const cellId = getCellId({
-        rowId: rowList[position.rowIndex],
-        columnId: columnList[position.columnIndex],
-      })
-
-      if (mergeCellMap.has(cellId)) {
-        const tCellId = mergeCellMap.get(cellId)!
-        const [rowId, columnId] = getRowIdAndColIdByCellId(tCellId)
-        return {
-          cellId: tCellId,
-          rowId,
-          columnId,
-        }
-      }
-      return {
-        cellId,
-        rowId: rowList[position.rowIndex],
-        columnId: columnList[position.columnIndex],
-      }
-    },
-    [columnList, mergeCellMap, rowList],
-  )
-
-  const cellsToRender = useMemo(() => {
+  const ordinaryCellsToRender = useMemo(() => {
     const result: Array<{
       cellId: string
       columnId: string
@@ -50,27 +36,84 @@ export const TbodyCells = memo(function TbodyCells({
       rowIndex: number
       columnIndex: number
     }> = []
-    const seen = new Set<CellId>()
+
     for (const rowIndex of rowIndexList) {
       for (const columnIndex of columnIndexList) {
-        const { cellId, columnId, rowId } = getCellIdByPosition({
+        const rowId = rowList[rowIndex]
+        const columnId = columnList[columnIndex]
+        const cellId = getCellId({ rowId, columnId })
+
+        if (mergeCellAnchorSet.has(cellId) || mergeCellMap.has(cellId)) {
+          continue
+        }
+
+        result.push({
+          cellId,
+          columnId,
+          rowId,
           rowIndex,
           columnIndex,
         })
-        if (seen.has(cellId)) continue
-        seen.add(cellId)
-        result.push({ cellId, columnId, rowId, rowIndex, columnIndex })
       }
     }
     return result
-  }, [rowIndexList, columnIndexList, getCellIdByPosition])
+  }, [columnList, mergeCellAnchorSet, mergeCellMap, rowIndexList, rowList, columnIndexList])
 
+  const mergeOverlayCellsToRender = useMemo(() => {
+    if (!mergeCellList || mergeCellList.length === 0) return []
+
+    const visibleRowSet = new Set(rowIndexList.map((rowIndex) => rowList[rowIndex]))
+    const visibleColumnSet = new Set(columnIndexList.map((columnIndex) => columnList[columnIndex]))
+
+    return mergeCellList.flatMap(({ cellId, rowIdList = [], colIdList = [] }) => {
+      const [anchorRowId, anchorColumnId] = getRowIdAndColIdByCellId(cellId)
+      const mergedRowIds = [anchorRowId, ...rowIdList].filter((rowId) => rowIndexMap.has(rowId))
+      const mergedColumnIds = [anchorColumnId, ...colIdList].filter((columnId) =>
+        columnIndexMap.has(columnId),
+      )
+
+      if (mergedRowIds.length === 0 || mergedColumnIds.length === 0) return []
+      if (mergedRowIds.length === 1 && mergedColumnIds.length === 1) return []
+
+      const hasVisibleRows = mergedRowIds.some((rowId) => visibleRowSet.has(rowId))
+      const hasVisibleColumns = mergedColumnIds.some((columnId) => visibleColumnSet.has(columnId))
+      if (!hasVisibleRows || !hasVisibleColumns) return []
+
+      const positionRowId = mergedRowIds[0]
+      const positionColumnId = mergedColumnIds[0]
+      const rowIndex = rowIndexMap.get(positionRowId)
+      const columnIndex = columnIndexMap.get(positionColumnId)
+
+      if (rowIndex === undefined || columnIndex === undefined) return []
+
+      return [
+        {
+          cellId,
+          columnId: anchorColumnId,
+          rowId: anchorRowId,
+          rowIndex,
+          columnIndex,
+        },
+      ]
+    })
+  }, [columnIndexList, columnIndexMap, columnList, mergeCellList, rowIndexList, rowIndexMap, rowList])
 
   return (
     <>
-      {cellsToRender.map(({ cellId, columnId, rowId, rowIndex, columnIndex }) => (
+      {ordinaryCellsToRender.map(({ cellId, columnId, rowId, rowIndex, columnIndex }) => (
         <DataCell
           key={cellId}
+          columnIndex={columnIndex}
+          rowIndex={rowIndex}
+          style={getCellStyleByIndex(rowIndex, columnIndex)}
+          cellId={cellId}
+          columnId={columnId}
+          rowId={rowId}
+        />
+      ))}
+      {mergeOverlayCellsToRender.map(({ cellId, columnId, rowId, rowIndex, columnIndex }) => (
+        <DataCell
+          key={`merge-overlay-${cellId}`}
           columnIndex={columnIndex}
           rowIndex={rowIndex}
           style={getCellStyleByIndex(rowIndex, columnIndex)}

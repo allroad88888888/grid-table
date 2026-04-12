@@ -1,7 +1,7 @@
 import { atom } from '@einfach/react'
 import type { CellId } from '@grid-table/basic'
 import type { MergeCellIdItem } from './type'
-import { getCellId, getRowIdAndColIdByCellId } from '../../utils'
+import { getCellId, getRowIdAndColIdByCellId } from '../../utils/getCellId'
 
 export const theadMergeCellListAtom = atom<MergeCellIdItem[] | undefined>(undefined)
 export const tbodyMergeCellListAtom = atom<MergeCellIdItem[] | undefined>(undefined)
@@ -11,19 +11,21 @@ export function mergeCellsToMap(list: MergeCellIdItem[] | undefined): Map<CellId
 
   list?.forEach(({ cellId, rowIdList, colIdList }) => {
     const [curRowId, curColId] = getRowIdAndColIdByCellId(cellId)
-    rowIdList?.forEach((rowId) => {
-      const tCellId = getCellId({
-        rowId,
-        columnId: curColId,
+    const mergedRowIds = [curRowId, ...(rowIdList || [])]
+    const mergedColIds = [curColId, ...(colIdList || [])]
+
+    mergedRowIds.forEach((rowId, rowIndex) => {
+      mergedColIds.forEach((colId, colIndex) => {
+        if (rowIndex === 0 && colIndex === 0) {
+          return
+        }
+
+        const tCellId = getCellId({
+          rowId,
+          columnId: colId,
+        })
+        resMap.set(tCellId, cellId)
       })
-      resMap.set(tCellId, cellId)
-    })
-    colIdList?.forEach((colId) => {
-      const tCellId = getCellId({
-        rowId: curRowId,
-        columnId: colId,
-      })
-      resMap.set(tCellId, cellId)
     })
   })
 
@@ -44,4 +46,12 @@ export const mergeCellTheadMapAtom = atom((getter) => {
  */
 export const mergeCellBodyMapAtom = atom((getter) => {
   return mergeCellsToMap(getter(tbodyMergeCellListAtom))
+})
+
+export const mergeCellBodyAnchorSetAtom = atom((getter) => {
+  const anchorSet = new Set<CellId>()
+  getter(tbodyMergeCellListAtom)?.forEach(({ cellId }) => {
+    anchorSet.add(cellId)
+  })
+  return anchorSet
 })

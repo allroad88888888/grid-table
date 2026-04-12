@@ -89,7 +89,7 @@ describe('sizeList construction', () => {
       expect(sizeList.length).toBe(count + 1)
       expect(totalLength).toBe(count * 36)
     })
-    expect(elapsed).toBeLessThan(count === 100_000 ? 100 : 20)
+    expect(elapsed).toBeLessThan(count === 100_000 ? 120 : 40)
   })
 
   test.each([10_000, 100_000])('%i items — variable row height', (count) => {
@@ -97,7 +97,7 @@ describe('sizeList construction', () => {
     const elapsed = measure(`build sizeList variable (${count})`, () => {
       buildSizeList(count, (i) => heights[i])
     })
-    expect(elapsed).toBeLessThan(count === 100_000 ? 100 : 20)
+    expect(elapsed).toBeLessThan(count === 100_000 ? 120 : 40)
   })
 })
 

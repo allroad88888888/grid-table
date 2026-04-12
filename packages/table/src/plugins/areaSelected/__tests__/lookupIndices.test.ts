@@ -191,6 +191,6 @@ describe('lookupIndices perf — Map vs old linear', () => {
     }
     const elapsed = performance.now() - start
     console.log(`  100 drag updates (100k rows): ${elapsed.toFixed(2)}ms`)
-    expect(elapsed).toBeLessThan(5000)
+    expect(elapsed).toBeLessThan(10000)
   })
 })

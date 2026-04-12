@@ -6,7 +6,13 @@ import { mergeCellStyleMapAtom } from '../plugins/mergeCells/state'
 import { areaSelectedTbodyCellSetAtom } from '../plugins/areaSelected/state'
 import { copyCellTbodyStyleMapAtom } from '../plugins/copy/state'
 
-export function useCell({ cellId, rowId, columnId, style, rowIndex }: CellProps) {
+export function useCell({
+  cellId,
+  rowId,
+  columnId,
+  style,
+  rowIndex,
+}: CellProps) {
   const { getColumnStateAtomById, getCellStateAtomById, getRowStateAtomById } = useBasic()
   const store = useStore()
 
@@ -53,7 +59,15 @@ export function useCell({ cellId, rowId, columnId, style, rowIndex }: CellProps)
         className: clsList.join(' '),
       }
     })
-  }, [cellId, columnId, getCellStateAtomById, getColumnStateAtomById, areaSelectedAtom])
+  }, [
+    areaSelectedAtom,
+    cellId,
+    columnId,
+    getCellStateAtomById,
+    getColumnStateAtomById,
+    getRowStateAtomById,
+    rowId,
+  ])
 
   const {
     style: stateStyle,
