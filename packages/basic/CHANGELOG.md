@@ -1,5 +1,18 @@
 # @grid-table/basic
 
+## 0.6.68
+
+### Patch Changes
+
+- Fix sticky merge overlay behavior across fixed columns.
+
+  This release improves large merged cell rendering by keeping sticky merge content visible
+  without covering following cells, restoring fixed-column shadow classes on merge overlays,
+  and tightening related regression coverage.
+
+- Updated dependencies
+  - @grid-table/core@0.6.68
+
 ## 0.6.67
 
 ### Patch Changes
