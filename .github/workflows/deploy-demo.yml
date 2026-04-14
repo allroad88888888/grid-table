@@ -37,7 +37,7 @@ jobs:
       - name: Build demo site
         run: cd packages/example && GITHUB_PAGES=true pnpm run build
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: packages/example/dist
 
