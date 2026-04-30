@@ -33,6 +33,7 @@ import { SortDemo } from './pages/SortDemo'
 import { FilterDemo } from './pages/FilterDemo'
 import { MergeCellsDemo } from './pages/MergeCellsDemo'
 import { MergeCellsStickyOverflowDemo } from './pages/MergeCellsStickyOverflowDemo'
+import { MergeCellsSortDemo } from './pages/MergeCellsSortDemo'
 
 // 路由项目接口定义
 export interface RouteItem {
@@ -213,6 +214,11 @@ export const RouteGroups: Record<string, RouteGroup> = {
         path: '/plugins/merge-cells-overflow',
         component: MergeCellsStickyOverflowDemo,
         label: '超高合并单元格',
+      },
+      {
+        path: '/plugins/merge-cells-sort',
+        component: MergeCellsSortDemo,
+        label: '合并单元格-排序联动',
       },
     ],
   },

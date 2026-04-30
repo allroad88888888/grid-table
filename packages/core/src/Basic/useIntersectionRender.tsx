@@ -163,15 +163,14 @@ const defaultManager = new IntersectionObserverManager()
 export function useIntersectionRender<T extends Element = HTMLDivElement>() {
   const [shouldRender, setShouldRender] = useState(false)
   const [, startTransition] = useTransition()
-  const elementRef = useRef<T>(null)
-  
+
   // 从 Context 获取 manager，如果没有则使用默认单例
   const manager = useContext(IntersectionObserverManagerContext) || defaultManager
-  
+
   // 检查全局 enabled 状态
   const enabled = manager.isEnabled()
-  
-  // 保存 cleanup 函数，用于渲染后取消监听
+
+  // 保存 cleanup 函数，用于卸载/重新挂载时取消监听
   const cleanupRef = useRef<(() => void) | null>(null)
 
   const handleIntersection = useCallback((isIntersecting: boolean) => {
@@ -179,7 +178,7 @@ export function useIntersectionRender<T extends Element = HTMLDivElement>() {
       // 使用 startTransition 低优先级渲染
       startTransition(() => {
         setShouldRender(true)
-        
+
         // 渲染完成后，立即取消监听，释放资源
         if (cleanupRef.current) {
           cleanupRef.current()
@@ -189,35 +188,31 @@ export function useIntersectionRender<T extends Element = HTMLDivElement>() {
     }
   }, [startTransition])
 
-  useEffect(() => {
-    // 如果全局禁用，直接渲染
-    if (!enabled) {
-      setShouldRender(true)
-      return
-    }
-
-    const element = elementRef.current
-    if (!element) {
-      return
-    }
-
-    // 使用表格专属的 manager（配置已在 Provider 层面设置）
-    const cleanup = manager.observe(element, handleIntersection)
-
-    // 保存 cleanup 函数
-    cleanupRef.current = cleanup
-
-    return () => {
-      // 组件卸载时清理
+  // 使用回调 ref：当元素附加/分离时立即响应，而不是依赖 useEffect。
+  // 这样即便元素在初次提交后才被附加（例如单元格从 merge overlay 切换到普通态时
+  // ref 的条件由 false 翻转为 true），监听依然能正确建立。
+  const setRef = useCallback(
+    (node: T | null) => {
+      // 切换/卸载时清理上一次监听
       if (cleanupRef.current) {
         cleanupRef.current()
         cleanupRef.current = null
       }
-    }
-  }, [enabled, handleIntersection, manager])
+
+      if (!enabled) {
+        setShouldRender(true)
+        return
+      }
+
+      if (!node) return
+
+      cleanupRef.current = manager.observe(node, handleIntersection)
+    },
+    [enabled, handleIntersection, manager],
+  )
 
   return {
-    ref: elementRef,
+    ref: setRef,
     shouldRender,
     isPending: !shouldRender && enabled,
   }
