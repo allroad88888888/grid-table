@@ -1,6 +1,6 @@
 {
   "name": "@grid-tree/select",
-  "version": "0.6.8",
+  "version": "0.6.9",
   "description": "树形选择器组件，基于 @grid-tree/core 构建",
   "main": "./esm/index.js",
   "module": "./esm/index.js",

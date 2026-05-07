@@ -1,5 +1,13 @@
 # @grid-tree/core
 
+## 0.6.9
+
+### Patch Changes
+
+- 6b5b57d: windows下缩放列错位
+- Updated dependencies [6b5b57d]
+  - @grid-table/core@0.6.70
+
 ## 0.6.8
 
 ### Patch Changes

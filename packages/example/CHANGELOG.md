@@ -1,5 +1,20 @@
 # @grid-table/example
 
+## 0.0.78
+
+### Patch Changes
+
+- 6b5b57d: windows下缩放列错位
+- Updated dependencies [6b5b57d]
+  - @grid-table/core@0.6.70
+  - @grid-table/basic@0.6.70
+  - @grid-table/excel@0.5.68
+  - @grid-table/paste@0.1.5
+  - @grid-table/pivot@0.5.71
+  - @grid-table/view@0.6.70
+  - @grid-tree/core@0.6.9
+  - @grid-tree/select@0.6.9
+
 ## 0.0.77
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @grid-table/pivot
 
+## 0.5.71
+
+### Patch Changes
+
+- 6b5b57d: windows下缩放列错位
+- Updated dependencies [6b5b57d]
+  - @grid-table/core@0.6.70
+  - @grid-table/basic@0.6.70
+  - @grid-table/view@0.6.70
+
 ## 0.5.70
 
 ### Patch Changes

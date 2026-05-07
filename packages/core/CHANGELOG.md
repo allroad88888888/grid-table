@@ -1,5 +1,11 @@
 # @grid-table/core
 
+## 0.6.70
+
+### Patch Changes
+
+- 6b5b57d: windows下缩放列错位
+
 ## 0.6.69
 
 ### Patch Changes
