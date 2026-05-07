@@ -228,7 +228,10 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
           style={{
             display: 'grid',
             gridTemplateRows: `repeat(auto-fill, ${rowBaseSize}px)`,
-            gridTemplateColumns: `repeat(auto-fill, ${columnBaseSize}px)`,
+            // 与 thead 保持一致使用显式轨道数，避免非整数 DPR/浏览器缩放下
+            // auto-fill 由容器宽度推断出的轨道数与 thead 显式轨道数差 ±1，
+            // 导致越靠右的列在 thead/tbody 之间错位累积越大
+            gridTemplateColumns: `repeat(${totalWidth / columnBaseSize}, ${columnBaseSize}px)`,
             height: totalHeight,
             width: totalWidth,
           }}
