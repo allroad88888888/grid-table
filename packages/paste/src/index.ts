@@ -15,7 +15,10 @@ export {
   useTablePaste,
   useTablePasteTsv,
   useTablePasteData,
+  useTablePasteWithFormatter,
   type TablePasteResult,
+  type ColumnFormatter,
+  type UseTablePasteWithFormatterResult,
 } from './table'
 
 // Utils - 基础工具函数
