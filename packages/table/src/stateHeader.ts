@@ -1,7 +1,7 @@
 import { atom } from '@einfach/react'
 import { dataFamilyAtom } from './stateCore'
 import type { RowId } from '@grid-table/basic'
-import { headerRowIndexListAtom, headerRowSizeMaAtom } from '@grid-table/basic'
+import { headerRowIndexListAtom, headerRowSizeMapAtom } from '@grid-table/basic'
 import { getHeaderRowId } from './utils/getHeaderRowId'
 
 export const headerDataInitAtom = atom(
@@ -25,6 +25,6 @@ export const headerDataInitAtom = atom(
      */
     setter(headerRowIndexListAtom, headerRowIndexList.length === 0 ? ['0'] : headerRowIndexList)
 
-    setter(headerRowSizeMaAtom, headerRowSizeMap)
+    setter(headerRowSizeMapAtom, headerRowSizeMap)
   },
 )

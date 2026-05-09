@@ -5,7 +5,7 @@ import {
   columnIndexListAtom,
   headerRowIndexListAtom,
   columnSizeMapAtom,
-  headerRowSizeMaAtom,
+  headerRowSizeMapAtom,
 } from '@grid-table/basic'
 import type { CellId } from '@grid-table/basic'
 import { getCellId, getRowIdAndColIdByCellId } from '../../../utils/getCellId'
@@ -22,7 +22,7 @@ function computeHeaderMergeStyles(
   const rowIdShowList = store.getter(headerRowIndexListAtom) as string[]
   const columnIdShowList = store.getter(columnIndexListAtom) as string[]
   const columnSizeMap = store.getter(columnSizeMapAtom)
-  const rowSizeMap = store.getter(headerRowSizeMaAtom)
+  const rowSizeMap = store.getter(headerRowSizeMapAtom)
 
   const visibleRowSet = new Set(rowIdShowList)
   const visibleColSet = new Set(columnIdShowList)
@@ -111,7 +111,7 @@ function setupStore(opts: {
   store.setter(headerRowIndexListAtom, rows)
   store.setter(columnIndexListAtom, columns)
   store.setter(
-    headerRowSizeMaAtom,
+    headerRowSizeMapAtom,
     new Map(rows.map((id) => [id, rowHeight])),
   )
   store.setter(

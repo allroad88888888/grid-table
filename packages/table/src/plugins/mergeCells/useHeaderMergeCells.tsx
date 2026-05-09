@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useAtomValue, useStore } from '@einfach/react'
 import {
   columnIdShowListAtom,
-  headerRowSizeMaAtom,
+  headerRowSizeMapAtom,
   rowIdShowListAtom,
   useBasic,
 } from '@grid-table/basic'
@@ -18,7 +18,7 @@ export function useHeaderMergeCells({ showBorder = true }: { showBorder?: boolea
 
   const cellList = useAtomValue(theadMergeCellListAtom)
   const columnSizeMap = useAtomValue(columnSizeMapAtom)
-  const rowSizeMap = useAtomValue(headerRowSizeMaAtom)
+  const rowSizeMap = useAtomValue(headerRowSizeMapAtom)
   const rowIdShowList = useAtomValue(rowIdShowListAtom, { store })
   const columnIdShowList = useAtomValue(columnIdShowListAtom, { store })
 

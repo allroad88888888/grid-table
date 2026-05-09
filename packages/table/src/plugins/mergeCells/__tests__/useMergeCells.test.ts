@@ -3,7 +3,7 @@ import type { Store } from '@einfach/react'
 import { createStore } from '@einfach/react'
 import {
   columnIndexListAtom,
-  headerRowSizeMaAtom,
+  headerRowSizeMapAtom,
   rowIndexListAtom,
   columnSizeMapAtom,
   rowSizeMapAtom,
@@ -37,7 +37,7 @@ function setupStore(opts: {
 
   store.setter(rowIndexListAtom, rows)
   store.setter(columnIndexListAtom, columns)
-  store.setter(headerRowSizeMaAtom, new Map([['0', headerHeight]]))
+  store.setter(headerRowSizeMapAtom, new Map([['0', headerHeight]]))
   store.setter(stickyLeftAtom, stickyLeftIds)
   store.setter(stickyRightAtom, stickyRightIds)
   store.setter(

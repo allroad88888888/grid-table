@@ -43,7 +43,7 @@ export const rowSizeMapAtom = atom(new Map<RowId, number>())
 /**
  *  合并行 合并列
  */
-export const headerRowSizeMaAtom = atom(new Map<RowId, number>())
+export const headerRowSizeMapAtom = atom(new Map<RowId, number>())
 
 /**
  * cellEvent
@@ -149,7 +149,7 @@ export const basicAtom = atom(() => {
     rowIdShowListAtom,
     columnSizeMapAtom,
     rowSizeMapAtom,
-    headerRowSizeMaAtom,
+    headerRowSizeMapAtom,
     theadCellEventsAtom,
   }
 })

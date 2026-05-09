@@ -10,7 +10,7 @@ import {
   rowSizeMapAtom,
   basicAtom,
   headerRowIndexListAtom,
-  headerRowSizeMaAtom,
+  headerRowSizeMapAtom,
 } from '@grid-table/basic'
 import { getCellId, getRowIdAndColIdByCellId } from '../utils/getCellId'
 import type { MergeCellIdItem } from '../components/Cell/type'
@@ -35,7 +35,7 @@ function setupStore(rowCount: number, colCount: number) {
   store.setter(columnIndexListAtom, cols)
   store.setter(headerRowIndexListAtom, rows.slice(0, Math.min(5, rowCount)))
   store.setter(rowSizeMapAtom, new Map(rows.map((id) => [id, 36])))
-  store.setter(headerRowSizeMaAtom, new Map(rows.map((id) => [id, 40])))
+  store.setter(headerRowSizeMapAtom, new Map(rows.map((id) => [id, 40])))
   store.setter(columnSizeMapAtom, new Map(cols.map((id) => [id, 100])))
   const basic = store.getter(basicAtom)
   return { store, basic, rows, cols }

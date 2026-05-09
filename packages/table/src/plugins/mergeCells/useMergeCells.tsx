@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAtomValue, useStore } from '@einfach/react'
 import {
   columnIdShowListAtom,
-  headerRowSizeMaAtom,
+  headerRowSizeMapAtom,
   rowIdShowListAtom,
   useBasic,
 } from '@grid-table/basic'
@@ -24,7 +24,7 @@ export function useMergeCells({
   const cellList = useAtomValue(tbodyMergeCellListAtom, { store })
   const columnSizeMap = useAtomValue(columnSizeMapAtom, { store })
   const rowSizeMap = useAtomValue(rowSizeMapAtom, { store })
-  const headerRowSizeMap = useAtomValue(headerRowSizeMaAtom, { store })
+  const headerRowSizeMap = useAtomValue(headerRowSizeMapAtom, { store })
   const rowIdShowList = useAtomValue(rowIdShowListAtom, { store })
   const columnIdShowList = useAtomValue(columnIdShowListAtom, { store })
   const stickyLeftIds = useAtomValue(stickyLeftAtom, { store })
