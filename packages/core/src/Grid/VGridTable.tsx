@@ -58,6 +58,10 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
   const ref = (gridRef as MutableRefObject<HTMLDivElement>) || internalRef
 
   const { width, height } = useAutoSizer(ref)
+  const delayScrollOptions = {
+    speedThreshold: props.speedThreshold,
+    idleDelay: props.idleDelay,
+  }
 
   const {
     onScroll: onYScroll,
@@ -72,7 +76,7 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     overscanCount: overRowCount,
     direction: 'row',
     stayIndexList: rowStayIndexList,
-  })
+  }, delayScrollOptions)
 
   const {
     onScroll: onXScroll,
@@ -87,7 +91,7 @@ export const VGridTable = forwardRef<HTMLDivElement, VGridTableProps>((props, gr
     overscanCount: overColumnCount,
     direction: 'column',
     stayIndexList: columnStayIndexList,
-  })
+  }, delayScrollOptions)
 
   useLayoutEffect(() => {
     if (onResize) {
