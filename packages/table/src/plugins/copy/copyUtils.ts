@@ -10,14 +10,20 @@ export const COPY_BORDER_COLOR = 'blue'
  * 计算总的选中单元格数量
  */
 export function getTotalSelectedCells(areas: CopyAreas): number {
-  return areas.cellTheadList.length + areas.cellTbodyList.length
+  if (typeof areas.totalCellCount === 'number') {
+    return areas.totalCellCount
+  }
+  return (
+    areas.cellTheadList.reduce((sum, row) => sum + row.length, 0) +
+    areas.cellTbodyList.reduce((sum, row) => sum + row.length, 0)
+  )
 }
 
 /**
  * 检查是否有选中的区域
  */
 export function hasSelectedAreas(areas: CopyAreas | null | undefined): boolean {
-  return !!(areas && (areas.cellTheadList.length > 0 || areas.cellTbodyList.length > 0))
+  return !!areas && getTotalSelectedCells(areas) > 0
 }
 
 /**

@@ -53,16 +53,18 @@ export function useCopy({
 
   // 计算总的选中单元格数量
   const totalSelectedCells = getTotalSelectedCells(selectedAreas)
+  // 选区超过物化阈值时不允许 copy（剪贴板装不下），不挂 textarea，让浏览器走默认行为
+  const isCopyable = totalSelectedCells > 0 && !selectedAreas.isLimited
 
   // 自动选中隐藏的 textarea 以触发复制
   // 依赖 selectedAreas 确保切换表格时也能正确获取焦点
   useEffect(() => {
-    if (!ref.current || totalSelectedCells === 0) {
+    if (!ref.current || !isCopyable) {
       return
     }
     // 模拟选中 触发 onCopy
     ref.current.select()
-  }, [selectedAreas, totalSelectedCells])
+  }, [selectedAreas, isCopyable])
 
   // 取消复制样式显示
   const cancel = useCallback(() => {
@@ -71,8 +73,8 @@ export function useCopy({
 
   useDocumentHandler(cancel, 'mousedown')
 
-  // 如果禁用或没有选中的单元格，不渲染隐藏的 textarea
-  if (enable === false || totalSelectedCells === 0) {
+  // 如果禁用、没有选中的单元格、或选区过大不可复制，不渲染隐藏的 textarea
+  if (enable === false || !isCopyable) {
     return null
   }
 

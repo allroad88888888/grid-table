@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useStore, useSetAtom, isPromiseLike } from '@einfach/react'
-import { areaCellIdsAtom } from '../areaSelected/state'
+import { AREA_CELL_IDS_MATERIALIZE_LIMIT, areaCellIdsAtom } from '../areaSelected/state'
 import { copyMixedAreaAtom } from './state'
 import { hasSelectedAreas } from './copyUtils'
 import type { CopyProps } from './types'
@@ -23,6 +23,20 @@ export function useCopyHandler({ copyGetDataByCellIds, showCopyStyle }: UseCopyH
 
       // 检查是否有选中的区域
       if (!hasSelectedAreas(areas)) {
+        return
+      }
+
+      // 选区超过物化阈值：剪贴板装不下（20M cells ≈ 100MB+ TSV，多数接收方也吞不下），
+      // 直接拒绝并阻断默认行为，避免泄漏占位文本
+      if (areas.isLimited) {
+        console.warn(
+          `[grid-table] selection exceeds copy limit ` +
+            `(${areas.totalCellCount} cells > ${AREA_CELL_IDS_MATERIALIZE_LIMIT}); ` +
+            `copy cancelled. Shrink the selection and try again.`,
+        )
+        e.clipboardData.setData('text/plain', '')
+        e.stopPropagation()
+        e.preventDefault()
         return
       }
 

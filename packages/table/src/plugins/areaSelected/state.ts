@@ -1,5 +1,5 @@
-import { getCellId } from '../../utils/getCellId'
-import type { CellId, ColumnId, PositionId } from '@grid-table/basic'
+import { getCellId, getRowIdAndColIdByCellId } from '../../utils/getCellId'
+import type { CellId, ColumnId, PositionId, RowId } from '@grid-table/basic'
 import { columnIdShowListAtom, headerRowIndexListAtom, rowIdShowListAtom } from '@grid-table/basic'
 import { atom, selectAtom } from '@einfach/react'
 import { easyEqual } from '@einfach/utils'
@@ -71,6 +71,45 @@ function equal2DArray(arr1: CellId[][], arr2: CellId[][]): boolean {
 
 const Empty: CellId[][] = []
 
+export const AREA_CELL_IDS_MATERIALIZE_LIMIT = 100_000
+
+export interface AreaSelectionRange {
+  key: string
+  columnStartIndex: number
+  columnEndIndex: number
+  columnCount: number
+  theadStartIndex: number
+  theadEndIndex: number
+  theadRowCount: number
+  tbodyStartIndex: number
+  tbodyEndIndex: number
+  tbodyRowCount: number
+  totalCellCount: number
+  columnIdList: ColumnId[]
+  rowTheadIdList: RowId[]
+  rowTbodyIdList: RowId[]
+  columnIdIndexMap: Map<ColumnId, number>
+  theadRowIdIndexMap: Map<RowId, number>
+  tbodyRowIdIndexMap: Map<RowId, number>
+  disabledCols: Set<ColumnId>
+}
+
+export interface AreaCellIdsResult {
+  cellTbodyList: CellId[][]
+  cellTheadList: CellId[][]
+  totalCellCount: number
+  isLimited: boolean
+  rangeKey: string
+}
+
+const EmptyAreaCellIds: AreaCellIdsResult = {
+  cellTbodyList: Empty,
+  cellTheadList: Empty,
+  totalCellCount: 0,
+  isLimited: false,
+  rangeKey: '',
+}
+
 /**
  * id → index 索引 Map，避免 findIndexList 的 O(n) 线性遍历
  * 只在对应 list 变化时重建
@@ -110,144 +149,342 @@ function lookupIndices(indexMap: Map<string, number>, ids: Set<string>): Set<num
   return res
 }
 
-export const areaCellIdsAtom = selectAtom(
-  atom<{
-    cellTbodyList: CellId[][]
-    cellTheadList: CellId[][]
-  }>((getter) => {
-  const areaStart = getter(areaStartAtom)
-  let areaEnd = getter(areaEndAtom)
-  const areaStartType = getter(areaStartTypeAtom)
-  const areaEndType = getter(areaEndTypeAtom)
+function getRowCount(startIndex: number, endIndex: number): number {
+  return startIndex >= 0 && endIndex >= 0 ? endIndex - startIndex + 1 : 0
+}
 
-  // 如果没有开始位置或开始类型，则没有选中区域
-  if (areaStart.cellId === '-1' || !areaStartType) {
-    return { cellTbodyList: Empty, cellTheadList: Empty }
+function countSelectableColumns(
+  columnIdList: ColumnId[],
+  columnStartIndex: number,
+  columnEndIndex: number,
+  disabledCols: Set<ColumnId>,
+) {
+  let columnCount = 0
+  const disabledInRange: ColumnId[] = []
+  for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
+    const columnId = columnIdList[i]
+    if (disabledCols.has(columnId)) {
+      disabledInRange.push(columnId)
+      continue
+    }
+    columnCount += 1
+  }
+  return { columnCount, disabledKey: disabledInRange.join(',') }
+}
+
+export function isAreaCellSelected(
+  range: AreaSelectionRange | null,
+  areaType: 'thead' | 'tbody',
+  rowId: RowId,
+  columnId: ColumnId,
+): boolean {
+  if (!range || range.disabledCols.has(columnId)) {
+    return false
   }
 
-  // 如果没有结束位置，则结束位置等于开始位置，结束类型等于开始类型
-  if (areaEnd.cellId === '-1') {
-    areaEnd = areaStart
+  const columnIndex = range.columnIdIndexMap.get(columnId)
+  if (
+    columnIndex === undefined ||
+    columnIndex < range.columnStartIndex ||
+    columnIndex > range.columnEndIndex
+  ) {
+    return false
   }
-  const finalEndType = areaEndType || areaStartType
 
-  const rowTheadIdList = getter(headerRowIndexListAtom)
-  const rowTbodyIdList = getter(rowIdShowListAtom)
-  const columnIdList = getter(columnIdShowListAtom)
+  const rowIndex =
+    areaType === 'thead' ? range.theadRowIdIndexMap.get(rowId) : range.tbodyRowIdIndexMap.get(rowId)
+  const rowStartIndex = areaType === 'thead' ? range.theadStartIndex : range.tbodyStartIndex
+  const rowEndIndex = areaType === 'thead' ? range.theadEndIndex : range.tbodyEndIndex
 
-  const colIndexMap = getter(columnIdIndexMapAtom)
-  const tbodyIndexMap = getter(rowTbodyIdIndexMapAtom)
-  const theadIndexMap = getter(rowTheadIdIndexMapAtom)
+  return rowIndex !== undefined && rowIndex >= rowStartIndex && rowIndex <= rowEndIndex
+}
 
-  // 计算列范围
-  const columnList = lookupIndices(colIndexMap, new Set([areaStart.columnId, areaEnd.columnId]))
-  if (columnList.size === 0) {
-    return { cellTbodyList: Empty, cellTheadList: Empty }
+function buildAreaCellIds(range: AreaSelectionRange, areaType: 'thead' | 'tbody'): CellId[][] {
+  const rowStartIndex = areaType === 'thead' ? range.theadStartIndex : range.tbodyStartIndex
+  const rowEndIndex = areaType === 'thead' ? range.theadEndIndex : range.tbodyEndIndex
+  const rowIdList = areaType === 'thead' ? range.rowTheadIdList : range.rowTbodyIdList
+
+  if (rowStartIndex < 0 || rowEndIndex < 0) {
+    return Empty
   }
-  const columnStartIndex = Math.min(...columnList)
-  const columnEndIndex = Math.max(...columnList)
 
-  const disabledCols = new Set(getter(areaDisabledColsAtom))
-  const cellTbodyList: CellId[][] = []
-  const cellTheadList: CellId[][] = []
-
-  // 根据开始和结束类型确定行范围
-  let theadStartIndex = -1,
-    theadEndIndex = -1
-  let tbodyStartIndex = -1,
-    tbodyEndIndex = -1
-
-  if (areaStartType === finalEndType) {
-    // 同区域内的选择
-    if (areaStartType === 'thead') {
-      const theadRowList = lookupIndices(theadIndexMap, new Set([areaStart.rowId, areaEnd.rowId]))
-      if (theadRowList.size === 0) {
-        return { cellTbodyList: Empty, cellTheadList: Empty }
+  const cellList: CellId[][] = []
+  for (let j = rowStartIndex; j <= rowEndIndex; j += 1) {
+    const childIds = []
+    for (let i = range.columnStartIndex; i <= range.columnEndIndex; i += 1) {
+      const colId = range.columnIdList[i]
+      if (range.disabledCols.has(colId)) {
+        continue
       }
-      theadStartIndex = Math.min(...theadRowList)
-      theadEndIndex = Math.max(...theadRowList)
-    } else if (areaStartType === 'tbody') {
-      const tbodyRowList = lookupIndices(tbodyIndexMap, new Set([areaStart.rowId, areaEnd.rowId]))
-      if (tbodyRowList.size === 0) {
-        return { cellTbodyList: Empty, cellTheadList: Empty }
-      }
-      tbodyStartIndex = Math.min(...tbodyRowList)
-      tbodyEndIndex = Math.max(...tbodyRowList)
-    }
-  } else if (areaStartType === 'thead' && finalEndType === 'tbody') {
-    // 从 thead 到 tbody
-    const theadStartRowList = lookupIndices(theadIndexMap, new Set([areaStart.rowId]))
-    const tbodyEndRowList = lookupIndices(tbodyIndexMap, new Set([areaEnd.rowId]))
-
-    if (theadStartRowList.size > 0) {
-      theadStartIndex = Math.min(...theadStartRowList)
-      theadEndIndex = rowTheadIdList.length - 1
-    }
-
-    if (tbodyEndRowList.size > 0) {
-      tbodyStartIndex = 0
-      tbodyEndIndex = Math.max(...tbodyEndRowList)
-    }
-  } else if (areaStartType === 'tbody' && finalEndType === 'thead') {
-    // 从 tbody 到 thead（从下往上拖拽）
-    const tbodyStartRowList = lookupIndices(tbodyIndexMap, new Set([areaStart.rowId]))
-    const theadEndRowList = lookupIndices(theadIndexMap, new Set([areaEnd.rowId]))
-
-    if (tbodyStartRowList.size > 0) {
-      tbodyStartIndex = 0
-      tbodyEndIndex = Math.max(...tbodyStartRowList)
-    }
-
-    if (theadEndRowList.size > 0) {
-      theadStartIndex = Math.min(...theadEndRowList)
-      theadEndIndex = rowTheadIdList.length - 1
-    }
-  }
-
-  // 生成 thead 区域的 cellIds
-  if (theadStartIndex >= 0 && theadEndIndex >= 0) {
-    for (let j = theadStartIndex; j <= theadEndIndex; j += 1) {
-      const childIds = []
-      for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
-        const colId = columnIdList[i]
-        if (disabledCols.has(colId)) {
-          continue
-        }
-        const cellId = getCellId({
-          rowId: rowTheadIdList[j],
+      childIds.push(
+        getCellId({
+          rowId: rowIdList[j],
           columnId: colId,
-        })
-        childIds.push(cellId)
-      }
-      cellTheadList.push(childIds)
+        }),
+      )
     }
+    cellList.push(childIds)
   }
 
-  // 生成 tbody 区域的 cellIds
-  if (tbodyStartIndex >= 0 && tbodyEndIndex >= 0) {
-    for (let j = tbodyStartIndex; j <= tbodyEndIndex; j += 1) {
-      const childIds = []
-      for (let i = columnStartIndex; i <= columnEndIndex; i += 1) {
-        const colId = columnIdList[i]
-        if (disabledCols.has(colId)) {
-          continue
+  return cellList
+}
+
+function equalAreaRange(prev: AreaSelectionRange | null, next: AreaSelectionRange | null): boolean {
+  return prev?.key === next?.key
+}
+
+function equalAreaCellIds(prev: AreaCellIdsResult, next: AreaCellIdsResult): boolean {
+  if (
+    prev.totalCellCount !== next.totalCellCount ||
+    prev.isLimited !== next.isLimited ||
+    prev.rangeKey !== next.rangeKey
+  ) {
+    return false
+  }
+  return (
+    equal2DArray(prev.cellTbodyList, next.cellTbodyList) &&
+    equal2DArray(prev.cellTheadList, next.cellTheadList)
+  )
+}
+
+function throwVirtualSetIterationError(): never {
+  throw new Error(
+    '[AreaSelectedCellSet] selection exceeds AREA_CELL_IDS_MATERIALIZE_LIMIT; ' +
+      'iteration is not supported. Use buildAreaCellIds(range) to materialize on demand, ' +
+      'or query via .has(cellId) / isAreaCellSelected(range, ...).',
+  )
+}
+
+class AreaSelectedCellSet extends Set<CellId> {
+  constructor(
+    private range: AreaSelectionRange,
+    private areaType: 'thead' | 'tbody',
+  ) {
+    super()
+  }
+
+  override get size() {
+    const rowCount = this.areaType === 'thead' ? this.range.theadRowCount : this.range.tbodyRowCount
+    return rowCount * this.range.columnCount
+  }
+
+  override has(cellId: CellId) {
+    const [rowId, columnId] = getRowIdAndColIdByCellId(cellId)
+    return isAreaCellSelected(this.range, this.areaType, rowId, columnId)
+  }
+
+  override forEach(): void {
+    throwVirtualSetIterationError()
+  }
+  override keys(): SetIterator<CellId> {
+    throwVirtualSetIterationError()
+  }
+  override values(): SetIterator<CellId> {
+    throwVirtualSetIterationError()
+  }
+  override entries(): SetIterator<[CellId, CellId]> {
+    throwVirtualSetIterationError()
+  }
+  override [Symbol.iterator](): SetIterator<CellId> {
+    throwVirtualSetIterationError()
+  }
+
+  get compareKey() {
+    return `${this.areaType}:${this.range.key}`
+  }
+}
+
+function equalAreaSelectedCellSet(prev: Set<CellId>, next: Set<CellId>): boolean {
+  if (prev.size !== next.size) {
+    return false
+  }
+  const prevVirtual = prev instanceof AreaSelectedCellSet
+  const nextVirtual = next instanceof AreaSelectedCellSet
+  if (prevVirtual && nextVirtual) {
+    return prev.compareKey === next.compareKey
+  }
+  if (prevVirtual !== nextVirtual) {
+    return false
+  }
+  for (const id of prev) {
+    if (!next.has(id)) return false
+  }
+  return true
+}
+
+export const areaSelectionRangeAtom = selectAtom(
+  atom<AreaSelectionRange | null>((getter) => {
+    const areaStart = getter(areaStartAtom)
+    let areaEnd = getter(areaEndAtom)
+    const areaStartType = getter(areaStartTypeAtom)
+    const areaEndType = getter(areaEndTypeAtom)
+
+    // 如果没有开始位置或开始类型，则没有选中区域
+    if (areaStart.cellId === '-1' || !areaStartType) {
+      return null
+    }
+
+    // 如果没有结束位置，则结束位置等于开始位置，结束类型等于开始类型
+    if (areaEnd.cellId === '-1') {
+      areaEnd = areaStart
+    }
+    const finalEndType = areaEndType || areaStartType
+
+    const rowTheadIdList = getter(headerRowIndexListAtom)
+    const rowTbodyIdList = getter(rowIdShowListAtom)
+    const columnIdList = getter(columnIdShowListAtom)
+
+    const colIndexMap = getter(columnIdIndexMapAtom)
+    const tbodyIndexMap = getter(rowTbodyIdIndexMapAtom)
+    const theadIndexMap = getter(rowTheadIdIndexMapAtom)
+
+    // 计算列范围
+    const columnList = lookupIndices(colIndexMap, new Set([areaStart.columnId, areaEnd.columnId]))
+    if (columnList.size === 0) {
+      return null
+    }
+    const columnStartIndex = Math.min(...columnList)
+    const columnEndIndex = Math.max(...columnList)
+
+    const disabledCols = new Set(getter(areaDisabledColsAtom))
+
+    // 根据开始和结束类型确定行范围
+    let theadStartIndex = -1,
+      theadEndIndex = -1
+    let tbodyStartIndex = -1,
+      tbodyEndIndex = -1
+
+    if (areaStartType === finalEndType) {
+      // 同区域内的选择
+      if (areaStartType === 'thead') {
+        const theadRowList = lookupIndices(theadIndexMap, new Set([areaStart.rowId, areaEnd.rowId]))
+        if (theadRowList.size === 0) {
+          return null
         }
-        const cellId = getCellId({
-          rowId: rowTbodyIdList[j],
-          columnId: colId,
-        })
-        childIds.push(cellId)
+        theadStartIndex = Math.min(...theadRowList)
+        theadEndIndex = Math.max(...theadRowList)
+      } else if (areaStartType === 'tbody') {
+        const tbodyRowList = lookupIndices(tbodyIndexMap, new Set([areaStart.rowId, areaEnd.rowId]))
+        if (tbodyRowList.size === 0) {
+          return null
+        }
+        tbodyStartIndex = Math.min(...tbodyRowList)
+        tbodyEndIndex = Math.max(...tbodyRowList)
       }
-      cellTbodyList.push(childIds)
-    }
-  }
+    } else if (areaStartType === 'thead' && finalEndType === 'tbody') {
+      // 从 thead 到 tbody
+      const theadStartRowList = lookupIndices(theadIndexMap, new Set([areaStart.rowId]))
+      const tbodyEndRowList = lookupIndices(tbodyIndexMap, new Set([areaEnd.rowId]))
 
-  return { cellTbodyList, cellTheadList }
+      if (theadStartRowList.size > 0) {
+        theadStartIndex = Math.min(...theadStartRowList)
+        theadEndIndex = rowTheadIdList.length - 1
+      }
+
+      if (tbodyEndRowList.size > 0) {
+        tbodyStartIndex = 0
+        tbodyEndIndex = Math.max(...tbodyEndRowList)
+      }
+    } else if (areaStartType === 'tbody' && finalEndType === 'thead') {
+      // 从 tbody 到 thead（从下往上拖拽）
+      const tbodyStartRowList = lookupIndices(tbodyIndexMap, new Set([areaStart.rowId]))
+      const theadEndRowList = lookupIndices(theadIndexMap, new Set([areaEnd.rowId]))
+
+      if (tbodyStartRowList.size > 0) {
+        tbodyStartIndex = 0
+        tbodyEndIndex = Math.max(...tbodyStartRowList)
+      }
+
+      if (theadEndRowList.size > 0) {
+        theadStartIndex = Math.min(...theadEndRowList)
+        theadEndIndex = rowTheadIdList.length - 1
+      }
+    }
+
+    const { columnCount, disabledKey } = countSelectableColumns(
+      columnIdList,
+      columnStartIndex,
+      columnEndIndex,
+      disabledCols,
+    )
+    const theadRowCount = getRowCount(theadStartIndex, theadEndIndex)
+    const tbodyRowCount = getRowCount(tbodyStartIndex, tbodyEndIndex)
+    const totalCellCount = columnCount * (theadRowCount + tbodyRowCount)
+
+    if (totalCellCount === 0) {
+      return null
+    }
+
+    const key = [
+      columnStartIndex,
+      columnEndIndex,
+      columnIdList[columnStartIndex],
+      columnIdList[columnEndIndex],
+      theadStartIndex,
+      theadEndIndex,
+      theadStartIndex >= 0 ? rowTheadIdList[theadStartIndex] : '',
+      theadEndIndex >= 0 ? rowTheadIdList[theadEndIndex] : '',
+      tbodyStartIndex,
+      tbodyEndIndex,
+      tbodyStartIndex >= 0 ? rowTbodyIdList[tbodyStartIndex] : '',
+      tbodyEndIndex >= 0 ? rowTbodyIdList[tbodyEndIndex] : '',
+      columnCount,
+      disabledKey,
+    ].join('|')
+
+    return {
+      key,
+      columnStartIndex,
+      columnEndIndex,
+      columnCount,
+      theadStartIndex,
+      theadEndIndex,
+      theadRowCount,
+      tbodyStartIndex,
+      tbodyEndIndex,
+      tbodyRowCount,
+      totalCellCount,
+      columnIdList,
+      rowTheadIdList,
+      rowTbodyIdList,
+      columnIdIndexMap: colIndexMap,
+      theadRowIdIndexMap: theadIndexMap,
+      tbodyRowIdIndexMap: tbodyIndexMap,
+      disabledCols,
+    }
   }),
   (prev) => prev,
-  (prev, next) =>
-    equal2DArray(prev.cellTbodyList, next.cellTbodyList) &&
-    equal2DArray(prev.cellTheadList, next.cellTheadList),
+  equalAreaRange,
+)
+
+export const areaCellIdsAtom = selectAtom(
+  atom<AreaCellIdsResult>((getter) => {
+    const range = getter(areaSelectionRangeAtom)
+
+    if (!range) {
+      return EmptyAreaCellIds
+    }
+
+    if (range.totalCellCount > AREA_CELL_IDS_MATERIALIZE_LIMIT) {
+      return {
+        cellTbodyList: Empty,
+        cellTheadList: Empty,
+        totalCellCount: range.totalCellCount,
+        isLimited: true,
+        rangeKey: range.key,
+      }
+    }
+
+    return {
+      cellTbodyList: buildAreaCellIds(range, 'tbody'),
+      cellTheadList: buildAreaCellIds(range, 'thead'),
+      totalCellCount: range.totalCellCount,
+      isLimited: false,
+      rangeKey: range.key,
+    }
+  }),
+  (prev) => prev,
+  equalAreaCellIds,
 )
 
 /**
@@ -255,42 +492,50 @@ export const areaCellIdsAtom = selectAtom(
  * useCell 通过 selectAtom 读取，判断 cellId 是否在 Set 中
  */
 export const areaSelectedTbodyCellSetAtom = selectAtom(
-  areaCellIdsAtom,
-  ({ cellTbodyList }) => {
+  atom<Set<CellId>>((getter) => {
+    const range = getter(areaSelectionRangeAtom)
+    const { cellTbodyList, isLimited } = getter(areaCellIdsAtom)
+
+    if (!range) {
+      return new Set<CellId>()
+    }
+    if (isLimited) {
+      return new AreaSelectedCellSet(range, 'tbody')
+    }
+
     const set = new Set<CellId>()
     cellTbodyList.forEach((row) => {
       row.forEach((cellId) => set.add(cellId))
     })
     return set
-  },
-  (prev, next) => {
-    if (prev.size !== next.size) return false
-    for (const id of prev) {
-      if (!next.has(id)) return false
-    }
-    return true
-  },
+  }),
+  (prev) => prev,
+  equalAreaSelectedCellSet,
 )
 
 /**
  * 选中区域的 thead cell 集合
  */
 export const areaSelectedTheadCellSetAtom = selectAtom(
-  areaCellIdsAtom,
-  ({ cellTheadList }) => {
+  atom<Set<CellId>>((getter) => {
+    const range = getter(areaSelectionRangeAtom)
+    const { cellTheadList, isLimited } = getter(areaCellIdsAtom)
+
+    if (!range) {
+      return new Set<CellId>()
+    }
+    if (isLimited) {
+      return new AreaSelectedCellSet(range, 'thead')
+    }
+
     const set = new Set<CellId>()
     cellTheadList.forEach((row) => {
       row.forEach((cellId) => set.add(cellId))
     })
     return set
-  },
-  (prev, next) => {
-    if (prev.size !== next.size) return false
-    for (const id of prev) {
-      if (!next.has(id)) return false
-    }
-    return true
-  },
+  }),
+  (prev) => prev,
+  equalAreaSelectedCellSet,
 )
 
 export const areaColumnIdsAtom = atom<ColumnId[]>((getter) => {

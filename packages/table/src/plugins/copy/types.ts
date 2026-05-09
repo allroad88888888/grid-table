@@ -13,4 +13,6 @@ export interface CopyProps {
 export interface CopyAreas {
   cellTheadList: CellId[][]
   cellTbodyList: CellId[][]
+  totalCellCount?: number
+  isLimited?: boolean
 }

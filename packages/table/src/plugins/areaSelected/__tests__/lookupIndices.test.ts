@@ -9,12 +9,16 @@ import {
 } from '@grid-table/basic'
 import { getCellId } from '../../../utils/getCellId'
 import {
+  AREA_CELL_IDS_MATERIALIZE_LIMIT,
   areaStartAtom,
   areaEndAtom,
   areaCellIdsAtom,
   areaColumnIdsAtom,
+  areaSelectedTbodyCellSetAtom,
+  areaSelectionRangeAtom,
   areaStartTypeAtom,
   areaEndTypeAtom,
+  isAreaCellSelected,
 } from '../state'
 
 function generateIds(prefix: string, count: number) {
@@ -165,6 +169,44 @@ describe('lookupIndices perf — Map vs old linear', () => {
     expect(result.cellTbodyList[0].length).toBe(11)
     // 之前 findIndexList 在 100k 行尾部查找要 7.5ms，现在应该快很多
     expect(elapsed).toBeLessThan(200)
+  })
+
+  test('超大选区不展开 cellId 矩阵，但仍能按 range 判断 cell 是否选中', () => {
+    const { store, rows, cols } = setupStore(100_000, 200)
+
+    setSelection(store, rows[0], cols[0], rows[99_999], cols[199])
+
+    const start = performance.now()
+    const result = store.getter(areaCellIdsAtom)
+    const elapsed = performance.now() - start
+
+    expect(result.totalCellCount).toBe(20_000_000)
+    expect(result.totalCellCount).toBeGreaterThan(AREA_CELL_IDS_MATERIALIZE_LIMIT)
+    expect(result.isLimited).toBe(true)
+    expect(result.cellTbodyList).toEqual([])
+    expect(result.cellTheadList).toEqual([])
+    expect(elapsed).toBeLessThan(200)
+
+    const selectedSet = store.getter(areaSelectedTbodyCellSetAtom)
+    expect(selectedSet.size).toBe(20_000_000)
+    expect(selectedSet.has(getCellId({ rowId: rows[50_000], columnId: cols[100] }))).toBe(true)
+    expect(selectedSet.has(getCellId({ rowId: 'missing', columnId: cols[100] }))).toBe(false)
+
+    const range = store.getter(areaSelectionRangeAtom)
+    expect(isAreaCellSelected(range, 'tbody', rows[99_999], cols[199])).toBe(true)
+  })
+
+  test('超大选区返回的虚拟 Set 拒绝迭代（防御静默错误）', () => {
+    const { store, rows, cols } = setupStore(100_000, 200)
+    setSelection(store, rows[0], cols[0], rows[99_999], cols[199])
+
+    const selectedSet = store.getter(areaSelectedTbodyCellSetAtom)
+    expect(selectedSet.size).toBe(20_000_000)
+
+    // size 撒谎了 → 必须保证迭代不会静默返回空，而是显式抛错
+    expect(() => Array.from(selectedSet)).toThrow(/AREA_CELL_IDS_MATERIALIZE_LIMIT/)
+    expect(() => selectedSet.forEach(() => {})).toThrow(/AREA_CELL_IDS_MATERIALIZE_LIMIT/)
+    expect(() => [...selectedSet]).toThrow(/AREA_CELL_IDS_MATERIALIZE_LIMIT/)
   })
 
   test('选区变更 100 次（模拟拖拽）', () => {
